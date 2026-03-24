@@ -1,0 +1,121 @@
+package agricore.model;
+
+import java.util.ArrayList;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="zone")
+public class Zone {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="zone_id")
+	private Integer id;
+	
+	@Embedded
+	private Position position;
+	
+	@Enumerated(EnumType.STRING) // Pas sûr que EnumType.STRING marche avec un Enum qui stocke d'autres choses 
+	@Column(nullable = false)
+	private NomZone nomZone;
+	
+	@OneToMany(mappedBy = "zone")
+	private List<Animal> animals = new ArrayList<>();
+	
+	@OneToOne(mappedBy = "zone")
+	private Plante plante;
+	
+	
+	//J'ai pas mis les plantes et animaux, dans constructeur (je pense on les rajoutes par la suite)
+	public Zone() {
+	}
+
+	public Zone(Position position, NomZone nomZone) {
+		super();
+		this.position = position;
+		this.nomZone = nomZone;
+	}
+	public Zone(Integer id, Position position, NomZone nomZone) {
+		super();
+		this.id = id;
+		this.position = position;
+		this.nomZone = nomZone;
+	}
+
+	
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+	public NomZone getNomZone() {
+		return nomZone;
+	}
+
+	public void setNomZone(NomZone nomZone) {
+		this.nomZone = nomZone;
+	}
+
+	/*
+	
+	Je pense qu'on ne doit pas passer (nous) par les getter setter pour ca, mais Hibernate ou Spring en auras surement besoin 
+	
+	public List<Animal> getAnimals() {
+		return animals;
+	}
+
+	public void setAnimals(List<Animal> animals) {
+		this.animals = animals;
+	}
+
+	public Plante getPlante() {
+		return plante;
+	}
+
+	public void setPlante(Plante plante) {
+		this.plante = plante;
+	}
+	
+	*/
+
+	//Methode supplementaire
+	public boolean addAnimal(Animal a) {
+		//Faut check via enum si batiment autorise les animaux
+	    animals.add(a);
+	    //a.setZone(this); Peut être utile 
+	}
+	
+	
+	public boolean planterPlante(Plante p) {
+		plante = p;
+		//p.setZone(this)
+	}
+	
+	
+	
+	
+
+}
