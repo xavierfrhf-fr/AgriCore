@@ -26,15 +26,27 @@ public class Zone {
 	@Embedded
 	private Position position;
 	
-	@Enumerated(EnumType.STRING) // Pas sûr que EnumType.STRING marche avec un Enum qui stocke d'autres choses 
+	@Enumerated(EnumType.STRING) 
 	@Column(nullable = false)
 	private NomZone nomZone;
+	
+	
+	//---- Mapping avec les autres classes 
+	@Column(nullable = false)
+	@OneToOne
+	private Fermier fermier;
 	
 	@OneToMany(mappedBy = "zone")
 	private List<Animal> animals = new ArrayList<>();
 	
 	@OneToOne(mappedBy = "zone")
 	private Plante plante;
+	
+	@OneToMany(mappedBy = "zone")
+	private List<Vehicule> vehicules = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "zone")
+	private List<Ressources> ressources = new ArrayList<>();
 	
 	
 	//J'ai pas mis les plantes et animaux, dans constructeur (je pense on les rajoutes par la suite)
@@ -99,19 +111,63 @@ public class Zone {
 		this.plante = plante;
 	}
 	
-	*/
+	public List<Vehicule> getVehicules() {
+		return vehicules;
+	}
 
-	//Methode supplementaire
-	public boolean addAnimal(Animal a) {
-		//Faut check via enum si batiment autorise les animaux
-	    animals.add(a);
-	    //a.setZone(this); Peut être utile 
+	public void setVehicules(List<Vehicule> vehicules) {
+		this.vehicules = vehicules;
+	}
+
+	public List<Ressources> getRessources() {
+		return ressources;
+	}
+
+	public void setRessources(List<Ressources> ressources) {
+		this.ressources = ressources;
+	}
+
+	
+	*/
+	
+	public boolean addVehicule(Vehicule v) {
+		//Check si le batiment permet les vehicules ? A ajouter dans enum NomZone ??
+		vehicules.add(v);
+		v.setZone(this);
+		return true;
+	}
+	
+	public boolean addRessource(Ressource r) {
+		if (nomZone.isAutoriseStorage()) {
+			ressources.add(r);
+			r.setZone(this);
+			return true;
+		}
+		return false;
 	}
 	
 	
+
+	//Methode supplementaire
+	public boolean addAnimal(Animal a) {
+		if (nomZone.isAutoriseAni()) {
+		    animals.add(a);
+		    a.setZone(this); 
+		    return true;
+		}
+		return false;
+
+	}
+	
+	
+
 	public boolean planterPlante(Plante p) {
-		plante = p;
-		//p.setZone(this)
+		if (nomZone.isAutorisePlant()) {
+			plante = p;
+			p.setZone(this);
+			return true;
+		}
+		return false;
 	}
 	
 	
