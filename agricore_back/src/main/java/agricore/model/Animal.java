@@ -95,7 +95,7 @@ public class Animal {
 	}
 	
 	public void vacciner() {
-		dateVaccination = dateVaccination.plusYears(1);
+		dateVaccination = LocalDate.now().plusYears(1);
 	}
 	
 	public LocalDate rappelVaccin() {
