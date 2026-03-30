@@ -1,6 +1,7 @@
 package agricore.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -90,10 +91,6 @@ public class Zone {
 	public void setNomZone(NomZone nomZone) {
 		this.nomZone = nomZone;
 	}
-
-	/*
-	
-	Je pense qu'on ne doit pas passer (nous) par les getter setter pour ca, mais Hibernate ou Spring en auras surement besoin 
 	
 	public List<Animal> getAnimals() {
 		return animals;
@@ -127,8 +124,6 @@ public class Zone {
 		this.ressources = ressources;
 	}
 
-	
-	*/
 	
 	public boolean addVehicule(Vehicule v) {
 		//Check si le batiment permet les vehicules ? A ajouter dans enum NomZone ??
