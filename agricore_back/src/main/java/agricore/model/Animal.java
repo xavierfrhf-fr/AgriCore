@@ -2,13 +2,33 @@ package agricore.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="animal")
 public class Animal {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="animal_id")
 	private Integer id;
+	
 	private boolean male;
+	
+	@Column(name="date_naissance")
 	private LocalDate dateNaissance;
+	
+	@Column(name="date_vaccination")
 	private LocalDate dateVaccination;
 	
+	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
 	public Animal(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
@@ -74,5 +94,8 @@ public class Animal {
 				+ dateVaccination + ", espece=" + espece + "]";
 	}
 	
+	public void vacciner() {
+		dateVaccination = dateVaccination.plusYears(1);
+	}
 	
 }
