@@ -98,4 +98,9 @@ public class Animal {
 		dateVaccination = dateVaccination.plusYears(1);
 	}
 	
+	public LocalDate rappelVaccin() {
+		LocalDate dateRappel = dateVaccination.minusMonths(1);
+		return dateRappel;
+	}
+	
 }
