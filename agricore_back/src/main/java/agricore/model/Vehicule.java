@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name="vehicule")
@@ -45,12 +46,20 @@ public class Vehicule {
 	}
 	
 	
-	public Boolean rappelControle() {
+	public boolean rappelControle() {
 		
 		if (dateControleTech.isAfter(LocalDate.now())) {
 			return true; 
 		}
 		return false;	
+	}
+	
+	public int delaiAvantControle() {
+		
+		int delais = LocalDate.now().until(dateControleTech, DAYS);
+		
+		return delais;
+		
 	}
 
 	
