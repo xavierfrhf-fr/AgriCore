@@ -3,6 +3,9 @@ package agricore.model;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import agricore.view.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,21 +24,27 @@ public class Animal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="animal_id")
+	@JsonView(Views.Common.class)
 	private Integer id;
 	
+	@JsonView(Views.Common.class)
 	private boolean male;
 	
 	@Column(name="date_naissance")
+	@JsonView(Views.Common.class)
 	private LocalDate dateNaissance;
 	
 	@Column(name="date_vaccination")
+	@JsonView(Views.Common.class)
 	private LocalDate dateVaccination;
 	
 	@Enumerated(EnumType.STRING)
+	@JsonView(Views.Common.class)
 	private EspeceAnimal espece;
 
 	@ManyToOne
     @JoinColumn(name="zone_id")
+	@JsonView(Views.Animal.class)
     private Zone zone;
 	
 	public Animal(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
