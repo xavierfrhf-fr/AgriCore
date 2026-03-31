@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,6 +33,10 @@ public class Animal {
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
+	@ManyToOne
+    @JoinColumn(name="zone_id")
+    private Zone zone;
+	
 	public Animal(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
 		this.id = id;
 		this.male = male;
@@ -88,6 +94,14 @@ public class Animal {
 		this.espece = espece;
 	}
 
+	public Zone getZone() {
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+
 	@Override
 	public String toString() {
 		return "Animal [id=" + id + ", male=" + male + ", dateNaissance=" + dateNaissance + ", dateVaccination="
@@ -101,6 +115,15 @@ public class Animal {
 	public LocalDate rappelVaccin() {
 		LocalDate dateRappel = dateVaccination.minusMonths(1);
 		return dateRappel;
+	}
+	
+	public boolean deplacer(Zone new_zone) {
+		Zone previous_zone = this.getZone();
+		if (new_zone.addAnimal(this)) {
+			previous_zone.getAnimals().remove(this);
+		return true;
+		}
+		return false;
 	}
 	
 }
