@@ -1,5 +1,8 @@
 package agricore.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import agricore.view.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -18,10 +21,15 @@ public abstract class Utilisateur {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@JsonView(Views.Common.class)
 	protected Integer id;
+	
+	@JsonView(Views.Common.class)
 	@Column(nullable=false,unique=true)//rajouter length
 	protected String login;
+	
 	@Column(nullable=false)//rajouter length
+	@JsonView(Views.Common.class)
 	protected String password;
 	
 	

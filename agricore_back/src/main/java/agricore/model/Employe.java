@@ -1,5 +1,8 @@
 package agricore.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import agricore.view.Views;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 
@@ -7,6 +10,7 @@ import jakarta.persistence.OneToOne;
 public class Employe extends Utilisateur{
 	
 	@OneToOne(mappedBy="utilisateur")
+	@JsonView(Views.Employe.class)
 	private Fermier fermier;
 	
 	public Employe() {}
