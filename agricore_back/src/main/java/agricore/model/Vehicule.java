@@ -11,6 +11,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.temporal.ChronoUnit;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import agricore.view.Views;
 
 @Entity
 @Table(name="vehicule")
@@ -19,14 +22,18 @@ public class Vehicule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="vehicule_id")
+	@JsonView(Views.Vehicule.class)
 	private Integer id;
 	
+	@JsonView(Views.Vehicule.class)
 	private TypeVehicule typeVehicule;
 	
+	@JsonView(Views.Vehicule.class)
 	private LocalDate dateControleTech;
 	
 	@ManyToOne
 	@JoinColumn(name="zone_id")
+	@JsonView(Views.Vehicule.class)
 	private Zone zone;
 	
 	
@@ -45,7 +52,6 @@ public class Vehicule {
 		this.dateControleTech = dateControleTech;
 	}
 	
-	
 	public boolean rappelControle() {
 		
 		if (dateControleTech.isAfter(LocalDate.now())) {
@@ -59,9 +65,7 @@ public class Vehicule {
 		int delais = (int) LocalDate.now().until(dateControleTech, ChronoUnit.DAYS);
 		
 		return delais;
-		
 	}
-
 	
 	public Integer getId() {
 		return id;
