@@ -45,13 +45,12 @@ public class Vehicule {
 	}
 	
 	
-	public Boolean rappelControle(LocalDate dateControleTech) {
+	public Boolean rappelControle() {
 		
-		if ( dateControleTech.isAfter(LocalDate.now())) {
+		if (dateControleTech.isAfter(LocalDate.now())) {
 			return true; 
 		}
-		return false;
-		
+		return false;	
 	}
 
 	
