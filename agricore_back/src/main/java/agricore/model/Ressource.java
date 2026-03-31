@@ -1,6 +1,8 @@
 package agricore.model;
 
 
+import agricore.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,18 +11,24 @@ public class Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ressource_id")
+    @JsonView(Views.Common.class)
     private Integer id;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @JsonView(Views.Common.class)
     private NomRessource nom;
     @Column(nullable = false)
+    @JsonView(Views.Common.class)
     private int quantite;
     @Column(nullable = false)
+    @JsonView(Views.Common.class)
     private double prix;
     @Column(name = "stock_min", nullable = false)
+    @JsonView(Views.Common.class)
     private int stockMin;
     @ManyToOne
     @JoinColumn(name="zone_id", nullable = false)
+    @JsonView(Views.Ressource.class)
     private Zone zone;
 
     public Ressource() {
