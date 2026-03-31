@@ -56,7 +56,7 @@ public class Vehicule {
 	
 	public int delaiAvantControle() {
 		
-		int delais = LocalDate.now().until(dateControleTech, DAYS);
+		int delais = (int) LocalDate.now().until(dateControleTech, ChronoUnit.DAYS);
 		
 		return delais;
 		
