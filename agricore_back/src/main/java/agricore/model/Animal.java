@@ -1,6 +1,7 @@
 package agricore.model;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -115,6 +116,11 @@ public class Animal {
 	public LocalDate rappelVaccin() {
 		LocalDate dateRappel = dateVaccination.minusMonths(1);
 		return dateRappel;
+	}
+	
+	public int delaiAvantVaccin() {
+		int delais = (int) LocalDate.now().until(dateVaccination, ChronoUnit.DAYS);
+		return delais;
 	}
 	
 	public boolean deplacer(Zone new_zone) {
