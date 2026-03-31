@@ -47,7 +47,7 @@ public class Zone {
 	private List<Vehicule> vehicules = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "zone")
-	private List<Ressources> ressources = new ArrayList<>();
+	private List<Ressource> ressources = new ArrayList<>();
 	
 	
 	//J'ai pas mis les plantes et animaux, dans constructeur (je pense on les rajoutes par la suite)
@@ -116,11 +116,11 @@ public class Zone {
 		this.vehicules = vehicules;
 	}
 
-	public List<Ressources> getRessources() {
+	public List<Ressource> getRessources() {
 		return ressources;
 	}
 
-	public void setRessources(List<Ressources> ressources) {
+	public void setRessources(List<Ressource> ressources) {
 		this.ressources = ressources;
 	}
 
