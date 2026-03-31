@@ -87,6 +87,14 @@ public class Vehicule {
 		this.dateControleTech = dateControleTech;
 	}
 
+	public Zone getZone() {
+		return zone;
+	}
+
+	public void setZone(Zone zone) {
+		this.zone = zone;
+	}
+
 	@Override
 	public String toString() {
 		return "Vehicule [id=" + id + ", typeVehicule=" + typeVehicule + ", dateControleTech=" + dateControleTech + "]";
