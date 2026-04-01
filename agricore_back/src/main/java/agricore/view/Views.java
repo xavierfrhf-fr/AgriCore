@@ -6,7 +6,10 @@ public class Views {
 	
 	//VIEW POUR ZONE
 	public class Zone extends Common {}
-	
+	public class ZoneWithAnimal extends Zone {}
+	public class ZoneWithVehicule extends Zone {}
+	public class ZoneWithRessource extends Zone {}
+	// public interface FullZone extends ZoneWithRessource, ZoneWithVehicule, ZoneWithAnimal {} Si necessaire de tout ramener (mais faudra passer les autres views en interfaces)
 	
 	//VIEW POUR CLIENT / EMPLOYE / FERMIER 
 	
