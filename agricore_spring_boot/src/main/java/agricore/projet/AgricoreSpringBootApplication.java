@@ -1,0 +1,13 @@
+package agricore.projet;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AgricoreSpringBootApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AgricoreSpringBootApplication.class, args);
+	}
+
+}
