@@ -1,11 +1,11 @@
-package agricore.model;
+package agricore.projet.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import agricore.view.Views;
+import agricore.projet.view.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

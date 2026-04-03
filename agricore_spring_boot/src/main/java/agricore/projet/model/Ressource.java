@@ -1,7 +1,7 @@
-package agricore.model;
+package agricore.projet.model;
 
 
-import agricore.view.Views;
+import agricore.projet.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 

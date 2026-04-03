@@ -1,4 +1,4 @@
-package agricore.model;
+package agricore.projet.model;
 
 public enum NomRessource {
     Pomme("Kg"), Poire("Kg"), Fraise("Kg"), Lait("L"), Fromage("Kg"), JusDePomme("L");

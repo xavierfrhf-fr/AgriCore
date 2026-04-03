@@ -1,4 +1,4 @@
-package agricore.model;
+package agricore.projet.model;
 
 import java.time.LocalDate;
 
@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import java.time.temporal.ChronoUnit;
 import com.fasterxml.jackson.annotation.JsonView;
 
-import agricore.view.Views;
+import agricore.projet.view.Views;
 
 @Entity
 @Table(name="vehicule")

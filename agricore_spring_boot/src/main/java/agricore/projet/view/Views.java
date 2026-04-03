@@ -1,4 +1,4 @@
-package agricore.view;
+package agricore.projet.view;
 
 public class Views {
 

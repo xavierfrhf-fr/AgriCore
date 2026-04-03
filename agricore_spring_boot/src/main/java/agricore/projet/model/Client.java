@@ -1,4 +1,4 @@
-package agricore.model;
+package agricore.projet.model;
 
 import jakarta.persistence.Entity;
 

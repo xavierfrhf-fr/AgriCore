@@ -1,4 +1,4 @@
-package agricore.model;
+package agricore.projet.model;
 
 public enum NomZone {
 	CHAMPS(false, true, false),

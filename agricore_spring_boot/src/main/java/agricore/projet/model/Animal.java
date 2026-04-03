@@ -1,11 +1,11 @@
-package agricore.model;
+package agricore.projet.model;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import agricore.view.Views;
+import agricore.projet.view.Views;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
