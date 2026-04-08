@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import agricore.projet.model.Vehicule;
+import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
+import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.repository.VehiculeRepository;
-import org.springframework.web.bind.annotation.RequestParam;
+import agricore.projet.services.VehiculeService;
 
 
 
@@ -24,34 +26,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class VehiculeController {
 
     VehiculeRepository vehiculeRepository;
+    VehiculeService vehiculeService;
 
     VehiculeController(VehiculeRepository vehiculeRepository) {
         this.vehiculeRepository = vehiculeRepository;
     }   
 
     @GetMapping
-    public List<Vehicule> ChercherVehicule() {
-        return vehiculeRepository.findAll();
+    public List<VehiculeResponseDTO> getAll() {
+        return vehiculeRepository.findAll()
+        .stream()
+        .map(VehiculeResponseDTO::convert)
+        .toList();
     }
 
     @GetMapping("/{id}")
-    public Vehicule getVehiculeById(@RequestParam int id) {
-        return vehiculeRepository.findById(id).orElse(null);
+    public VehiculeResponseDTO getVehiculeById(@RequestParam int id) {
+        return vehiculeService.findByIdDTO(id);
     }
 
       @PutMapping("/{id}")
-    public Vehicule modifier(@PathVariable Integer id, @RequestBody Vehicule vehicule) {
-        vehicule.setId(id);
-        vehiculeRepository.save(vehicule);
-        return vehicule;
+    public VehiculeResponseDTO modifier(@PathVariable Integer id, @RequestBody VehiculeRequestDTO vehiculeRequestDTO) {
+        return vehiculeService.update(id, vehiculeRequestDTO);
     }
     
 
     @PostMapping
-    public Vehicule ajouter(@RequestBody Vehicule vehicule) {
-        
-        vehiculeRepository.save(vehicule);
-        return vehicule;
+    public VehiculeResponseDTO ajouter(@RequestBody VehiculeRequestDTO vehiculeRequestDTO) {
+        return vehiculeService.create(vehiculeRequestDTO);
     }
 
     @DeleteMapping("/{id}")
