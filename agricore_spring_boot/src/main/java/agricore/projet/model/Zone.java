@@ -38,8 +38,7 @@ public class Zone {
 	private NomZone nomZone;
 	
 	
-	//---- Mapping avec les autres classes 
-	@Column(nullable = false)
+	//---- Mapping avec les autres classes
 	@OneToOne
 	@JsonView(Views.Zone.class)
 	private Fermier fermier;
