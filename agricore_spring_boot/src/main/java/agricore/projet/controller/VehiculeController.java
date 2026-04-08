@@ -38,24 +38,26 @@ public class VehiculeController {
     public Vehicule getVehiculeById(@RequestParam int id) {
         return vehiculeRepository.findById(id).orElse(null);
     }
+
+      @PutMapping("/{id}")
+    public Vehicule modifier(@PathVariable Integer id, @RequestBody Vehicule vehicule) {
+        vehicule.setId(id);
+        vehiculeRepository.save(vehicule);
+        return vehicule;
+    }
     
 
     @PostMapping
-    public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
+    public Vehicule ajouter(@RequestBody Vehicule vehicule) {
         
-        return entity;
-    }
-
-    @PutMapping("/{id}")
-    public String putMethodName(@PathVariable String id, @RequestBody String entity) {
-        //TODO: process PUT request
-        
-        return entity;
+        vehiculeRepository.save(vehicule);
+        return vehicule;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMethodName(@PathVariable String id) { 
+    public void deleteVehicule(@PathVariable Integer id) { 
+        vehiculeRepository.deleteById(id);
+
     }
     
     
