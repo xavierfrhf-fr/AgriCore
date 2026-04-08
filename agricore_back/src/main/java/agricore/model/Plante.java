@@ -18,7 +18,8 @@ public class Plante {
 	private LocalDate dateRecolte;
 	private EspecePlante espece;
 	private Zone zone;
-	private double quantiteEau;
+	private LocalDate dernierArrosage;
+	private double eauDisponible; 
 
 
 	public Plante() {}
@@ -32,31 +33,33 @@ public class Plante {
 		this.espece = espece;
 		this.zone = zone;
 	}
-public boolean arroser (LocalDate dateArrosage) {
-	
-}
-public boolean recolter (LocalDate dateRecolte) {
-	dateRecolte = LocalDate.now().p
-}
-	/* public Boolean rappelControle(LocalDate dateControleTech) {
+	public boolean arroser (LocalDate dateArrosage, boolean pluie) {
 		
-		if ( dateControleTech.isAfter(LocalDate.now())) {
-			return true; 
-		}
-		return false;
-		
+		LocalDate dernier = (dernierArrosage != null) ? dernierArrosage : datePlantation;
+	    long joursEcoules = java.time.temporal.ChronoUnit.DAYS.between(dernier, dateArrosage);
+	    if (pluie==true) {
+	    	 int frequenceReelle =+ espece.getFrequenceArrosageSansPluie();
+	    }
+	    else {
+	    int frequenceReelle = espece.getFrequenceArrosageSansPluie();
+	    }
 	}
 	
-	public boolean planterPlante(Plante p) {
-		if (nomZone.isAutorisePlant()) {
-			plante = p;
-			p.setZone(this);
+	public boolean recolter (LocalDate dateRecolte) {
+		long moisEcoules = java.time.temporal.ChronoUnit.MONTHS.between(datePlantation, dateRecolte);
+		if ( moisEcoules>= espece.getTempsPousseMois()) {
+			this.dateRecolte = dateRecolte;
 			return true;
 		}
+
 		return false;
-	}*/
-
-
+	}
+	
+	public LocalDate rappelRecolte() {
+		LocalDate dateRappel = dateRecolte.minusMonths(1);
+		return dateRappel;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
