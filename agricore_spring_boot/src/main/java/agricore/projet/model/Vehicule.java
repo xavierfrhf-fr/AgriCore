@@ -1,6 +1,7 @@
 package agricore.projet.model;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,10 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.temporal.ChronoUnit;
-import com.fasterxml.jackson.annotation.JsonView;
-
-import agricore.projet.view.Views;
 
 @Entity
 @Table(name="vehicule")
@@ -22,18 +19,14 @@ public class Vehicule {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="vehicule_id")
-	@JsonView(Views.Vehicule.class)
 	private Integer id;
 	
-	@JsonView(Views.Vehicule.class)
 	private TypeVehicule typeVehicule;
 	
-	@JsonView(Views.Vehicule.class)
 	private LocalDate dateControleTech;
 	
 	@ManyToOne
 	@JoinColumn(name="zone_id")
-	@JsonView(Views.Vehicule.class)
 	private Zone zone;
 	
 	
