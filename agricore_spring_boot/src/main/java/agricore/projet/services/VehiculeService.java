@@ -1,13 +1,19 @@
 package agricore.projet.services;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
+import agricore.projet.exception.VehiculeNotFound;
+import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Vehicule;
 import agricore.projet.model.Zone;
-import agricore.projet.repository.VehiculeRepository;
 import agricore.projet.repository.IDAOZone;
+import agricore.projet.repository.VehiculeRepository;
 
-
+@Service
 public class VehiculeService {
 
     private final VehiculeRepository daovehicule;
@@ -19,8 +25,15 @@ public class VehiculeService {
     }
 
     public VehiculeResponseDTO findByIdDTO(Integer id) {
-        return VehiculeResponseDTO.convert(daovehicule.findById(id).orElse(null));  //Throw(() -> new VehiculeN);
+        return VehiculeResponseDTO.convert(daovehicule.findById(id).orElseThrow(() -> new VehiculeNotFound(id)));  //Throw(() -> new VehiculeN);
     }
+
+    public List<VehiculeResponseDTO> findAllDTO() {
+    return daovehicule.findAll()
+            .stream()
+            .map(VehiculeResponseDTO::convert)
+            .toList();
+}
 
     public VehiculeResponseDTO create(VehiculeRequestDTO vehiculeRequestDTO) {
         
@@ -28,7 +41,7 @@ public class VehiculeService {
         v.setTypeVehicule(vehiculeRequestDTO.getTypeVehicule());
         v.setDateControleTech(vehiculeRequestDTO.getDateControleTech());
 
-        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElse(null);
+        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneid()));
 
         v.setZone(z);
 
@@ -41,7 +54,7 @@ public class VehiculeService {
     public VehiculeResponseDTO update(Integer id, VehiculeRequestDTO vehiculeRequestDTO) {
         
         //find entity
-        Vehicule v = daovehicule.findById(id).orElse(null);
+        Vehicule v = daovehicule.findById(id).orElseThrow(() -> new VehiculeNotFound(id));
 
         //maj entity
         v.setTypeVehicule(vehiculeRequestDTO.getTypeVehicule());
@@ -49,7 +62,7 @@ public class VehiculeService {
 
 
         //set zone
-        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElse(null);
+        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneid()));
         v.setZone(z);
 
         //save entity
@@ -58,6 +71,11 @@ public class VehiculeService {
         return VehiculeResponseDTO.convert(update);
 
 
+    }
+
+    public void delete(Integer id) {
+        daovehicule.deleteById(id);
+        
     }
 
 
