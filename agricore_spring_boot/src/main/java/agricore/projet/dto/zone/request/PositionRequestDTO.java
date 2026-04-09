@@ -43,13 +43,14 @@ public class PositionRequestDTO {
     public PositionRequestDTO() {
     }
 
-    public PositionRequestDTO convert(Position position){
-        PositionRequestDTO response = new PositionRequestDTO();
-        response.setPosX(position.getPosX());
-        response.setPosY(position.getPosY());
-        response.setTailleX(position.getTailleX());
-        response.setTailleY(position.getTailleY());
-        return response;
+    public static Position convert(PositionRequestDTO request){
+        Position position = new Position();
+        position.setPosX(request.getPosX());
+        position.setPosY(request.getPosY());
+        position.setTailleX(request.getTailleX());
+        position.setTailleY(request.getTailleY());
+        return position;
     }
+
 
 }
