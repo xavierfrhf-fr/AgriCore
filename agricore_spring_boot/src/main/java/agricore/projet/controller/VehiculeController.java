@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
@@ -19,29 +18,26 @@ import agricore.projet.services.VehiculeService;
 
 
 
-
-
 @RestController
 @RequestMapping("/api/vehicule")
 public class VehiculeController {
 
-    VehiculeRepository vehiculeRepository;
-    VehiculeService vehiculeService;
+  
+    private final VehiculeService vehiculeService;
 
-    VehiculeController(VehiculeRepository vehiculeRepository) {
-        this.vehiculeRepository = vehiculeRepository;
-    }   
+    VehiculeController(VehiculeRepository vehiculeRepository, VehiculeService vehiculeService) {
+        this.vehiculeService = vehiculeService;
+    }
+
+
 
     @GetMapping
     public List<VehiculeResponseDTO> getAll() {
-        return vehiculeRepository.findAll()
-        .stream()
-        .map(VehiculeResponseDTO::convert)
-        .toList();
+        return vehiculeService.findAllDTO();
     }
 
     @GetMapping("/{id}")
-    public VehiculeResponseDTO getVehiculeById(@RequestParam int id) {
+    public VehiculeResponseDTO getVehiculeById(@PathVariable int id) {
         return vehiculeService.findByIdDTO(id);
     }
 
@@ -58,7 +54,7 @@ public class VehiculeController {
 
     @DeleteMapping("/{id}")
     public void deleteVehicule(@PathVariable Integer id) { 
-        vehiculeRepository.deleteById(id);
+        vehiculeService.delete(id);
 
     }
     
