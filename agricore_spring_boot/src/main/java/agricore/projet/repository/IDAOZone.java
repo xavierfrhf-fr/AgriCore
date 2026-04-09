@@ -10,4 +10,7 @@ import java.util.Optional;
 public interface IDAOZone extends JpaRepository<Zone,Integer> {
     @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.animals WHERE z.id = :id")// EUUUH FAUT VERIFIER QUE CA MARCHE
     Optional<Zone> findByIdWithAnimal(@Param("id") Integer id);
+
+    @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.vehicules WHERE z.id = :id")
+    Optional<Zone> findByIdWithVehicule(@Param("id") Integer id);
 }
