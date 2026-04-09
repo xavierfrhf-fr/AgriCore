@@ -132,13 +132,14 @@ public class Animal {
 		return delais;
 	}
 	
-	public boolean deplacer(Zone new_zone) {
-		Zone previous_zone = this.getZone();
-		if (new_zone.addAnimal(this)) {
-			previous_zone.getAnimals().remove(this);
-		return true;
-		}
-		return false;
-	}
+	//Inutile car fait en bdd ?
+	// public boolean deplacer(Zone new_zone) {
+	// 	Zone previous_zone = this.getZone();
+	// 	if (new_zone.addAnimal(this)) {
+	// 		previous_zone.getAnimals().remove(this);
+	// 	return true;
+	// 	}
+	// 	return false;
+	// }
 	
 }
