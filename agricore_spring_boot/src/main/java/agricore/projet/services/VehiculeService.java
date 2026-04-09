@@ -13,8 +13,9 @@ public class VehiculeService {
     private final VehiculeRepository daovehicule;
     private final IDAOZone daoZone;
 
-    public VehiculeService( VehiculeRepository daovehicule) {
+    public VehiculeService( VehiculeRepository daovehicule, IDAOZone daoZone) {
         this.daovehicule = daovehicule;
+        this.daoZone = daoZone;
     }
 
     public VehiculeResponseDTO findByIdDTO(Integer id) {
