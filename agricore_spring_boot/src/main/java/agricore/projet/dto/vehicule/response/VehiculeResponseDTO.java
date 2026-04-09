@@ -1,12 +1,15 @@
 package agricore.projet.dto.vehicule.response;
 
+import java.time.LocalDate;
+
+import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
 
 public class VehiculeResponseDTO {
 
     private Integer id;
-    private String typeVehicule;
-    private String dateControleTech;
+    private TypeVehicule typeVehicule;
+    private LocalDate dateControleTech;
     private int delaiAvantControle;
     private Integer Zoneid;
 
@@ -26,19 +29,19 @@ public class VehiculeResponseDTO {
         this.id = id;
     }
 
-    public String getTypeVehicule() {
+    public TypeVehicule getTypeVehicule() {
         return typeVehicule;
     }
 
-    public void setTypeVehicule(String typeVehicule) {
+    public void setTypeVehicule(TypeVehicule typeVehicule) {
         this.typeVehicule = typeVehicule;
     }
 
-    public String getDateControleTech() {
+    public LocalDate getDateControleTech() {
         return dateControleTech;
     }
 
-    public void setDateControleTech(String dateControleTech) {
+    public void setDateControleTech(LocalDate dateControleTech) {
         this.dateControleTech = dateControleTech;
     }
 
@@ -51,12 +54,12 @@ public class VehiculeResponseDTO {
     }
 
     
-    public static VehiculeResponseDTO convert (Vehicule vehciule) {
+    public static VehiculeResponseDTO convert (Vehicule vehicule) {
         VehiculeResponseDTO responseDTO = new VehiculeResponseDTO();
-        responseDTO.setId(vehciule.getId());
-        responseDTO.setTypeVehicule(vehciule.getTypeVehicule().toString());
-        responseDTO.setDateControleTech(vehciule.getDateControleTech().toString());
-        responseDTO.setDelaiAvantControle(vehciule.delaiAvantControle());
+        responseDTO.setId(vehicule.getId());
+        responseDTO.setTypeVehicule(vehicule.getTypeVehicule());
+        responseDTO.setDateControleTech(vehicule.getDateControleTech());
+        responseDTO.setDelaiAvantControle(vehicule.delaiAvantControle());
         return responseDTO;
 
     }
