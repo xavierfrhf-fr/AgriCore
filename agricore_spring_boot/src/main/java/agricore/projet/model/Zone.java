@@ -25,27 +25,21 @@ public class Zone {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="zone_id")
-	@JsonView(Views.Common.class)
 	private Integer id;
 	
 	@Embedded
-	@JsonView(Views.Common.class)
 	private Position position;
 	
 	@Enumerated(EnumType.STRING) 
 	@Column(nullable = false)
-	@JsonView(Views.Common.class)
 	private NomZone nomZone;
 	
 	
-	//---- Mapping avec les autres classes 
-	@Column(nullable = false)
+	//---- Mapping avec les autres classes
 	@OneToOne
-	@JsonView(Views.Zone.class)
 	private Fermier fermier;
 	
 	@OneToMany(mappedBy = "zone")
-	@JsonView(Views.ZoneWithAnimal.class)
 	private List<Animal> animals = new ArrayList<>();
 	
 	/*
@@ -55,11 +49,9 @@ public class Zone {
 	*/
 	
 	@OneToMany(mappedBy = "zone")
-	@JsonView(Views.ZoneWithVehicule.class)
 	private List<Vehicule> vehicules = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "zone")
-	@JsonView(Views.ZoneWithRessource.class)
 	private List<Ressource> ressources = new ArrayList<>();
 	
 	

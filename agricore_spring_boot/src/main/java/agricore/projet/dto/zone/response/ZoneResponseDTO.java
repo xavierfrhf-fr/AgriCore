@@ -6,7 +6,7 @@ import agricore.projet.model.Zone;
 //TODO
 public class ZoneResponseDTO {
     private Integer id;
-    //private PositionDto position;
+    private PositionResponseDTO position;
     private NomZone nomZone;
 
     //private FermierDto fermier; A voir le quel est mieux
@@ -29,9 +29,18 @@ public class ZoneResponseDTO {
         this.nomZone = nomZone;
     }
 
+    public PositionResponseDTO getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionResponseDTO position) {
+        this.position = position;
+    }
+
     public static ZoneResponseDTO convert (Zone zone){
         ZoneResponseDTO response = new ZoneResponseDTO();
         response.setId(zone.getId());
+        response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
         response.setNomZone(zone.getNomZone());
         return response;
     }
