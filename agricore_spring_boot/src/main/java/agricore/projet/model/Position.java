@@ -60,7 +60,14 @@ public class Position {
 		// Doit checker (en BDD) si il est possible de placer un batiment à cette position
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "Position{" +
+				"posX=" + posX +
+				", posY=" + posY +
+				", tailleX=" + tailleX +
+				", tailleY=" + tailleY +
+				'}';
+	}
 }
