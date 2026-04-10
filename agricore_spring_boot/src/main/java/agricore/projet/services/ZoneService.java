@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class ZoneService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final IDAOZone daoZone;
     /*
