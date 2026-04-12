@@ -13,4 +13,8 @@ public interface IDAOZone extends JpaRepository<Zone,Integer> {
 
     @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.vehicules WHERE z.id = :id")
     Optional<Zone> findByIdWithVehicule(@Param("id") Integer id);
+
+    @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.ressources WHERE z.id = :id")
+    Optional<Zone> findByIdWithRessource(@Param("id") Integer id);
+
 }

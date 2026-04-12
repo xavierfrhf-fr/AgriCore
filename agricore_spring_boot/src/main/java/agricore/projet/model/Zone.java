@@ -162,9 +162,13 @@ public class Zone {
 		return false;
 	}
 	*/
-	
-	
-	
-	
 
+	@Override
+	public String toString() {
+		return "Zone{" +
+				"id=" + id +
+				", position=" + position +
+				", nomZone=" + nomZone +
+				'}';
+	}
 }
