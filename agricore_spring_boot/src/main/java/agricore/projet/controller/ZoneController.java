@@ -3,6 +3,8 @@ package agricore.projet.controller;
 
 import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.services.ZoneService;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +50,14 @@ public class ZoneController {
         zoneService.delete(id);
     }
 
+    @GetMapping("/vehicule/{id}")
+    public ZoneWithVehiculesResponseDTO getZoneWithVehicule(@PathVariable Integer id){
+        return zoneService.getZoneWithVehicules(id);
+    }
+
+    @GetMapping("ressource/{id}")
+    public ZoneWithRessourcesResponseDTO getZoneWithRessources(@PathVariable Integer id){
+        return zoneService.getZoneWithRessources(id);
+    }
 
 }
