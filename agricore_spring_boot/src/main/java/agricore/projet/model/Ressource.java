@@ -1,34 +1,34 @@
 package agricore.projet.model;
 
-
-import agricore.projet.view.Views;
-import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name="ressource")
+@Table(name = "ressource")
 public class Ressource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ressource_id")
-    @JsonView(Views.Common.class)
+    @Column(name = "ressource_id")
     private Integer id;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @JsonView(Views.Common.class)
     private NomRessource nom;
     @Column(nullable = false)
-    @JsonView(Views.Common.class)
     private int quantite;
     @Column(nullable = false)
-    @JsonView(Views.Common.class)
     private double prix;
     @Column(name = "stock_min", nullable = false)
-    @JsonView(Views.Common.class)
     private int stockMin;
     @ManyToOne
-    @JoinColumn(name="zone_id", nullable = false)
-    @JsonView(Views.Ressource.class)
+    @JoinColumn(name = "zone_id", nullable = false)
     private Zone zone;
 
     public Ressource() {
@@ -42,7 +42,8 @@ public class Ressource {
         this.zone = zone;
     }
 
-    public Ressource(Integer id, NomRessource nom, int quantite, double prix, int stockMin, Zone zone) {
+    public Ressource(
+            Integer id, NomRessource nom, int quantite, double prix, int stockMin, Zone zone) {
         this.id = id;
         this.nom = nom;
         this.quantite = quantite;
@@ -101,13 +102,8 @@ public class Ressource {
 
     @Override
     public String toString() {
-        return "Ressource{" +
-                "id=" + id +
-                ", nom=" + nom +
-                ", quantite=" + quantite +
-                ", prix=" + prix +
-                ", stockMin=" + stockMin +
-                ", zone=" + zone +
-                '}';
+        return "Ressource{"
+                + "id=" + id + ", nom=" + nom + ", quantite=" + quantite + ", prix=" + prix
+                + ", stockMin=" + stockMin + ", zone=" + zone + '}';
     }
 }
