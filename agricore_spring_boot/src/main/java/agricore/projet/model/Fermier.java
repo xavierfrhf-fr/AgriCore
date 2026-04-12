@@ -11,11 +11,11 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Fermier extends Utilisateur {
 	
-	@OneToMany(mappedBy="utilisateur")
+	@OneToMany(mappedBy="fermier")
 	@JsonView(Views.FermierWithEmploye.class)
 	private List<Employe> employe;
 	
-	@OneToMany(mappedBy="zone")
+	@OneToMany(mappedBy="fermier")
 	@JsonView(Views.FermierWithZone.class)
 	private List<Zone> zone;
 	
