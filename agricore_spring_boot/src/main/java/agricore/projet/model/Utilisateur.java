@@ -16,11 +16,12 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="utilisateur")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="type_personne", columnDefinition="ENUM('Fermier','Employe',Client'")
+@DiscriminatorColumn(name="type_personne", columnDefinition="ENUM('Fermier','Employe','Client')")
 public abstract class Utilisateur {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name="utilisateur_id")
 	@JsonView(Views.Common.class)
 	protected Integer id;
 	

@@ -6,17 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import agricore.projet.view.Views;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="zone")
@@ -35,7 +25,8 @@ public class Zone {
 	private NomZone nomZone;
 
 	//---- Mapping avec les autres classes
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name = "utilisateur_id")
 	private Fermier fermier;
 	
 	@OneToMany(mappedBy = "zone")
