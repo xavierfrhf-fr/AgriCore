@@ -4,6 +4,8 @@ package agricore.projet.services;
 import agricore.projet.dto.zone.request.PositionRequestDTO;
 import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOZone;
@@ -93,5 +95,23 @@ public class ZoneService {
     public void delete(int id) {
         logger.warn("Suppression de la zone avec l'Id({})", id);
         daoZone.deleteById(id);//TODO Ca passera jamais, a cause de toutes les relations
+    }
+
+    public ZoneWithRessourcesResponseDTO getZoneWithRessources(int id) {
+        logger.trace("find by id de la zone avec ces ressources {}",id);
+        return ZoneWithRessourcesResponseDTO.convert(daoZone.findByIdWithRessource(id)
+                .orElseThrow(() -> {
+                    logger.warn("Zone avec id {} n'existe pas", id);
+                    return new ZoneNotFoundException(id);}));
+
+    }
+
+    public ZoneWithVehiculesResponseDTO getZoneWithVehicules(int id) {
+        logger.trace("find by id de la zone avec ces vehicules {}",id);
+        return ZoneWithVehiculesResponseDTO.convert(daoZone.findByIdWithVehicule(id)
+                .orElseThrow(() -> {
+                    logger.warn("Zone avec id {} n'existe pas", id);
+                    return new ZoneNotFoundException(id);}));
+
     }
 }
