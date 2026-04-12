@@ -8,10 +8,7 @@ public class ZoneResponseDTO {
     private Integer id;
     private PositionResponseDTO position;
     private NomZone nomZone;
-
-    //private FermierDto fermier; A voir le quel est mieux
-    //private Integer fermierId;
-
+    private Integer fermierId;
 
     public Integer getId() {
         return id;
@@ -33,6 +30,14 @@ public class ZoneResponseDTO {
         return position;
     }
 
+    public Integer getFermierId() {
+        return fermierId;
+    }
+
+    public void setFermierId(Integer fermierId) {
+        this.fermierId = fermierId;
+    }
+
     public void setPosition(PositionResponseDTO position) {
         this.position = position;
     }
@@ -40,6 +45,7 @@ public class ZoneResponseDTO {
     public static ZoneResponseDTO convert (Zone zone){
         ZoneResponseDTO response = new ZoneResponseDTO();
         response.setId(zone.getId());
+        response.setFermierId(zone.getFermier().getId());
         response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
         response.setNomZone(zone.getNomZone());
         return response;
