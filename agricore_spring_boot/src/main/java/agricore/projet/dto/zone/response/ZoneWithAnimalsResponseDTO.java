@@ -5,11 +5,42 @@ import agricore.projet.model.NomZone;
 //TODO
 public class ZoneWithAnimalsResponseDTO {
     private Integer id;
-    //private PositionDto position;
+    private PositionResponseDTO position;
     private NomZone nomZone;
+    private Integer fermierId;
+    //private List<AnimalResponseDTO> animals; TODO
 
-    //private FermierDto fermier; A voir le quel est mieux
-    //private Integer fermierId;
+    public Integer getId() {
+        return id;
+    }
 
-    //private List<AnimalDTO> animals;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public NomZone getNomZone() {
+        return nomZone;
+    }
+
+    public void setNomZone(NomZone nomZone) {
+        this.nomZone = nomZone;
+    }
+
+    public PositionResponseDTO getPosition() {
+        return position;
+    }
+
+    public Integer getFermierId() {
+        return fermierId;
+    }
+
+    public void setFermierId(Integer fermierId) {
+        this.fermierId = fermierId;
+    }
+
+    public void setPosition(PositionResponseDTO position) {
+        this.position = position;
+    }
+
+
 }

@@ -10,6 +10,7 @@ public class ZoneWithVehiculesResponseDTO {
     private Integer id;
     private PositionResponseDTO position;
     private NomZone nomZone;
+    private Integer fermierId;
     private List<VehiculeResponseDTO> vehicules;
 
     public Integer getId() {
@@ -36,6 +37,14 @@ public class ZoneWithVehiculesResponseDTO {
         this.nomZone = nomZone;
     }
 
+    public Integer getFermierId() {
+        return fermierId;
+    }
+
+    public void setFermierId(Integer fermierId) {
+        this.fermierId = fermierId;
+    }
+
     public List<VehiculeResponseDTO> getVehicules() {
         return vehicules;
     }
@@ -52,6 +61,7 @@ public class ZoneWithVehiculesResponseDTO {
         response.setId(zone.getId());
         response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
         response.setNomZone(zone.getNomZone());
+        response.setFermierId(zone.getFermier().getId());
         response.setVehicules(zone.getVehicules()
                         .stream()
                         .map(VehiculeResponseDTO::convert)

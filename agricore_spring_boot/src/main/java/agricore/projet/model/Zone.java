@@ -79,7 +79,15 @@ public class Zone {
 	public void setNomZone(NomZone nomZone) {
 		this.nomZone = nomZone;
 	}
-	
+
+	public Fermier getFermier() {
+		return fermier;
+	}
+
+	public void setFermier(Fermier fermier) {
+		this.fermier = fermier;
+	}
+
 	public List<Animal> getAnimals() {
 		return animals;
 	}
