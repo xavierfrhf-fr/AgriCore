@@ -1,17 +1,10 @@
 package agricore.projet.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="plante")
@@ -26,144 +19,116 @@ public class Plante {
 	private LocalDate dateRecolte;
 	@Enumerated(EnumType.STRING)
 	private EspecePlante espece;
-	@ManyToOne
+	@OneToOne
     @JoinColumn(name="zone_id")
     private Zone zone;
-	@Column(name="dernier_arrosage")
-	private LocalDate dernierArrosage;
 
+	//Gestion de l'humidité des plantes
+	//L'idée est d'avoir une valeur (attribut "humidite") qui représente le % d'eau de la plante (entre 0-100)
+	//Si la valeurs atteint 0 la plante meurt (sans réel mort de la plante prévus, juste créer des alertes pour l'arrosage)
+	//Dans l'enum EspecePlante est stocké un attribut "consommationEauParMin" relatif à la conso d'eau de chaque espèce
+	//Pour permettre la MaJ de "humidite", un "dernierUpdate" permet de calculer le temps depuis la dernière update de "humidite"
+	@Column(name="dernier_update")
+	private LocalDateTime dernierUpdate;
 
+	@Column(name="humidite")
+	private double humidite; //Humidite de la plante (entre 0 et 100)
+
+	//Valeurs seuil avant arrosage urgent
+	//L'idée de cet attribut est de determiner un seuil (constant chez toutes les plantes donc static)
+	//Permettant de calculer un temps avant arrosage (gardant une marge pour pas que la plante meurt)
+	private static double SEUIL_HUMIDITE_CRITIQUE = 20.;
 
 	public Plante() {}
 
-
-	
 	public Plante(Integer id, LocalDate datePlantation, LocalDate dateRecolte, EspecePlante espece, Zone zone,
-			LocalDate dernierArrosage) {
+			LocalDateTime dernierUpdate) {
 		super();
 		this.id = id;
 		this.datePlantation = datePlantation;
 		this.dateRecolte = dateRecolte;
 		this.espece = espece;
 		this.zone = zone;
-		this.dernierArrosage = dernierArrosage;
+		this.dernierUpdate = dernierUpdate;
 	}
-
-
 
 	public Integer getId() {
 		return id;
 	}
 
-
-
 	public LocalDate getDatePlantation() {
 		return datePlantation;
 	}
-
-
 
 	public LocalDate getDateRecolte() {
 		return dateRecolte;
 	}
 
-
-
 	public EspecePlante getEspece() {
 		return espece;
 	}
-
-
 
 	public Zone getZone() {
 		return zone;
 	}
 
-
-
-	public LocalDate getDernierArrosage() {
-		return dernierArrosage;
-	}
-
-
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-
 
 	public void setDatePlantation(LocalDate datePlantation) {
 		this.datePlantation = datePlantation;
 	}
 
-
-
 	public void setDateRecolte(LocalDate dateRecolte) {
 		this.dateRecolte = dateRecolte;
 	}
-
-
 
 	public void setEspece(EspecePlante espece) {
 		this.espece = espece;
 	}
 
-
-
 	public void setZone(Zone zone) {
 		this.zone = zone;
 	}
 
-
-
-	public void setDernierArrosage(LocalDate dernierArrosage) {
-		this.dernierArrosage = dernierArrosage;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Plante [id=" + id + ", datePlantation=" + datePlantation + ", dateRecolte=" + dateRecolte + ", espece="
-				+ espece + ", zone=" + zone + ", dernierArrosage=" + dernierArrosage + "]";
-	}
-
-
-
-	public boolean arroser(LocalDate dateArrosage, boolean pluie) {
-		//je veux que la pluie annule l'arrosage et passe à la date suivante
-		LocalDate dernier = (dernierArrosage != null) ? dernierArrosage : datePlantation;
-	    long joursEcoules = java.time.temporal.ChronoUnit.DAYS.between(dernier, dateArrosage);
-	    int frequence = espece.getFrequenceArrosageSansPluie();
-	    
-	    if (pluie==true) {
-	    	 this.dernierArrosage = dateArrosage;
-	         return true;
-	    }
-	    if (joursEcoules >= frequence) {
-	        this.dernierArrosage = dateArrosage;
-	        return true;
-	    }
-	    return false;	
-	}
-	
-	
-	public boolean recolter (LocalDate dateRecolte) {
-		long moisEcoules = java.time.temporal.ChronoUnit.MONTHS.between(datePlantation, dateRecolte);
-		if ( moisEcoules>= espece.getTempsPousseMois()) {
-			this.dateRecolte = dateRecolte;
-			return true;
+	public void updateHumidite() {
+		long deltaMinute = ChronoUnit.MINUTES.between(dernierUpdate, LocalDateTime.now());
+		if (deltaMinute > 0) {
+			humidite = humidite - espece.getConsommationEauParMin() * deltaMinute; //On soustrait à l'humidité actuel, la conso par minute * le temps en min depuis dernier update
+			humidite = Math.max(humidite, 0.); //On borne, pour ne pas avoir humidite < 0
+			this.dernierUpdate = LocalDateTime.now();
 		}
-
-		return false;
 	}
-	
-	public LocalDate rappelRecolte() {
-		LocalDate dateRappel = dateRecolte.minusMonths(1);
-		return dateRappel;
-	}
-	
-	
 
+	public void arroser(){
+		this.dernierUpdate = LocalDateTime.now();
+		humidite = 100.;
+	}
+
+	public void arroser(long pourcentage){
+		//Surcharge pour prendre en compte un arrosage incomplet (pour implémentation ulterieure de faible pluie par ex)
+		this.dernierUpdate = LocalDateTime.now();
+		humidite += pourcentage;
+		humidite = Math.min(humidite, 100.);//On borne, pour ne pas avoir humidite > 100
+	}
+
+	public int tempsAvantMortEnJour(){
+		updateHumidite();
+		double deltaMinute = (humidite) / espece.getConsommationEauParMin();
+		return (int) deltaMinute / 1440;
+	}
+
+	public int tempsAvantArrosageEnJour(){
+		updateHumidite();
+		if (humidite < SEUIL_HUMIDITE_CRITIQUE) {
+			return 0;
+		}
+		double deltaMinute = (humidite - SEUIL_HUMIDITE_CRITIQUE) / espece.getConsommationEauParMin();
+		return (int) deltaMinute / 1440;
+	}
+
+	public int tempsAvantRecolteEnJour(){
+		return (int) LocalDate.now().until(datePlantation.plusMonths(espece.getTempsPousseMois()), ChronoUnit.DAYS);
+	}
 }
