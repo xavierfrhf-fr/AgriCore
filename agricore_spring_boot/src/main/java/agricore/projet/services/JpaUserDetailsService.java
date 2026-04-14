@@ -25,11 +25,10 @@ public class JpaUserDetailsService implements UserDetailsService { //Spring cré
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         
-        Utilisateur user = daoUtilisateur.findByLogin(login);
+        Utilisateur user = daoUtilisateur.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("L'utilisateur n'existe pas"));
 
-        if (user == null) {
-            throw new UsernameNotFoundException("L'utilisateur n'existe pas");
-        }
+
         
         String role;
 
