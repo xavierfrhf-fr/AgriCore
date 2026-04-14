@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,6 +23,7 @@ public class Vehicule {
 	@Column(name="vehicule_id")
 	private Integer id;
 	
+	@Enumerated(EnumType.STRING)
 	private TypeVehicule typeVehicule;
 	
 	private LocalDate dateControleTech;

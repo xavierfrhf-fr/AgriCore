@@ -2,6 +2,8 @@ package agricore.projet.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.model.Ressource;
@@ -9,6 +11,7 @@ import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 
 //TODO LOGS ET TESTS
+@Service
 public class RessourceService {
     private final IDAORessource daoRessource;
     private final IDAOZone daoZone;
