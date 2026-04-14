@@ -5,9 +5,9 @@ import agricore.projet.model.NomRessource;
 public class RessourceRequestDTO {
     // pas d id pour la request
     private NomRessource nom;
-    private int quantite;
-    private double prix;
-    private int stockMin;
+    private Integer quantite;
+    private Double prix;
+    private Integer stockMin;
     private Integer zoneId; // juste l id pas Zone entier ou nomZone
 
     public NomRessource getNom() {
@@ -18,27 +18,27 @@ public class RessourceRequestDTO {
         this.nom = nom;
     }
 
-    public int getQuantite() {
+    public Integer getQuantite() {
         return quantite;
     }
 
-    public void setQuantite(int quantite) {
+    public void setQuantite(Integer quantite) {
         this.quantite = quantite;
     }
 
-    public double getPrix() {
+    public Double getPrix() {
         return prix;
     }
 
-    public void setPrix(double prix) {
+    public void setPrix(Double prix) {
         this.prix = prix;
     }
 
-    public int getStockMin() {
+    public Integer getStockMin() {
         return stockMin;
     }
 
-    public void setStockMin(int stockMin) {
+    public void setStockMin(Integer stockMin) {
         this.stockMin = stockMin;
     }
 
