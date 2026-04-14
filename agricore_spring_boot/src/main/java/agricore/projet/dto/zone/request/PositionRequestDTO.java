@@ -8,6 +8,15 @@ public class PositionRequestDTO {
     private Integer tailleX;
     private Integer tailleY;
 
+    public PositionRequestDTO() {}
+
+    public PositionRequestDTO(Integer posX, Integer posY, Integer tailleX, Integer tailleY) {
+        this.posX = posX;
+        this.posY = posY;
+        this.tailleX = tailleX;
+        this.tailleY = tailleY;
+    }
+
     public Integer getPosX() {
         return posX;
     }
@@ -38,9 +47,6 @@ public class PositionRequestDTO {
 
     public void setTailleY(Integer tailleY) {
         this.tailleY = tailleY;
-    }
-
-    public PositionRequestDTO() {
     }
 
     public static Position convert(PositionRequestDTO request){

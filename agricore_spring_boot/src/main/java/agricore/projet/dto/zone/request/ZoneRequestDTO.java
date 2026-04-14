@@ -10,6 +10,14 @@ public class ZoneRequestDTO {
     private String nomZone;
     private Integer fermierId;
 
+    public ZoneRequestDTO() {}
+
+    public ZoneRequestDTO(PositionRequestDTO position, String nomZone, Integer fermierId) {
+        this.position = position;
+        this.nomZone = nomZone;
+        this.fermierId = fermierId;
+    }
+
     public PositionRequestDTO getPosition() {
         return position;
     }
