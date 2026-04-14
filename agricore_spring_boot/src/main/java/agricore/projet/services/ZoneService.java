@@ -6,7 +6,9 @@ import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
+import agricore.projet.exception.InvalidZoneException;
 import agricore.projet.exception.ZoneNotFoundException;
+import agricore.projet.model.NomZone;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOZone;
 import org.slf4j.Logger;
@@ -52,10 +54,7 @@ public class ZoneService {
     }
 
     public int create(ZoneRequestDTO request) {
-        Zone zone = new Zone();
-        zone.setNomZone(request.getNomZone());
-        zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
-
+        Zone zone = ZoneRequestDTO.convert(request);
         /* //TODO a revoir (cast en fermier, exception custom)
         zone.setFermier(daoUtilisateur
                 .findById(request.getFermierId())
@@ -74,9 +73,16 @@ public class ZoneService {
                     logger.warn("Echec update partielle, car la zone avec id {} n'existe pas", id);
                     return new ZoneNotFoundException(id);
                 });
+
         if (request.getNomZone() != null) {
-            zone.setNomZone(request.getNomZone());
+            try {
+                zone.setNomZone(NomZone.valueOf(request.getNomZone()));
+            }catch (IllegalArgumentException e){
+                logger.warn("Le nom zone ({}) n'existe pas", request.getNomZone());
+                throw new InvalidZoneException(request.getNomZone());
+            }
         }
+
         if (request.getPosition() != null) {
             zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
         }
@@ -86,9 +92,12 @@ public class ZoneService {
 
     public int put(ZoneRequestDTO request, int id) {//Ne doit pas être utilisé ! Va ecraser les autres realtions existantes (animaux, ressources, vehicules)
         logger.warn("Update complet de zone, risque d'ecraser les entity associe (animaux, ressources, vehicules, plantes, fermier ! ({}, {})", request.toString(), id);
-        Zone zone = new Zone();
-        zone.setNomZone(request.getNomZone());
-        zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
+        Zone zone = ZoneRequestDTO.convert(request);
+        /* //TODO a revoir (cast en fermier, exception custom)
+        zone.setFermier(daoUtilisateur
+                .findById(request.getFermierId())
+                .orElseThrow(UtilisateurNotFoundExcetion::new));
+        */
         return daoZone.save(zone).getId();
     }
 
