@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.beans.BeanUtils;
 
-import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.model.Animal;
 import agricore.projet.model.EspeceAnimal;
 

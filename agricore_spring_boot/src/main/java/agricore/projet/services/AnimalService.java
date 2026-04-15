@@ -4,6 +4,7 @@ import java.util.List;
 
 import agricore.projet.dto.animal.request.AnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
+import agricore.projet.exception.AnimalNotFoundException;
 import agricore.projet.model.Animal;
 import agricore.projet.repository.IDAOAnimal;
 import agricore.projet.repository.IDAOZone;
@@ -49,7 +50,7 @@ public class AnimalService {
         Animal a = daoAnimal.findById(id).orElse(null);
 
         if (a == null) {
-            throw new RuntimeException("L'animal portant l'id "+id+" est introuvable.");
+            throw new AnimalNotFoundException(id);
         }
 
         a.setDateNaissance(animal.getDateNaissance());

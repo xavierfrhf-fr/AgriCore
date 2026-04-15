@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.animal.request.AnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
-import agricore.projet.repository.IDAOAnimal;
 import agricore.projet.services.AnimalService;
 
 @RestController
