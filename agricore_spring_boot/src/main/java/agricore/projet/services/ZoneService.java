@@ -6,9 +6,7 @@ import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
-import agricore.projet.exception.InvalidZoneException;
 import agricore.projet.exception.ZoneNotFoundException;
-import agricore.projet.model.NomZone;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOZone;
 import org.slf4j.Logger;
@@ -75,12 +73,7 @@ public class ZoneService {
                 });
 
         if (request.getNomZone() != null) {
-            try {
-                zone.setNomZone(NomZone.valueOf(request.getNomZone()));
-            }catch (IllegalArgumentException e){
-                logger.warn("Le nom zone ({}) n'existe pas", request.getNomZone());
-                throw new InvalidZoneException(request.getNomZone());
-            }
+            zone.setNomZone(request.getNomZone());
         }
 
         if (request.getPosition() != null) {

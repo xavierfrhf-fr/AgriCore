@@ -1,18 +1,17 @@
 package agricore.projet.dto.zone.request;
 
-import agricore.projet.exception.InvalidZoneException;
 import agricore.projet.model.NomZone;
 import agricore.projet.model.Zone;
 
 //TODO
 public class ZoneRequestDTO {
     private PositionRequestDTO position;
-    private String nomZone;
+    private NomZone nomZone;
     private Integer fermierId;
 
     public ZoneRequestDTO() {}
 
-    public ZoneRequestDTO(PositionRequestDTO position, String nomZone, Integer fermierId) {
+    public ZoneRequestDTO(PositionRequestDTO position, NomZone nomZone, Integer fermierId) {
         this.position = position;
         this.nomZone = nomZone;
         this.fermierId = fermierId;
@@ -26,11 +25,11 @@ public class ZoneRequestDTO {
         this.position = position;
     }
 
-    public String getNomZone() {
+    public NomZone getNomZone() {
         return nomZone;
     }
 
-    public void setNomZone(String nomZone) {
+    public void setNomZone(NomZone nomZone) {
         this.nomZone = nomZone;
     }
 
@@ -44,11 +43,7 @@ public class ZoneRequestDTO {
 
     public static Zone convert(ZoneRequestDTO request) {
         Zone zone = new Zone();
-        try{
-            zone.setNomZone(NomZone.valueOf(request.getNomZone()));
-        }catch(IllegalArgumentException e){
-            throw new InvalidZoneException(request.getNomZone());
-        }
+        zone.setNomZone(request.getNomZone());
         zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
         return zone;
 
