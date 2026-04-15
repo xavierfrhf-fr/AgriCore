@@ -22,15 +22,13 @@ public abstract class Utilisateur {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name="utilisateur_id")
-	@JsonView(Views.Common.class)
 	protected Integer id;
 	
-	@JsonView(Views.Common.class)
+
 	@Column(nullable=false,unique=true)//rajouter length
 	protected String login;
 	
 	@Column(nullable=false)//rajouter length
-	@JsonView(Views.Common.class)
 	protected String password;
 	
 	

@@ -13,7 +13,6 @@ public class Employe extends Utilisateur{
 	
 	@ManyToOne
 	@JoinColumn(name="fermier_id")
-	@JsonView(Views.Employe.class)
 	private Fermier fermier;
 	
 	public Employe() {}
