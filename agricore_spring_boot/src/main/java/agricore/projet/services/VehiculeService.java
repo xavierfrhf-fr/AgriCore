@@ -74,6 +74,11 @@ public class VehiculeService {
     }
 
     public void delete(Integer id) {
+
+        if(!daovehicule.existsById(id)) {
+            throw new VehiculeNotFound(id);
+        }
+
         daovehicule.deleteById(id);
         
     }
