@@ -2,10 +2,15 @@ package agricore.projet.dto.zone.request;
 
 import agricore.projet.model.NomZone;
 import agricore.projet.model.Zone;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.validation.annotation.Validated;
 
 //TODO
 public class ZoneRequestDTO {
+    @Valid
+    @NotNull(message = "Position requise")
     private PositionRequestDTO position;
+    @Min
     private NomZone nomZone;
     private Integer fermierId;
 
