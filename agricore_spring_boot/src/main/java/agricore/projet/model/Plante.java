@@ -94,7 +94,7 @@ public class Plante {
 
 	public void updateHumidite() {
 		long deltaMinute = ChronoUnit.MINUTES.between(dernierUpdate, LocalDateTime.now());
-		if (deltaMinute > 0) {
+		if (deltaMinute >= 1) {
 			humidite = humidite - espece.getConsommationEauParMin() * deltaMinute; //On soustrait à l'humidité actuel, la conso par minute * le temps en min depuis dernier update
 			humidite = Math.max(humidite, 0.); //On borne, pour ne pas avoir humidite < 0
 			this.dernierUpdate = LocalDateTime.now();
