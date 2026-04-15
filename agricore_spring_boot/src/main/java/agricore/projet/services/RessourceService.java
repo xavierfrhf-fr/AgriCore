@@ -49,11 +49,11 @@ public class RessourceService {
                 .orElseThrow(() -> new RuntimeException("Ressource introuvable pour l'id " + id));
         if (request.getNom() != null)
             r.setNom(request.getNom());
-        if (request.getQuantite() != 0)
+        if (request.getQuantite() != null)
             r.setQuantite(request.getQuantite());
-        if (request.getPrix() != 0)
+        if (request.getPrix() != null)
             r.setPrix(request.getPrix());
-        if (request.getStockMin() != 0)
+        if (request.getStockMin() != null)
             r.setStockMin(request.getStockMin());
         if (request.getZoneId() != null)
             r.setZone(daoZone.findById(request.getZoneId()).orElseThrow());
