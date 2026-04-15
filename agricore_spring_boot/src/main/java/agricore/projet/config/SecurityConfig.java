@@ -31,9 +31,10 @@ public class SecurityConfig {
             // uniquement les utilisateur conencter mais n'amène pâs sur le formulaire de connexion désactivé par l'utilisation de filterChain : /** c'est pour partout sur l'application
             auth.requestMatchers("/api/auth").permitAll();
             auth.requestMatchers("/api/auth/register").permitAll();
-
-
-            auth.requestMatchers("/**").authenticated(); 
+            
+            //Bypass de la sécurité pour les endpoints lors du dev et des tests, à retirer en prod et ajouter le authenticated pour les sécuriser            
+            auth.requestMatchers("/**/**/**").permitAll();
+            //auth.requestMatchers("/**").authenticated(); 
             
             
            
