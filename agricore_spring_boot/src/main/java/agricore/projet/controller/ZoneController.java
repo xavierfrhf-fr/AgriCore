@@ -6,6 +6,7 @@ import agricore.projet.dto.zone.response.ZoneResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.services.ZoneService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,17 +32,17 @@ public class ZoneController {
     }
 
     @PostMapping()
-    public int createZone(@RequestBody ZoneRequestDTO request){//TODO Ajouter validator dans ZoneRequestDTO
+    public int createZone(@Valid @RequestBody ZoneRequestDTO request){
         return zoneService.create(request);
     }
 
     @PatchMapping("/{id}")
-    public int patchZone(@RequestBody ZoneRequestDTO request, @PathVariable Integer id){//TODO Ajouter validator dans ZoneRequestDTO
+    public int patchZone(@RequestBody ZoneRequestDTO request, @PathVariable Integer id){
         return zoneService.patch(request, id);
     }
 
     @PutMapping("/{id}")
-    public int updateZone(@RequestBody ZoneRequestDTO request, @PathVariable Integer id){
+    public int updateZone(@Valid @RequestBody ZoneRequestDTO request, @PathVariable Integer id){
         return zoneService.put(request, id);
     }
 

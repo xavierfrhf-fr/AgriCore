@@ -2,16 +2,19 @@ package agricore.projet.dto.zone.request;
 
 import agricore.projet.model.NomZone;
 import agricore.projet.model.Zone;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 //TODO
 public class ZoneRequestDTO {
     @Valid
-    @NotNull(message = "Position requise")
+    @NotNull(message = "La position ne peut pas être null")
     private PositionRequestDTO position;
-    @Min
+    @NotNull(message = "L'enum nomZone ne peut pas être null")
     private NomZone nomZone;
+    @NotNull(message = "ID du fermier ne peut pas être null")
+    @Min(value = 0, message = "ID du fermier ne peut pas être négatif")
     private Integer fermierId;
 
     public ZoneRequestDTO() {}

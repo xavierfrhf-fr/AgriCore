@@ -1,11 +1,16 @@
 package agricore.projet.dto.zone.request;
 
 import agricore.projet.model.Position;
+import jakarta.validation.constraints.Min;
 
 public class PositionRequestDTO {
+    @Min(value=0, message="positions ne peuvent pas être négatives")
     private Integer posX;
+    @Min(value=0, message="positions ne peuvent pas être négatives")
     private Integer posY;
+    @Min(value=0, message="tailles ne peuvent pas être négatives")
     private Integer tailleX;
+    @Min(value=0, message="tailles ne peuvent pas être négatives")
     private Integer tailleY;
 
     public PositionRequestDTO() {}
