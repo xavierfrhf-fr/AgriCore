@@ -1,5 +1,62 @@
 package agricore.projet.dto.plante.response;
 
-public class PlanteResponseDTO {
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+import agricore.projet.model.EspecePlante;
+
+//apres creation de la plante, cette classe permet de renvoyer proprement les donnees a l'utilisateur quand celui-ci cherche la plante
+public class PlanteResponseDTO {
+	private Integer id;
+	private LocalDate datePlantation;
+	private LocalDate dateRecolte;
+	private EspecePlante espece;
+	private Integer zoneId;
+	private LocalDateTime dernierUpdate;
+	private double humidite;
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public LocalDate getDatePlantation() {
+		return datePlantation;
+	}
+	public void setDatePlantation(LocalDate datePlantation) {
+		this.datePlantation = datePlantation;
+	}
+	public LocalDate getDateRecolte() {
+		return dateRecolte;
+	}
+	public void setDateRecolte(LocalDate dateRecolte) {
+		this.dateRecolte = dateRecolte;
+	}
+	public EspecePlante getEspece() {
+		return espece;
+	}
+	public void setEspece(EspecePlante espece) {
+		this.espece = espece;
+	}
+	public Integer getZoneId() {
+		return zoneId;
+	}
+	public void setZoneId(Integer zoneId) {
+		this.zoneId = zoneId;
+	}
+	public LocalDateTime getDernierUpdate() {
+		return dernierUpdate;
+	}
+	public void setDernierUpdate(LocalDateTime dernierUpdate) {
+		this.dernierUpdate = dernierUpdate;
+	}
+	public double getHumidite() {
+		return humidite;
+	}
+	public void setHumidite(double humidite) {
+		this.humidite = humidite;
+	} 
+	
+	
 }
