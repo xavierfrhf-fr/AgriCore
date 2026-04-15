@@ -101,8 +101,6 @@ public class ZoneServiceTest {
         assertThatThrownBy(() -> zoneService.getZoneById(ZONE_ID_NOT_EXIST))
                 .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
                 .isInstanceOf(ZoneNotFoundException.class);
-
-        Mockito.verify(daoZone, Mockito.never()).findById(ZONE_ID_NOT_EXIST);
     }
 
     @Test

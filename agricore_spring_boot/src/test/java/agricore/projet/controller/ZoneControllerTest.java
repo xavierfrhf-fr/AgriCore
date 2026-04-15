@@ -1,5 +1,6 @@
 package agricore.projet.controller;
 
+import agricore.projet.config.JwtHeaderFilter;
 import agricore.projet.config.SecurityConfig;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
@@ -12,12 +13,16 @@ import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
 import agricore.projet.model.NomZone;
+import agricore.projet.repository.IDAOUtilisateur;
+import agricore.projet.services.JpaUserDetailsService;
+import agricore.projet.services.JwtUtils;
 import agricore.projet.services.ZoneService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -34,13 +39,19 @@ import java.util.List;
 import java.util.Optional;
 
 @WebMvcTest(controllers = ZoneController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, JwtHeaderFilter.class})
 public class ZoneControllerTest {
     @Autowired
     private ZoneController zoneController;
 
     @MockitoBean
     private ZoneService zoneService;
+
+    @MockitoBean
+    private JpaUserDetailsService jpaUserDetailsService;
+
+    @MockitoBean
+    private JwtUtils jwtUtils;
 
     @Autowired
     private ObjectMapper objectMapper;
