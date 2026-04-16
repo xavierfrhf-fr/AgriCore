@@ -11,24 +11,24 @@ public class VehiculeResponseDTO {
     private TypeVehicule typeVehicule;
     private LocalDate dateControleTech;
     private int delaiAvantControle;
-    private Integer Zoneid;
+    private Integer ZoneId;
 
     public VehiculeResponseDTO(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, int delaiAvantControle, Integer zoneid) {
         this.id = id;
         this.typeVehicule = typeVehicule;
         this.dateControleTech = dateControleTech;
         this.delaiAvantControle = delaiAvantControle;
-        Zoneid = zoneid;
+        this.ZoneId = zoneid;
     }
 
     public VehiculeResponseDTO() {}
 
-    public Integer getZoneid() {
-        return Zoneid;
+    public Integer getZoneId() {
+        return ZoneId;
     }
 
-    public void setZoneid(Integer zoneid) {
-        Zoneid = zoneid;
+    public void setZoneId(Integer zoneId) {
+        ZoneId = zoneId;
     }
 
     public Integer getId() {
@@ -70,6 +70,7 @@ public class VehiculeResponseDTO {
         responseDTO.setTypeVehicule(vehicule.getTypeVehicule());
         responseDTO.setDateControleTech(vehicule.getDateControleTech());
         responseDTO.setDelaiAvantControle(vehicule.delaiAvantControle());
+        responseDTO.setZoneId(vehicule.getZone().getId());
         return responseDTO;
 
     }
