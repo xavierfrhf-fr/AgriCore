@@ -16,7 +16,6 @@ import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.services.RessourceService;
 
-//TODO LOGS ET TESTS
 @RestController
 @RequestMapping("/api/ressource")
 public class RessourceController {
