@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -73,6 +74,37 @@ public class VehiculeServiceTest {
 
         assertThrows(VehiculeNotFound.class, () ->  vehiculeService.findByIdDTO(1));
     }
+
+    @Test
+    void shouldFindAllDTO() {
+        //given 
+        Zone zone = new Zone();
+        zone.setId(1);
+
+        Vehicule v1 = new Vehicule();
+        v1.setId(1);
+        v1.setTypeVehicule(TypeVehicule.Utilitaire);
+        v1.setDateControleTech(LocalDate.now().plusDays(10));
+        v1.setZone(zone);
+
+        Vehicule v2 = new Vehicule();
+        v2.setId(2);
+        v2.setTypeVehicule(TypeVehicule.Tracteur);
+        v2.setDateControleTech(LocalDate.now().plusDays(20));
+        v2.setZone(zone);
+
+        //when
+        when(vehiculeRepository.findAll()).thenReturn(List.of(v1, v2));
+
+        var rez = vehiculeService.findAllDTO();
+
+        //then
+        assertNotNull(rez);
+        assertEquals(2, rez.size());
+
+    }
+
+
 
     @Test 
     void shouldCreateVehicule() {
@@ -204,11 +236,16 @@ public class VehiculeServiceTest {
 
     @Test
     void shouldDeleteVehicule() {
-      
+        Vehicule v = new Vehicule();
+        v.setId(1);
+        
+        //given
+        when(vehiculeRepository.existsById(1)).thenReturn(true);
         // when
         vehiculeService.delete(1);
 
         // then
+        
         verify(vehiculeRepository).deleteById(1);  
 
     }
