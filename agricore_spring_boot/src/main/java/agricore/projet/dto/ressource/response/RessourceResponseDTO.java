@@ -14,6 +14,18 @@ public class RessourceResponseDTO {
     private Integer zoneId;
     private String zoneNom; // Pour eviter une seconde requete pour le nom que l on voudra afficher
 
+    public RessourceResponseDTO(Integer id, NomRessource nom, int quantite, double prix, int stockMin, Integer zoneId, String zoneNom) {
+        this.id = id;
+        this.nom = nom;
+        this.quantite = quantite;
+        this.prix = prix;
+        this.stockMin = stockMin;
+        this.zoneId = zoneId;
+        this.zoneNom = zoneNom;
+    }
+
+    public RessourceResponseDTO() {}
+
     public Integer getId() {
         return id;
     }
