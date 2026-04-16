@@ -11,17 +11,18 @@ import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Vehicule;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOZone;
-import agricore.projet.repository.VehiculeRepository;
+import agricore.projet.repository.IDAOVehicule;
 
 @Service
 public class VehiculeService {
 
-    private final VehiculeRepository daovehicule;
+    private final IDAOVehicule daovehicule;
     private final IDAOZone daoZone;
 
-    public VehiculeService( VehiculeRepository daovehicule, IDAOZone daoZone) {
+    public VehiculeService( IDAOVehicule daovehicule, IDAOZone daoZone) {
         this.daovehicule = daovehicule;
         this.daoZone = daoZone;
+        
     }
 
     public VehiculeResponseDTO findByIdDTO(Integer id) {
@@ -29,6 +30,12 @@ public class VehiculeService {
     }
 
     public List<VehiculeResponseDTO> findAllDTO() {
+        List<Vehicule> vehicules = daovehicule.findAll();
+        
+        if (vehicules.isEmpty()) {
+            throw new VehiculeNotFound();
+        }
+
     return daovehicule.findAll()
             .stream()
             .map(VehiculeResponseDTO::convert)
@@ -82,6 +89,8 @@ public class VehiculeService {
         daovehicule.deleteById(id);
         
     }
+
+    
 
 
 }

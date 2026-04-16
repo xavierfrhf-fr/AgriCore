@@ -9,4 +9,8 @@ public class VehiculeNotFound extends RuntimeException {
     public VehiculeNotFound(Integer id) {
         super("Le Vehicule avec l'id: " + id+ " est introuvable" );
     }
+
+    public VehiculeNotFound() {
+        super("Aucun véhicule trouvé" );
+    }
 }

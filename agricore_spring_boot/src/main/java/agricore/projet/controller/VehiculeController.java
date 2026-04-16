@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
-import agricore.projet.repository.VehiculeRepository;
+import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.services.VehiculeService;
 
 
@@ -26,7 +26,7 @@ public class VehiculeController {
   
     private final VehiculeService vehiculeService;
 
-    VehiculeController(VehiculeRepository vehiculeRepository, VehiculeService vehiculeService) {
+    VehiculeController(IDAOVehicule vehiculeRepository, VehiculeService vehiculeService) {
         this.vehiculeService = vehiculeService;
     }
 
@@ -39,7 +39,6 @@ public class VehiculeController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('FERMIER')")
     public VehiculeResponseDTO getVehiculeById(@PathVariable int id) {
         return vehiculeService.findByIdDTO(id);
     }

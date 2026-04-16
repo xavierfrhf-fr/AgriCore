@@ -15,7 +15,7 @@ import agricore.projet.repository.IDAOUtilisateur;
 @Service // Scanner par spring boot grace @SpringBootApplication qui contient @ComponentScan dans le FormationSpringBootSecurityApplication 
 public class JpaUserDetailsService implements UserDetailsService { //Spring créer un objet JpaUserDetailsService et ne charge pas celui par defaut dans security
     
-    //@Autowired // Spring scann Autowired  fait le constructeur de JpaUserDetailsService et injecte un objet IDAOUtilisateur (qui est un proxy de l'interface IDAOUtilisateur)
+    //@Autowired // Spring scann Autowired  fait par le constructeur de JpaUserDetailsService et injecte un objet IDAOUtilisateur (qui est un proxy de l'interface IDAOUtilisateur)
     IDAOUtilisateur daoUtilisateur; 
 
     public JpaUserDetailsService(IDAOUtilisateur daoUtilisateur) {
@@ -46,7 +46,6 @@ public class JpaUserDetailsService implements UserDetailsService { //Spring cré
             .username(user.getLogin())
             .password(user.getPassword())
             .roles(role)
-            //.roles(user.isAdmin() ? "ADMIN" : "USER")
             .build();
 
         return us;
