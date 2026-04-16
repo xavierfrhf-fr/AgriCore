@@ -7,7 +7,9 @@ import agricore.projet.dto.zone.response.ZoneResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
+import agricore.projet.model.Fermier;
 import agricore.projet.model.Zone;
+import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +23,15 @@ public class ZoneService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final IDAOZone daoZone;
-    /*
+
     private final IDAOUtilisateur daoUtilisateur;
 
     public ZoneService(IDAOZone daoZone, IDAOUtilisateur daoUtilisateur) {
         this.daoZone = daoZone;
         this.daoUtilisateur = daoUtilisateur;
     }
-     */
-    public ZoneService(IDAOZone daoZone) {
-        this.daoZone = daoZone;
-    }
+
+
 
     public ZoneResponseDTO getZoneById(Integer id){
         logger.trace("find by id de la zone {}",id);
@@ -53,11 +53,11 @@ public class ZoneService {
 
     public int create(ZoneRequestDTO request) {
         Zone zone = ZoneRequestDTO.convert(request);
-        /* //TODO a revoir (cast en fermier, exception custom)
-        zone.setFermier(daoUtilisateur
+        //TODO a revoir (cast en fermier, exception custom)
+        zone.setFermier((Fermier) daoUtilisateur
                 .findById(request.getFermierId())
-                .orElseThrow(UtilisateurNotFoundExcetion::new));
-        */
+                .orElseThrow(NullPointerException::new));//TODO utiliser exception custom
+
         zone = daoZone.save(zone);
         logger.trace("Creation de {} a {}",zone.toString(), zone.getPosition().toString());
         return zone.getId();
@@ -79,18 +79,28 @@ public class ZoneService {
         if (request.getPosition() != null) {
             zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
         }
+
+        if (request.getFermierId() != null) {
+            if (request.getFermierId() != zone.getFermier().getId()) {
+                logger.warn("Changement de fermier dans la zone avec l'id {} cela peut amener a des comportements incohérents", id);
+            }
+            zone.setFermier((Fermier) daoUtilisateur
+                    .findById(request.getFermierId())
+                    .orElseThrow(NullPointerException::new));//TODO utiliser exception custom
+        }
+
         logger.trace("Update partiel de zone ({}, {})", request.toString(), id);
         return daoZone.save(zone).getId();
     }
 
-    public int put(ZoneRequestDTO request, int id) {//Ne doit pas être utilisé ! Va ecraser les autres realtions existantes (animaux, ressources, vehicules)
-        logger.warn("Update complet de zone, risque d'ecraser les entity associe (animaux, ressources, vehicules, plantes, fermier ! ({}, {})", request.toString(), id);
+    public int put(ZoneRequestDTO request, int id) {
+        logger.trace("Update complet de zone ({}, {})", request.toString(), id);
         Zone zone = ZoneRequestDTO.convert(request);
-        /* //TODO a revoir (cast en fermier, exception custom)
-        zone.setFermier(daoUtilisateur
+        //TODO a revoir (cast en fermier, exception custom)
+        zone.setFermier((Fermier) daoUtilisateur
                 .findById(request.getFermierId())
-                .orElseThrow(UtilisateurNotFoundExcetion::new));
-        */
+                .orElseThrow(NullPointerException::new));
+
         return daoZone.save(zone).getId();
     }
 
