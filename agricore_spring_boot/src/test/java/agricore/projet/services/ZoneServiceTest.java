@@ -228,7 +228,7 @@ public class ZoneServiceTest {
 
                 // Cas 3 : On change tout
                 Arguments.of(new ZoneRequestDTO( new PositionRequestDTO(10, 10, 2, 2),NomZone.CUVE, 5), NomZone.CUVE, posModifiee),
-
+                Arguments.of(new ZoneRequestDTO( new PositionRequestDTO(10, 10, 2, 2),NomZone.CUVE, 6), NomZone.CUVE, posModifiee),
                 // Cas 4 : On envoie tout à null (rien ne doit changer)
                 Arguments.of(new ZoneRequestDTO(null, null, null), NomZone.CHAMPS, posInitiale)
         );
@@ -272,6 +272,17 @@ public class ZoneServiceTest {
     }
 
     @Test
+    public void patchShouldThrow(){
+        //GIVEN
+        Mockito.when(daoZone.findById(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
+        //WHEN + THEN
+        assertThatThrownBy(() -> zoneService.patch(ZONE1_REQ_DTO,ZONE_ID_NOT_EXIST))
+                .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
+                .isInstanceOf(ZoneNotFoundException.class);
+    }
+
+
+    @Test
     public void deleteZone(){
         //when
         zoneService.delete(ZONE1_ID);
@@ -311,12 +322,22 @@ public class ZoneServiceTest {
     }
 
     @Test
+    public void getZoneByIdWithRessourceShouldThrow(){
+        //GIVEN
+        Mockito.when(daoZone.findByIdWithRessource(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
+        //WHEN + THEN
+        assertThatThrownBy(() -> zoneService.getZoneWithRessources(ZONE_ID_NOT_EXIST))
+                .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
+                .isInstanceOf(ZoneNotFoundException.class);
+    }
+
+    @Test
     @WithMockUser
     public void getZoneWithVehiculesShouldContainVehicules(){
         //GIVEN
         LocalDate date = LocalDate.now();
-        Vehicule vehicule = new Vehicule(1, TypeVehicule.Utilitaire, date);
-        vehicule.setZone(ZONE1);
+        Vehicule vehicule = new Vehicule(1, TypeVehicule.Utilitaire, date, ZONE1);
+
         Zone zoneWithVehicule = ZONE1;
         zoneWithVehicule.setVehicules(List.of(vehicule));
 
@@ -326,7 +347,7 @@ public class ZoneServiceTest {
 
         assertThat(response.getVehicules().size()).isEqualTo(1);
         assertThat(response.getVehicules())
-                .extracting("id","typeVehicule","dateControleTech","delaiAvantControle","Zoneid")
+                .extracting("id","typeVehicule","dateControleTech","delaiAvantControle","zoneId")
                 .containsExactly(tuple(1,TypeVehicule.Utilitaire,date,0,ZONE1_ID));
 
         assertThat(response)
@@ -334,6 +355,16 @@ public class ZoneServiceTest {
                         ZoneWithVehiculesResponseDTO::getFermierId,
                         ZoneWithVehiculesResponseDTO::getId)
                 .containsExactly(ZONE1_NOMZONE,FERMIER_ID,ZONE1_ID);
+    }
+
+    @Test
+    public void getZoneByIdWithVehiculeShouldThrow(){
+        //GIVEN
+        Mockito.when(daoZone.findByIdWithVehicule(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
+        //WHEN + THEN
+        assertThatThrownBy(() -> zoneService.getZoneWithVehicules(ZONE_ID_NOT_EXIST))
+                .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
+                .isInstanceOf(ZoneNotFoundException.class);
     }
 
 

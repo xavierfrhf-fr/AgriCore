@@ -12,7 +12,9 @@ import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
+import agricore.projet.model.NomRessource;
 import agricore.projet.model.NomZone;
+import agricore.projet.model.TypeVehicule;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.services.JpaUserDetailsService;
 import agricore.projet.services.JwtUtils;
@@ -36,8 +38,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -168,28 +171,182 @@ public class ZoneControllerTest {
                 Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,null)),
                 Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,-1))
         );
-
     }
 
     @ParameterizedTest
     @MethodSource("zoneWithNotValidAttributesStream")
-    public void shouldCreateZoneThrowExceptions(ZoneRequestDTO request) throws Exception {
+    public void shouldCreateZoneReturnBadRequest(ZoneRequestDTO request) throws Exception {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
                 .post(URL)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        Mockito.verify(zoneService,Mockito.never()).create(any(ZoneRequestDTO.class));
     }
 
     @ParameterizedTest
     @MethodSource("zoneWithNotValidAttributesStream")
-    public void shouldPutZoneThrowExceptions(ZoneRequestDTO request) throws Exception {
+    public void shouldPutZoneReturnBadRequest(ZoneRequestDTO request) throws Exception {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
                 .put(URL_ID)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
         );
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+        Mockito.verify(zoneService,Mockito.never()).put(any(ZoneRequestDTO.class),anyInt());
     }
+
+    @Test
+    @WithMockUser
+    public void shouldPutZoneReturnOk() throws Exception {
+        Mockito.when(zoneService.put(ZONE_REQ_DTO, ZONE_ID)).thenReturn(ZONE_ID);
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .put(URL_ID)
+                .content(objectMapper.writeValueAsString(ZONE_REQ_DTO))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(zoneService).put(any(ZoneRequestDTO.class), eq(ZONE_ID));
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldDeleteZoneReturnOk() throws Exception {
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .delete(URL_ID)
+        );
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(zoneService).delete(eq(ZONE_ID));
+    }
+
+    private static Stream<Arguments> zoneWithPartialDataAttributesStream(){
+        //Position
+        int posX = 1;
+        int posY = 1;
+        int tailleX = 1;
+        int tailleY = 1;
+        //Zone
+        NomZone nomZone = NomZone.POULAILLER;
+        int fermierId = 1;
+        return Stream.of(
+                Arguments.of(new ZoneRequestDTO(null,null,null)),
+                Arguments.of(new ZoneRequestDTO(null,nomZone,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),null,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,null)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,fermierId))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("zoneWithPartialDataAttributesStream")
+    public void shouldPatchZoneReturnOk(ZoneRequestDTO request) throws Exception {
+        Mockito.when(zoneService.patch(request, ZONE_ID)).thenReturn(ZONE_ID);
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .patch(URL_ID)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(zoneService).patch(any(ZoneRequestDTO.class), eq(ZONE_ID));
+    }
+
+    @Test
+    public void shouldFindZoneByIdWithRessourceReturnUnauthorized() throws Exception {
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/ressource/"+ZONE_ID));
+        result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFindZoneByIdWithRessourceReturnNotFound() throws Exception {
+        //GIVEN
+        Mockito.when(zoneService.getZoneWithRessources(ZONE_ID_NOT_EXIST)).thenThrow(ZoneNotFoundException.class);
+        //WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/ressource/"+ZONE_ID_NOT_EXIST));
+        //THEN
+        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFindZoneByIdWithRessourceReturnOk() throws Exception {
+        //GIVEN
+        ZoneWithRessourcesResponseDTO zoneWithRessourcesResponseDTO = new ZoneWithRessourcesResponseDTO(
+                ZONE_ID,
+                POSITION_RESP_DTO,
+                NOM_ZONE,
+                FERMIER_ID,
+                List.of(new RessourceResponseDTO(1, NomRessource.Fraise, 1, 1., 1, ZONE_ID, NOM_ZONE.name()))
+        );
+        Mockito.when(zoneService.getZoneWithRessources(ZONE_ID)).thenReturn(zoneWithRessourcesResponseDTO);
+        //WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/ressource/"+ZONE_ID));
+        //THEN
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(zoneService).getZoneWithRessources(ZONE_ID);
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ZONE_ID));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posX").value(POSITION_RESP_DTO.getPosX()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posY").value(POSITION_RESP_DTO.getPosY()));
+        //tailles
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].id").value(1));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].nom").value(NomRessource.Fraise.name()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].quantite").value(1));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].prix").value(1.));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].stockMin").value(1));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].zoneId").value(ZONE_ID));
+    }
+
+    @Test
+    public void shouldFindZoneByIdWithVehiculeReturnUnauthorized() throws Exception {
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/vehicule/"+ZONE_ID));
+        result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFindZoneByIdWithVehiculeReturnNotFound() throws Exception {
+        //GIVEN
+        Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID_NOT_EXIST)).thenThrow(ZoneNotFoundException.class);
+        //WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/vehicule/"+ZONE_ID_NOT_EXIST));
+        //THEN
+        result.andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldFindZoneByIdWithVehiculeReturnOk() throws Exception {
+        //GIVEN
+        LocalDate date = LocalDate.now();
+        ZoneWithVehiculesResponseDTO zoneWithVehiculesResponseDTO = new ZoneWithVehiculesResponseDTO(
+                ZONE_ID,
+                POSITION_RESP_DTO,
+                NOM_ZONE,
+                FERMIER_ID,
+                List.of(new VehiculeResponseDTO(1, TypeVehicule.Utilitaire, date, 0, ZONE_ID))
+        );
+        Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID)).thenReturn(zoneWithVehiculesResponseDTO);
+        //WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/vehicule/"+ZONE_ID));
+        //THEN
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(zoneService).getZoneWithVehicules(ZONE_ID);
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ZONE_ID));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posX").value(POSITION_RESP_DTO.getPosX()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posY").value(POSITION_RESP_DTO.getPosY()));
+        //tailles
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].id").value(1));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].typeVehicule").value(TypeVehicule.Utilitaire.name()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].dateControleTech").value(date.toString()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].delaiAvantControle").value(0));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].zoneId").value(ZONE_ID));
+    }
+
+
+
 }

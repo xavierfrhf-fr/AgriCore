@@ -56,7 +56,7 @@ public class ZoneController {
         return zoneService.getZoneWithVehicules(id);
     }
 
-    @GetMapping("ressource/{id}")
+    @GetMapping("/ressource/{id}")
     public ZoneWithRessourcesResponseDTO getZoneWithRessources(@PathVariable Integer id){
         return zoneService.getZoneWithRessources(id);
     }
