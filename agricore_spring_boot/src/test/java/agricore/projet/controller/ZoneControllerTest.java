@@ -277,7 +277,7 @@ public class ZoneControllerTest {
                 POSITION_RESP_DTO,
                 NOM_ZONE,
                 FERMIER_ID,
-                List.of(new RessourceResponseDTO(1, NomRessource.Fraise, 1, 1., 1, ZONE_ID, NOM_ZONE.name()))
+                List.of(new RessourceResponseDTO(1, NomRessource.Fraise, 1, 1., 1, ZONE_ID, NOM_ZONE))
         );
         Mockito.when(zoneService.getZoneWithRessources(ZONE_ID)).thenReturn(zoneWithRessourcesResponseDTO);
         //WHEN
