@@ -19,6 +19,9 @@ import agricore.projet.services.JwtUtils;
 import agricore.projet.services.ZoneService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,6 +40,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @WebMvcTest(controllers = ZoneController.class)
 @Import({SecurityConfig.class, JwtHeaderFilter.class})
@@ -145,11 +149,47 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$").value(ZONE_ID));
     }
 
-    @Test
-    @WithMockUser
-    public void shouldCreateZoneThrowExceptions() throws Exception {
-        //GIVEN
-        ZoneRequestDTO FalseZoneReqDTO = new ZoneRequestDTO();
+    private static Stream<Arguments> zoneWithNotValidAttributesStream(){
+        //Position
+        int posX = 1;
+        int posY = 1;
+        int tailleX = 1;
+        int tailleY = 1;
+        //Zone
+        NomZone nomZone = NomZone.POULAILLER;
+        int fermierId = 1;
+        return Stream.of(
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(-1,posY,tailleX,tailleY),nomZone,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,-1,tailleX,tailleY),nomZone,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,-1,tailleY),nomZone,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,-1),nomZone,fermierId)),
+                Arguments.of(new ZoneRequestDTO(null,nomZone,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),null,fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,null)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,-1))
+        );
 
+    }
+
+    @ParameterizedTest
+    @MethodSource("zoneWithNotValidAttributesStream")
+    public void shouldCreateZoneThrowExceptions(ZoneRequestDTO request) throws Exception {
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .post(URL)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @ParameterizedTest
+    @MethodSource("zoneWithNotValidAttributesStream")
+    public void shouldPutZoneThrowExceptions(ZoneRequestDTO request) throws Exception {
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders
+                .put(URL_ID)
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+        result.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

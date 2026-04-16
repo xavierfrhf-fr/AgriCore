@@ -6,6 +6,7 @@ import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.PositionResponseDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.*;
 import agricore.projet.repository.IDAOUtilisateur;
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -280,11 +282,59 @@ public class ZoneServiceTest {
     @Test
     @WithMockUser
     public void getZoneWithRessourcesShouldContainRessources(){
-        //RessourceResponseDTO ressource = new RessourceResponseDTO(NomRessource.Fraise,1,1.,1);
-        ZoneWithRessourcesResponseDTO response = new ZoneWithRessourcesResponseDTO();
+        //GIVEN
+        Ressource ressource =  new Ressource(
+                1,
+                NomRessource.Fraise,
+                1,
+                1.,
+                1,
+                ZONE1
+        );
+        Zone zoneWithRessource = ZONE1;
+        zoneWithRessource.setRessources(List.of(ressource));
+
+        Mockito.when(daoZone.findByIdWithRessource(ZONE1_ID)).thenReturn(Optional.of(zoneWithRessource));
+        //When
+        ZoneWithRessourcesResponseDTO response = zoneService.getZoneWithRessources(ZONE1_ID);
+
+        assertThat(response.getRessources().size()).isEqualTo(1);
+        assertThat(response.getRessources())
+                .extracting("id","nom","quantite","prix","stockMin","zoneId","zoneNom")
+                .containsExactly(tuple(1,NomRessource.Fraise,1,1.,1,ZONE1_ID,ZONE1_NOMZONE.name()));
+
+        assertThat(response)
+                .extracting(ZoneWithRessourcesResponseDTO::getNomZone,
+                        ZoneWithRessourcesResponseDTO::getFermierId,
+                        ZoneWithRessourcesResponseDTO::getId)
+                .containsExactly(ZONE1_NOMZONE,FERMIER_ID,ZONE1_ID);
     }
 
+    @Test
+    @WithMockUser
+    public void getZoneWithVehiculesShouldContainVehicules(){
+        //GIVEN
+        LocalDate date = LocalDate.now();
+        Vehicule vehicule = new Vehicule(1, TypeVehicule.Utilitaire, date);
+        vehicule.setZone(ZONE1);
+        Zone zoneWithVehicule = ZONE1;
+        zoneWithVehicule.setVehicules(List.of(vehicule));
 
+        Mockito.when(daoZone.findByIdWithVehicule(ZONE1_ID)).thenReturn(Optional.of(zoneWithVehicule));
+        //When
+        ZoneWithVehiculesResponseDTO response = zoneService.getZoneWithVehicules(ZONE1_ID);
+
+        assertThat(response.getVehicules().size()).isEqualTo(1);
+        assertThat(response.getVehicules())
+                .extracting("id","typeVehicule","dateControleTech","delaiAvantControle","Zoneid")
+                .containsExactly(tuple(1,TypeVehicule.Utilitaire,date,0,ZONE1_ID));
+
+        assertThat(response)
+                .extracting(ZoneWithVehiculesResponseDTO::getNomZone,
+                        ZoneWithVehiculesResponseDTO::getFermierId,
+                        ZoneWithVehiculesResponseDTO::getId)
+                .containsExactly(ZONE1_NOMZONE,FERMIER_ID,ZONE1_ID);
+    }
 
 
 
