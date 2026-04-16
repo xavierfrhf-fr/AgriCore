@@ -44,10 +44,14 @@ public class VehiculeServiceTest {
     void shouldFindByIdDTO() {
         
         //given 
+        Zone zone = new Zone();
+        zone.setId(1);
+
         Vehicule v = new Vehicule();
         v.setId(1);
         v.setTypeVehicule(TypeVehicule.Utilitaire);
         v.setDateControleTech(LocalDate.now().plusDays(10));
+        v.setZone(zone);
 
         //when 
         when(vehiculeRepository.findById(1)).thenReturn(Optional.of(v));
