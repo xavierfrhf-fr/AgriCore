@@ -104,6 +104,18 @@ public class VehiculeServiceTest {
 
     }
 
+    @Test
+    void shouldFindAllDTOEmpty() {
+        //given 
+
+        //when
+        when(vehiculeRepository.findAll()).thenReturn(List.of());
+
+        //then
+        assertThrows(VehiculeNotFound.class, () -> vehiculeService.findAllDTO());
+
+    }   
+
 
 
     @Test 
