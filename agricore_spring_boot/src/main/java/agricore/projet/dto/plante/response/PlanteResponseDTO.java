@@ -14,7 +14,19 @@ public class PlanteResponseDTO {
 	private Integer zoneId;
 	private LocalDateTime dernierUpdate;
 	private double humidite;
-	
+
+	public PlanteResponseDTO(Integer id, LocalDate datePlantation, LocalDate dateRecolte, EspecePlante espece, Integer zoneId, LocalDateTime dernierUpdate, double humidite) {
+		this.id = id;
+		this.datePlantation = datePlantation;
+		this.dateRecolte = dateRecolte;
+		this.espece = espece;
+		this.zoneId = zoneId;
+		this.dernierUpdate = dernierUpdate;
+		this.humidite = humidite;
+	}
+
+	public PlanteResponseDTO() {}
+
 	public Integer getId() {
 		return id;
 	}

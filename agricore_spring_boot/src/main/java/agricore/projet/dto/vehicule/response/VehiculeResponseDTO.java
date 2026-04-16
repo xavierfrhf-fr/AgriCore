@@ -13,6 +13,16 @@ public class VehiculeResponseDTO {
     private int delaiAvantControle;
     private Integer Zoneid;
 
+    public VehiculeResponseDTO(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, int delaiAvantControle, Integer zoneid) {
+        this.id = id;
+        this.typeVehicule = typeVehicule;
+        this.dateControleTech = dateControleTech;
+        this.delaiAvantControle = delaiAvantControle;
+        Zoneid = zoneid;
+    }
+
+    public VehiculeResponseDTO() {}
+
     public Integer getZoneid() {
         return Zoneid;
     }
