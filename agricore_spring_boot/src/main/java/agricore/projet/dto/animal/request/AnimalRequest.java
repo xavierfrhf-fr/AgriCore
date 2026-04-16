@@ -11,7 +11,17 @@ public class AnimalRequest {
 	private LocalDate dateVaccination;
 	private EspeceAnimal espece;
     private Integer zoneId;
-	
+
+	public AnimalRequest(boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece, Integer zoneId) {
+		this.male = male;
+		this.dateNaissance = dateNaissance;
+		this.dateVaccination = dateVaccination;
+		this.espece = espece;
+		this.zoneId = zoneId;
+	}
+
+	public AnimalRequest() {}
+
 	public boolean isMale() {
 		return male;
 	}

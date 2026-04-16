@@ -9,7 +9,14 @@ public class VehiculeRequestDTO {
     private TypeVehicule typeVehicule;
     private LocalDate dateControleTech;
     private Integer Zoneid;
-    
+
+    public VehiculeRequestDTO(TypeVehicule typeVehicule, LocalDate dateControleTech, Integer zoneid) {
+        this.typeVehicule = typeVehicule;
+        this.dateControleTech = dateControleTech;
+        Zoneid = zoneid;
+    }
+
+    public VehiculeRequestDTO() {}
 
     public TypeVehicule getTypeVehicule() {
         return typeVehicule;

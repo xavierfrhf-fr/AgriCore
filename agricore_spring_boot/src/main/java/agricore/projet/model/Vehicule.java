@@ -37,15 +37,17 @@ public class Vehicule {
 	public Vehicule() {
 	}
 	
-	public Vehicule(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech) {
+	public Vehicule(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone) {
 		this.id = id;
 		this.typeVehicule = typeVehicule;
 		this.dateControleTech = dateControleTech;
+		this.zone = zone;
 	}
 	
-	public Vehicule( TypeVehicule typeVehicule, LocalDate dateControleTech) {
+	public Vehicule( TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone) {
 		this.typeVehicule = typeVehicule;
 		this.dateControleTech = dateControleTech;
+		this.zone = zone;
 	}
 	
 	public boolean rappelControle() {

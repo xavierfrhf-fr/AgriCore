@@ -13,8 +13,19 @@ public class PlanteRequestDTO {
 	private EspecePlante espece;
     private Integer zoneId; //comprends pas pk
 	private LocalDateTime dernierUpdate;
-	private double humidite; 
-	
+	private double humidite;
+
+	public PlanteRequestDTO(LocalDate datePlantation, LocalDate dateRecolte, EspecePlante espece, Integer zoneId, LocalDateTime dernierUpdate, double humidite) {
+		this.datePlantation = datePlantation;
+		this.dateRecolte = dateRecolte;
+		this.espece = espece;
+		this.zoneId = zoneId;
+		this.dernierUpdate = dernierUpdate;
+		this.humidite = humidite;
+	}
+
+	public PlanteRequestDTO() {}
+
 	public LocalDate getDatePlantation() {
 		return datePlantation;
 	}
