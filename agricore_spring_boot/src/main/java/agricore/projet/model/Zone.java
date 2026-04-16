@@ -44,16 +44,18 @@ public class Zone {
 	public Zone() {
 	}
 
-	public Zone(Position position, NomZone nomZone) {
+	public Zone(Position position, NomZone nomZone, Fermier fermier) {
 		super();
 		this.position = position;
 		this.nomZone = nomZone;
+		this.fermier = fermier;
 	}
-	public Zone(Integer id, Position position, NomZone nomZone) {
+	public Zone(Integer id, Position position, NomZone nomZone, Fermier fermier) {
 		super();
 		this.id = id;
 		this.position = position;
 		this.nomZone = nomZone;
+		this.fermier = fermier;
 	}
 	
 	public Integer getId() {

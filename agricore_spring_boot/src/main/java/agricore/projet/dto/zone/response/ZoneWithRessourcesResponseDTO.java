@@ -13,6 +13,16 @@ public class ZoneWithRessourcesResponseDTO {
     private Integer fermierId;
     private List<RessourceResponseDTO> ressources;
 
+    public ZoneWithRessourcesResponseDTO() {}
+
+    public ZoneWithRessourcesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, List<RessourceResponseDTO> ressources) {
+        this.id = id;
+        this.position = position;
+        this.nomZone = nomZone;
+        this.fermierId = fermierId;
+        this.ressources = ressources;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -51,9 +61,6 @@ public class ZoneWithRessourcesResponseDTO {
 
     public void setRessources(List<RessourceResponseDTO> ressources) {
         this.ressources = ressources;
-    }
-
-    public ZoneWithRessourcesResponseDTO() {
     }
 
     public static ZoneWithRessourcesResponseDTO convert (Zone zone){
