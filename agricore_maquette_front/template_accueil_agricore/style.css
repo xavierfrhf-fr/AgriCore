@@ -87,14 +87,10 @@ main {
     position: absolute;
     top: 900px;
     right: 0px;
-    width: 120px;
+
     height: auto;
-    
 
     width: 80px;
-
-    transform: scaleX(-1); /* retourne le gif*/
-
     animation: fly 20s linear infinite;
 }
 
