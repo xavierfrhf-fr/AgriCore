@@ -25,14 +25,14 @@ import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOZone;
-import agricore.projet.repository.VehiculeRepository;
+import agricore.projet.repository.IDAOVehicule;
 
 @ExtendWith(MockitoExtension.class)
 public class VehiculeServiceTest {
 
 
     @Mock
-    VehiculeRepository vehiculeRepository;
+    IDAOVehicule vehiculeRepository;
 
     @Mock
     IDAOZone daoZone;
@@ -103,6 +103,18 @@ public class VehiculeServiceTest {
         assertEquals(2, rez.size());
 
     }
+
+    @Test
+    void shouldFindAllDTOEmpty() {
+        //given 
+
+        //when
+        when(vehiculeRepository.findAll()).thenReturn(List.of());
+
+        //then
+        assertThrows(VehiculeNotFound.class, () -> vehiculeService.findAllDTO());
+
+    }   
 
 
 

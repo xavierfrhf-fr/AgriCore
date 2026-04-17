@@ -8,8 +8,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @EnableMethodSecurity(prePostEnabled = true)
 @Configuration
@@ -33,16 +36,24 @@ public class SecurityConfig {
             auth.requestMatchers("/api/auth/register").permitAll();
             
             //Bypass de la sécurité pour les endpoints lors du dev et des tests, à retirer en prod et ajouter le authenticated pour les sécuriser            
-            auth.requestMatchers("/**").permitAll();
-            //auth.requestMatchers("/**").authenticated(); 
-            
-            
-           
-
+            //auth.requestMatchers("/**").permitAll();
+            auth.requestMatchers("/**").authenticated(); 
         });
 
+        http.exceptionHandling(ex -> 
+        ex.authenticationEntryPoint(authenticationEntryPoint())
+        );
+
         http.addFilterBefore(jwtHeaderFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        
         return http.build();
+    }
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        };
     }
 
     @Bean
