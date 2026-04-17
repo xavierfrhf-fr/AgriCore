@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class VehiculeNotFound extends RuntimeException {
     
     public VehiculeNotFound(Integer id) {
-        super("Le Vicule avec l'id: " + id+ " est introuvable" );
+        super("Le Vehicule avec l'id: " + id+ " est introuvable" );
+    }
+
+    public VehiculeNotFound() {
+        super("Aucun véhicule trouvé" );
     }
 }

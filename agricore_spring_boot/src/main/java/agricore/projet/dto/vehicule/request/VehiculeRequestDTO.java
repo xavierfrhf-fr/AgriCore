@@ -3,11 +3,15 @@ package agricore.projet.dto.vehicule.request;
 import java.time.LocalDate;
 
 import agricore.projet.model.TypeVehicule;
+import jakarta.validation.constraints.NotNull;
 
 public class VehiculeRequestDTO {
 
+    @NotNull
     private TypeVehicule typeVehicule;
+    @NotNull
     private LocalDate dateControleTech;
+    @NotNull
     private Integer Zoneid;
 
     public VehiculeRequestDTO(TypeVehicule typeVehicule, LocalDate dateControleTech, Integer zoneid) {

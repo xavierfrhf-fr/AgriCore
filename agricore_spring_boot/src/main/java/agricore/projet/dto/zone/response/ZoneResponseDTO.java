@@ -10,6 +10,15 @@ public class ZoneResponseDTO {
     private NomZone nomZone;
     private Integer fermierId;
 
+    public ZoneResponseDTO() {}
+
+    public ZoneResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId) {
+        this.id = id;
+        this.position = position;
+        this.nomZone = nomZone;
+        this.fermierId = fermierId;
+    }
+
     public Integer getId() {
         return id;
     }

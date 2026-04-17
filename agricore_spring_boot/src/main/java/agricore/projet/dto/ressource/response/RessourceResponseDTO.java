@@ -1,8 +1,7 @@
 package agricore.projet.dto.ressource.response;
 
-import org.springframework.beans.BeanUtils;
-
 import agricore.projet.model.NomRessource;
+import agricore.projet.model.NomZone;
 import agricore.projet.model.Ressource;
 
 public class RessourceResponseDTO {
@@ -12,9 +11,10 @@ public class RessourceResponseDTO {
     private double prix;
     private int stockMin;
     private Integer zoneId;
-    private String zoneNom; // Pour eviter une seconde requete pour le nom que l on voudra afficher
+    private NomZone zoneNom; // Pour eviter une seconde requete pour le nom que l on voudra afficher
 
-    public RessourceResponseDTO(Integer id, NomRessource nom, int quantite, double prix, int stockMin, Integer zoneId, String zoneNom) {
+    public RessourceResponseDTO(Integer id, NomRessource nom, int quantite, double prix, int stockMin, Integer zoneId,
+            NomZone zoneNom) {
         this.id = id;
         this.nom = nom;
         this.quantite = quantite;
@@ -24,7 +24,8 @@ public class RessourceResponseDTO {
         this.zoneNom = zoneNom;
     }
 
-    public RessourceResponseDTO() {}
+    public RessourceResponseDTO() {
+    }
 
     public Integer getId() {
         return id;
@@ -74,12 +75,18 @@ public class RessourceResponseDTO {
         this.zoneId = zoneId;
     }
 
-    public String getZoneNom() {
+    public NomZone getZoneNom() {
         return zoneNom;
     }
 
-    public void setZoneNom(String zoneNom) {
+    public void setZoneNom(NomZone zoneNom) {
         this.zoneNom = zoneNom;
+    }
+
+    @Override
+    public String toString() {
+        return "RessourceResponseDTO [id=" + id + ", nom=" + nom + ", quantite=" + quantite + ", prix=" + prix
+                + ", stockMin=" + stockMin + ", zoneId=" + zoneId + ", zoneNom=" + zoneNom + "]";
     }
 
     public static RessourceResponseDTO convert(Ressource r) {
@@ -90,7 +97,7 @@ public class RessourceResponseDTO {
         response.setPrix(r.getPrix());
         response.setStockMin(r.getStockMin());
         response.setZoneId(r.getZone().getId());
-        response.setZoneNom(r.getZone().getNomZone().toString());
+        response.setZoneNom(r.getZone().getNomZone());
         return response;
     }
 }

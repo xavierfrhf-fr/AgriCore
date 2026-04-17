@@ -8,6 +8,15 @@ public class PositionResponseDTO {
     private Integer tailleX;
     private Integer tailleY;
 
+    public PositionResponseDTO(Integer posX, Integer posY, Integer tailleX, Integer tailleY) {
+        this.posX = posX;
+        this.posY = posY;
+        this.tailleX = tailleX;
+        this.tailleY = tailleY;
+    }
+
+    public PositionResponseDTO() {}
+
     public Integer getPosX() {
         return posX;
     }
@@ -38,9 +47,6 @@ public class PositionResponseDTO {
 
     public void setTailleY(Integer tailleY) {
         this.tailleY = tailleY;
-    }
-
-    public PositionResponseDTO() {
     }
 
     public static PositionResponseDTO convert(Position position){
