@@ -31,8 +31,6 @@ public class ZoneService {
         this.daoUtilisateur = daoUtilisateur;
     }
 
-
-
     public ZoneResponseDTO getZoneById(Integer id){
         logger.trace("find by id de la zone {}",id);
         return ZoneResponseDTO.convert(daoZone.findById(id)
@@ -42,7 +40,6 @@ public class ZoneService {
     }
 
     public List<ZoneResponseDTO> getAllZone() {
-
         List<ZoneResponseDTO> result = daoZone.findAll()
                 .stream()
                 .map(ZoneResponseDTO::convert)
@@ -63,23 +60,18 @@ public class ZoneService {
         return zone.getId();
     }
 
-
     public int patch(ZoneRequestDTO request, int id) {// VERIFIER si update partielle marche comme ca ?? De plus les relations ManyToOne / OneToOne (en lazy seront elle ecrasé ??)
-
         Zone zone = daoZone.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Echec update partielle, car la zone avec id {} n'existe pas", id);
                     return new ZoneNotFoundException(id);
                 });
-
         if (request.getNomZone() != null) {
             zone.setNomZone(request.getNomZone());
         }
-
         if (request.getPosition() != null) {
             zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
         }
-
         if (request.getFermierId() != null) {
             if (request.getFermierId() != zone.getFermier().getId()) {
                 logger.warn("Changement de fermier dans la zone avec l'id {} cela peut amener a des comportements incohérents", id);
@@ -88,7 +80,6 @@ public class ZoneService {
                     .findById(request.getFermierId())
                     .orElseThrow(NullPointerException::new));//TODO utiliser exception custom
         }
-
         logger.trace("Update partiel de zone ({}, {})", request.toString(), id);
         return daoZone.save(zone).getId();
     }
@@ -100,7 +91,6 @@ public class ZoneService {
         zone.setFermier((Fermier) daoUtilisateur
                 .findById(request.getFermierId())
                 .orElseThrow(NullPointerException::new));
-
         return daoZone.save(zone).getId();
     }
 
@@ -114,8 +104,9 @@ public class ZoneService {
         return ZoneWithRessourcesResponseDTO.convert(daoZone.findByIdWithRessource(id)
                 .orElseThrow(() -> {
                     logger.warn("Zone avec id {} n'existe pas", id);
-                    return new ZoneNotFoundException(id);}));
-
+                    return new ZoneNotFoundException(id);
+                })
+        );
     }
 
     public ZoneWithVehiculesResponseDTO getZoneWithVehicules(int id) {
@@ -123,7 +114,8 @@ public class ZoneService {
         return ZoneWithVehiculesResponseDTO.convert(daoZone.findByIdWithVehicule(id)
                 .orElseThrow(() -> {
                     logger.warn("Zone avec id {} n'existe pas", id);
-                    return new ZoneNotFoundException(id);}));
-
+                    return new ZoneNotFoundException(id);
+                })
+        );
     }
 }

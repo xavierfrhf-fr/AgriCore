@@ -42,7 +42,7 @@ public class ZoneController {
     }
 
     @PutMapping("/{id}")
-    public int updateZone(@Valid @RequestBody ZoneRequestDTO request, @PathVariable Integer id){
+    public int putZone(@Valid @RequestBody ZoneRequestDTO request, @PathVariable Integer id){
         return zoneService.put(request, id);
     }
 
