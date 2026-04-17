@@ -174,6 +174,7 @@ public class ZoneControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser
     @MethodSource("zoneWithNotValidAttributesStream")
     public void shouldCreateZoneReturnBadRequest(ZoneRequestDTO request) throws Exception {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
@@ -186,6 +187,7 @@ public class ZoneControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser
     @MethodSource("zoneWithNotValidAttributesStream")
     public void shouldPutZoneReturnBadRequest(ZoneRequestDTO request) throws Exception {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
@@ -239,6 +241,7 @@ public class ZoneControllerTest {
     }
 
     @ParameterizedTest
+    @WithMockUser
     @MethodSource("zoneWithPartialDataAttributesStream")
     public void shouldPatchZoneReturnOk(ZoneRequestDTO request) throws Exception {
         Mockito.when(zoneService.patch(request, ZONE_ID)).thenReturn(ZONE_ID);
