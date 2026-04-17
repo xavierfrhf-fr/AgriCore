@@ -13,12 +13,16 @@ import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -38,15 +42,15 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class ZoneServiceTest {
-    @Autowired
+    @InjectMocks
     private ZoneService zoneService;
 
-    @MockitoBean
+    @Mock
     private IDAOZone daoZone;
 
-    @MockitoBean
+    @Mock
     private IDAOUtilisateur daoUtilisateur;
 
     private static final Position POSITION = new Position(1,1,5,5);
@@ -242,7 +246,7 @@ public class ZoneServiceTest {
 
         Mockito.when(daoZone.findById(ZONE1_ID)).thenReturn(Optional.of(zoneInitial));
         Mockito.when(daoZone.save(any(Zone.class))).thenAnswer(i -> i.getArguments()[0]);
-        Mockito.when(daoUtilisateur.findById(anyInt())).thenReturn(Optional.of(FERMIER));
+        Mockito.lenient().when(daoUtilisateur.findById(anyInt())).thenReturn(Optional.of(FERMIER));//lenient permet que mockito ne râle pas si daoUtilisateur n'est pas utilisé
 
         // WHEN
         zoneService.patch(request, ZONE1_ID);
