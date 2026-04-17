@@ -13,7 +13,8 @@ public enum NomZone {
 	
 	private final boolean autoriseAni;
 	private final boolean autorisePlant;
-	private final Set<NomRessource> setRessource;
+	private final Set<NomRessource> setRessource; //ATENTION ! Une ressource ne doit pas se retrouver dans 2 batiments !!
+	//ATENTION n°2 : Un batiment stockant des ressources doit être unique ! (isZoneUnique())
 	//private final String imageLink //Je pose ca là au cas où
 	
 	
