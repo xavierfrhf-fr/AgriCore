@@ -1,23 +1,26 @@
 package agricore.projet.model;
 
+import java.util.Set;
+
 public enum NomZone {
-	CHAMPS(false, true, false),
-	POULAILLER(true, false, false),
-	ETABLE(true, false, false),
-	SILO(false, false, true),
-	CUVE(false, false, true);
-	
+	CHAMPS(false, true, Set.of()),
+	POULAILLER(true, false, Set.of()),
+	ETABLE(true, false, Set.of()),
+	SILO(false, false, Set.of(NomRessource.Blé, NomRessource.Colza,NomRessource.Tournesol,NomRessource.Mais)),
+	CUVE(false, false, Set.of(NomRessource.Lait,NomRessource.JusDePomme)),
+	STOCK_DE_FRUIT(false, false, Set.of(NomRessource.Pomme,NomRessource.Poire,NomRessource.Fraise)),
+	CHAMBRE_FROIDE(false, false, Set.of(NomRessource.Fromage));
 	
 	private final boolean autoriseAni;
 	private final boolean autorisePlant;
-	private final boolean autoriseStorage;
+	private final Set<NomRessource> setRessource;
 	//private final String imageLink //Je pose ca là au cas où
-	//private final Set<NomRessource> autoriseRessources //Si on veut un jour définir une collection de ressource pour chaque bat.
 	
-	private NomZone(boolean autoriseAni, boolean autorisePlant, boolean autoriseStorage) {
+	
+	private NomZone(boolean autoriseAni, boolean autorisePlant, Set<NomRessource> setRessource) {
 		this.autoriseAni = autoriseAni;
 		this.autorisePlant = autorisePlant;
-		this.autoriseStorage = autoriseStorage;
+		this.setRessource = setRessource;
 	}
 
 	public boolean isAutoriseAni() {
@@ -28,12 +31,11 @@ public enum NomZone {
 		return autorisePlant;
 	}
 
-	public boolean isAutoriseStorage() {
-		return autoriseStorage;
+	public Set<NomRessource> getSetRessource() {
+		return setRessource;
 	}
-	
-	
-	
-	
 
+	public boolean isZoneUnique(){
+		return !setRessource.isEmpty();
+	}
 }
