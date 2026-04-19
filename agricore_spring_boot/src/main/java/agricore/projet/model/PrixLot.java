@@ -1,0 +1,91 @@
+package agricore.projet.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Formatter;
+
+@Embeddable
+public class PrixLot {
+    //Doit pouvoir modéliser, par exemple 100g à 2€
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal prix;//2 dans l'exemple
+
+    @Column(nullable = false)
+    private int quantite;//100 dans l'exemple
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Unite unite;//Unite.GRAMME dans l'exemple
+
+    public PrixLot() {
+    }
+
+    public PrixLot(BigDecimal prix, int quantite, Unite unite) {
+        this.prix = scale(prix);
+        this.quantite = quantite;
+        this.unite = unite;
+    }
+
+    private BigDecimal scale(BigDecimal value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Le prix ne peut pas être null");
+        }
+        return value.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getPrix() {
+        return prix;
+    }
+
+    public void setPrix(BigDecimal prix) {
+        this.prix = scale(prix);
+    }
+
+    public int getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
+
+    public Unite getUnite() {
+        return unite;
+    }
+
+    public void setUnite(Unite unite) {
+        this.unite = unite;
+    }
+
+    public BigDecimal calculerTotal(int nbLots) {
+        return prix.multiply(BigDecimal.valueOf(nbLots))
+                .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getPrixUnitaire() {
+        return prix.divide(BigDecimal.valueOf(quantite), 4, RoundingMode.HALF_UP);
+    }
+
+    public String getAffichage() {
+        return prix.setScale(2, RoundingMode.HALF_UP) + " € / " + quantite + " " + unite.getAffichage();
+    }
+
+    public String getPrixByRef() {
+        //Permet d'afficher prix au litre ou prix au kilo ou prix unitaire
+        Unite ref = Unite.getReference(unite);
+
+        double quantiteConvertie = unite.convertirVers(ref, quantite);
+
+        BigDecimal prixUnitaire = getPrixUnitaire();
+        BigDecimal prixConverti = prixUnitaire
+                .multiply(BigDecimal.valueOf(quantiteConvertie))
+                .setScale(2, RoundingMode.HALF_UP);
+
+        return prixConverti + " € / " + ref.getAffichage();
+    }
+}
