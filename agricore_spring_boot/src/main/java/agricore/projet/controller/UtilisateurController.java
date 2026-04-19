@@ -72,20 +72,4 @@ public class UtilisateurController {
        return "Client enregistré avec succès !";
     }
     
-    
-    
-    @GetMapping
-    public List<UtilisateurResponseDTO>findAll(){
-    	return utilisateurService.getAll();
-    }
-    
-    @GetMapping("/{id}")
-    public UtilisateurResponseDTO findbyId (@PathVariable Integer id) {
-    	return utilisateurService.getById(id);
-    }
-    
-    @DeleteMapping ("/{id}")
-    public void deleteById (@PathVariable Integer id) {
-    	return utilisateurService.deleteById(id);
-    }
 }
