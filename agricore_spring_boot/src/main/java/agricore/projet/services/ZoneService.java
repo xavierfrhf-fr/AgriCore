@@ -8,6 +8,7 @@ import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
+import agricore.projet.model.NomRessource;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ZoneService {
@@ -117,5 +119,16 @@ public class ZoneService {
                     return new ZoneNotFoundException(id);
                 })
         );
+    }
+
+    public Optional<Zone> findZoneThatStoreRessources(NomRessource nomRessource) {//Dédié pour d'autres services, pas pour les controllers
+        //Renvoie une zone existante permettant de stocker la ressource (via l'enum NomRessource)
+        //Ne prends pas en compte le fait que plusieurss fermiers peuvent utilisé la même BDD ! -> ajouter fermier / fermierID dans les arguments
+        return daoZone.findAll()
+                    .stream()
+                    .filter(zone-> zone.getNomZone()
+                            .getSetRessource()
+                            .contains(nomRessource))
+                    .findFirst();
     }
 }
