@@ -8,14 +8,12 @@ public class RessourceRequestDTO {
     private Integer quantite;
     private Double prix;
     private Integer stockMin;
-    private Integer zoneId; // juste l id pas Zone entier ou nomZone
 
-    public RessourceRequestDTO(NomRessource nom, Integer quantite, Double prix, Integer stockMin, Integer zoneId) {
+    public RessourceRequestDTO(NomRessource nom, Integer quantite, Double prix, Integer stockMin) {
         this.nom = nom;
         this.quantite = quantite;
         this.prix = prix;
         this.stockMin = stockMin;
-        this.zoneId = zoneId;
     }
 
     public RessourceRequestDTO() {}
@@ -50,14 +48,6 @@ public class RessourceRequestDTO {
 
     public void setStockMin(Integer stockMin) {
         this.stockMin = stockMin;
-    }
-
-    public Integer getZoneId() {
-        return zoneId;
-    }
-
-    public void setZoneId(Integer zoneId) {
-        this.zoneId = zoneId;
     }
 
 }
