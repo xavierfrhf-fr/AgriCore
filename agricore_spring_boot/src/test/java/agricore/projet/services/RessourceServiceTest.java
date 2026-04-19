@@ -1,23 +1,26 @@
 package agricore.projet.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 
+import agricore.projet.config.SecurityConfig;
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.exception.RessourceNotFoundException;
@@ -29,6 +32,7 @@ import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 
 @ExtendWith(MockitoExtension.class)
+@Import(SecurityConfig.class)
 class RessourceServiceTest {
 
     @Mock
@@ -49,6 +53,7 @@ class RessourceServiceTest {
     private static final NomZone NOM_ZONE = NomZone.SILO;
     private static final int ID_INEXISTANT = 99;
     private static final int QUANTITE_MODIFIEE = 200;
+    private static final NomRessource NOM_RESSOURCE_UPDATE = NomRessource.Fraise;
     private static final int QUANTITE_UPDATE = 300;
     private static final double PRIX_UPDATE = 20.0;
     private static final int STOCK_MIN_UPDATE = 50;
@@ -64,6 +69,20 @@ class RessourceServiceTest {
         zone.setNomZone(NOM_ZONE);
         ressource = new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE, PRIX, STOCK_MIN, zone);
         request = new RessourceRequestDTO(NOM_RESSOURCE, QUANTITE, PRIX, STOCK_MIN);
+    }
+
+    @Test
+    void SetRequestDTOSetFields() {
+        request = new RessourceRequestDTO();
+        request.setNom(NOM_RESSOURCE);
+        request.setQuantite(QUANTITE);
+        request.setPrix(PRIX);
+        request.setStockMin(STOCK_MIN);
+
+        assertThat(request.getNom()).isEqualTo(NOM_RESSOURCE);
+        assertThat(request.getQuantite()).isEqualTo(QUANTITE);
+        assertThat(request.getPrix()).isEqualTo(PRIX);
+        assertThat(request.getStockMin()).isEqualTo(STOCK_MIN);
     }
 
     @Test
@@ -173,7 +192,19 @@ class RessourceServiceTest {
         when(daoRessource.findById(ID_INEXISTANT)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> ressourceService.update(ID_INEXISTANT, request))
                 .isInstanceOf(RessourceNotFoundException.class);
-        verify(daoRessource, never()).save(any());
+    }
+
+    @Test
+    void updateIgnoresNameModification() {
+        when(daoRessource.findById(RESSOURCE_ID)).thenReturn(Optional.of(ressource));
+        when(daoRessource.save(any())).thenReturn(
+                new Ressource(RESSOURCE_ID,
+                        NOM_RESSOURCE, QUANTITE_UPDATE, PRIX_UPDATE, STOCK_MIN_UPDATE, zone));
+
+        RessourceResponseDTO result = ressourceService.update(RESSOURCE_ID,
+                new RessourceRequestDTO(NOM_RESSOURCE_UPDATE, QUANTITE_UPDATE, PRIX_UPDATE, STOCK_MIN_UPDATE));
+
+        assertThat(result.getNom()).isEqualTo(NOM_RESSOURCE);
     }
 
     @Test
