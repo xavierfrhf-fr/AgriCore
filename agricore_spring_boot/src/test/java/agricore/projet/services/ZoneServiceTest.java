@@ -371,6 +371,26 @@ public class ZoneServiceTest {
                 .isInstanceOf(ZoneNotFoundException.class);
     }
 
+    @Test
+    public void findZoneThatStoreRessourcesShouldReturnOptZone(){
+        Mockito.when(daoZone.findAll()).thenReturn(ZONE_LIST);
+        NomRessource nomRessource = NomRessource.Lait;
+
+        Optional<Zone> result = zoneService.findZoneThatStoreRessources(nomRessource);
+
+        assertThat(result.isPresent()).isTrue();
+    }
+
+    @Test
+    public void findZoneThatStoreRessourcesShouldReturnEmptyOpt(){
+        Mockito.when(daoZone.findAll()).thenReturn(ZONE_LIST);
+        NomRessource nomRessource = NomRessource.Fraise;
+
+        Optional<Zone> result = zoneService.findZoneThatStoreRessources(nomRessource);
+
+        assertThat(result.isPresent()).isFalse();
+    }
+
 
 
 }
