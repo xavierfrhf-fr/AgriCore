@@ -4,6 +4,7 @@ package agricore.projet.services;
 import agricore.projet.dto.zone.request.PositionRequestDTO;
 import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithAnimalsResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
@@ -114,6 +115,16 @@ public class ZoneService {
     public ZoneWithVehiculesResponseDTO getZoneWithVehicules(int id) {
         logger.trace("find by id de la zone avec ces vehicules {}",id);
         return ZoneWithVehiculesResponseDTO.convert(daoZone.findByIdWithVehicule(id)
+                .orElseThrow(() -> {
+                    logger.warn("Zone avec id {} n'existe pas", id);
+                    return new ZoneNotFoundException(id);
+                })
+        );
+    }
+
+    public ZoneWithAnimalsResponseDTO getZoneWithAnimals(Integer id) {
+        logger.trace("find by id de la zone avec ces animaux {}",id);
+        return ZoneWithAnimalsResponseDTO.convert(daoZone.findByIdWithAnimal(id)
                 .orElseThrow(() -> {
                     logger.warn("Zone avec id {} n'existe pas", id);
                     return new ZoneNotFoundException(id);
