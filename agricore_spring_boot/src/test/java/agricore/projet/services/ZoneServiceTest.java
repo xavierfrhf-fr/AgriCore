@@ -32,6 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -302,7 +303,7 @@ public class ZoneServiceTest {
                 1,
                 NomRessource.Fraise,
                 1,
-                1.,
+                new PrixLot(BigDecimal.valueOf(1.00),100,Unite.GRAMME),
                 1,
                 ZONE1
         );

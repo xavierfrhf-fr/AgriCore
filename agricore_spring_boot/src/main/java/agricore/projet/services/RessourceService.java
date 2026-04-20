@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import agricore.projet.model.NomRessource;
 import agricore.projet.model.PrixLot;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class RessourceService {
                 .orElseThrow(() -> new RessourceNotFoundException(id));
     }
 
-    public RessourceResponseDTO create(RessourceRequestDTO request) {
+    public RessourceResponseDTO create(@Valid RessourceRequestDTO request) {
         if (ressourceAlreadyExists(request)) {
             throw new RuntimeException("Ressource existe déjà"); // Exception custom ou alors transformer en patch pour
                                                                  // modifier quantité ?
@@ -107,7 +108,7 @@ public class RessourceService {
         return ressourceResponse;
     }
 
-    public RessourceResponseDTO update(Integer id, RessourceRequestDTO request) {
+    public RessourceResponseDTO update(Integer id, @Valid RessourceRequestDTO request) {
         Ressource ressource = findByIdOrThrow(id);
         logger.trace("Ressource avant update() : {}", ressource);
         if (request.getNom() != ressource.getNom()) {

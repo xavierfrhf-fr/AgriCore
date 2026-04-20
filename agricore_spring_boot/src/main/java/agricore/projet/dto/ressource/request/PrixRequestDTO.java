@@ -1,12 +1,20 @@
 package agricore.projet.dto.ressource.request;
 
 import agricore.projet.model.Unite;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
 public class PrixRequestDTO {
+    @NotNull
+    @DecimalMin("0.00")
     private BigDecimal prixPar;
+    @NotNull
+    @Min(0)
     private Integer quantiteLot;
+    @NotNull
     private Unite unite;
 
     public PrixRequestDTO() {

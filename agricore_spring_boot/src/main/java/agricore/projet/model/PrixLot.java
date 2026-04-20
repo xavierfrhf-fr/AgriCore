@@ -15,7 +15,7 @@ public class PrixLot {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal prixPar;//2 dans l'exemple
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "quantite_lot")
     private int quantite;//100 dans l'exemple
 
     @Enumerated(EnumType.STRING)
