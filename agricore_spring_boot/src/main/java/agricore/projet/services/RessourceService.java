@@ -1,9 +1,11 @@
 package agricore.projet.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import agricore.projet.model.NomRessource;
+import agricore.projet.model.PrixLot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -66,7 +68,11 @@ public class RessourceService {
         );
         ressource.setNom(request.getNom());
         ressource.setQuantite(request.getQuantite());
-        ressource.setPrix(request.getPrix());
+        PrixLot prixLot = new PrixLot();
+        prixLot.setUnite(request.getPrixLot().getUnite());
+        prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
+        prixLot.setPrixPar(BigDecimal.valueOf(request.getPrixLot().getPrixPar()));
+        ressource.setPrixLot(prixLot);
         ressource.setStockMin(request.getStockMin());
         RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));
         logger.trace("Ressource cree par create() : {}", ressourceResponse);
@@ -86,8 +92,20 @@ public class RessourceService {
         }
         if (request.getQuantite() != null)
             ressource.setQuantite(request.getQuantite());
-        if (request.getPrix() != null)
-            ressource.setPrix(request.getPrix());
+        if (request.getPrixLot() != null) {//Update partielle du prixLot
+            PrixLot prixLot = ressource.getPrixLot();
+            if (request.getPrixLot().getUnite() != null) {
+                prixLot.setUnite(request.getPrixLot().getUnite());
+            }
+            if (request.getPrixLot().getPrixPar() != null){
+                prixLot.setPrixPar(BigDecimal.valueOf(request.getPrixLot().getPrixPar()));
+            }
+            if (request.getPrixLot().getQuantiteLot()!= null){
+                prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
+            }
+
+            ressource.setPrixLot(prixLot);
+        }
         if (request.getStockMin() != null)
             ressource.setStockMin(request.getStockMin());
 
@@ -108,7 +126,11 @@ public class RessourceService {
             logger.error("Impossible de changer le type d'une ressource déjà instancié ! (modification ignorée)");
         }
         ressource.setQuantite(request.getQuantite());
-        ressource.setPrix(request.getPrix());
+        PrixLot prixLot = new PrixLot();
+        prixLot.setUnite(request.getPrixLot().getUnite());
+        prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
+        prixLot.setPrixPar(BigDecimal.valueOf(request.getPrixLot().getPrixPar()));
+        ressource.setPrixLot(prixLot);
         ressource.setStockMin(request.getStockMin());
         RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));
         logger.trace("Ressource apres update() : {}", ressourceResponse);

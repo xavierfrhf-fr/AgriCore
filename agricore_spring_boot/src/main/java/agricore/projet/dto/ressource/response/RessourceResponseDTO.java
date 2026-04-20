@@ -2,23 +2,24 @@ package agricore.projet.dto.ressource.response;
 
 import agricore.projet.model.NomRessource;
 import agricore.projet.model.NomZone;
+import agricore.projet.model.PrixLot;
 import agricore.projet.model.Ressource;
 
 public class RessourceResponseDTO {
     private Integer id;
     private NomRessource nom;
     private int quantite;
-    private double prix;
+    private PrixResponseDTO prixLot;
     private int stockMin;
     private Integer zoneId;
     private NomZone zoneNom; // Pour eviter une seconde requete pour le nom que l on voudra afficher
 
-    public RessourceResponseDTO(Integer id, NomRessource nom, int quantite, double prix, int stockMin, Integer zoneId,
+    public RessourceResponseDTO(Integer id, NomRessource nom, int quantite, PrixResponseDTO prixLot, int stockMin, Integer zoneId,
             NomZone zoneNom) {
         this.id = id;
         this.nom = nom;
         this.quantite = quantite;
-        this.prix = prix;
+        this.prixLot = prixLot;
         this.stockMin = stockMin;
         this.zoneId = zoneId;
         this.zoneNom = zoneNom;
@@ -51,12 +52,12 @@ public class RessourceResponseDTO {
         this.quantite = quantite;
     }
 
-    public double getPrix() {
-        return prix;
+    public PrixResponseDTO getPrixLot() {
+        return prixLot;
     }
 
-    public void setPrix(double prix) {
-        this.prix = prix;
+    public void setPrixLot(PrixResponseDTO prixLot) {
+        this.prixLot = prixLot;
     }
 
     public int getStockMin() {
@@ -85,7 +86,7 @@ public class RessourceResponseDTO {
 
     @Override
     public String toString() {
-        return "RessourceResponseDTO [id=" + id + ", nom=" + nom + ", quantite=" + quantite + ", prix=" + prix
+        return "RessourceResponseDTO [id=" + id + ", nom=" + nom + ", quantite=" + quantite + ", prix=" + prixLot
                 + ", stockMin=" + stockMin + ", zoneId=" + zoneId + ", zoneNom=" + zoneNom + "]";
     }
 
@@ -94,7 +95,7 @@ public class RessourceResponseDTO {
         response.setId(r.getId());
         response.setNom(r.getNom());
         response.setQuantite(r.getQuantite());
-        response.setPrix(r.getPrix());
+        response.setPrixLot(PrixResponseDTO.convert(r.getPrixLot()));
         response.setStockMin(r.getStockMin());
         response.setZoneId(r.getZone().getId());
         response.setZoneNom(r.getZone().getNomZone());

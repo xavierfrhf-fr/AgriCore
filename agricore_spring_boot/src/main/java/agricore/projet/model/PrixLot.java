@@ -13,7 +13,7 @@ import java.util.Formatter;
 public class PrixLot {
     //Doit pouvoir modéliser, par exemple 100g à 2€
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal prix;//2 dans l'exemple
+    private BigDecimal prixPar;//2 dans l'exemple
 
     @Column(nullable = false)
     private int quantite;//100 dans l'exemple
@@ -25,8 +25,8 @@ public class PrixLot {
     public PrixLot() {
     }
 
-    public PrixLot(BigDecimal prix, int quantite, Unite unite) {
-        this.prix = scale(prix);
+    public PrixLot(BigDecimal prixPar, int quantite, Unite unite) {
+        this.prixPar = scale(prixPar);
         this.quantite = quantite;
         this.unite = unite;
     }
@@ -38,12 +38,12 @@ public class PrixLot {
         return value.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public BigDecimal getPrix() {
-        return prix;
+    public BigDecimal getPrixPar() {
+        return prixPar;
     }
 
-    public void setPrix(BigDecimal prix) {
-        this.prix = scale(prix);
+    public void setPrixPar(BigDecimal prixPar) {
+        this.prixPar = scale(prixPar);
     }
 
     public int getQuantite() {
@@ -63,16 +63,16 @@ public class PrixLot {
     }
 
     public BigDecimal calculerTotal(int nbLots) {
-        return prix.multiply(BigDecimal.valueOf(nbLots))
+        return prixPar.multiply(BigDecimal.valueOf(nbLots))
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getPrixUnitaire() {
-        return prix.divide(BigDecimal.valueOf(quantite), 4, RoundingMode.HALF_UP);
+        return prixPar.divide(BigDecimal.valueOf(quantite), 4, RoundingMode.HALF_UP);
     }
 
     public String getAffichage() {
-        return prix.setScale(2, RoundingMode.HALF_UP) + " € / " + quantite + " " + unite.getAffichage();
+        return prixPar.setScale(2, RoundingMode.HALF_UP) + " € / " + quantite + " " + unite.getAffichage();
     }
 
     public String getPrixByRef() {
@@ -87,5 +87,10 @@ public class PrixLot {
                 .setScale(2, RoundingMode.HALF_UP);
 
         return prixConverti + " € / " + ref.getAffichage();
+    }
+
+    @Override
+    public String toString() {
+        return getAffichage();
     }
 }
