@@ -2,22 +2,24 @@ package agricore.projet.dto.ressource.response;
 
 import agricore.projet.model.NomRessource;
 import agricore.projet.model.NomZone;
-import agricore.projet.model.PrixLot;
 import agricore.projet.model.Ressource;
 
 public class RessourceResponseDTO {
     private Integer id;
     private NomRessource nom;
+    private String uniteAffichage;
     private int quantite;
     private PrixResponseDTO prixLot;
     private int stockMin;
     private Integer zoneId;
     private NomZone zoneNom; // Pour eviter une seconde requete pour le nom que l on voudra afficher
 
-    public RessourceResponseDTO(Integer id, NomRessource nom, int quantite, PrixResponseDTO prixLot, int stockMin, Integer zoneId,
+    public RessourceResponseDTO(Integer id, NomRessource nom, String uniteAffichage, int quantite,
+            PrixResponseDTO prixLot, int stockMin, Integer zoneId,
             NomZone zoneNom) {
         this.id = id;
         this.nom = nom;
+        this.uniteAffichage = uniteAffichage;
         this.quantite = quantite;
         this.prixLot = prixLot;
         this.stockMin = stockMin;
@@ -42,6 +44,14 @@ public class RessourceResponseDTO {
 
     public void setNom(NomRessource nom) {
         this.nom = nom;
+    }
+
+    public String getuniteAffichage() {
+        return uniteAffichage;
+    }
+
+    public void setuniteAffichage(String uniteAffichage) {
+        this.uniteAffichage = uniteAffichage;
     }
 
     public int getQuantite() {
@@ -86,14 +96,17 @@ public class RessourceResponseDTO {
 
     @Override
     public String toString() {
-        return "RessourceResponseDTO [id=" + id + ", nom=" + nom + ", quantite=" + quantite + ", prix=" + prixLot
-                + ", stockMin=" + stockMin + ", zoneId=" + zoneId + ", zoneNom=" + zoneNom + "]";
+        return "RessourceResponseDTO [id=" + id + ", nom=" + nom + ", uniteAffichage=" + uniteAffichage
+                + ", quantite="
+                + quantite + ", prixLot=" + prixLot + ", stockMin=" + stockMin + ", zoneId=" + zoneId + ", zoneNom="
+                + zoneNom + "]";
     }
 
     public static RessourceResponseDTO convert(Ressource r) {
         RessourceResponseDTO response = new RessourceResponseDTO();
         response.setId(r.getId());
         response.setNom(r.getNom());
+        response.setuniteAffichage(r.getNom().getUniteStockage().getAffichage());
         response.setQuantite(r.getQuantite());
         response.setPrixLot(PrixResponseDTO.convert(r.getPrixLot()));
         response.setStockMin(r.getStockMin());
@@ -101,4 +114,5 @@ public class RessourceResponseDTO {
         response.setZoneNom(r.getZone().getNomZone());
         return response;
     }
+
 }

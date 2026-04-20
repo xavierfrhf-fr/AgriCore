@@ -11,16 +11,16 @@ import java.util.Formatter;
 
 @Embeddable
 public class PrixLot {
-    //Doit pouvoir modéliser, par exemple 100g à 2€
+    // Doit pouvoir modéliser, par exemple 100g à 2€
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal prixPar;//2 dans l'exemple
+    private BigDecimal prixPar;// 2 dans l'exemple
 
-    @Column(nullable = false,name = "quantite_lot")
-    private int quantite;//100 dans l'exemple
+    @Column(nullable = false, name = "quantite_lot")
+    private int quantite;// 100 dans l'exemple
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Unite unite;//Unite.GRAMME dans l'exemple
+    private Unite unite;// Unite.GRAMME dans l'exemple
 
     public PrixLot() {
     }
@@ -76,14 +76,14 @@ public class PrixLot {
     }
 
     public String getPrixByRef() {
-        //Permet d'afficher prix au litre ou prix au kilo ou prix unitaire
+        // Permet d'afficher prix au litre ou prix au kilo ou prix unitaire
         Unite ref = Unite.getReference(unite);
 
         double quantiteConvertie = unite.convertirVers(ref, quantite);
 
-        BigDecimal prixUnitaire = getPrixUnitaire();
-        BigDecimal prixConverti = prixUnitaire
-                .multiply(BigDecimal.valueOf(quantiteConvertie))
+        // ex: 2€ / (100 g / 1 kg) = 20€/kg
+        BigDecimal prixConverti = prixPar
+                .divide(BigDecimal.valueOf(quantiteConvertie), 4, RoundingMode.HALF_UP)
                 .setScale(2, RoundingMode.HALF_UP);
 
         return prixConverti + " € / " + ref.getAffichage();
