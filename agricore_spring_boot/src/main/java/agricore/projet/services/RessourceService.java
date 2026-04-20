@@ -69,7 +69,7 @@ public class RessourceService {
         PrixLot prixLot = new PrixLot();
         prixLot.setUnite(request.getPrixLot().getUnite());
         prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
-        prixLot.setPrixPar(BigDecimal.valueOf(request.getPrixLot().getPrixPar()));
+        prixLot.setPrixPar(request.getPrixLot().getPrixPar());
         ressource.setPrixLot(prixLot);
         ressource.setStockMin(request.getStockMin());
         RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));
@@ -91,7 +91,7 @@ public class RessourceService {
                 prixLot.setUnite(request.getPrixLot().getUnite());
             }
             if (request.getPrixLot().getPrixPar() != null){
-                prixLot.setPrixPar(BigDecimal.valueOf(request.getPrixLot().getPrixPar()));
+                prixLot.setPrixPar(request.getPrixLot().getPrixPar());
             }
             if (request.getPrixLot().getQuantiteLot()!= null){
                 prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
@@ -117,7 +117,7 @@ public class RessourceService {
         PrixLot prixLot = new PrixLot();
         prixLot.setUnite(request.getPrixLot().getUnite());
         prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
-        prixLot.setPrixPar(BigDecimal.valueOf(request.getPrixLot().getPrixPar()));
+        prixLot.setPrixPar(request.getPrixLot().getPrixPar());
         ressource.setPrixLot(prixLot);
         ressource.setStockMin(request.getStockMin());
         RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));

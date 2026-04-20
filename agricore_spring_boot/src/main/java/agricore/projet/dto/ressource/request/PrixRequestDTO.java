@@ -5,24 +5,24 @@ import agricore.projet.model.Unite;
 import java.math.BigDecimal;
 
 public class PrixRequestDTO {
-    private Double prixPar;
+    private BigDecimal prixPar;
     private Integer quantiteLot;
     private Unite unite;
 
     public PrixRequestDTO() {
     }
 
-    public PrixRequestDTO(Double prixPar, Integer quantiteLot, Unite unite) {
+    public PrixRequestDTO(BigDecimal prixPar, Integer quantiteLot, Unite unite) {
         this.prixPar = prixPar;
         this.quantiteLot = quantiteLot;
         this.unite = unite;
     }
 
-    public Double getPrixPar() {
+    public BigDecimal getPrixPar() {
         return prixPar;
     }
 
-    public void setPrixPar(Double prix) {
+    public void setPrixPar(BigDecimal prix) {
         this.prixPar = prix;
     }
 

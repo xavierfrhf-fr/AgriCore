@@ -3,8 +3,10 @@ package agricore.projet.dto.ressource.response;
 import agricore.projet.model.PrixLot;
 import agricore.projet.model.Unite;
 
+import java.math.BigDecimal;
+
 public class PrixResponseDTO {
-    double prixPar;
+    BigDecimal prixPar;
     Unite unite;
     int quantiteLot;
     String affPrix;
@@ -13,7 +15,7 @@ public class PrixResponseDTO {
     public PrixResponseDTO() {
     }
 
-    public PrixResponseDTO(double prixPar, Unite unite, int quantiteLot, String affPrix, String affPrixUnitaire) {
+    public PrixResponseDTO(BigDecimal prixPar, Unite unite, int quantiteLot, String affPrix, String affPrixUnitaire) {
         this.prixPar = prixPar;
         this.unite = unite;
         this.quantiteLot = quantiteLot;
@@ -21,11 +23,11 @@ public class PrixResponseDTO {
         this.affPrixUnitaire = affPrixUnitaire;
     }
 
-    public double getPrixPar() {
+    public BigDecimal getPrixPar() {
         return prixPar;
     }
 
-    public void setPrixPar(double prixPar) {
+    public void setPrixPar(BigDecimal prixPar) {
         this.prixPar = prixPar;
     }
 
@@ -63,7 +65,7 @@ public class PrixResponseDTO {
 
     public static PrixResponseDTO convert(PrixLot prixLot){
         PrixResponseDTO response = new PrixResponseDTO();
-        response.setPrixPar(prixLot.getPrixPar().doubleValue());
+        response.setPrixPar(prixLot.getPrixPar());
         response.setUnite(prixLot.getUnite());
         response.setQuantiteLot(prixLot.getQuantite());
         response.setAffPrix(prixLot.getAffichage());
