@@ -10,11 +10,11 @@ public enum NomRessource {
     Tournesol(Unite.KILOGRAM),
     Blé(Unite.KILOGRAM),
     Colza(Unite.KILOGRAM),
-    JusDePomme(Unite.KILOGRAM);
+    JusDePomme(Unite.LITRE);
 
     private final Unite uniteStockage;
 
-    private NomRessource(Unite uniteStockage){
+    private NomRessource(Unite uniteStockage) {
         this.uniteStockage = uniteStockage;
     }
 
@@ -23,5 +23,3 @@ public enum NomRessource {
     }
 
 }
-
-
