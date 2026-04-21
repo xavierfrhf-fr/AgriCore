@@ -33,6 +33,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -316,8 +317,13 @@ public class ZoneServiceTest {
 
         assertThat(response.getRessources().size()).isEqualTo(1);
         assertThat(response.getRessources())
-                .extracting("id","nom","quantite","prix","stockMin","zoneId","zoneNom")
-                .containsExactly(tuple(1,NomRessource.Fraise,1,1.,1,ZONE1_ID,ZONE1_NOMZONE.name()));
+                .extracting("id","nom","quantite","stockMin","zoneId","zoneNom")
+                .containsExactly(tuple(1,NomRessource.Fraise,1,1,ZONE1_ID,ZONE1_NOMZONE));
+
+        assertThat(response.getRessources())
+                .extracting("prixLot")
+                        .extracting("prixPar","quantiteLot","unite")
+                .containsExactly(tuple(BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP),100,Unite.GRAMME));
 
         assertThat(response)
                 .extracting(ZoneWithRessourcesResponseDTO::getNomZone,

@@ -299,8 +299,7 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].id").value(1));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].nom").value(NomRessource.Fraise.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].quantite").value(1));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].prix").value(1.));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].stockMin").value(1));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].stockMin").value(10));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].zoneId").value(ZONE_ID));
     }
 

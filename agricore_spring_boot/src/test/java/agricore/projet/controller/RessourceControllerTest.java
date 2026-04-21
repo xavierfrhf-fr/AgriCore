@@ -116,7 +116,7 @@ public class RessourceControllerTest {
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.nom").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.quantite").exists());
-                result.andExpect(MockMvcResultMatchers.jsonPath("$.prix").exists());
+                result.andExpect(MockMvcResultMatchers.jsonPath("$.prixLot").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.stockMin").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneId").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneNom").exists());
@@ -146,7 +146,7 @@ public class RessourceControllerTest {
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.nom").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.quantite").exists());
-                result.andExpect(MockMvcResultMatchers.jsonPath("$.prix").exists());
+                result.andExpect(MockMvcResultMatchers.jsonPath("$.prixLot").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.stockMin").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneId").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneNom").exists());
@@ -175,7 +175,7 @@ public class RessourceControllerTest {
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.nom").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.quantite").exists());
-                result.andExpect(MockMvcResultMatchers.jsonPath("$.prix").exists());
+                result.andExpect(MockMvcResultMatchers.jsonPath("$.prixLot").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.stockMin").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneId").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneNom").exists());
@@ -217,7 +217,7 @@ public class RessourceControllerTest {
                 result.andExpect(MockMvcResultMatchers.jsonPath("$[*].id").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$[*].nom").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$[*].quantite").exists());
-                result.andExpect(MockMvcResultMatchers.jsonPath("$[*].prix").exists());
+                result.andExpect(MockMvcResultMatchers.jsonPath("$[*].prixLot").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$[*].stockMin").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$[*].zoneId").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$[*].zoneNom").exists());
@@ -246,7 +246,7 @@ public class RessourceControllerTest {
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.nom").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.quantite").exists());
-                result.andExpect(MockMvcResultMatchers.jsonPath("$.prix").exists());
+                result.andExpect(MockMvcResultMatchers.jsonPath("$.prixLot").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.stockMin").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneId").exists());
                 result.andExpect(MockMvcResultMatchers.jsonPath("$.zoneNom").exists());
