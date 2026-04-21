@@ -20,7 +20,11 @@ import agricore.projet.services.AnimalService;
 @RequestMapping("/api/animal")
 public class AnimalController {
 
-    AnimalService animalService;
+    private final AnimalService animalService;
+
+    public AnimalController(AnimalService animalService) {
+        this.animalService = animalService;
+    }
 
     @GetMapping
     public List<AnimalResponse> getAll() {
