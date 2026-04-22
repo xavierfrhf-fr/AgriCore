@@ -3,6 +3,7 @@ package agricore.projet.controller;
 
 import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.ZoneResponseDTO;
+import agricore.projet.dto.zone.response.ZoneWithAnimalsResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.services.ZoneService;
@@ -59,6 +60,11 @@ public class ZoneController {
     @GetMapping("/ressource/{id}")
     public ZoneWithRessourcesResponseDTO getZoneWithRessources(@PathVariable Integer id){
         return zoneService.getZoneWithRessources(id);
+    }
+
+    @GetMapping("/animals/{id}")
+    public ZoneWithAnimalsResponseDTO getZoneWithAnimals(@PathVariable Integer id){
+        return zoneService.getZoneWithAnimals(id);
     }
 
 }
