@@ -1,18 +1,25 @@
 package agricore.projet.model;
 
 public enum NomRessource {
-    Pomme("Kg"), Poire("Kg"), Fraise("Kg"), Lait("L"), Fromage("Kg"), JusDePomme("L");
+    Pomme(Unite.KILOGRAM),
+    Poire(Unite.KILOGRAM),
+    Fraise(Unite.KILOGRAM),
+    Lait(Unite.LITRE),
+    Fromage(Unite.KILOGRAM),
+    Mais(Unite.KILOGRAM),
+    Tournesol(Unite.KILOGRAM),
+    Blé(Unite.KILOGRAM),
+    Colza(Unite.KILOGRAM),
+    JusDePomme(Unite.LITRE);
 
-    private String unite;
+    private final Unite uniteStockage;
 
-    private NomRessource(String unite){
-        this.unite = unite;
+    private NomRessource(Unite uniteStockage) {
+        this.uniteStockage = uniteStockage;
     }
 
-    public String getUnite() {
-        return unite;
+    public Unite getUniteStockage() {
+        return uniteStockage;
     }
 
 }
-
-

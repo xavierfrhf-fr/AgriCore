@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -24,14 +25,14 @@ import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOZone;
-import agricore.projet.repository.VehiculeRepository;
+import agricore.projet.repository.IDAOVehicule;
 
 @ExtendWith(MockitoExtension.class)
 public class VehiculeServiceTest {
 
 
     @Mock
-    VehiculeRepository vehiculeRepository;
+    IDAOVehicule vehiculeRepository;
 
     @Mock
     IDAOZone daoZone;
@@ -44,10 +45,14 @@ public class VehiculeServiceTest {
     void shouldFindByIdDTO() {
         
         //given 
+        Zone zone = new Zone();
+        zone.setId(1);
+
         Vehicule v = new Vehicule();
         v.setId(1);
         v.setTypeVehicule(TypeVehicule.Utilitaire);
         v.setDateControleTech(LocalDate.now().plusDays(10));
+        v.setZone(zone);
 
         //when 
         when(vehiculeRepository.findById(1)).thenReturn(Optional.of(v));
@@ -69,6 +74,49 @@ public class VehiculeServiceTest {
 
         assertThrows(VehiculeNotFound.class, () ->  vehiculeService.findByIdDTO(1));
     }
+
+    @Test
+    void shouldFindAllDTO() {
+        //given 
+        Zone zone = new Zone();
+        zone.setId(1);
+
+        Vehicule v1 = new Vehicule();
+        v1.setId(1);
+        v1.setTypeVehicule(TypeVehicule.Utilitaire);
+        v1.setDateControleTech(LocalDate.now().plusDays(10));
+        v1.setZone(zone);
+
+        Vehicule v2 = new Vehicule();
+        v2.setId(2);
+        v2.setTypeVehicule(TypeVehicule.Tracteur);
+        v2.setDateControleTech(LocalDate.now().plusDays(20));
+        v2.setZone(zone);
+
+        //when
+        when(vehiculeRepository.findAll()).thenReturn(List.of(v1, v2));
+
+        var rez = vehiculeService.findAllDTO();
+
+        //then
+        assertNotNull(rez);
+        assertEquals(2, rez.size());
+
+    }
+
+    @Test
+    void shouldFindAllDTOEmpty() {
+        //given 
+
+        //when
+        when(vehiculeRepository.findAll()).thenReturn(List.of());
+
+        //then
+        assertThrows(VehiculeNotFound.class, () -> vehiculeService.findAllDTO());
+
+    }   
+
+
 
     @Test 
     void shouldCreateVehicule() {
@@ -200,11 +248,16 @@ public class VehiculeServiceTest {
 
     @Test
     void shouldDeleteVehicule() {
-      
+        Vehicule v = new Vehicule();
+        v.setId(1);
+        
+        //given
+        when(vehiculeRepository.existsById(1)).thenReturn(true);
         // when
         vehiculeService.delete(1);
 
         // then
+        
         verify(vehiculeRepository).deleteById(1);  
 
     }

@@ -17,6 +17,18 @@ public class AnimalResponse {
     private Integer zoneId;
     private String zoneName;
 
+    public AnimalResponse(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece, Integer zoneId, String zoneName) {
+        this.id = id;
+        this.male = male;
+        this.dateNaissance = dateNaissance;
+        this.dateVaccination = dateVaccination;
+        this.espece = espece;
+        this.zoneId = zoneId;
+        this.zoneName = zoneName;
+    }
+
+    public AnimalResponse() {}
+
     public Integer getId() {
         return id;
     }

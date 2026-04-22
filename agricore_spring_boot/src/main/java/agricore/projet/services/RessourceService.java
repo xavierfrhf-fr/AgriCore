@@ -1,80 +1,157 @@
 package agricore.projet.services;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
+import agricore.projet.model.NomRessource;
+import agricore.projet.model.PrixLot;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
+import agricore.projet.exception.RessourceNotFoundException;
+import agricore.projet.model.NomRessource;
 import agricore.projet.model.Ressource;
 import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 
-//TODO LOGS ET TESTS
 @Service
 public class RessourceService {
-    private final IDAORessource daoRessource;
-    private final IDAOZone daoZone;
+    private static final Logger logger = LoggerFactory.getLogger(RessourceService.class);
 
-    public RessourceService(IDAORessource daoRessource, IDAOZone daoZone) {
+    private final IDAORessource daoRessource;
+    private final ZoneService zoneService;
+
+    public RessourceService(IDAORessource daoRessource, IDAOZone daoZone, ZoneService zoneService) {
         this.daoRessource = daoRessource;
-        this.daoZone = daoZone;
+        this.zoneService = zoneService;
     }
 
     public List<RessourceResponseDTO> getAll() {
-        return daoRessource.findAll()
+        List<RessourceResponseDTO> ressources = daoRessource.findAll()
                 .stream()
                 .map(RessourceResponseDTO::convert)
                 .toList();
+
+        logger.trace("{} ressources recuperees par le findAll()", ressources.size());
+        return ressources;
     }
 
     public RessourceResponseDTO getById(Integer id) {
         return daoRessource.findById(id)
                 .map(RessourceResponseDTO::convert)
-                .orElse(null);
+                .map(r -> {
+                    logger.trace("Ressource recuperee par findById() id {}: {}", id, r);
+                    return r;
+                })
+                .or(() -> {
+                    logger.warn("Aucune ressource trouvee par findById() id {}", id);
+                    return Optional.empty();
+                })
+                .orElseThrow(() -> new RessourceNotFoundException(id));
     }
 
-    public RessourceResponseDTO create(RessourceRequestDTO request) {
-        Ressource r = new Ressource();
-        r.setNom(request.getNom());
-        r.setQuantite(request.getQuantite());
-        r.setPrix(request.getPrix());
-        r.setStockMin(request.getStockMin());
-        r.setZone(daoZone.findById(request.getZoneId()).orElseThrow());
-        return RessourceResponseDTO.convert(daoRessource.save(r));
+    public RessourceResponseDTO create(@Valid RessourceRequestDTO request) {
+        if (ressourceAlreadyExists(request)) {
+            throw new RuntimeException("Ressource existe déjà"); // Exception custom ou alors transformer en patch pour
+                                                                 // modifier quantité ?
+        }
+
+        Ressource ressource = new Ressource();
+        ressource.setZone(zoneService.findZoneThatStoreRessources(request.getNom())
+                .orElseThrow(
+                        () -> new RuntimeException("Aucune zone ne permet de stocker : " + request.getNom().name())));
+        ressource.setNom(request.getNom());
+        ressource.setQuantite(request.getQuantite());
+        PrixLot prixLot = new PrixLot();
+        prixLot.setUnite(request.getPrixLot().getUnite());
+        prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
+        prixLot.setPrixPar(request.getPrixLot().getPrixPar());
+        ressource.setPrixLot(prixLot);
+        ressource.setStockMin(request.getStockMin());
+        RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));
+        logger.trace("Ressource cree par create() : {}", ressourceResponse);
+        return ressourceResponse;
     }
 
     public RessourceResponseDTO patch(Integer id, RessourceRequestDTO request) {
-        Ressource r = daoRessource.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ressource introuvable pour l'id " + id));
-        if (request.getNom() != null)
-            r.setNom(request.getNom());
+        Ressource ressource = findByIdOrThrow(id);
+        logger.trace("Ressource avant patch() : {}", ressource);
+        if (request.getNom() != null || request.getNom() != ressource.getNom()) {
+            logger.error("Impossible de changer le type d'une ressource déjà instancié !");
+        }
         if (request.getQuantite() != null)
-            r.setQuantite(request.getQuantite());
-        if (request.getPrix() != null)
-            r.setPrix(request.getPrix());
+            ressource.setQuantite(request.getQuantite());
+        if (request.getPrixLot() != null) {//Update partielle du prixLot
+            PrixLot prixLot = ressource.getPrixLot();
+            if (request.getPrixLot().getUnite() != null) {
+                prixLot.setUnite(request.getPrixLot().getUnite());
+            }
+            if (request.getPrixLot().getPrixPar() != null){
+                prixLot.setPrixPar(request.getPrixLot().getPrixPar());
+            }
+            if (request.getPrixLot().getQuantiteLot()!= null){
+                prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
+            }
+
+            ressource.setPrixLot(prixLot);
+        }
         if (request.getStockMin() != null)
-            r.setStockMin(request.getStockMin());
-        if (request.getZoneId() != null)
-            r.setZone(daoZone.findById(request.getZoneId()).orElseThrow());
-        return RessourceResponseDTO.convert(daoRessource.save(r));
+            ressource.setStockMin(request.getStockMin());
+
+        RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));
+        logger.trace("Ressource apres patch() : {}", ressourceResponse);
+        return ressourceResponse;
     }
 
-    public RessourceResponseDTO update(Integer id, RessourceRequestDTO request) {
-        Ressource r = daoRessource.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ressource introuvable pour l'id " + id));
-        r.setNom(request.getNom());
-        r.setQuantite(request.getQuantite());
-        r.setPrix(request.getPrix());
-        r.setStockMin(request.getStockMin());
-        r.setZone(daoZone.findById(request.getZoneId()).orElseThrow());
-        return RessourceResponseDTO.convert(daoRessource.save(r));
+    public RessourceResponseDTO update(Integer id, @Valid RessourceRequestDTO request) {
+        Ressource ressource = findByIdOrThrow(id);
+        logger.trace("Ressource avant update() : {}", ressource);
+        if (request.getNom() != ressource.getNom()) {
+            logger.error("Impossible de changer le type d'une ressource déjà instancié ! (modification ignorée)");
+        }
+        ressource.setQuantite(request.getQuantite());
+        PrixLot prixLot = new PrixLot();
+        prixLot.setUnite(request.getPrixLot().getUnite());
+        prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
+        prixLot.setPrixPar(request.getPrixLot().getPrixPar());
+        ressource.setPrixLot(prixLot);
+        ressource.setStockMin(request.getStockMin());
+        RessourceResponseDTO ressourceResponse = RessourceResponseDTO.convert(daoRessource.save(ressource));
+        logger.trace("Ressource apres update() : {}", ressourceResponse);
+        return ressourceResponse;
     }
 
     public void deleteById(Integer id) {
-        daoRessource.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ressource introuvable pour l'id " + id));
+        findByIdOrThrow(id);
+        logger.trace("Suppression de la ressource id {}", id);
         daoRessource.deleteById(id);
+    }
+
+    public boolean ressourceAlreadyExists(NomRessource nomRessource) {
+        // Indique si une ressource existe déjà en BDD
+        // Attention ne prends pas en compte la possiblité d'avoir plusieurs fermier
+        // (gérant plusieurs fermes dans la même BDD)
+        return daoRessource.findAll()
+                .stream()
+                .anyMatch(ressource -> ressource.getNom().equals(nomRessource));
+    }
+
+    public boolean ressourceAlreadyExists(RessourceRequestDTO request) {
+        return ressourceAlreadyExists(request.getNom());
+    }
+
+    private Ressource findByIdOrThrow(Integer id) {
+        return daoRessource.findById(id)
+                .or(() -> {
+                    logger.warn("Ressource introuvable pour l'id {}", id);
+                    return Optional.empty();
+                })
+                .orElseThrow(() -> new RessourceNotFoundException(id));
     }
 
 }

@@ -13,6 +13,16 @@ public class ZoneWithVehiculesResponseDTO {
     private Integer fermierId;
     private List<VehiculeResponseDTO> vehicules;
 
+    public ZoneWithVehiculesResponseDTO() {}
+
+    public ZoneWithVehiculesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, List<VehiculeResponseDTO> vehicules) {
+        this.id = id;
+        this.position = position;
+        this.nomZone = nomZone;
+        this.fermierId = fermierId;
+        this.vehicules = vehicules;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -51,9 +61,6 @@ public class ZoneWithVehiculesResponseDTO {
 
     public void setVehicules(List<VehiculeResponseDTO> vehicules) {
         this.vehicules = vehicules;
-    }
-
-    public ZoneWithVehiculesResponseDTO() {
     }
 
     public static ZoneWithVehiculesResponseDTO convert(Zone zone){
