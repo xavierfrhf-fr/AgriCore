@@ -1,13 +1,13 @@
 package agricore.projet.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,18 +17,25 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 
+import agricore.projet.config.SecurityConfig;
+import agricore.projet.dto.ressource.request.PrixRequestDTO;
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
+import agricore.projet.dto.ressource.response.PrixResponseDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.NomRessource;
 import agricore.projet.model.NomZone;
+import agricore.projet.model.PrixLot;
 import agricore.projet.model.Ressource;
+import agricore.projet.model.Unite;
 import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 
 @ExtendWith(MockitoExtension.class)
+@Import(SecurityConfig.class)
 class RessourceServiceTest {
 
     @Mock
@@ -44,13 +51,15 @@ class RessourceServiceTest {
     private static final int ZONE_ID = 10;
     private static final int QUANTITE = 100;
     private static final int STOCK_MIN = 20;
-    private static final double PRIX = 15.5;
+    private static final PrixLot PRIX_LOT = new PrixLot(new BigDecimal("2.00"), 100, Unite.GRAMME);
+    private static final PrixRequestDTO PRIX_REQUEST_DTO = new PrixRequestDTO(new BigDecimal("2.00"), 100,
+            Unite.GRAMME);
     private static final NomRessource NOM_RESSOURCE = NomRessource.Blé;
     private static final NomZone NOM_ZONE = NomZone.SILO;
     private static final int ID_INEXISTANT = 99;
     private static final int QUANTITE_MODIFIEE = 200;
+    private static final NomRessource NOM_RESSOURCE_UPDATE = NomRessource.Fraise;
     private static final int QUANTITE_UPDATE = 300;
-    private static final double PRIX_UPDATE = 20.0;
     private static final int STOCK_MIN_UPDATE = 50;
 
     private Zone zone;
@@ -62,8 +71,20 @@ class RessourceServiceTest {
         zone = new Zone();
         zone.setId(ZONE_ID);
         zone.setNomZone(NOM_ZONE);
-        ressource = new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE, PRIX, STOCK_MIN, zone);
-        request = new RessourceRequestDTO(NOM_RESSOURCE, QUANTITE, PRIX, STOCK_MIN);
+        ressource = new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE, PRIX_LOT, STOCK_MIN, zone);
+        request = new RessourceRequestDTO(NOM_RESSOURCE, QUANTITE, PRIX_REQUEST_DTO, STOCK_MIN);
+    }
+
+    @Test
+    void SetRequestDTOSetFields() {
+        request = new RessourceRequestDTO();
+        request.setNom(NOM_RESSOURCE);
+        request.setQuantite(QUANTITE);
+        request.setStockMin(STOCK_MIN);
+
+        assertThat(request.getNom()).isEqualTo(NOM_RESSOURCE);
+        assertThat(request.getQuantite()).isEqualTo(QUANTITE);
+        assertThat(request.getStockMin()).isEqualTo(STOCK_MIN);
     }
 
     @Test
@@ -86,7 +107,6 @@ class RessourceServiceTest {
         assertThat(result.getId()).isEqualTo(RESSOURCE_ID);
         assertThat(result.getNom()).isEqualTo(NOM_RESSOURCE);
         assertThat(result.getQuantite()).isEqualTo(QUANTITE);
-        assertThat(result.getPrix()).isEqualTo(PRIX);
         assertThat(result.getStockMin()).isEqualTo(STOCK_MIN);
         assertThat(result.getZoneId()).isEqualTo(ZONE_ID);
         assertThat(result.getZoneNom()).isEqualTo(NOM_ZONE);
@@ -136,13 +156,12 @@ class RessourceServiceTest {
     void patchUpdatesOnlyProvidedFields() {
         when(daoRessource.findById(RESSOURCE_ID)).thenReturn(Optional.of(ressource));
         when(daoRessource.save(any()))
-                .thenReturn(new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE_MODIFIEE, PRIX, STOCK_MIN, zone));
+                .thenReturn(new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE_MODIFIEE, PRIX_LOT, STOCK_MIN, zone));
 
         RessourceResponseDTO result = ressourceService.patch(RESSOURCE_ID,
                 new RessourceRequestDTO(null, QUANTITE_MODIFIEE, null, null));
 
         assertThat(result.getQuantite()).isEqualTo(QUANTITE_MODIFIEE);
-        assertThat(result.getPrix()).isEqualTo(PRIX);
         assertThat(result.getStockMin()).isEqualTo(STOCK_MIN);
     }
 
@@ -158,13 +177,12 @@ class RessourceServiceTest {
     void updateReplacesAllFields() {
         when(daoRessource.findById(RESSOURCE_ID)).thenReturn(Optional.of(ressource));
         when(daoRessource.save(any())).thenReturn(
-                new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE_UPDATE, PRIX_UPDATE, STOCK_MIN_UPDATE, zone));
+                new Ressource(RESSOURCE_ID, NOM_RESSOURCE, QUANTITE_UPDATE, PRIX_LOT, STOCK_MIN_UPDATE, zone));
 
         RessourceResponseDTO result = ressourceService.update(RESSOURCE_ID,
-                new RessourceRequestDTO(NOM_RESSOURCE, QUANTITE_UPDATE, PRIX_UPDATE, STOCK_MIN_UPDATE));
+                new RessourceRequestDTO(NOM_RESSOURCE, QUANTITE_UPDATE, PRIX_REQUEST_DTO, STOCK_MIN_UPDATE));
 
         assertThat(result.getQuantite()).isEqualTo(QUANTITE_UPDATE);
-        assertThat(result.getPrix()).isEqualTo(PRIX_UPDATE);
         assertThat(result.getStockMin()).isEqualTo(STOCK_MIN_UPDATE);
     }
 
@@ -173,7 +191,19 @@ class RessourceServiceTest {
         when(daoRessource.findById(ID_INEXISTANT)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> ressourceService.update(ID_INEXISTANT, request))
                 .isInstanceOf(RessourceNotFoundException.class);
-        verify(daoRessource, never()).save(any());
+    }
+
+    @Test
+    void updateIgnoresNameModification() {
+        when(daoRessource.findById(RESSOURCE_ID)).thenReturn(Optional.of(ressource));
+        when(daoRessource.save(any())).thenReturn(
+                new Ressource(RESSOURCE_ID,
+                        NOM_RESSOURCE, QUANTITE_UPDATE, PRIX_LOT, STOCK_MIN_UPDATE, zone));
+
+        RessourceResponseDTO result = ressourceService.update(RESSOURCE_ID,
+                new RessourceRequestDTO(NOM_RESSOURCE_UPDATE, QUANTITE_UPDATE, PRIX_REQUEST_DTO, STOCK_MIN_UPDATE));
+
+        assertThat(result.getNom()).isEqualTo(NOM_RESSOURCE);
     }
 
     @Test

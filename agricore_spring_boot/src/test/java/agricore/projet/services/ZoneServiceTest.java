@@ -3,10 +3,7 @@ package agricore.projet.services;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.dto.zone.request.PositionRequestDTO;
 import agricore.projet.dto.zone.request.ZoneRequestDTO;
-import agricore.projet.dto.zone.response.PositionResponseDTO;
-import agricore.projet.dto.zone.response.ZoneResponseDTO;
-import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
-import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
+import agricore.projet.dto.zone.response.*;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.*;
 import agricore.projet.repository.IDAOUtilisateur;
@@ -32,6 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -294,46 +293,7 @@ public class ZoneServiceTest {
         Mockito.verify(daoZone).deleteById(ZONE1_ID);
     }
 
-    @Test
-    @WithMockUser
-    public void getZoneWithRessourcesShouldContainRessources(){
-        //GIVEN
-        Ressource ressource =  new Ressource(
-                1,
-                NomRessource.Fraise,
-                1,
-                1.,
-                1,
-                ZONE1
-        );
-        Zone zoneWithRessource = ZONE1;
-        zoneWithRessource.setRessources(List.of(ressource));
 
-        Mockito.when(daoZone.findByIdWithRessource(ZONE1_ID)).thenReturn(Optional.of(zoneWithRessource));
-        //When
-        ZoneWithRessourcesResponseDTO response = zoneService.getZoneWithRessources(ZONE1_ID);
-
-        assertThat(response.getRessources().size()).isEqualTo(1);
-        assertThat(response.getRessources())
-                .extracting("id","nom","quantite","prix","stockMin","zoneId","zoneNom")
-                .containsExactly(tuple(1,NomRessource.Fraise,1,1.,1,ZONE1_ID,ZONE1_NOMZONE.name()));
-
-        assertThat(response)
-                .extracting(ZoneWithRessourcesResponseDTO::getNomZone,
-                        ZoneWithRessourcesResponseDTO::getFermierId,
-                        ZoneWithRessourcesResponseDTO::getId)
-                .containsExactly(ZONE1_NOMZONE,FERMIER_ID,ZONE1_ID);
-    }
-
-    @Test
-    public void getZoneByIdWithRessourceShouldThrow(){
-        //GIVEN
-        Mockito.when(daoZone.findByIdWithRessource(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
-        //WHEN + THEN
-        assertThatThrownBy(() -> zoneService.getZoneWithRessources(ZONE_ID_NOT_EXIST))
-                .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
-                .isInstanceOf(ZoneNotFoundException.class);
-    }
 
     @Test
     @WithMockUser
@@ -367,6 +327,89 @@ public class ZoneServiceTest {
         Mockito.when(daoZone.findByIdWithVehicule(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
         //WHEN + THEN
         assertThatThrownBy(() -> zoneService.getZoneWithVehicules(ZONE_ID_NOT_EXIST))
+                .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
+                .isInstanceOf(ZoneNotFoundException.class);
+    }
+
+    @Test
+    @WithMockUser
+    public void getZoneWithRessourcesShouldContainRessources(){
+        //GIVEN
+        Ressource ressource =  new Ressource(
+                1,
+                NomRessource.Fraise,
+                1,
+                new PrixLot(BigDecimal.valueOf(1.00),100,Unite.GRAMME),
+                1,
+                ZONE1
+        );
+        Zone zoneWithRessource = ZONE1;
+        zoneWithRessource.setRessources(List.of(ressource));
+
+        Mockito.when(daoZone.findByIdWithRessource(ZONE1_ID)).thenReturn(Optional.of(zoneWithRessource));
+        //When
+        ZoneWithRessourcesResponseDTO response = zoneService.getZoneWithRessources(ZONE1_ID);
+
+        assertThat(response.getRessources().size()).isEqualTo(1);
+        assertThat(response.getRessources())
+                .extracting("id","nom","quantite","stockMin","zoneId","zoneNom")
+                .containsExactly(tuple(1,NomRessource.Fraise,1,1,ZONE1_ID,ZONE1_NOMZONE));
+
+        assertThat(response.getRessources())
+                .extracting("prixLot")
+                .extracting("prixPar","quantiteLot","unite")
+                .containsExactly(tuple(BigDecimal.valueOf(1.00).setScale(2, RoundingMode.HALF_UP),100,Unite.GRAMME));
+
+        assertThat(response)
+                .extracting(ZoneWithRessourcesResponseDTO::getNomZone,
+                        ZoneWithRessourcesResponseDTO::getFermierId,
+                        ZoneWithRessourcesResponseDTO::getId)
+                .containsExactly(ZONE1_NOMZONE,FERMIER_ID,ZONE1_ID);
+    }
+
+    @Test
+    public void getZoneByIdWithRessourceShouldThrow(){
+        //GIVEN
+        Mockito.when(daoZone.findByIdWithRessource(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
+        //WHEN + THEN
+        assertThatThrownBy(() -> zoneService.getZoneWithRessources(ZONE_ID_NOT_EXIST))
+                .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
+                .isInstanceOf(ZoneNotFoundException.class);
+    }
+
+    @Test
+    @WithMockUser
+    public void getZoneWithAnimalsShouldContainAnimals(){
+        LocalDate now = LocalDate.now();
+        //GIVEN
+        Animal animal =  new Animal(1,true,now,now,EspeceAnimal.Vache);
+        animal.setZone(ZONE1);
+        Zone zoneWithAnimal = ZONE1;
+        zoneWithAnimal.setAnimals(List.of(animal));
+
+        Mockito.when(daoZone.findByIdWithAnimal(ZONE1_ID)).thenReturn(Optional.of(zoneWithAnimal));
+        //When
+        ZoneWithAnimalsResponseDTO response = zoneService.getZoneWithAnimals(ZONE1_ID);
+
+        assertThat(response.getAnimals().size()).isEqualTo(1);
+        assertThat(response.getAnimals())
+                .extracting("id","male","dateNaissance","dateVaccination","espece","zoneId","zoneName")
+                .containsExactly(tuple(1,true,now,now,EspeceAnimal.Vache,ZONE1_ID,ZONE1_NOMZONE.name()));
+
+
+        assertThat(response)
+                .extracting(ZoneWithAnimalsResponseDTO::getNomZone,
+                        ZoneWithAnimalsResponseDTO::getFermierId,
+                        ZoneWithAnimalsResponseDTO::getId)
+                .containsExactly(ZONE1_NOMZONE,FERMIER_ID,ZONE1_ID);
+    }
+
+    @Test
+    public void getZoneByIdWithAnimalsShouldThrow(){
+        //GIVEN
+        Mockito.when(daoZone.findByIdWithAnimal(ZONE_ID_NOT_EXIST)).thenReturn(Optional.empty());
+        //WHEN + THEN
+        assertThatThrownBy(() -> zoneService.getZoneWithAnimals(ZONE_ID_NOT_EXIST))
                 .hasMessageContaining(String.valueOf(ZONE_ID_NOT_EXIST))
                 .isInstanceOf(ZoneNotFoundException.class);
     }
