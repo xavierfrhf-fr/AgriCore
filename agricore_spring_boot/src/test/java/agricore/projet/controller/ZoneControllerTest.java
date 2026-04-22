@@ -2,6 +2,7 @@ package agricore.projet.controller;
 
 import agricore.projet.config.JwtHeaderFilter;
 import agricore.projet.config.SecurityConfig;
+import agricore.projet.dto.ressource.response.PrixResponseDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.dto.zone.request.PositionRequestDTO;
@@ -14,7 +15,9 @@ import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
 import agricore.projet.model.NomRessource;
 import agricore.projet.model.NomZone;
+import agricore.projet.model.PrixLot;
 import agricore.projet.model.TypeVehicule;
+import agricore.projet.model.Unite;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.services.JpaUserDetailsService;
 import agricore.projet.services.JwtUtils;
@@ -40,13 +43,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @WebMvcTest(controllers = ZoneController.class)
-@Import({SecurityConfig.class, JwtHeaderFilter.class})
+@Import({ SecurityConfig.class, JwtHeaderFilter.class })
 public class ZoneControllerTest {
     @Autowired
     private ZoneController zoneController;
@@ -66,7 +70,6 @@ public class ZoneControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1, 1, 5, 5);
     private final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, 5, 5);
 
@@ -74,38 +77,38 @@ public class ZoneControllerTest {
     private final int ZONE_ID = 1;
     private final NomZone NOM_ZONE = NomZone.POULAILLER;
     private final int FERMIER_ID = 5;
-    private final ZoneResponseDTO ZONE_RESP_DTO = new ZoneResponseDTO(ZONE_ID,POSITION_RESP_DTO, NOM_ZONE, FERMIER_ID);
-    private final ZoneRequestDTO ZONE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO,NOM_ZONE,FERMIER_ID);
+    private final ZoneResponseDTO ZONE_RESP_DTO = new ZoneResponseDTO(ZONE_ID, POSITION_RESP_DTO, NOM_ZONE, FERMIER_ID);
+    private final ZoneRequestDTO ZONE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, NOM_ZONE, FERMIER_ID);
     private final String URL = "/api/zone";
-    private final String URL_ID = URL+"/"+ZONE_ID;
-
+    private final String URL_ID = URL + "/" + ZONE_ID;
 
     @Test
     public void shouldFindAllZonesReturnUnauthorized() throws Exception {
-        //GIVEN
+        // GIVEN
 
-        //When
+        // When
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL));
 
-        //Then
+        // Then
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @WithMockUser
     public void shouldFindAllZonesReturnOk() throws Exception {
-        //GIVEN
+        // GIVEN
         Mockito.when(zoneService.getAllZone()).thenReturn(List.of(ZONE_RESP_DTO));
-        //WHEN
+        // WHEN
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL));
 
-        //THEN
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).getAllZone();
 
-        ZoneResponseDTO[] responseDTOS = objectMapper.readValue(result.andReturn().getResponse().getContentAsString(), ZoneResponseDTO[].class);
+        ZoneResponseDTO[] responseDTOS = objectMapper.readValue(result.andReturn().getResponse().getContentAsString(),
+                ZoneResponseDTO[].class);
         assertThat(responseDTOS).hasSize(1);
-        assertThat(responseDTOS[0]).hasOnlyFields("id","position","nomZone","fermierId");
+        assertThat(responseDTOS[0]).hasOnlyFields("id", "position", "nomZone", "fermierId");
     }
 
     @Test
@@ -117,22 +120,22 @@ public class ZoneControllerTest {
     @Test
     @WithMockUser
     public void shouldFindZoneByIdReturnNotFound() throws Exception {
-        //GIVEN
+        // GIVEN
         Mockito.when(zoneService.getZoneById(ZONE_ID_NOT_EXIST)).thenThrow(ZoneNotFoundException.class);
-        //WHEN
+        // WHEN
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/" + ZONE_ID_NOT_EXIST));
-        //THEN
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @WithMockUser
     public void shouldFindZoneByIdReturnOk() throws Exception {
-        //GIVEN
+        // GIVEN
         Mockito.when(zoneService.getZoneById(ZONE_ID)).thenReturn(ZONE_RESP_DTO);
-        //WHEN
+        // WHEN
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL_ID));
-        //THEN
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).getZoneById(ZONE_ID);
     }
@@ -140,10 +143,10 @@ public class ZoneControllerTest {
     @Test
     @WithMockUser
     public void shouldCreateZoneReturnOk() throws Exception {
-        //GIVEN
+        // GIVEN
         Mockito.when(zoneService.create(any(ZoneRequestDTO.class))).thenReturn(ZONE_ID);
         String json = objectMapper.writeValueAsString(ZONE_REQ_DTO);
-        //When
+        // When
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON));
@@ -152,25 +155,26 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$").value(ZONE_ID));
     }
 
-    private static Stream<Arguments> zoneWithNotValidAttributesStream(){
-        //Position
+    private static Stream<Arguments> zoneWithNotValidAttributesStream() {
+        // Position
         int posX = 1;
         int posY = 1;
         int tailleX = 1;
         int tailleY = 1;
-        //Zone
+        // Zone
         NomZone nomZone = NomZone.POULAILLER;
         int fermierId = 1;
         return Stream.of(
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(-1,posY,tailleX,tailleY),nomZone,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,-1,tailleX,tailleY),nomZone,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,-1,tailleY),nomZone,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,-1),nomZone,fermierId)),
-                Arguments.of(new ZoneRequestDTO(null,nomZone,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),null,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,null)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,-1))
-        );
+                Arguments
+                        .of(new ZoneRequestDTO(new PositionRequestDTO(-1, posY, tailleX, tailleY), nomZone, fermierId)),
+                Arguments
+                        .of(new ZoneRequestDTO(new PositionRequestDTO(posX, -1, tailleX, tailleY), nomZone, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, -1, tailleY), nomZone, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, -1), nomZone, fermierId)),
+                Arguments.of(new ZoneRequestDTO(null, nomZone, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), null, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, null)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, -1)));
     }
 
     @ParameterizedTest
@@ -180,10 +184,9 @@ public class ZoneControllerTest {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
                 .post(URL)
                 .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+                .contentType(MediaType.APPLICATION_JSON));
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
-        Mockito.verify(zoneService,Mockito.never()).create(any(ZoneRequestDTO.class));
+        Mockito.verify(zoneService, Mockito.never()).create(any(ZoneRequestDTO.class));
     }
 
     @ParameterizedTest
@@ -193,10 +196,9 @@ public class ZoneControllerTest {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
                 .put(URL_ID)
                 .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+                .contentType(MediaType.APPLICATION_JSON));
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
-        Mockito.verify(zoneService,Mockito.never()).put(any(ZoneRequestDTO.class),anyInt());
+        Mockito.verify(zoneService, Mockito.never()).put(any(ZoneRequestDTO.class), anyInt());
     }
 
     @Test
@@ -206,8 +208,7 @@ public class ZoneControllerTest {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
                 .put(URL_ID)
                 .content(objectMapper.writeValueAsString(ZONE_REQ_DTO))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+                .contentType(MediaType.APPLICATION_JSON));
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).put(any(ZoneRequestDTO.class), eq(ZONE_ID));
     }
@@ -216,28 +217,27 @@ public class ZoneControllerTest {
     @WithMockUser
     public void shouldDeleteZoneReturnOk() throws Exception {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
-                .delete(URL_ID)
-        );
+                .delete(URL_ID));
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).delete(eq(ZONE_ID));
     }
 
-    private static Stream<Arguments> zoneWithPartialDataAttributesStream(){
-        //Position
+    private static Stream<Arguments> zoneWithPartialDataAttributesStream() {
+        // Position
         int posX = 1;
         int posY = 1;
         int tailleX = 1;
         int tailleY = 1;
-        //Zone
+        // Zone
         NomZone nomZone = NomZone.POULAILLER;
         int fermierId = 1;
         return Stream.of(
-                Arguments.of(new ZoneRequestDTO(null,null,null)),
-                Arguments.of(new ZoneRequestDTO(null,nomZone,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),null,fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,null)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX,posY,tailleX,tailleY),nomZone,fermierId))
-        );
+                Arguments.of(new ZoneRequestDTO(null, null, null)),
+                Arguments.of(new ZoneRequestDTO(null, nomZone, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), null, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, null)),
+                Arguments.of(
+                        new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, fermierId)));
     }
 
     @ParameterizedTest
@@ -248,108 +248,107 @@ public class ZoneControllerTest {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders
                 .patch(URL_ID)
                 .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
+                .contentType(MediaType.APPLICATION_JSON));
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).patch(any(ZoneRequestDTO.class), eq(ZONE_ID));
     }
 
     @Test
     public void shouldFindZoneByIdWithRessourceReturnUnauthorized() throws Exception {
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/ressource/"+ZONE_ID));
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/ressource/" + ZONE_ID));
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @WithMockUser
     public void shouldFindZoneByIdWithRessourceReturnNotFound() throws Exception {
-        //GIVEN
+        // GIVEN
         Mockito.when(zoneService.getZoneWithRessources(ZONE_ID_NOT_EXIST)).thenThrow(ZoneNotFoundException.class);
-        //WHEN
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/ressource/"+ZONE_ID_NOT_EXIST));
-        //THEN
+        // WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/ressource/" + ZONE_ID_NOT_EXIST));
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @WithMockUser
     public void shouldFindZoneByIdWithRessourceReturnOk() throws Exception {
-        //GIVEN
+        // GIVEN
         ZoneWithRessourcesResponseDTO zoneWithRessourcesResponseDTO = new ZoneWithRessourcesResponseDTO(
                 ZONE_ID,
                 POSITION_RESP_DTO,
                 NOM_ZONE,
                 FERMIER_ID,
-                List.of(new RessourceResponseDTO(1, NomRessource.Fraise, 1, 1., 1, ZONE_ID, NOM_ZONE))
-        );
+                List.of(new RessourceResponseDTO(1, NomRessource.Fraise,
+                        NomRessource.Fraise.getUniteStockage().getAffichage(),
+                        1,
+                        PrixResponseDTO.convert(new PrixLot(new BigDecimal("2.00"), 100, Unite.GRAMME)), 10, 1,
+                        NomZone.POULAILLER)));
         Mockito.when(zoneService.getZoneWithRessources(ZONE_ID)).thenReturn(zoneWithRessourcesResponseDTO);
-        //WHEN
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/ressource/"+ZONE_ID));
-        //THEN
+        // WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/ressource/" + ZONE_ID));
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).getZoneWithRessources(ZONE_ID);
         result.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ZONE_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posX").value(POSITION_RESP_DTO.getPosX()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posY").value(POSITION_RESP_DTO.getPosY()));
-        //tailles
+        // tailles
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].id").value(1));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].nom").value(NomRessource.Fraise.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].quantite").value(1));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].prix").value(1.));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].stockMin").value(1));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].stockMin").value(10));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].zoneId").value(ZONE_ID));
     }
 
     @Test
     public void shouldFindZoneByIdWithVehiculeReturnUnauthorized() throws Exception {
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/vehicule/"+ZONE_ID));
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/vehicule/" + ZONE_ID));
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @WithMockUser
     public void shouldFindZoneByIdWithVehiculeReturnNotFound() throws Exception {
-        //GIVEN
+        // GIVEN
         Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID_NOT_EXIST)).thenThrow(ZoneNotFoundException.class);
-        //WHEN
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/vehicule/"+ZONE_ID_NOT_EXIST));
-        //THEN
+        // WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/vehicule/" + ZONE_ID_NOT_EXIST));
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @WithMockUser
     public void shouldFindZoneByIdWithVehiculeReturnOk() throws Exception {
-        //GIVEN
+        // GIVEN
         LocalDate date = LocalDate.now();
         ZoneWithVehiculesResponseDTO zoneWithVehiculesResponseDTO = new ZoneWithVehiculesResponseDTO(
                 ZONE_ID,
                 POSITION_RESP_DTO,
                 NOM_ZONE,
                 FERMIER_ID,
-                List.of(new VehiculeResponseDTO(1, TypeVehicule.Utilitaire, date, 0, ZONE_ID))
-        );
+                List.of(new VehiculeResponseDTO(1, TypeVehicule.Utilitaire, date, 0, ZONE_ID)));
         Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID)).thenReturn(zoneWithVehiculesResponseDTO);
-        //WHEN
-        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL+"/vehicule/"+ZONE_ID));
-        //THEN
+        // WHEN
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/vehicule/" + ZONE_ID));
+        // THEN
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).getZoneWithVehicules(ZONE_ID);
         result.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ZONE_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posX").value(POSITION_RESP_DTO.getPosX()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posY").value(POSITION_RESP_DTO.getPosY()));
-        //tailles
+        // tailles
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].id").value(1));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].typeVehicule").value(TypeVehicule.Utilitaire.name()));
+        result.andExpect(
+                MockMvcResultMatchers.jsonPath("$.vehicules.[*].typeVehicule").value(TypeVehicule.Utilitaire.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].dateControleTech").value(date.toString()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].delaiAvantControle").value(0));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].zoneId").value(ZONE_ID));
     }
-
-
 
 }
