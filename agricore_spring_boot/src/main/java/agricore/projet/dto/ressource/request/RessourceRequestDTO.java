@@ -1,18 +1,28 @@
 package agricore.projet.dto.ressource.request;
 
 import agricore.projet.model.NomRessource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 public class RessourceRequestDTO {
     // pas d id pour la request
+    @NotNull
     private NomRessource nom;
+    @NotNull
     private Integer quantite;
-    private Double prix;
+    @Valid
+    @NotNull
+    private PrixRequestDTO prixLot;
+    @Min(value = 0, message = "Stock minimal ne peut pas être négatif")
+    @NotNull
     private Integer stockMin;
 
-    public RessourceRequestDTO(NomRessource nom, Integer quantite, Double prix, Integer stockMin) {
+    public RessourceRequestDTO(NomRessource nom, Integer quantite, PrixRequestDTO prixLot, Integer stockMin) {
         this.nom = nom;
         this.quantite = quantite;
-        this.prix = prix;
+        this.prixLot = prixLot;
         this.stockMin = stockMin;
     }
 
@@ -34,12 +44,12 @@ public class RessourceRequestDTO {
         this.quantite = quantite;
     }
 
-    public Double getPrix() {
-        return prix;
+    public PrixRequestDTO getPrixLot() {
+        return prixLot;
     }
 
-    public void setPrix(Double prix) {
-        this.prix = prix;
+    public void setPrixLot(PrixRequestDTO prixLot) {
+        this.prixLot = prixLot;
     }
 
     public Integer getStockMin() {
