@@ -24,31 +24,41 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));
 
         http.authorizeHttpRequests(auth -> {
-            // L'ordre a une importance, on commence toujours par le plus spécifique vers le plus générale.
+            // L'ordre a une importance, on commence toujours par le plus spécifique vers le
+            // plus générale.
 
-            //auth.requestMatchers("/matiere").permitAll(); //permet l'accès a /matiere pour tout le monde.
+            // auth.requestMatchers("/matiere").permitAll(); //permet l'accès a /matiere
+            // pour tout le monde.
 
-            //auth.requestMatchers("/matiere").hasRole("ADMIN"); 
-            // auth.requestMatchers(HttpMethod.POST, "/matiere", "/utilisateur").hasRole("ADMIN"); ici on permet de faire de requete POST sur tel vu en fonction du ROLE
+            // auth.requestMatchers("/matiere").hasRole("ADMIN");
+            // auth.requestMatchers(HttpMethod.POST, "/matiere",
+            // "/utilisateur").hasRole("ADMIN"); ici on permet de faire de requete POST sur
+            // tel vu en fonction du ROLE
 
-            // uniquement les utilisateur conencter mais n'amène pâs sur le formulaire de connexion désactivé par l'utilisation de filterChain : /** c'est pour partout sur l'application
+            // Acces Swagger http://localhost:8080/swagger-ui/index.html
+            auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
+
+            // uniquement les utilisateur conencter mais n'amène pâs sur le formulaire de
+            // connexion désactivé par l'utilisation de filterChain : /** c'est pour partout
+            // sur l'application
+
             auth.requestMatchers("/api/auth").permitAll();
             auth.requestMatchers("/api/auth/register").permitAll();
-            
-            //Bypass de la sécurité pour les endpoints lors du dev et des tests, à retirer en prod et ajouter le authenticated pour les sécuriser            
-            //auth.requestMatchers("/**").permitAll();
-            auth.requestMatchers("/**").authenticated(); 
+
+            // Bypass de la sécurité pour les endpoints lors du dev et des tests, à retirer
+            // en prod et ajouter le authenticated pour les sécuriser
+            // auth.requestMatchers("/**").permitAll();
+            auth.requestMatchers("/**").authenticated();
+
         });
 
-        http.exceptionHandling(ex -> 
-        ex.authenticationEntryPoint(authenticationEntryPoint())
-        );
+        http.exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint()));
 
         http.addFilterBefore(jwtHeaderFilter, UsernamePasswordAuthenticationFilter.class);
-        
-        
+
         return http.build();
     }
+
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
@@ -61,15 +71,15 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    @Bean 
+    @Bean
     PasswordEncoder passwordEncoder() {
-       // return NoOpPasswordEncoder.getInstance(); Car retourne le mdp en clair donc pas bien !
+        // return NoOpPasswordEncoder.getInstance(); Car retourne le mdp en clair donc
+        // pas bien !
 
-       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-       System.out.println(passwordEncoder.encode("test2"));
-       return passwordEncoder;
+        System.out.println(passwordEncoder.encode("test2"));
+        return passwordEncoder;
     }
-    
-}
 
+}
