@@ -6,6 +6,9 @@ import agricore.projet.dto.animal.request.AnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
 import agricore.projet.exception.AnimalNotFoundException;
 import agricore.projet.model.Animal;
+import agricore.projet.model.EspeceAnimal;
+import agricore.projet.model.NomZone;
+import agricore.projet.model.Zone;
 import agricore.projet.repository.IDAOAnimal;
 import agricore.projet.repository.IDAOZone;
 
@@ -66,6 +69,18 @@ public class AnimalService {
     public void deleteById(Integer id) {
 
         daoAnimal.deleteById(id);
+    }
+
+    public boolean isAnimalAllowedInZone(EspeceAnimal espece, NomZone nomZone) {
+        //Retourne true si l'animal à le droit d'être dans cette Zone
+        return espece.getAllowedZone().equals(nomZone);
+    }
+
+    public boolean isAnimalAllowedInZone(AnimalRequest animal) {
+        //Surcharge potentiellement plus simple à utiliser (mais fait une 2eme requete SQL de la zone)
+        return daoZone.findById(animal.getZoneId())
+                .map(zone -> isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone()))
+                .orElse(false);
     }
 
 }
