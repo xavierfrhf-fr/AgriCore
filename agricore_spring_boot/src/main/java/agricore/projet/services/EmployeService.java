@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import agricore.projet.dto.utilisateur.request.EmployeRequestDTO;
 import agricore.projet.dto.utilisateur.response.EmployeResponseDTO;
 import agricore.projet.model.Employe;
+import agricore.projet.model.Fermier;
 import agricore.projet.repository.IDAOUtilisateur;
 
 @Service
@@ -21,13 +22,17 @@ public class EmployeService {
 	public List<EmployeResponseDTO> getAll() {
 		return daoUtilisateur.findAll()
                 .stream()
+                .filter(user->user instanceof Employe)
+                .map(employe->(Employe) employe)
                 .map(EmployeResponseDTO::convert)
                 .toList();
 	}
 
 	public EmployeResponseDTO getById(Integer id) {
 		return daoUtilisateur.findById(id)
-                .map(EmployeResponseDTO::convert)  //je sais pas si on peut faire un cast
+				.filter(user->user instanceof Employe)
+                .map(employe->(Employe) employe)
+                .map(EmployeResponseDTO::convert)
                 .orElse(null);
 	}
 

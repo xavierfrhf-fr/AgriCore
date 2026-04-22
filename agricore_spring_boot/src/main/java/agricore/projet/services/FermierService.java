@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.utilisateur.request.FermierRequestDTO;
 import agricore.projet.dto.utilisateur.response.FermierResponseDTO;
+import agricore.projet.dto.utilisateur.response.FermierWithEmployeResponseDTO;
+import agricore.projet.dto.utilisateur.response.FermierWithZoneResponseDTO;
 import agricore.projet.model.Fermier;
 import agricore.projet.repository.IDAOUtilisateur;
 
@@ -21,13 +23,17 @@ public class FermierService {
 	public List<FermierResponseDTO> getAll() {
 		return daoUtilisateur.findAll()
                 .stream()
+                .filter(user->user instanceof Fermier)
+                .map(fermier->(Fermier) fermier)
                 .map(FermierResponseDTO::convert)
                 .toList();
 	}
 
 	public FermierResponseDTO getById(Integer id) {
 		return daoUtilisateur.findById(id)
-                .map(FermierResponseDTO::convert)  //je sais pas si on peut faire un cast
+				.filter(user->user instanceof Fermier)
+                .map(fermier->(Fermier) fermier)
+                .map(FermierResponseDTO::convert)
                 .orElse(null);
 	}
 
@@ -56,5 +62,16 @@ public class FermierService {
         .orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
 daoUtilisateur.deleteById(id);
 	}
+	
+	public FermierWithEmployeResponseDTO getFermierWithEmploye(int id) {
+		return;
+		
+	} 
+	
+	public FermierWithZoneResponseDTO getFermierWithZone(int id) {
+		return;
+		
+	}
+	
 
 }

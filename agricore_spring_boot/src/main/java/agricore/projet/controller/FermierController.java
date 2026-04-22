@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.utilisateur.request.FermierRequestDTO;
 import agricore.projet.dto.utilisateur.response.FermierResponseDTO;
-import agricore.projet.model.Employe;
+import agricore.projet.dto.utilisateur.response.FermierWithEmployeResponseDTO;
+import agricore.projet.dto.utilisateur.response.FermierWithZoneResponseDTO;
 import agricore.projet.model.Zone;
 import agricore.projet.services.EmployeService;
 import agricore.projet.services.FermierService;
@@ -45,16 +46,15 @@ public class FermierController {
 		return fermierService.getById(id);
 	}
 	
-	// est ce qu'on mettrait pas 2 methodes FermierWithEmploye et FermierWithZone ?
 
 	@GetMapping
-	public List<Employe>findFermierWithEmploye(@PathVariable Integer id){
-		return (List<Employe>) employeService.getById(id);
+	public FermierWithEmployeResponseDTO getFermierWithEmploye(@PathVariable Integer id){
+		return fermierService.getFermierWithEmploye(id);
 	}
 	
 	@GetMapping
-	public List<Zone>findFermierWithZone(@PathVariable Integer id){
-		return (List<Zone>) zoneService.getZoneById(id);
+	public FermierWithZoneResponseDTO getFermierWithZoneResponse(@PathVariable Integer id){
+		return fermierService.getFermierWithZone(id);
 	}
 	
 	@PostMapping
@@ -76,7 +76,6 @@ public class FermierController {
 	public void deleteById(@PathVariable Integer id) {
 		fermierService.deleteById(id);
 	}
-
-
+	
 
 }
