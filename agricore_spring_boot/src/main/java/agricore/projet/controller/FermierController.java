@@ -47,12 +47,12 @@ public class FermierController {
 	}
 	
 
-	@GetMapping
+	@GetMapping("/employe/{id}")
 	public FermierWithEmployeResponseDTO getFermierWithEmploye(@PathVariable Integer id){
 		return fermierService.getFermierWithEmploye(id);
 	}
 	
-	@GetMapping
+	@GetMapping("/zone/{id}")
 	public FermierWithZoneResponseDTO getFermierWithZoneResponse(@PathVariable Integer id){
 		return fermierService.getFermierWithZone(id);
 	}
