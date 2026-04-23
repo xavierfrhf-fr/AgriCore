@@ -64,12 +64,15 @@ daoUtilisateur.deleteById(id);
 	}
 	
 	public FermierWithEmployeResponseDTO getFermierWithEmploye(int id) {
-		return;
+		return daoUtilisateur
+				.findFermierByIdWithEmploye(id)
+				.map(FermierWithEmployeResponseDTO::convert)
+				.orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
 		
 	} 
 	
 	public FermierWithZoneResponseDTO getFermierWithZone(int id) {
-		return;
+		return null;
 		
 	}
 	
