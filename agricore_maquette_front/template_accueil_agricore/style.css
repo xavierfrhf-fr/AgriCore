@@ -83,10 +83,17 @@ main {
     
 }
 
+.smog {
+    
+    height: auto;
+    bottom:100px;
+    width: 480px;
+    animation: fly 120s linear infinite;
+}
+
 
 .bird {
-    position: absolute;
-    background-size: 100% 100%;
+    
     height: auto;
     bottom:100px;
     width: 80px;
@@ -103,11 +110,12 @@ main {
 }
 
 input {
+    
     width: 200px;
     height: 50px;
 
     background-image: url("assets/textbox.png");
-    background-size: cover;
+    background-size: 90%;
     background-repeat: no-repeat;
 
     border: none;
