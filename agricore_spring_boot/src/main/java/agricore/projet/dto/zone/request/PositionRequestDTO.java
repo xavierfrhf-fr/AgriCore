@@ -1,65 +1,52 @@
 package agricore.projet.dto.zone.request;
 
 import agricore.projet.model.zone.position.Position;
+import agricore.projet.model.zone.position.Rotation;
 import jakarta.validation.constraints.Min;
 
 public class PositionRequestDTO {
-    @Min(value=0, message="positions ne peuvent pas être négatives")
-    private Integer posX;
-    @Min(value=0, message="positions ne peuvent pas être négatives")
-    private Integer posY;
-    @Min(value=0, message="tailles ne peuvent pas être négatives")
-    private Integer tailleX;
-    @Min(value=0, message="tailles ne peuvent pas être négatives")
-    private Integer tailleY;
+
+    private Integer anchorX;
+    private Integer anchorY;
+    private Rotation rotation;
 
     public PositionRequestDTO() {}
 
-    public PositionRequestDTO(Integer posX, Integer posY, Integer tailleX, Integer tailleY) {
-        this.posX = posX;
-        this.posY = posY;
-        this.tailleX = tailleX;
-        this.tailleY = tailleY;
+    public PositionRequestDTO(Integer anchorX, Integer anchorY, Rotation rotation) {
+        this.anchorX = anchorX;
+        this.anchorY = anchorY;
+        this.rotation = rotation;
     }
 
-    public Integer getPosX() {
-        return posX;
+    public Integer getAnchorX() {
+        return anchorX;
     }
 
-    public void setPosX(Integer posX) {
-        this.posX = posX;
+    public void setAnchorX(Integer anchorX) {
+        this.anchorX = anchorX;
     }
 
-    public Integer getPosY() {
-        return posY;
+    public Integer getAnchorY() {
+        return anchorY;
     }
 
-    public void setPosY(Integer posY) {
-        this.posY = posY;
+    public void setAnchorY(Integer anchorY) {
+        this.anchorY = anchorY;
     }
 
-    public Integer getTailleX() {
-        return tailleX;
+    public Rotation getRotation() {
+        return rotation;
     }
 
-    public void setTailleX(Integer tailleX) {
-        this.tailleX = tailleX;
-    }
-
-    public Integer getTailleY() {
-        return tailleY;
-    }
-
-    public void setTailleY(Integer tailleY) {
-        this.tailleY = tailleY;
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
     }
 
     public static Position convert(PositionRequestDTO request){
         Position position = new Position();
-        position.setPosX(request.getPosX());
-        position.setPosY(request.getPosY());
-        position.setTailleX(request.getTailleX());
-        position.setTailleY(request.getTailleY());
+        position.setAnchorX(request.getAnchorX());
+        position.setAnchorY(request.getAnchorY());
+        position.setRotation(request.getRotation());
         return position;
     }
 
