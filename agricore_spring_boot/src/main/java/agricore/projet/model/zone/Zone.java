@@ -25,7 +25,7 @@ public class Zone {
 	private Position position;
 	
 	@Enumerated(EnumType.STRING) 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "varchar(50)")
 	private NomZone nomZone;
 
 	//---- Mapping avec les autres classes

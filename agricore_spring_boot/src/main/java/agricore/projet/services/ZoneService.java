@@ -8,6 +8,7 @@ import agricore.projet.dto.zone.response.ZoneWithAnimalsResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.InvalidZonePositionException;
+import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
 import agricore.projet.model.NomRessource;
@@ -54,6 +55,11 @@ public class ZoneService {
     }
 
     public int create(ZoneRequestDTO request) {
+        if (request.getNomZone().isZoneUnique()){
+            if (daoZone.existsByNomZone(request.getNomZone())){
+                throw new UniqueZoneAlreadyExistException("A zone of type: "+request.getNomZone()+" already exists");
+            }
+        }
         Zone zone = ZoneRequestDTO.convert(request);
         if (!positionService.zoneCanBeAdded(zone)){
             throw new InvalidZonePositionException("Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
