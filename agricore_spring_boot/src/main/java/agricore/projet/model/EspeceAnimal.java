@@ -11,9 +11,13 @@ public enum EspeceAnimal {
 	Ane(NomZone.ETABLE),
 	Lapin(NomZone.ETABLE);
 
-	private NomZone allowedZone;
+	private final NomZone allowedZone;
 
 	private EspeceAnimal(NomZone allowedZone) {
 		this.allowedZone = allowedZone;
+	}
+
+	public NomZone getAllowedZone() {
+		return allowedZone;
 	}
 }
