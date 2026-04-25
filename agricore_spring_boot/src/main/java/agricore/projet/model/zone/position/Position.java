@@ -2,72 +2,66 @@ package agricore.projet.model.zone.position;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+
+import java.util.Set;
 
 @Embeddable
 public class Position {
-	
-	@Column(nullable = true) // Est-ce que ca peut etre null ? (batiment non placé ? ou alors on le gère différement)
-	private Integer posX;
-	@Column(nullable = true)
-	private Integer posY;
-	@Column(nullable = true)
-	private Integer tailleX;
-	@Column(nullable = true)
-	private Integer tailleY;
+
+	//TAILLE DE LA CARTE:
+	public static final MapSize mapSize = new MapSize(10, 10);
+
+	@Column(nullable = false)
+	private Integer anchorX;
+	@Column(nullable = false)
+	private Integer anchorY;
+
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, columnDefinition = "varchar(15)")
+	private Rotation rotation = Rotation.DEG_O;
 	
 	public Position() {
 	}
-	
-	
-	
-	public Position(Integer posX, Integer posY, Integer tailleX, Integer tailleY) {
-		//Verifier pas d'overlap avec un batiment existant
-		this.posX = posX;
-		this.posY = posY;
-		this.tailleX = tailleX;
-		this.tailleY = tailleY;
+
+	public Position(Integer anchorX, Integer anchorY, Rotation rotation) {
+		this.anchorX = anchorX;
+		this.anchorY = anchorY;
+		this.rotation = rotation;
 	}
 
+	public Integer getAnchorX() {
+		return anchorX;
+	}
 
-	public int getPosX() {
-		return posX;
+	public void setAnchorX(Integer anchorX) {
+		this.anchorX = anchorX;
 	}
-	public void setPosX(int posX) {
-		this.posX = posX;
+
+	public Integer getAnchorY() {
+		return anchorY;
 	}
-	public int getPosY() {
-		return posY;
+
+	public void setAnchorY(Integer anchorY) {
+		this.anchorY = anchorY;
 	}
-	public void setPosY(int posY) {
-		this.posY = posY;
+
+	public Rotation getRotation() {
+		return rotation;
 	}
-	public int getTailleX() {
-		return tailleX;
-	}
-	public void setTailleX(int tailleX) {
-		this.tailleX = tailleX;
-	}
-	public int getTailleY() {
-		return tailleY;
-	}
-	public void setTailleY(int tailleY) {
-		this.tailleY = tailleY;
-	}
-	
-	public static boolean isPosAvailable(int posX, int posY, int tailleX, int tailleY) {
-		// TODO 
-		// En static car n'a pas besoin qu'un objet soit instancié pour faire la verif
-		// Doit checker (en BDD) si il est possible de placer un batiment à cette position
-		return true;
+
+	public void setRotation(Rotation rotation) {
+		this.rotation = rotation;
 	}
 
 	@Override
 	public String toString() {
 		return "Position{" +
-				"posX=" + posX +
-				", posY=" + posY +
-				", tailleX=" + tailleX +
-				", tailleY=" + tailleY +
+				"anchorX=" + anchorX +
+				", anchorY=" + anchorY +
+				", rotation=" + rotation +
 				'}';
 	}
 }
