@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.ressource;
 
 import agricore.projet.model.zone.Zone;
 import jakarta.persistence.*;

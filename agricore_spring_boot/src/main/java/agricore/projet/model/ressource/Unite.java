@@ -1,6 +1,4 @@
-package agricore.projet.model;
-
-import java.util.Optional;
+package agricore.projet.model.ressource;
 
 public enum Unite {
     GRAMME("g","masse", 1, false),

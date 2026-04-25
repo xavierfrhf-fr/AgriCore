@@ -5,6 +5,10 @@ import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.dto.zone.response.*;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.*;
+import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.ressource.PrixLot;
+import agricore.projet.model.ressource.Ressource;
+import agricore.projet.model.ressource.Unite;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.position.Position;
 import agricore.projet.model.zone.Zone;
@@ -23,7 +27,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -335,7 +338,7 @@ public class ZoneServiceTest {
                 1,
                 NomRessource.Fraise,
                 1,
-                new PrixLot(BigDecimal.valueOf(1.00),100,Unite.GRAMME),
+                new PrixLot(BigDecimal.valueOf(1.00),100, Unite.GRAMME),
                 1,
                 ZONE1
         );

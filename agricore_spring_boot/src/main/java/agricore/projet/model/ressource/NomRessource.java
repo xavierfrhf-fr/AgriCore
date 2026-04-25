@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.ressource;
 
 public enum NomRessource {
     Pomme(Unite.KILOGRAM),

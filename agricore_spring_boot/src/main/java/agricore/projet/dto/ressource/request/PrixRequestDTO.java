@@ -1,6 +1,6 @@
 package agricore.projet.dto.ressource.request;
 
-import agricore.projet.model.Unite;
+import agricore.projet.model.ressource.Unite;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

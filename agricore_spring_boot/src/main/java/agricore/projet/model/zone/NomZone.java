@@ -1,6 +1,6 @@
 package agricore.projet.model.zone;
 
-import agricore.projet.model.NomRessource;
+import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.zone.position.ZoneShape;
 
 import java.util.Set;
