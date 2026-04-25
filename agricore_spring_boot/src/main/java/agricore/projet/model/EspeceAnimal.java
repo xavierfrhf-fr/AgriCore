@@ -1,5 +1,7 @@
 package agricore.projet.model;
 
+import agricore.projet.model.zone.NomZone;
+
 public enum EspeceAnimal {
 	Cochon(NomZone.ETABLE),
 	Vache(NomZone.ETABLE),

@@ -1,5 +1,6 @@
 package agricore.projet.model;
 
+import agricore.projet.model.zone.Zone;
 import jakarta.persistence.*;
 
 @Entity

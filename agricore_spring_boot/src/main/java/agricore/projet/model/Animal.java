@@ -3,6 +3,7 @@ package agricore.projet.model;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import agricore.projet.model.zone.Zone;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import agricore.projet.view.Views;

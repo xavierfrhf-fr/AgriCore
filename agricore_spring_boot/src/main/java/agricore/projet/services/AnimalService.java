@@ -9,8 +9,8 @@ import agricore.projet.exception.AnimalNotFoundException;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Animal;
 import agricore.projet.model.EspeceAnimal;
-import agricore.projet.model.NomZone;
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOAnimal;
 import agricore.projet.repository.IDAOZone;
 

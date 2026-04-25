@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import agricore.projet.model.zone.Zone;
 import jakarta.persistence.*;
 
 @Entity

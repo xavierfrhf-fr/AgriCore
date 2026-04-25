@@ -1,11 +1,15 @@
-package agricore.projet.model;
+package agricore.projet.model.zone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import agricore.projet.model.*;
 
-import agricore.projet.view.Views;
+import agricore.projet.model.zone.position.CellGridPosition;
+import agricore.projet.model.zone.position.CellOffset;
+import agricore.projet.model.zone.position.Position;
 import jakarta.persistence.*;
 
 @Entity
@@ -122,47 +126,17 @@ public class Zone {
 		this.ressources = ressources;
 	}
 
-	
-//	public boolean addVehicule(Vehicule v) {
-//		//Check si le batiment permet les vehicules ? A ajouter dans enum NomZone ??
-//		vehicules.add(v);
-//		v.setZone(this);
-//		return true;
-//	}
-//
-//	public boolean addRessource(Ressource r) {
-//		if (nomZone.isAutoriseStorage()) {
-//			ressources.add(r);
-//			r.setZone(this);
-//			return true;
-//		}
-//		return false;
-//	}
-	
-	
-
-	//Methode supplementaire
-	public boolean addAnimal(Animal a) {
-		if (nomZone.isAutoriseAni()) {
-		    animals.add(a);
-		    a.setZone(this); 
-		    return true;
-		}
-		return false;
-
+	public Set<CellGridPosition> getCellGridPositions() {
+		//Renvoie l'ensemble des Cellules sur la carte (ces cellules ne sont pas validé (pas verif overlap, pas verif limite de carte))
+		return nomZone.getZoneShape()
+				.getShape()
+				.stream()
+				.map(cellOffset-> cellOffset.convertToGridPosition(
+						position.getAnchorX(),
+						position.getAnchorY(),
+						position.getRotation()))
+				.collect(Collectors.toSet());
 	}
-	
-	
-/*
-	public boolean planterPlante(Plante p) {
-		if (nomZone.isAutorisePlant()) {
-			plante = p;
-			p.setZone(this);
-			return true;
-		}
-		return false;
-	}
-	*/
 
 	@Override
 	public String toString() {

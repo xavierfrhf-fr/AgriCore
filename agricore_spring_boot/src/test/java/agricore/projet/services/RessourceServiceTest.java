@@ -22,15 +22,14 @@ import org.springframework.context.annotation.Import;
 import agricore.projet.config.SecurityConfig;
 import agricore.projet.dto.ressource.request.PrixRequestDTO;
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
-import agricore.projet.dto.ressource.response.PrixResponseDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.NomRessource;
-import agricore.projet.model.NomZone;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.PrixLot;
 import agricore.projet.model.Ressource;
 import agricore.projet.model.Unite;
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 

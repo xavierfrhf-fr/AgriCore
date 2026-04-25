@@ -1,7 +1,7 @@
 package agricore.projet.dto.zone.request;
 
-import agricore.projet.model.NomZone;
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
