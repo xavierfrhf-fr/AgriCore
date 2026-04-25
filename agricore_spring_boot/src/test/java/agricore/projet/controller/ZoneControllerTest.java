@@ -17,6 +17,7 @@ import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.PrixLot;
 import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Unite;
+import agricore.projet.model.zone.position.Rotation;
 import agricore.projet.services.JpaUserDetailsService;
 import agricore.projet.services.JwtUtils;
 import agricore.projet.services.ZoneService;
@@ -65,8 +66,8 @@ public class ZoneControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1, 1, 5, 5);
-    private final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, 5, 5);
+    private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1,1, Rotation.DEG_O);
+    private final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1,1, Rotation.DEG_O);
 
     private final int ZONE_ID_NOT_EXIST = 42;
     private final int ZONE_ID = 1;
@@ -152,24 +153,18 @@ public class ZoneControllerTest {
 
     private static Stream<Arguments> zoneWithNotValidAttributesStream() {
         // Position
-        int posX = 1;
-        int posY = 1;
-        int tailleX = 1;
-        int tailleY = 1;
+        int anchorX = 1;
+        int anchorY = 1;
+        Rotation rotation = Rotation.DEG_O;
+
         // Zone
         NomZone nomZone = NomZone.POULAILLER;
         int fermierId = 1;
         return Stream.of(
-                Arguments
-                        .of(new ZoneRequestDTO(new PositionRequestDTO(-1, posY, tailleX, tailleY), nomZone, fermierId)),
-                Arguments
-                        .of(new ZoneRequestDTO(new PositionRequestDTO(posX, -1, tailleX, tailleY), nomZone, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, -1, tailleY), nomZone, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, -1), nomZone, fermierId)),
                 Arguments.of(new ZoneRequestDTO(null, nomZone, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), null, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, null)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, -1)));
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), null, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, null)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, -1)));
     }
 
     @ParameterizedTest
@@ -219,20 +214,19 @@ public class ZoneControllerTest {
 
     private static Stream<Arguments> zoneWithPartialDataAttributesStream() {
         // Position
-        int posX = 1;
-        int posY = 1;
-        int tailleX = 1;
-        int tailleY = 1;
+        int anchorX = 1;
+        int anchorY = 1;
+        Rotation rotation = Rotation.DEG_O;
         // Zone
         NomZone nomZone = NomZone.POULAILLER;
         int fermierId = 1;
         return Stream.of(
                 Arguments.of(new ZoneRequestDTO(null, null, null)),
                 Arguments.of(new ZoneRequestDTO(null, nomZone, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), null, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, null)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), null, fermierId)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, null)),
                 Arguments.of(
-                        new ZoneRequestDTO(new PositionRequestDTO(posX, posY, tailleX, tailleY), nomZone, fermierId)));
+                        new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, fermierId)));
     }
 
     @ParameterizedTest
@@ -286,8 +280,9 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).getZoneWithRessources(ZONE_ID);
         result.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ZONE_ID));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posX").value(POSITION_RESP_DTO.getPosX()));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posY").value(POSITION_RESP_DTO.getPosY()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.anchorX").value(POSITION_RESP_DTO.getAnchorX()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.anchorY").value(POSITION_RESP_DTO.getAnchorY()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.rotation").value(POSITION_RESP_DTO.getRotation().name()));
         // tailles
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
@@ -333,8 +328,9 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         Mockito.verify(zoneService).getZoneWithVehicules(ZONE_ID);
         result.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(ZONE_ID));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posX").value(POSITION_RESP_DTO.getPosX()));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.posY").value(POSITION_RESP_DTO.getPosY()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.anchorX").value(POSITION_RESP_DTO.getAnchorX()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.anchorY").value(POSITION_RESP_DTO.getAnchorY()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.position.rotation").value(POSITION_RESP_DTO.getRotation().name()));
         // tailles
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
