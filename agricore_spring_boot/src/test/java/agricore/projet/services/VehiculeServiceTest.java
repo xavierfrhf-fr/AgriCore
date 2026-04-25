@@ -23,7 +23,7 @@ import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.repository.IDAOVehicule;
 

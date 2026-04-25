@@ -10,7 +10,7 @@ import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
 import agricore.projet.model.NomRessource;
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
 import org.slf4j.Logger;

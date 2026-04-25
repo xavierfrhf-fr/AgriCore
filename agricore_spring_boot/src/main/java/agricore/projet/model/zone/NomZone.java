@@ -1,4 +1,6 @@
-package agricore.projet.model;
+package agricore.projet.model.zone;
+
+import agricore.projet.model.NomRessource;
 
 import java.util.Set;
 

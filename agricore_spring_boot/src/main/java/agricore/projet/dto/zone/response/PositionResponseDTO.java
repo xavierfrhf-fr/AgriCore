@@ -1,6 +1,6 @@
 package agricore.projet.dto.zone.response;
 
-import agricore.projet.model.Position;
+import agricore.projet.model.zone.position.Position;
 
 public class PositionResponseDTO {
     private Integer posX;

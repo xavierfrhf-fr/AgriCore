@@ -1,6 +1,6 @@
 package agricore.projet.dto.zone.request;
 
-import agricore.projet.model.Position;
+import agricore.projet.model.zone.position.Position;
 import jakarta.validation.constraints.Min;
 
 public class PositionRequestDTO {

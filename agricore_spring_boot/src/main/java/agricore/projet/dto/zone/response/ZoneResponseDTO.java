@@ -1,7 +1,7 @@
 package agricore.projet.dto.zone.response;
 
-import agricore.projet.model.NomZone;
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
 
 //TODO
 public class ZoneResponseDTO {

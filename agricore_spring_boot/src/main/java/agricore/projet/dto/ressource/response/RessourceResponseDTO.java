@@ -1,7 +1,7 @@
 package agricore.projet.dto.ressource.response;
 
 import agricore.projet.model.NomRessource;
-import agricore.projet.model.NomZone;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.Ressource;
 
 public class RessourceResponseDTO {

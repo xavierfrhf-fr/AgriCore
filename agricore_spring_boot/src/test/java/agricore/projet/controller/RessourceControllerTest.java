@@ -1,7 +1,5 @@
 package agricore.projet.controller;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -23,7 +21,7 @@ import agricore.projet.config.SecurityConfig;
 import agricore.projet.dto.ressource.response.PrixResponseDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.model.NomRessource;
-import agricore.projet.model.NomZone;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.PrixLot;
 import agricore.projet.model.Unite;
 import agricore.projet.services.JpaUserDetailsService;

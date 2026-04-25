@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.zone.position;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

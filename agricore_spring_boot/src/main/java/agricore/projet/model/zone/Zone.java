@@ -1,11 +1,11 @@
-package agricore.projet.model;
+package agricore.projet.model.zone;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import agricore.projet.model.*;
 
-import agricore.projet.view.Views;
+import agricore.projet.model.zone.position.Position;
 import jakarta.persistence.*;
 
 @Entity
