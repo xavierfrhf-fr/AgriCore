@@ -1,0 +1,99 @@
+<div>
+  <span class="etiquette">Inventaire des ressources</span>
+  <div class="panneau" style="width: 500px">
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/inventaire.png" />Liste des ressources
+    </p>
+    <table>
+      <thead>
+      <tr>
+        <th>Ressource</th>
+        <th>Unité</th>
+        <th>Qté</th>
+        <th>Prix</th>
+        <th>Stock min</th>
+        <th>Surplus</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="selection">
+        <td><img class="img-icone" src="assets/image/pomme.png" />Pomme</td>
+        <td><span class="badge">Kg</span></td>
+        <td>120</td>
+        <td>1.20 €</td>
+        <td>30</td>
+        <td class="surplus-oui">Oui</td>
+      </tr>
+      <tr>
+        <td><img class="img-icone" src="assets/image/fraise.png" />Fraise</td>
+        <td><span class="badge">Kg</span></td>
+        <td>8</td>
+        <td>3.50 €</td>
+        <td>20</td>
+        <td>Non</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="boutons">
+      <button class="bouton bouton-supprimer">
+        <img class="img-icone" src="assets/image/croix.png" />Supprimer
+      </button>
+      <button class="bouton bouton-reinitialiser">
+        <img class="img-icone" src="assets/image/deselectionner.png" />Désélectionner
+      </button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <span class="etiquette">Créer / Modifier une ressource</span>
+  <div class="panneau" style="width: 400px">
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/liste.png" />Modifier la ressource...
+      <img class="img-icone" src="assets/image/pomme.png" />Pomme
+    </p>
+    <div class="formulaire">
+      <div class="champ">
+        <label>Nom de la ressource</label>
+        <select class="bordure-pixel">
+          <option>— Choisir —</option>
+          <option selected>Pomme</option>
+          <option>Fraise</option>
+        </select>
+      </div>
+      <div class="champ">
+        <label>Unité (auto)</label>
+        <input class="bordure-pixel" value="Kg" readonly />
+      </div>
+      <div class="duo">
+        <div class="champ">
+          <label>Quantité</label>
+          <input class="bordure-pixel" type="number" value="120" />
+        </div>
+        <div class="champ">
+          <label>Prix (€)</label>
+          <input class="bordure-pixel" type="number" value="1.20" />
+        </div>
+      </div>
+      <div class="champ">
+        <label>Stock minimum</label>
+        <input class="bordure-pixel" type="number" value="30" />
+      </div>
+      <div class="champ">
+        <label>Surplus en vente ?</label>
+        <span class="surplus-oui">Oui — surplus de 90 unité(s)</span>
+      </div>
+      <div class="boutons">
+        <button class="bouton bouton-creer">
+          <img class="img-icone" src="assets/image/creer.png" />Créer
+        </button>
+        <button class="bouton bouton-modifier">
+          <img class="img-icone" src="assets/image/modifier.png" />Modifier
+        </button>
+        <button class="bouton bouton-reinitialiser">
+          <img class="img-icone" src="assets/image/reinitialiser.png" />Réinitialiser
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
