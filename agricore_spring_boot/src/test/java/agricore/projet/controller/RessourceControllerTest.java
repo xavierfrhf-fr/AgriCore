@@ -3,6 +3,7 @@ package agricore.projet.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import agricore.projet.services.TransformationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class RessourceControllerTest {
 
         @MockitoBean
         private RessourceService ressourceService;
+
+        @MockitoBean
+        private TransformationService transformationService;
 
         @MockitoBean
         private JpaUserDetailsService jpaUserDetailsService;
