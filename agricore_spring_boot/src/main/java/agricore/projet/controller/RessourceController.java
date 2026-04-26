@@ -3,6 +3,7 @@ package agricore.projet.controller;
 import java.util.List;
 
 import agricore.projet.dto.ressource.request.TransformationRequestDTO;
+import agricore.projet.dto.ressource.response.TransformationResponseDTO;
 import agricore.projet.services.TransformationService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +61,7 @@ public class RessourceController {
     }
 
     @PostMapping("/transformation")
-    public void transformation(@RequestBody TransformationRequestDTO request) {
-        transformationService.performTransformation(request);
+    public TransformationResponseDTO transformation(@RequestBody TransformationRequestDTO request) {
+        return transformationService.performTransformation(request);
     }
 }

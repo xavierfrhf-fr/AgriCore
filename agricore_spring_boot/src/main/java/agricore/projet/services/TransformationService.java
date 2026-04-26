@@ -3,6 +3,8 @@ package agricore.projet.services;
 import agricore.projet.dto.ressource.request.PrixRequestDTO;
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.request.TransformationRequestDTO;
+import agricore.projet.dto.ressource.response.TransformationResponseDTO;
+import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.PrixLot;
 import agricore.projet.model.ressource.Ressource;
@@ -23,6 +25,22 @@ public class TransformationService {
         this.ressourceService = ressourceService;
     }
 
+    public TransformationResponseDTO performTransformation(TransformationRequestDTO request) {
+        //Méthode principale pour effectuer transformation
+        int nbTransfo = getMaxTransformation(request);
+        Transformation transformation = Transformation.getTransformationByOutput(request.getProduct());
+        createMissingOutputResources(transformation);
+        if (nbTransfo > 0){
+            transformation.getInput().entrySet().forEach(entry -> {
+                changeQuantity(entry.getKey(), -entry.getValue()*nbTransfo);
+            });
+            transformation.getOutput().entrySet().forEach(entry -> {
+                changeQuantity(entry.getKey(), entry.getValue()*nbTransfo);
+            });
+        }
+        return TransformationResponseDTO.generate(request,transformation,nbTransfo);
+    }
+
     private int getMaxTransformation(TransformationRequestDTO request) {
         Transformation transformation = Transformation.getTransformationByOutput(request.getProduct());
 
@@ -35,7 +53,7 @@ public class TransformationService {
                 .entrySet()
                 .stream()
                 .mapToInt(entry -> {
-                    int stockDispo = getStockAvailable(entry.getKey(), request.isBypassStockMin());
+                    int stockDispo = getAvailableStock(entry.getKey(), request.isBypassStockMin());
                     return stockDispo / entry.getValue();
                 })
                 .min()
@@ -51,56 +69,49 @@ public class TransformationService {
         return Math.min(maxPossible, needed);
     }
 
-    private int getStockAvailable(NomRessource nomRessource, boolean bypassStockMin) {
-        return daoRessource.findByNom(nomRessource)
-                .map(r -> calculateAvailable(r, bypassStockMin))
-                .orElse(0);
+    private int getAvailableStock(NomRessource nomRessource,
+                                  boolean bypassStockMin) {
+        Ressource ressource = daoRessource.findByNom(nomRessource).orElseThrow(
+                () -> new RessourceNotFoundException(nomRessource)
+        );
+        int reserved = bypassStockMin ? 0 : ressource.getStockMin();
+        return Math.max(0, ressource.getQuantite() - reserved);
     }
 
-    private int calculateAvailable(Ressource r, boolean bypass) {
-        if (bypass) {
-            return Math.max(0, r.getQuantite());
-        }
-        return Math.max(0, r.getQuantite() - r.getStockMin());
-    }
-
-    public void performTransformation(TransformationRequestDTO request) {
-        int nbTransfo = getMaxTransformation(request);
-        Transformation transformation = Transformation.getTransformationByOutput(request.getProduct());
-        for (NomRessource nomRessource : transformation.getOutput().keySet()){
-            createRessourceIfNotExist(nomRessource);
-        }
-        if (nbTransfo > 0){
-            transformation.getInput().entrySet().forEach(entry -> {
-                changeQuantity(entry.getKey(), -entry.getValue()*nbTransfo);
-            });
-            transformation.getOutput().entrySet().forEach(entry -> {
-                changeQuantity(entry.getKey(), entry.getValue()*nbTransfo);
-            });
-        }
-
-    }
-
-    private void changeQuantity(NomRessource nomRessource, int quantity) {
+    private void changeQuantity(NomRessource nomRessource, int varQte) {
+        //ATTENTION ne vérifie pas :
+        // - Si la ressource existe en BDD
+        // - Si la quantité est suffisante en cas de valeurs négative -> utilisation sans vérification préalable peut amener à des quantités négatives
         daoRessource
             .findByNom(nomRessource)
             .map (ressource ->  {
-                ressource.setQuantite(ressource.getQuantite()+quantity);
+                ressource.setQuantite(ressource.getQuantite()+varQte);
                 daoRessource.save(ressource);
                 return null;
             });
+    }
 
+    private void createMissingOutputResources(Transformation transformation) {
+        transformation.getOutput()
+                .keySet()
+                .forEach(this::createRessourceIfNotExist);
     }
 
     private void createRessourceIfNotExist(NomRessource r) {
-        if (!ressourceService.ressourceAlreadyExists(r)){
-            RessourceRequestDTO  request = new RessourceRequestDTO();
-            request.setNom(r);
-            request.setStockMin(0);
-            request.setQuantite(0);
-            PrixRequestDTO prixLot = new PrixRequestDTO(BigDecimal.valueOf(1),1,r.getUniteStockage());
-            request.setPrixLot(prixLot);
-            ressourceService.create(request);
+        if (ressourceService.ressourceAlreadyExists(r)) {
+            return;
         }
+        RessourceRequestDTO  request = new RessourceRequestDTO();
+        request.setNom(r);
+        request.setStockMin(0);
+        request.setQuantite(0);
+        request.setPrixLot(
+                new PrixRequestDTO(
+                        BigDecimal.ONE,
+                        1,
+                        r.getUniteStockage()
+                )
+        );
+        ressourceService.create(request);//permet de garder les verifs associé aux ressources
     }
 }

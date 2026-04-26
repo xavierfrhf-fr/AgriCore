@@ -5,16 +5,31 @@ import java.util.Map;
 
 public enum Transformation {
     FROMAGE(
-            Map.of(NomRessource.Fromage, 1),
-            Map.of(NomRessource.Lait,2)
+            Map.of(NomRessource.Lait,2),
+            Map.of(NomRessource.Fromage, 1)
+
+    ),
+    JUS_DE_POMME(
+            Map.of(NomRessource.Pomme, 5),
+            Map.of(NomRessource.JusDePomme, 1)
+    ),
+    FARINE_BLE(
+            Map.of(NomRessource.Blé, 10),
+            Map.of(NomRessource.FarineBlé, 1)
+    ),
+    PATE(
+            Map.of(NomRessource.Lait, 1,
+                   NomRessource.FarineBlé, 2),
+            Map.of(NomRessource.Pate,5)
     );
 
-    private final Map<NomRessource, Integer> output;
-    private final Map<NomRessource, Integer> input;
 
-    Transformation(Map<NomRessource, Integer> output, Map<NomRessource, Integer> input){
-        this.output = output;
+    private final Map<NomRessource, Integer> input;
+    private final Map<NomRessource, Integer> output;
+
+    Transformation(Map<NomRessource, Integer> input, Map<NomRessource, Integer> output){
         this.input = input;
+        this.output = output;
     }
 
     public Map<NomRessource, Integer> getOutput() {
