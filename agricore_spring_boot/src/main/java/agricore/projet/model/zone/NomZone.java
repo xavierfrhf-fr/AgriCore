@@ -1,6 +1,6 @@
 package agricore.projet.model.zone;
 
-import agricore.projet.model.NomRessource;
+import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.zone.position.ZoneShape;
 
 import java.util.Set;
@@ -23,7 +23,8 @@ public enum NomZone {
 			Set.of(NomRessource.Blé,
 					NomRessource.Colza,
 					NomRessource.Tournesol,
-					NomRessource.Mais)
+					NomRessource.Mais,
+					NomRessource.FarineBlé)
 	),
 	CUVE(ZoneShape.rectangle(2,2),
 			false,
@@ -35,7 +36,7 @@ public enum NomZone {
 	),
 	CHAMBRE_FROIDE(ZoneShape.rectangle(3,3),
 			false,
-			Set.of(NomRessource.Fromage)
+			Set.of(NomRessource.Fromage, NomRessource.Pate)
 	);
 
 	private final ZoneShape zoneShape;

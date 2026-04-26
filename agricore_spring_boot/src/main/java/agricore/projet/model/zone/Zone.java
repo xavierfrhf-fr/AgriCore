@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 import agricore.projet.model.*;
 
+import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.zone.position.CellGridPosition;
-import agricore.projet.model.zone.position.CellOffset;
 import agricore.projet.model.zone.position.Position;
 import jakarta.persistence.*;
 

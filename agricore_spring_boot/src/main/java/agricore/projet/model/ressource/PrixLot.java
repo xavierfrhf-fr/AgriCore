@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.ressource;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -7,7 +7,6 @@ import jakarta.persistence.Enumerated;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Formatter;
 
 @Embeddable
 public class PrixLot {

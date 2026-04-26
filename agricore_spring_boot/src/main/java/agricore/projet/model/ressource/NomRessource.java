@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.ressource;
 
 public enum NomRessource {
     Pomme(Unite.KILOGRAM),
@@ -10,6 +10,8 @@ public enum NomRessource {
     Tournesol(Unite.KILOGRAM),
     Blé(Unite.KILOGRAM),
     Colza(Unite.KILOGRAM),
+    FarineBlé(Unite.KILOGRAM),
+    Pate(Unite.ARBITRAIRE),
     JusDePomme(Unite.LITRE);
 
     private final Unite uniteStockage;

@@ -1,10 +1,9 @@
 package agricore.projet.dto.ressource.request;
 
-import agricore.projet.model.NomRessource;
+import agricore.projet.model.ressource.NomRessource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 
 public class RessourceRequestDTO {
     // pas d id pour la request

@@ -1,7 +1,7 @@
 package agricore.projet.dto.ressource.response;
 
-import agricore.projet.model.PrixLot;
-import agricore.projet.model.Unite;
+import agricore.projet.model.ressource.PrixLot;
+import agricore.projet.model.ressource.Unite;
 
 import java.math.BigDecimal;
 
