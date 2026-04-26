@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.ressource;
 
 import agricore.projet.model.zone.Zone;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ public class Ressource {
     @Column(name = "ressource_id")
     private Integer id;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "varchar(50)")
     private NomRessource nom;
     @Column(nullable = false)
     private int quantite;

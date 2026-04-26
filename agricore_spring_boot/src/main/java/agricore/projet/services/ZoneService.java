@@ -11,7 +11,7 @@ import agricore.projet.exception.InvalidZonePositionException;
 import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
-import agricore.projet.model.NomRessource;
+import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
