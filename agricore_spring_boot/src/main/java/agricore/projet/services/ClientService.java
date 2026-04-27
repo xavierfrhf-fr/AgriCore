@@ -41,10 +41,6 @@ public class ClientService {
 		return ClientResponseDTO.convert(daoUtilisateur.save(c));
 	}
 
-	public ClientResponseDTO patch(Integer id, ClientRequestDTO request) {
-		// j'ai pas compris cette methode ?
-		return null;
-	}
 
 	public ClientResponseDTO update(Integer id, ClientRequestDTO request) {
 		Client c = (Client) daoUtilisateur.findById(id)

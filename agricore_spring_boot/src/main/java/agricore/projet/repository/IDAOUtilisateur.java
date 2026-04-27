@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import agricore.projet.model.Employe;
 import agricore.projet.model.Utilisateur;
-import agricore.projet.model.Zone;
+
 
 public interface IDAOUtilisateur extends JpaRepository<Utilisateur, Integer> {
 

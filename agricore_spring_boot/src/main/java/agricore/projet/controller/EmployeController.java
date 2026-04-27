@@ -41,10 +41,6 @@ public class EmployeController {
         return employeService.create(request);
     }
 
-    @PatchMapping("/{id}")
-    public EmployeResponseDTO patch(@PathVariable Integer id, @RequestBody EmployeRequestDTO request) {
-        return employeService.patch(id, request);
-    }
 
     @PutMapping("/{id}")
     public EmployeResponseDTO update(@PathVariable Integer id, @RequestBody EmployeRequestDTO request) {
