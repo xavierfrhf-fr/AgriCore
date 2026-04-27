@@ -16,7 +16,7 @@ import agricore.projet.dto.utilisateur.request.FermierRequestDTO;
 import agricore.projet.dto.utilisateur.response.FermierResponseDTO;
 import agricore.projet.dto.utilisateur.response.FermierWithEmployeResponseDTO;
 import agricore.projet.dto.utilisateur.response.FermierWithZoneResponseDTO;
-import agricore.projet.model.Zone;
+
 import agricore.projet.services.EmployeService;
 import agricore.projet.services.FermierService;
 import agricore.projet.services.ZoneService;
@@ -62,10 +62,6 @@ public class FermierController {
 		return fermierService.create(request);
 	}
 
-	@PatchMapping("/{id}")
-	public FermierResponseDTO patch(@PathVariable Integer id, @RequestBody FermierRequestDTO request) {
-		return fermierService.patch(id, request);
-	}
 
 	@PutMapping("/{id}")
 	public FermierResponseDTO update(@PathVariable Integer id, @RequestBody FermierRequestDTO request) {

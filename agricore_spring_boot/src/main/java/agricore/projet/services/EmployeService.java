@@ -43,10 +43,6 @@ public class EmployeService {
 		return EmployeResponseDTO.convert(daoUtilisateur.save(e));
 	}
 
-	public EmployeResponseDTO patch(Integer id, EmployeRequestDTO request) {
-		// j'ai pas compris cette methode ?
-		return null;
-	}
 
 	public EmployeResponseDTO update(Integer id, EmployeRequestDTO request) {
 		Employe e = (Employe) daoUtilisateur.findById(id)

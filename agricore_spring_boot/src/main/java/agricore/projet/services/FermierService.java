@@ -44,11 +44,6 @@ public class FermierService {
 		return FermierResponseDTO.convert(daoUtilisateur.save(c));
 	}
 
-	public FermierResponseDTO patch(Integer id, FermierRequestDTO request) {
-		// j'ai pas compris cette methode ?
-		return null;
-	}
-
 	public FermierResponseDTO update(Integer id, FermierRequestDTO request) {
 		Fermier c = (Fermier) daoUtilisateur.findById(id)
 				.orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
@@ -72,7 +67,10 @@ daoUtilisateur.deleteById(id);
 	} 
 	
 	public FermierWithZoneResponseDTO getFermierWithZone(int id) {
-		return null;
+		return daoUtilisateur
+				.findFermierByIdWithZone(id)
+				.map(FermierWithZoneResponseDTO::convert)
+				.orElseThrow(() -> new RuntimeException("Zone introuvable pour l'id " + id));
 		
 	}
 	

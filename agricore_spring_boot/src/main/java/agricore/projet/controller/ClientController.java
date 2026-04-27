@@ -41,10 +41,7 @@ public class ClientController {
         return clientService.create(request);
     }
 
-    @PatchMapping("/{id}")
-    public ClientResponseDTO patch(@PathVariable Integer id, @RequestBody ClientRequestDTO request) {
-        return clientService.patch(id, request);
-    }
+   
 
     @PutMapping("/{id}")
     public ClientResponseDTO update(@PathVariable Integer id, @RequestBody ClientRequestDTO request) {
