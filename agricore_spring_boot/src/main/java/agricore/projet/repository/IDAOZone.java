@@ -8,8 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface IDAOZone extends JpaRepository<Zone,Integer> {
-    @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.animals WHERE z.id = :id")// EUUUH FAUT VERIFIER QUE CA MARCHE
+public interface IDAOZone extends JpaRepository<Zone, Integer> {
+    @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.animals WHERE z.id = :id") // EUUUH FAUT VERIFIER QUE CA MARCHE
     Optional<Zone> findByIdWithAnimal(@Param("id") Integer id);
 
     @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.vehicules WHERE z.id = :id")
@@ -17,6 +17,9 @@ public interface IDAOZone extends JpaRepository<Zone,Integer> {
 
     @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.ressources WHERE z.id = :id")
     Optional<Zone> findByIdWithRessource(@Param("id") Integer id);
+
+    @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.ressources WHERE z.nomZone = :nomZone")
+    Optional<Zone> findZoneByNomZone(@Param("nomZone") NomZone nomZone);
 
     boolean existsByNomZone(NomZone nomZone);
 
