@@ -1,0 +1,10 @@
+.farm-grid {
+  position: relative;
+  display: grid;
+  width: fit-content;
+  user-select: none;
+
+  background-image:
+    linear-gradient(to right, #dcdcdc 1px, transparent 1px),
+    linear-gradient(to bottom, #dcdcdc 1px, transparent 1px);
+}
