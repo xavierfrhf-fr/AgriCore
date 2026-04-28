@@ -53,44 +53,62 @@ public class Plante {
 		this.dernierUpdate = dernierUpdate;
 	}
 
+	
+
 	public Integer getId() {
 		return id;
-	}
-
-	public LocalDate getDatePlantation() {
-		return datePlantation;
-	}
-
-	public LocalDate getDateRecolte() {
-		return dateRecolte;
-	}
-
-	public EspecePlante getEspece() {
-		return espece;
-	}
-
-	public Zone getZone() {
-		return zone;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	public LocalDate getDatePlantation() {
+		return datePlantation;
+	}
+
 	public void setDatePlantation(LocalDate datePlantation) {
 		this.datePlantation = datePlantation;
+	}
+
+	public LocalDate getDateRecolte() {
+		return dateRecolte;
 	}
 
 	public void setDateRecolte(LocalDate dateRecolte) {
 		this.dateRecolte = dateRecolte;
 	}
 
+	public EspecePlante getEspece() {
+		return espece;
+	}
+
 	public void setEspece(EspecePlante espece) {
 		this.espece = espece;
 	}
 
+	public Zone getZone() {
+		return zone;
+	}
+
 	public void setZone(Zone zone) {
 		this.zone = zone;
+	}
+
+	public LocalDateTime getDernierUpdate() {
+		return dernierUpdate;
+	}
+
+	public void setDernierUpdate(LocalDateTime dernierUpdate) {
+		this.dernierUpdate = dernierUpdate;
+	}
+
+	public double getHumidite() {
+		return humidite;
+	}
+
+	public void setHumidite(double humidite) {
+		this.humidite = humidite;
 	}
 
 	public void updateHumidite() {

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.plante.response.PlanteResponseDTO;
-import agricore.projet.model.Plante;
 import agricore.projet.repository.IDAOPlante;
 import agricore.projet.repository.IDAOZone;
 
@@ -30,7 +29,6 @@ public class PlanteService {
 				.toList();//permet de produire une liste
 		}
 	
-	public 
 
 }
 
