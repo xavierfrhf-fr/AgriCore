@@ -3,9 +3,6 @@ package agricore.projet.model;
 import java.util.List;
 
 import agricore.projet.model.zone.Zone;
-import com.fasterxml.jackson.annotation.JsonView;
-
-import agricore.projet.view.Views;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
@@ -46,7 +43,5 @@ public class Fermier extends Utilisateur {
 	public String toString() {
 		return "Fermier [id=" + id + ", login=" + login + ", password=" + password + "]";
 	}
-	
-	
 
 }
