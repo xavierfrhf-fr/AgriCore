@@ -99,8 +99,8 @@ public class ZoneServiceTest {
                 assertThat(result)
                                 .extracting(ZoneResponseDTO::getPosition)
                                 .usingRecursiveFieldByFieldElementComparator()
-                                .containsExactly(PositionResponseDTO.convert(POSITION),
-                                                PositionResponseDTO.convert(POSITION));
+                                .containsExactly(PositionResponseDTO.convert(ZONE1),
+                                                PositionResponseDTO.convert(ZONE2));
 
                 Assertions.assertEquals(ZONE_LIST.size(), result.size());
                 Mockito.verify(daoZone).findAll();
