@@ -1,5 +1,6 @@
 package agricore.projet.exception;
 
+import agricore.projet.model.zone.NomZone;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -8,5 +9,9 @@ public class ZoneNotFoundException extends RuntimeException {
 
     public ZoneNotFoundException(Integer id) {
         super("La zone avec l'id : " + id + " est introuvable");
+    }
+
+    public ZoneNotFoundException(NomZone nomZone) {
+        super("Aucune zone de type : "+nomZone+" n'existe pas");
     }
 }

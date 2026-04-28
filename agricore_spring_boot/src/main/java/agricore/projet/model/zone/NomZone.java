@@ -16,6 +16,14 @@ public enum NomZone {
 			false),
 	STOCK_DE_FRUIT(ZoneShape.rectangle(1, 1),
 			false),
+	CUISINE(ZoneShape.rectangle(2,2),
+			false),
+	MOULIN(ZoneShape.rectangle(2,2),
+			false),
+	FROMAGERIE(ZoneShape.rectangle(2,2),
+			false),
+	PRESSOIR(ZoneShape.rectangle(2,2),
+			false),
 	CHAMBRE_FROIDE(ZoneShape.rectangle(3, 3),
 			false);
 
