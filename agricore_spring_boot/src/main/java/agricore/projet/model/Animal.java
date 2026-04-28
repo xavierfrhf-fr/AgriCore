@@ -39,16 +39,14 @@ public class Animal {
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
 
-	public Animal(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
+	public Animal(Integer id, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
 		this.id = id;
-		this.male = male;
 		this.dateNaissance = dateNaissance;
 		this.dateVaccination = dateVaccination;
 		this.espece = espece;
 	}
 
-	public Animal(boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
-		this.male = male;
+	public Animal(LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
 		this.dateNaissance = dateNaissance;
 		this.dateVaccination = dateVaccination;
 		this.espece = espece;
@@ -63,10 +61,6 @@ public class Animal {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public boolean isMale() {
-		return male;
 	}
 
 	public void setMale(boolean male) {
@@ -107,7 +101,7 @@ public class Animal {
 
 	@Override
 	public String toString() {
-		return "Animal [id=" + id + ", male=" + male + ", dateNaissance=" + dateNaissance + ", dateVaccination="
+		return "Animal [id=" + id + ", dateNaissance=" + dateNaissance + ", dateVaccination="
 				+ dateVaccination + ", espece=" + espece + "]";
 	}
 
