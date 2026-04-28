@@ -67,7 +67,7 @@ public class ZoneWithRessourcesResponseDTO {
         ZoneWithRessourcesResponseDTO response = new ZoneWithRessourcesResponseDTO();
         response.setId(zone.getId());
         response.setFermierId(zone.getFermier().getId());
-        response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
+        response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         response.setRessources(zone.getRessources()
                 .stream()
