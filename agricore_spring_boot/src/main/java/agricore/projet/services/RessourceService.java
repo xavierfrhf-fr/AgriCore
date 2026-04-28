@@ -22,10 +22,12 @@ public class RessourceService {
     private static final Logger logger = LoggerFactory.getLogger(RessourceService.class);
 
     private final IDAORessource daoRessource;
+    private final IDAOZone daoZone;
     private final ZoneService zoneService;
 
     public RessourceService(IDAORessource daoRessource, IDAOZone daoZone, ZoneService zoneService) {
         this.daoRessource = daoRessource;
+        this.daoZone = daoZone;
         this.zoneService = zoneService;
     }
 
@@ -60,9 +62,11 @@ public class RessourceService {
         }
 
         Ressource ressource = new Ressource();
-        ressource.setZone(zoneService.findZoneThatStoreRessources(request.getNom())
-                .orElseThrow(
-                        () -> new RuntimeException("Aucune zone ne permet de stocker : " + request.getNom().name())));
+        ressource.setZone(daoZone.existsByNomZone(request.getNom().getZoneStockage())
+                ? daoZone.findZoneByNomZone(request.getNom().getZoneStockage())
+                        .orElseThrow(() -> new RuntimeException(
+                                "Aucune zone ne permet de stocker : " + request.getNom().name()))
+                : null);
         ressource.setNom(request.getNom());
         ressource.setQuantite(request.getQuantite());
         PrixLot prixLot = new PrixLot();
@@ -84,15 +88,15 @@ public class RessourceService {
         }
         if (request.getQuantite() != null)
             ressource.setQuantite(request.getQuantite());
-        if (request.getPrixLot() != null) {//Update partielle du prixLot
+        if (request.getPrixLot() != null) {// Update partielle du prixLot
             PrixLot prixLot = ressource.getPrixLot();
             if (request.getPrixLot().getUnite() != null) {
                 prixLot.setUnite(request.getPrixLot().getUnite());
             }
-            if (request.getPrixLot().getPrixPar() != null){
+            if (request.getPrixLot().getPrixPar() != null) {
                 prixLot.setPrixPar(request.getPrixLot().getPrixPar());
             }
-            if (request.getPrixLot().getQuantiteLot()!= null){
+            if (request.getPrixLot().getQuantiteLot() != null) {
                 prixLot.setQuantite(request.getPrixLot().getQuantiteLot());
             }
 

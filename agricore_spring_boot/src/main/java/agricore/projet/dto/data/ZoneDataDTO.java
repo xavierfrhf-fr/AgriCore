@@ -13,7 +13,8 @@ public class ZoneDataDTO {
     private boolean zoneUnique;
     private List<NomRessource> nomRessources;
 
-    public ZoneDataDTO(String nomZone, List<CellOffset> shape, boolean autorisePlant, boolean zoneUnique, List<NomRessource> nomRessources) {
+    public ZoneDataDTO(String nomZone, List<CellOffset> shape, boolean autorisePlant, boolean zoneUnique,
+            List<NomRessource> nomRessources) {
         this.nomZone = nomZone;
         this.shape = shape;
         this.autorisePlant = autorisePlant;
@@ -68,16 +69,11 @@ public class ZoneDataDTO {
         ZoneDataDTO dto = new ZoneDataDTO();
         dto.setNomZone(nomZone.name());
         dto.setAutorisePlant(nomZone.isAutorisePlant());
-        dto.setZoneUnique(nomZone.isZoneUnique());
+        dto.setZoneUnique(NomRessource.isZoneUnique(nomZone));
         dto.setShape(nomZone.getZoneShape()
-                            .getShape()
-                            .stream()
-                            .toList()
-        );
-        dto.setNomRessources(nomZone.getSetRessource()
-                                    .stream()
-                                    .toList()
-        );
+                .getShape()
+                .stream()
+                .toList());
         return dto;
     }
 }
