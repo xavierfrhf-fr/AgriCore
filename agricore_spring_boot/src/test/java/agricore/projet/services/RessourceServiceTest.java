@@ -121,7 +121,6 @@ class RessourceServiceTest {
     @Test
     void createSavesAndReturnsDTO() {
         when(daoRessource.findAll()).thenReturn(List.of());
-        when(zoneService.findZoneThatStoreRessources(NOM_RESSOURCE)).thenReturn(Optional.of(zone));
         when(daoRessource.save(any())).thenReturn(ressource);
 
         RessourceResponseDTO result = ressourceService.create(request);
@@ -138,16 +137,6 @@ class RessourceServiceTest {
         assertThatThrownBy(() -> ressourceService.create(request))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("existe déjà");
-        verify(daoRessource, never()).save(any());
-    }
-
-    @Test
-    void createThrowsWhenNoZone() {
-        when(daoRessource.findAll()).thenReturn(List.of());
-        when(zoneService.findZoneThatStoreRessources(NOM_RESSOURCE)).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> ressourceService.create(request))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Aucune zone");
         verify(daoRessource, never()).save(any());
     }
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import agricore.projet.model.EspecePlante;
+import agricore.projet.model.Plante;
 
 //apres creation de la plante, cette classe permet de renvoyer proprement les donnees a l'utilisateur quand celui-ci cherche la plante
 public class PlanteResponseDTO {
@@ -70,5 +71,16 @@ public class PlanteResponseDTO {
 		this.humidite = humidite;
 	} 
 	
+	public static PlanteResponseDTO convert (Plante plante) {
+		PlanteResponseDTO response = new PlanteResponseDTO();
+		response.setId(plante.getId());
+		response.setDatePlantation(plante.getDatePlantation());
+		response.setDateRecolte(plante.getDateRecolte());
+		response.setEspece(plante.getEspece());
+		response.setZoneId(plante.getZone().getId());
+		response.setDernierUpdate(plante.getDernierUpdate());
+		response.setHumidite(plante.getHumidite());
+		return response;
+	}
 	
 }

@@ -66,7 +66,7 @@ public class ZoneWithVehiculesResponseDTO {
     public static ZoneWithVehiculesResponseDTO convert(Zone zone){
         ZoneWithVehiculesResponseDTO response = new ZoneWithVehiculesResponseDTO();
         response.setId(zone.getId());
-        response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
+        response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         response.setFermierId(zone.getFermier().getId());
         response.setVehicules(zone.getVehicules()
