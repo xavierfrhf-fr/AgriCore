@@ -311,7 +311,7 @@ public class ZoneServiceTest {
         public void getZoneWithVehiculesShouldContainVehicules() {
                 // GIVEN
                 LocalDate date = LocalDate.now();
-                Vehicule vehicule = new Vehicule(1, TypeVehicule.Utilitaire, date, ZONE1);
+                Vehicule vehicule = new Vehicule(1, TypeVehicule.UTILITAIRE, date, ZONE1);
 
                 Zone zoneWithVehicule = ZONE1;
                 zoneWithVehicule.setVehicules(List.of(vehicule));
@@ -323,7 +323,7 @@ public class ZoneServiceTest {
                 assertThat(response.getVehicules().size()).isEqualTo(1);
                 assertThat(response.getVehicules())
                                 .extracting("id", "typeVehicule", "dateControleTech", "delaiAvantControle", "zoneId")
-                                .containsExactly(tuple(1, TypeVehicule.Utilitaire, date, 0, ZONE1_ID));
+                                .containsExactly(tuple(1, TypeVehicule.UTILITAIRE, date, 0, ZONE1_ID));
 
                 assertThat(response)
                                 .extracting(ZoneWithVehiculesResponseDTO::getNomZone,
@@ -348,7 +348,7 @@ public class ZoneServiceTest {
                 // GIVEN
                 Ressource ressource = new Ressource(
                                 1,
-                                NomRessource.Fraise,
+                                NomRessource.FRAISE,
                                 1,
                                 new PrixLot(BigDecimal.valueOf(1.00), 100, Unite.GRAMME),
                                 1,
@@ -363,7 +363,7 @@ public class ZoneServiceTest {
                 assertThat(response.getRessources().size()).isEqualTo(1);
                 assertThat(response.getRessources())
                                 .extracting("id", "nom", "quantite", "stockMin", "zoneId", "zoneNom")
-                                .containsExactly(tuple(1, NomRessource.Fraise, 1, 1, ZONE1_ID, ZONE1_NOMZONE));
+                                .containsExactly(tuple(1, NomRessource.FRAISE, 1, 1, ZONE1_ID, ZONE1_NOMZONE));
 
                 assertThat(response.getRessources())
                                 .extracting("prixLot")

@@ -51,8 +51,8 @@ public class RessourceControllerTest {
         private ObjectMapper objectMapper;
 
         private static final Integer RESSOURCE_ID = 1;
-        private static final NomRessource RESSOURCE_NOM = NomRessource.Fraise;
-        private static final String UNITE_AFFICHAGE = NomRessource.Fraise.getUniteStockage().getAffichage();
+        private static final NomRessource RESSOURCE_NOM = NomRessource.FRAISE;
+        private static final String UNITE_AFFICHAGE = NomRessource.FRAISE.getUniteStockage().getAffichage();
         private static final int RESSOURCE_QUANTITE = 1;
         private static final PrixLot PRIX_LOT = new PrixLot(new BigDecimal("2.00"), 100, Unite.GRAMME);
         private static final PrixResponseDTO PRIX_RESPONSE_DTO = PrixResponseDTO.convert(PRIX_LOT);

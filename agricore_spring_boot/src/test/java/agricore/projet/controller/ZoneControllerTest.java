@@ -268,8 +268,8 @@ public class ZoneControllerTest {
                 POSITION_RESP_DTO,
                 NOM_ZONE,
                 FERMIER_ID,
-                List.of(new RessourceResponseDTO(1, NomRessource.Fraise,
-                        NomRessource.Fraise.getUniteStockage().getAffichage(),
+                List.of(new RessourceResponseDTO(1, NomRessource.FRAISE,
+                        NomRessource.FRAISE.getUniteStockage().getAffichage(),
                         1,
                         PrixResponseDTO.convert(new PrixLot(new BigDecimal("2.00"), 100, Unite.GRAMME)), 10, 1,
                         NomZone.POULAILLER)));
@@ -287,7 +287,7 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].id").value(1));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].nom").value(NomRessource.Fraise.name()));
+        result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].nom").value(NomRessource.FRAISE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].quantite").value(1));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].stockMin").value(10));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].zoneId").value(ZONE_ID));
@@ -320,7 +320,7 @@ public class ZoneControllerTest {
                 POSITION_RESP_DTO,
                 NOM_ZONE,
                 FERMIER_ID,
-                List.of(new VehiculeResponseDTO(1, TypeVehicule.Utilitaire, date, 0, ZONE_ID)));
+                List.of(new VehiculeResponseDTO(1, TypeVehicule.UTILITAIRE, date, 0, ZONE_ID)));
         Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID)).thenReturn(zoneWithVehiculesResponseDTO);
         // WHEN
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/vehicule/" + ZONE_ID));
@@ -336,7 +336,7 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].id").value(1));
         result.andExpect(
-                MockMvcResultMatchers.jsonPath("$.vehicules.[*].typeVehicule").value(TypeVehicule.Utilitaire.name()));
+                MockMvcResultMatchers.jsonPath("$.vehicules.[*].typeVehicule").value(TypeVehicule.UTILITAIRE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].dateControleTech").value(date.toString()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].delaiAvantControle").value(0));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].zoneId").value(ZONE_ID));
