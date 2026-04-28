@@ -2,6 +2,9 @@ package agricore.projet.controller;
 
 import java.util.List;
 
+import agricore.projet.dto.ressource.request.TransformationRequestDTO;
+import agricore.projet.dto.ressource.response.TransformationResponseDTO;
+import agricore.projet.services.TransformationService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,9 +23,11 @@ import agricore.projet.services.RessourceService;
 @RequestMapping("/api/ressource")
 public class RessourceController {
     private final RessourceService ressourceService;
+    private final TransformationService transformationService;
 
-    public RessourceController(RessourceService ressourceService) {
+    public RessourceController(RessourceService ressourceService,  TransformationService transformationService) {
         this.ressourceService = ressourceService;
+        this.transformationService = transformationService;
     }
 
     @GetMapping
@@ -53,5 +58,10 @@ public class RessourceController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {
         ressourceService.deleteById(id);
+    }
+
+    @PostMapping("/transformation")
+    public TransformationResponseDTO transformation(@RequestBody TransformationRequestDTO request) {
+        return transformationService.performTransformation(request);
     }
 }

@@ -7,10 +7,12 @@ import agricore.projet.dto.zone.response.ZoneResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithAnimalsResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
 import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
+import agricore.projet.exception.InvalidZonePositionException;
+import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
-import agricore.projet.model.NomRessource;
-import agricore.projet.model.Zone;
+import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
 import org.slf4j.Logger;
@@ -26,12 +28,13 @@ public class ZoneService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final IDAOZone daoZone;
-
     private final IDAOUtilisateur daoUtilisateur;
+    private final PositionService positionService;
 
-    public ZoneService(IDAOZone daoZone, IDAOUtilisateur daoUtilisateur) {
+    public ZoneService(IDAOZone daoZone, IDAOUtilisateur daoUtilisateur, PositionService positionService) {
         this.daoZone = daoZone;
         this.daoUtilisateur = daoUtilisateur;
+        this.positionService = positionService;
     }
 
     public ZoneResponseDTO getZoneById(Integer id){
@@ -52,7 +55,15 @@ public class ZoneService {
     }
 
     public int create(ZoneRequestDTO request) {
+        if (request.getNomZone().isZoneUnique()){
+            if (daoZone.existsByNomZone(request.getNomZone())){
+                throw new UniqueZoneAlreadyExistException("A zone of type: "+request.getNomZone()+" already exists");
+            }
+        }
         Zone zone = ZoneRequestDTO.convert(request);
+        if (!positionService.zoneCanBeAdded(zone)){
+            throw new InvalidZonePositionException("Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
+        }
         //TODO a revoir (cast en fermier, exception custom)
         zone.setFermier((Fermier) daoUtilisateur
                 .findById(request.getFermierId())
@@ -73,6 +84,9 @@ public class ZoneService {
             zone.setNomZone(request.getNomZone());
         }
         if (request.getPosition() != null) {
+            if (!positionService.zoneCanBeMoved(zone)) {
+                throw new InvalidZonePositionException("Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
+            }
             zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
         }
         if (request.getFermierId() != null) {
@@ -90,10 +104,15 @@ public class ZoneService {
     public int put(ZoneRequestDTO request, int id) {
         logger.trace("Update complet de zone ({}, {})", request.toString(), id);
         Zone zone = ZoneRequestDTO.convert(request);
+        zone.setId(id);
+        if (!positionService.zoneCanBeMoved(zone)) {
+            throw new InvalidZonePositionException("Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
+        }
         //TODO a revoir (cast en fermier, exception custom)
         zone.setFermier((Fermier) daoUtilisateur
                 .findById(request.getFermierId())
                 .orElseThrow(NullPointerException::new));
+
         return daoZone.save(zone).getId();
     }
 

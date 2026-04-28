@@ -2,6 +2,7 @@ package agricore.projet.model;
 
 import java.util.List;
 
+import agricore.projet.model.zone.Zone;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import agricore.projet.view.Views;

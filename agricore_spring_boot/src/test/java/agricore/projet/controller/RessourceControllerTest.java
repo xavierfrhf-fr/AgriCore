@@ -1,10 +1,9 @@
 package agricore.projet.controller;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
 import java.math.BigDecimal;
 import java.util.List;
 
+import agricore.projet.services.TransformationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import agricore.projet.config.SecurityConfig;
 import agricore.projet.dto.ressource.response.PrixResponseDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
-import agricore.projet.model.NomRessource;
-import agricore.projet.model.NomZone;
-import agricore.projet.model.PrixLot;
-import agricore.projet.model.Unite;
+import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.ressource.PrixLot;
+import agricore.projet.model.ressource.Unite;
 import agricore.projet.services.JpaUserDetailsService;
 import agricore.projet.services.JwtUtils;
 import agricore.projet.services.RessourceService;
@@ -38,6 +37,9 @@ public class RessourceControllerTest {
 
         @MockitoBean
         private RessourceService ressourceService;
+
+        @MockitoBean
+        private TransformationService transformationService;
 
         @MockitoBean
         private JpaUserDetailsService jpaUserDetailsService;

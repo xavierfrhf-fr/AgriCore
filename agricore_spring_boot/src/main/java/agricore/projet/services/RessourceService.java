@@ -1,11 +1,10 @@
 package agricore.projet.services;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import agricore.projet.model.NomRessource;
-import agricore.projet.model.PrixLot;
+import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.ressource.PrixLot;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,7 @@ import org.springframework.stereotype.Service;
 import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.response.RessourceResponseDTO;
 import agricore.projet.exception.RessourceNotFoundException;
-import agricore.projet.model.NomRessource;
-import agricore.projet.model.Ressource;
+import agricore.projet.model.ressource.Ressource;
 import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 

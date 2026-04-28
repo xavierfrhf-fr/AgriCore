@@ -1,0 +1,69 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+/* Indication visuelle dans le tableau */
+.surplus-oui {
+  color: var(--vert);
+  font-weight: bold;
+}
+
+/* Tableau de ressources */
+table {
+  width: 100%;
+  border-spacing: 2px;
+}
+th {
+  background: #aaddf5;
+  padding: 6px 8px;
+  text-align: left;
+  border-bottom: 2px solid #7ac8e8;
+  text-transform: uppercase;
+}
+td {
+  padding: 5px 8px;
+  box-shadow:
+    -2px 0 0 var(--bordure),
+    2px 0 0 var(--bordure),
+    0 -2px 0 var(--bordure),
+    0 2px 0 var(--bordure),
+    inset -1px 0 0 #c4a97d,
+    inset 1px 0 0 #c4a97d,
+    inset 0 -1px 0 #c4a97d,
+    inset 0 1px 0 #c4a97d;
+}
+tr:nth-child(odd) td {
+  background: #f5fcff;
+}
+tr:nth-child(even) td {
+  background: #eaf7ff;
+}
+tr.selection td {
+  background: #ffe8a0 !important;
+  font-weight: bold;
+}
+
+/* Mise en page du formulaire */
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.duo {
+  display: flex;
+  gap: 10px;
+}
+.boutons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}

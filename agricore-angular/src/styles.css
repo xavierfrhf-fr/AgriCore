@@ -1,0 +1,139 @@
+/* Polices */
+@font-face {
+  font-family: "Stardew Valley";
+  src: url("/assets/font/StardewValley.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Stardew Valley Regular";
+  src: url("/assets/font/StardewValley-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Stardew Valley AllCaps";
+  src: url("/assets/font/StardewValley-AllCaps.ttf") format("truetype");
+}
+
+/* Variables */
+
+:root {
+  --fond: #f0e8d0;
+  --fond-panneau: #d9f6ffcc;
+  --fond-bouton: #f5e6c8;
+  --texte: #5b4636;
+  --texte-discret: #9a7f68;
+  --bordure: #b14e05;
+  --bordure-image: url(/assets/image/bordure-bloc.png) 15 stretch;
+  --vert: #27ae60;
+  --bleu: #2980b9;
+  --rouge: #c0392b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: "Stardew Valley";
+  font-size: large;
+  background: var(--fond);
+  color: var(--texte);
+}
+
+body {
+  padding: 24px;
+}
+
+/* Panneaux et bordures */
+.panneau {
+  background: var(--fond-panneau);
+  border: 6px solid transparent;
+  border-image: var(--bordure-image);
+  padding: 12px 16px 16px;
+}
+
+.bordure-pixel {
+  box-shadow:
+    -2px 0 0 var(--bordure),
+    2px 0 0 var(--bordure),
+    0 -2px 0 var(--bordure),
+    0 2px 0 var(--bordure),
+    inset -1px 0 0 #c4a97d,
+    inset 1px 0 0 #c4a97d,
+    inset 0 -1px 0 #c4a97d,
+    inset 0 1px 0 #c4a97d;
+}
+
+/* Titres et libellés */
+.titre-section {
+  margin: 0 0 10px;
+  padding-bottom: 4px;
+  border-bottom: 4px dashed #c4a97d;
+  font-size: 1.2rem;
+}
+
+.etiquette {
+  font-weight: bold;
+  color: var(--texte-discret);
+}
+
+label {
+  text-transform: uppercase;
+}
+
+.badge {
+  background: #9a7f6888;
+  border-radius: 20px;
+  padding: 1px 7px;
+  font-weight: bold;
+}
+
+/* Icônes inline */
+.img-icone {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+  margin-right: 2px;
+  vertical-align: baseline;
+}
+
+/* Champs de formulaire */
+input,
+select {
+  background: #fdf6e3;
+  color: var(--texte);
+  padding: 5px 8px;
+  width: 100%;
+  border: none;
+  font-family: inherit;
+  font-size: 1.1rem;
+}
+input[readonly] {
+  opacity: 0.7;
+}
+
+/* Boutons */
+.bouton {
+  font-size: 1.2rem;
+  border: 3px solid transparent;
+  border-image: var(--bordure-image);
+  padding: 4px 6px;
+  cursor: pointer;
+  font-family: inherit;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+}
+.bouton-creer {
+  background: var(--vert);
+}
+.bouton-modifier {
+  background: var(--bleu);
+}
+.bouton-supprimer {
+  background: var(--rouge);
+}
+.bouton-reinitialiser {
+  background: var(--fond-bouton);
+  color: var(--texte);
+}

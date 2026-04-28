@@ -6,8 +6,13 @@ import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.animal.request.AnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
+import agricore.projet.exception.AnimalNotAllowedInZoneException;
 import agricore.projet.exception.AnimalNotFoundException;
+import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Animal;
+import agricore.projet.model.EspeceAnimal;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOAnimal;
 import agricore.projet.repository.IDAOZone;
 
@@ -42,7 +47,17 @@ public class AnimalService {
         a.setDateNaissance(animal.getDateNaissance());
         a.setDateVaccination(animal.getDateVaccination());
         a.setEspece(animal.getEspece());
-        a.setZone(daoZone.findById(animal.getZoneId()).orElse(null));
+
+        Zone zone = daoZone
+                .findById(animal.getZoneId())
+                .orElseThrow(
+                        ()-> new ZoneNotFoundException(animal.getZoneId())
+                );
+
+        if (isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone())){
+            a.setZone(zone);
+        }
+
         a.setMale(animal.isMale());
 
         return AnimalResponse.convert(daoAnimal.save(a));
@@ -59,7 +74,17 @@ public class AnimalService {
         a.setDateNaissance(animal.getDateNaissance());
         a.setDateVaccination(animal.getDateVaccination());
         a.setEspece(animal.getEspece());
-        a.setZone(daoZone.findById(animal.getZoneId()).orElse(null));
+
+        Zone zone = daoZone
+                .findById(animal.getZoneId())
+                .orElseThrow(
+                        ()-> new ZoneNotFoundException(animal.getZoneId())
+                );
+
+        if (isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone())){
+            a.setZone(zone);
+        }
+
         a.setMale(animal.isMale());
 
         return AnimalResponse.convert(daoAnimal.save(a));
@@ -69,6 +94,22 @@ public class AnimalService {
     public void deleteById(Integer id) {
 
         daoAnimal.deleteById(id);
+    }
+
+    public boolean isAnimalAllowedInZone(EspeceAnimal espece, NomZone nomZone) {
+        //Retourne true si l'animal à le droit d'être dans cette Zone
+        if (!espece.getAllowedZone().equals(nomZone)){
+            throw new AnimalNotAllowedInZoneException(nomZone, espece);
+        }else{
+            return true;
+        }
+    }
+
+    public boolean isAnimalAllowedInZone(AnimalRequest animal) {
+        //Surcharge potentiellement plus simple à utiliser (mais fait une 2eme requete SQL de la zone)
+        return daoZone.findById(animal.getZoneId())
+                .map(zone -> isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone()))
+                .orElseThrow(() -> new ZoneNotFoundException(animal.getZoneId()));
     }
 
 }

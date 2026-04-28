@@ -1,8 +1,8 @@
 package agricore.projet.dto.ressource.response;
 
-import agricore.projet.model.NomRessource;
-import agricore.projet.model.NomZone;
-import agricore.projet.model.Ressource;
+import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.ressource.Ressource;
 
 public class RessourceResponseDTO {
     private Integer id;

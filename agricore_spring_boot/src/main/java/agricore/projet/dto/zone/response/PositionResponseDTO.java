@@ -1,60 +1,50 @@
 package agricore.projet.dto.zone.response;
 
-import agricore.projet.model.Position;
+import agricore.projet.model.zone.position.Position;
+import agricore.projet.model.zone.position.Rotation;
 
 public class PositionResponseDTO {
-    private Integer posX;
-    private Integer posY;
-    private Integer tailleX;
-    private Integer tailleY;
+    private Integer anchorX;
+    private Integer anchorY;
+    private Rotation rotation;
 
-    public PositionResponseDTO(Integer posX, Integer posY, Integer tailleX, Integer tailleY) {
-        this.posX = posX;
-        this.posY = posY;
-        this.tailleX = tailleX;
-        this.tailleY = tailleY;
+    public PositionResponseDTO(Integer anchorX, Integer anchorY, Rotation rotation) {
+        this.anchorX = anchorX;
+        this.anchorY = anchorY;
+        this.rotation = rotation;
     }
 
     public PositionResponseDTO() {}
 
-    public Integer getPosX() {
-        return posX;
+    public Integer getAnchorX() {
+        return anchorX;
     }
 
-    public void setPosX(Integer posX) {
-        this.posX = posX;
+    public void setAnchorX(Integer anchorX) {
+        this.anchorX = anchorX;
     }
 
-    public Integer getPosY() {
-        return posY;
+    public Integer getAnchorY() {
+        return anchorY;
     }
 
-    public void setPosY(Integer posY) {
-        this.posY = posY;
+    public void setAnchorY(Integer anchorY) {
+        this.anchorY = anchorY;
     }
 
-    public Integer getTailleX() {
-        return tailleX;
+    public Rotation getRotation() {
+        return rotation;
     }
 
-    public void setTailleX(Integer tailleX) {
-        this.tailleX = tailleX;
-    }
-
-    public Integer getTailleY() {
-        return tailleY;
-    }
-
-    public void setTailleY(Integer tailleY) {
-        this.tailleY = tailleY;
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
     }
 
     public static PositionResponseDTO convert(Position position){
         PositionResponseDTO response = new PositionResponseDTO();
-        response.setPosX(position.getPosX());
-        response.setPosY(position.getPosY());
-        response.setTailleX(position.getTailleX());
-        response.setTailleY(position.getTailleY());
+        response.setAnchorX(position.getAnchorX());
+        response.setAnchorY(position.getAnchorY());
+        response.setRotation(position.getRotation());
         return response;
     }
 

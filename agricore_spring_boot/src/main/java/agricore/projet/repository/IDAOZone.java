@@ -1,6 +1,7 @@
 package agricore.projet.repository;
 
-import agricore.projet.model.Zone;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,5 +17,7 @@ public interface IDAOZone extends JpaRepository<Zone,Integer> {
 
     @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.ressources WHERE z.id = :id")
     Optional<Zone> findByIdWithRessource(@Param("id") Integer id);
+
+    boolean existsByNomZone(NomZone nomZone);
 
 }

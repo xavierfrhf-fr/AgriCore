@@ -3,6 +3,7 @@ package agricore.projet.model;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import agricore.projet.model.zone.Zone;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
