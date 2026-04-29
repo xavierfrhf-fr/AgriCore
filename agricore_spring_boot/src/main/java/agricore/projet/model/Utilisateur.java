@@ -17,14 +17,15 @@ import jakarta.persistence.Table;
 public abstract class Utilisateur {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "utilisateur_id")
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@Column(name="utilisateur_id")
 	protected Integer id;
+	
 
-	@Column(nullable = false, unique = true) // rajouter length
+	@Column(nullable=false,unique=true)//rajouter length
 	protected String login;
-
-	@Column(nullable = false) // rajouter length
+	
+	@Column(nullable=false)//rajouter length
 	protected String password;
 
 	public Utilisateur() {
