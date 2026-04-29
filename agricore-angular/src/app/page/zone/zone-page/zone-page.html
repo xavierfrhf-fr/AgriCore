@@ -1,2 +1,6 @@
 <p>zone-page works!</p>
-<app-map-component></app-map-component>
+<button (click)="displayMap=!displayMap" value="Afficher carte">Afficher Carte</button>
+@if (displayMap){
+  <app-map-component></app-map-component>
+}
+

@@ -3,8 +3,10 @@
   display: grid;
   width: fit-content;
   user-select: none;
+  border-right: 1px solid rgba(60, 163, 50, 0.5);
+  border-bottom: 1px solid rgba(60, 163, 50, 0.5);
 
   background-image:
-    linear-gradient(to right, #dcdcdc 1px, transparent 1px),
-    linear-gradient(to bottom, #dcdcdc 1px, transparent 1px);
+    linear-gradient(to right, rgba(60, 163, 50, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(60, 163, 50, 0.5) 1px, transparent 1px);
 }

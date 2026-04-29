@@ -14,6 +14,7 @@ import { DataService } from '../../../service/data-service';
 })
 export class ZonePage implements OnInit {
   protected zones$!: Observable<ZoneDTO[]>;
+  protected displayMap:boolean = false;
 
   private refresh$:Subject<void> = new Subject<void>()
 

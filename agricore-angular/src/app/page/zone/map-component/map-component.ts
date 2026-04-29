@@ -12,6 +12,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 })
 export class MapComponent {
   protected mapSize$!: Observable<MapSize>;
+  protected cellSize:number = 64;
 
   constructor(protected dataService: DataService) {}
 

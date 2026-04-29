@@ -1,9 +1,9 @@
 <p>map-component works!</p>
 <div *ngIf="mapSize$ | async as mapSize"
      class="farm-grid"
-     [style.width.px]="mapSize.x * 48"
-     [style.height.px]="mapSize.y * 48"
-     [style.grid-template-columns]="'repeat(' + mapSize.x + ', ' + 48 + 'px)'"
-     [style.grid-template-rows]="'repeat(' + mapSize.y + ', ' + 48 + 'px)'"
-     [style.background-size]="48 + 'px ' + 48 + 'px'">
+     [style.width.px]="mapSize.x * cellSize"
+     [style.height.px]="mapSize.y * cellSize"
+     [style.grid-template-columns]="'repeat(' + mapSize.x + ', ' + cellSize + 'px)'"
+     [style.grid-template-rows]="'repeat(' + mapSize.y + ', ' + cellSize + 'px)'"
+     [style.background-size]="cellSize + 'px ' + cellSize + 'px'">
 </div>
