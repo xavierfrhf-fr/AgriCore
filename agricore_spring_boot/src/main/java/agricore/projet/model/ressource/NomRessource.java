@@ -3,78 +3,80 @@ package agricore.projet.model.ressource;
 import java.util.stream.Stream;
 
 import agricore.projet.model.zone.NomZone;
+import agricore.projet.util.CheminAsset;
 
 public enum NomRessource {
-    POMME("pomme",
-            null,
-            Unite.KILOGRAM,
-            NomZone.STOCK_DE_FRUIT),
-    POIRE("poire",
-            null,
-            Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-    FRAISE("fraise",
-            null,
-            Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-    LAIT("lait",
-            null,
-            Unite.LITRE, NomZone.CUVE),
-    FROMAGE("fromage",
-            null,
-            Unite.KILOGRAM, NomZone.CHAMBRE_FROIDE),
-    MAIS("mais",
-            null,
-            Unite.KILOGRAM, NomZone.SILO),
-    TOURNESOL("tournesol",
-            null,
-            Unite.KILOGRAM, NomZone.SILO),
-    BLE("blé",
-            null,
-            Unite.KILOGRAM, NomZone.SILO),
-    COLZA("colza",
-            null,
-            Unite.KILOGRAM, NomZone.SILO),
-    FARINE_BLE("farine de blé",
-            null,
-            Unite.KILOGRAM, NomZone.SILO),
-    PATE("pâte",
-            null,
-            Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
-    JUS_POMME("jus de pomme",
-            null,
-            Unite.LITRE, NomZone.CUVE);
 
-    private final Unite uniteStockage;
-    private final NomZone zoneStockage;
-    private final String nomAffichage;
-    private final String pathSprite;
+        POMME("pomme",
+                        CheminAsset.RESSOURCE + "pomme.png",
+                        Unite.KILOGRAM,
+                        NomZone.STOCK_DE_FRUIT),
+        POIRE("poire",
+                        CheminAsset.RESSOURCE + "poire.png",
+                        Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
+        FRAISE("fraise",
+                        CheminAsset.RESSOURCE + "fraise.png",
+                        Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
+        LAIT("lait",
+                        CheminAsset.RESSOURCE + "lait.png",
+                        Unite.LITRE, NomZone.CUVE),
+        FROMAGE("fromage",
+                        CheminAsset.RESSOURCE + "fromage.png",
+                        Unite.KILOGRAM, NomZone.CHAMBRE_FROIDE),
+        MAIS("mais",
+                        CheminAsset.RESSOURCE + "mais.png",
+                        Unite.KILOGRAM, NomZone.SILO),
+        TOURNESOL("tournesol",
+                        CheminAsset.RESSOURCE + "fromage.png",
+                        Unite.KILOGRAM, NomZone.SILO),
+        BLE("blé",
+                        CheminAsset.RESSOURCE + "ble.png",
+                        Unite.KILOGRAM, NomZone.SILO),
+        COLZA("colza",
+                        CheminAsset.RESSOURCE + "colza.png",
+                        Unite.KILOGRAM, NomZone.SILO),
+        FARINE_BLE("farine de blé",
+                        CheminAsset.RESSOURCE + "farine-blé.png",
+                        Unite.KILOGRAM, NomZone.SILO),
+        PATE("pâte",
+                        CheminAsset.RESSOURCE + "fromage.png",
+                        Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+        JUS_POMME("jus de pomme",
+                        CheminAsset.RESSOURCE + "jus-pomme.png",
+                        Unite.LITRE, NomZone.CUVE);
 
-    private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
-        this.nomAffichage = nomAffichage;
-        this.pathSprite = pathSprite;
-        this.uniteStockage = uniteStockage;
-        this.zoneStockage = zoneStockage;
-    }
+        private final Unite uniteStockage;
+        private final NomZone zoneStockage;
+        private final String nomAffichage;
+        private final String pathSprite;
 
-    public Unite getUniteStockage() {
-        return uniteStockage;
-    }
+        private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
+                this.nomAffichage = nomAffichage;
+                this.pathSprite = pathSprite;
+                this.uniteStockage = uniteStockage;
+                this.zoneStockage = zoneStockage;
+        }
 
-    public NomZone getZoneStockage() {
-        return zoneStockage;
-    }
+        public Unite getUniteStockage() {
+                return uniteStockage;
+        }
 
-    public String getNomAffichage() {
-        return nomAffichage;
-    }
+        public NomZone getZoneStockage() {
+                return zoneStockage;
+        }
 
-    public String getPathSprite() {
-        return pathSprite;
-    }
+        public String getNomAffichage() {
+                return nomAffichage;
+        }
 
-    public static boolean isZoneUnique(NomZone zone) { // Les zones de stockage sont uniques, si une zone est une
-                                                       // zoneStockage c'est une zone unique
-        return Stream.of(NomRessource.values())
-                .anyMatch(r -> r.getZoneStockage() == zone);
-    }
+        public String getPathSprite() {
+                return pathSprite;
+        }
+
+        public static boolean isZoneUnique(NomZone zone) { // Les zones de stockage sont uniques, si une zone est une
+                                                           // zoneStockage c'est une zone unique
+                return Stream.of(NomRessource.values())
+                                .anyMatch(r -> r.getZoneStockage() == zone);
+        }
 
 }

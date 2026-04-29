@@ -1,8 +1,7 @@
-import {Unite} from '../../../enumerator/ressource/unite';
 
 export interface PrixResponseDto {
   prixPar: number;
-  unite: Unite;
+  unite: string;
   quantiteLot: number;
   affPrix: string;
   affPrixUnitaire: string;
