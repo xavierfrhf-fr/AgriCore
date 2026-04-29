@@ -1,4 +1,4 @@
-.farm-grid {
+.map-grid {
   position: relative;
   display: grid;
   width: fit-content;
@@ -9,4 +9,15 @@
   background-image:
     linear-gradient(to right, rgba(60, 163, 50, 0.5) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(60, 163, 50, 0.5) 1px, transparent 1px);
+}
+
+.map-container {
+  position: relative;
+  width: fit-content;
+}
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
