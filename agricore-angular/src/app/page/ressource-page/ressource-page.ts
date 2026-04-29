@@ -10,7 +10,7 @@ import {AgriSubmit} from '../../component/form/agri-submit/agri-submit';
 import {AgriTextField} from '../../component/form/agri-text-field/agri-text-field';
 import {RessourceRequestDto} from '../../dto/ressource/request/ressource-request-dto';
 import {RessourceResponseDto} from '../../dto/ressource/response/ressource-response-dto';
-import {NomRessource} from '../../enumerator/ressource/nom-ressource';
+import {RessourceDataDto} from '../../dto/ressource/ressource-data-dto';
 import {PrixService} from '../../service/ressource/prix-service';
 import {TransformationService} from '../../service/ressource/transformation-service';
 import {UniteService} from '../../service/ressource/unite-service';
@@ -40,7 +40,8 @@ export class RessourcePage implements OnInit {
   protected ressources$!:
       Observable<RessourceResponseDto[]>;  // D'autres a ajouter
   private refresh$: Subject<void> = new Subject<void>();
-  protected nomRessources$!: Observable<NomRessource[]>;
+  protected nomRessources$!: Observable<RessourceDataDto[]>;
+  protected nomRessourcesList: RessourceDataDto[] = [];
 
   protected showForm: boolean = false;
   protected ressourceForm!: FormGroup;
@@ -60,6 +61,10 @@ export class RessourcePage implements OnInit {
     this.nomRessources$ = this.refresh$.pipe(
         startWith(null), switchMap(() => this.nomRessourceService.findAll()));
 
+    this.nomRessourceService.findAll().subscribe(list => {
+      this.nomRessourcesList = list;
+    });
+
     this.nomRessourceCtrl = this.formBuilder.control(
         '', Validators.required);  // Implementer lui et les autres
 
@@ -72,6 +77,10 @@ export class RessourcePage implements OnInit {
 
   public trackRessource(index: number, value: RessourceResponseDto) {
     return value.id;
+  }
+
+  public getData(nom: string): RessourceDataDto|undefined {
+    return this.nomRessourcesList.find(r => r.nom === nom);
   }
 
   private reload() {

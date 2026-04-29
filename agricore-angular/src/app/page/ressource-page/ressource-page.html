@@ -1,9 +1,15 @@
 <div>
   <span class="etiquette">Inventaire des ressources</span>
-  <div class="panneau" style="width: 500px">
-    <p class="titre-section">
-      <img class="img-icone" src="assets/image/inventaire.png" />Liste des ressources
-    </p>
+<div class="panneau" style="width: fit-content">
+<p class="titre-section" style="display: flex; align-items: center; justify-content: space-between;">
+  <span>
+    <img class="img-icone" src="assets/image/inventaire.png" />Liste des ressources
+  </span>
+  <button (click)="showForm = true" class="bouton bouton-creer">
+    <img class="img-icone" src="assets/image/creer.png" />Créer un nouveau type de ressource
+  </button>
+</p>
+    
     <table>
       <thead>
       <tr>
@@ -22,18 +28,20 @@
       </thead>
       <tbody>
           <tr *ngFor="let ressource of ressources$ | async; trackBy: trackRessource">
-        <td><img class="img-icone" src="assets/image/pomme.png" />{{ressource.nom}}</td>
-        <td><span class="badge"></span></td> <!--ajouter les {{}} dans les td-->
-        <td></td> <!--quand clic pour patch ouvre un formulaire à part-->
-        <td></td> 
+<td>
+  <img class="img-icone" [src]="getData(ressource.nom)?.pathSprite" /> {{ getData(ressource.nom)?.nomAffichage }}
+</td>
+<td>
+  {{ ressource.quantite }} {{ getData(ressource.nom)?.nomAffichageUnite }}
+</td>
+<td>
+  <img class="img-icone" [src]="getData(ressource.nom)?.pathSpriteZone" /> {{ getData(ressource.nom)?.nomAffichageZone }}
+</td>
         <td class="surplus-oui">Oui</td> <!--Calcul côté front-->
       </tr>
       </tbody>
     </table>
     <div class="boutons">
-        <button (click)="showForm = true" class="bouton bouton-creer"> <!--Ouvre le formulaire, mais est remplacé par un autre bouton ou pas, ou juste caché et apparaît dans le formulaire du coup-->
-          <img class="img-icone" src="assets/image/creer.png" />Créer
-        </button>
       <button class="bouton bouton-supprimer">
         <img class="img-icone" src="assets/image/croix.png" />Supprimer
       </button>
