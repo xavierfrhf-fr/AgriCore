@@ -2,10 +2,12 @@ package agricore.projet.services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.utilisateur.request.EmployeRequestDTO;
 import agricore.projet.dto.utilisateur.response.EmployeResponseDTO;
+import agricore.projet.exception.UtilisateurNotFoundException;
 import agricore.projet.model.Employe;
 import agricore.projet.model.Fermier;
 import agricore.projet.repository.IDAOUtilisateur;
@@ -14,11 +16,13 @@ import agricore.projet.repository.IDAOUtilisateur;
 public class EmployeService {
 	
 	private final IDAOUtilisateur daoUtilisateur;
-
-	public EmployeService(IDAOUtilisateur daoutilisateur) {
-		this.daoUtilisateur = daoutilisateur;
-	}
+	private final PasswordEncoder passwordEncoder;
 	
+	public EmployeService(IDAOUtilisateur daoUtilisateur, PasswordEncoder passwordEncoder) {
+		this.daoUtilisateur = daoUtilisateur;
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	public List<EmployeResponseDTO> getAll() {
 		return daoUtilisateur.findAll()
                 .stream()
@@ -33,13 +37,13 @@ public class EmployeService {
 				.filter(user->user instanceof Employe)
                 .map(employe->(Employe) employe)
                 .map(EmployeResponseDTO::convert)
-                .orElse(null);
+                .orElseThrow(() -> new UtilisateurNotFoundException(id));
 	}
 
 	public EmployeResponseDTO create(EmployeRequestDTO request) {
 		Employe e = new Employe();
 		e.setLogin(request.getLogin());
-		e.setPassword(request.getPassword());
+		e.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
 		return EmployeResponseDTO.convert(daoUtilisateur.save(e));
 	}
 
@@ -48,7 +52,7 @@ public class EmployeService {
 		Employe e = (Employe) daoUtilisateur.findById(id)
 				.orElseThrow(() -> new RuntimeException("Employe introuvable pour l'id " + id));
 		e.setLogin(request.getLogin());
-		e.setPassword(request.getPassword());
+		e.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
 		return EmployeResponseDTO.convert(daoUtilisateur.save(e));
 	}
 
