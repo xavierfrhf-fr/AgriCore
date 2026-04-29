@@ -50,7 +50,7 @@ public class VehiculeServiceTest {
 
         Vehicule v = new Vehicule();
         v.setId(1);
-        v.setTypeVehicule(TypeVehicule.Utilitaire);
+        v.setTypeVehicule(TypeVehicule.UTILITAIRE);
         v.setDateControleTech(LocalDate.now().plusDays(10));
         v.setZone(zone);
 
@@ -61,7 +61,7 @@ public class VehiculeServiceTest {
         //then
         assertNotNull(rez);
         assertEquals(1, rez.getId());
-        assertEquals(TypeVehicule.Utilitaire, rez.getTypeVehicule());
+        assertEquals(TypeVehicule.UTILITAIRE, rez.getTypeVehicule());
         assertEquals(LocalDate.now().plusDays(10), rez.getDateControleTech());
     }
 
@@ -83,13 +83,13 @@ public class VehiculeServiceTest {
 
         Vehicule v1 = new Vehicule();
         v1.setId(1);
-        v1.setTypeVehicule(TypeVehicule.Utilitaire);
+        v1.setTypeVehicule(TypeVehicule.UTILITAIRE);
         v1.setDateControleTech(LocalDate.now().plusDays(10));
         v1.setZone(zone);
 
         Vehicule v2 = new Vehicule();
         v2.setId(2);
-        v2.setTypeVehicule(TypeVehicule.Tracteur);
+        v2.setTypeVehicule(TypeVehicule.TRACTEUR);
         v2.setDateControleTech(LocalDate.now().plusDays(20));
         v2.setZone(zone);
 
@@ -126,7 +126,7 @@ public class VehiculeServiceTest {
         zone.setId(1);
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
-        request.setTypeVehicule(TypeVehicule.Utilitaire);
+        request.setTypeVehicule(TypeVehicule.UTILITAIRE);
         request.setDateControleTech(LocalDate.of(2026,04,15));
         request.setZoneid(1);
 
@@ -146,7 +146,7 @@ public class VehiculeServiceTest {
 
         assertNotNull(rez);
         assertEquals(1,rez.getId());
-        assertEquals(TypeVehicule.Utilitaire, rez.getTypeVehicule());
+        assertEquals(TypeVehicule.UTILITAIRE, rez.getTypeVehicule());
         assertEquals(LocalDate.of(2026,04,15), rez.getDateControleTech());
 
     }
@@ -156,7 +156,7 @@ public class VehiculeServiceTest {
         //given 
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
-        request.setTypeVehicule(TypeVehicule.Utilitaire);
+        request.setTypeVehicule(TypeVehicule.UTILITAIRE);
         request.setDateControleTech(LocalDate.of(2026,04,15));
         request.setZoneid(1);
 
@@ -176,12 +176,12 @@ public class VehiculeServiceTest {
         zone.setId(1);
         Vehicule v = new Vehicule();
         v.setId(1);
-        v.setTypeVehicule(TypeVehicule.Utilitaire); 
+        v.setTypeVehicule(TypeVehicule.UTILITAIRE); 
         v.setDateControleTech(LocalDate.of(2026,04,15));
         v.setZone(zone);
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
-        request.setTypeVehicule(TypeVehicule.Tracteur);
+        request.setTypeVehicule(TypeVehicule.TRACTEUR);
         request.setDateControleTech(LocalDate.of(2026,05,20));
         request.setZoneid(1);
         
@@ -205,7 +205,7 @@ public class VehiculeServiceTest {
         VehiculeResponseDTO rez = vehiculeService.update(1, request);
         assertNotNull(rez);
         assertEquals(1, rez.getId());
-        assertEquals(TypeVehicule.Tracteur, rez.getTypeVehicule());
+        assertEquals(TypeVehicule.TRACTEUR, rez.getTypeVehicule());
         assertEquals(LocalDate.of(2026,05,20), rez.getDateControleTech());
 
     }
@@ -215,7 +215,7 @@ public class VehiculeServiceTest {
         //given 
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
-        request.setTypeVehicule(TypeVehicule.Tracteur);
+        request.setTypeVehicule(TypeVehicule.TRACTEUR);
         request.setDateControleTech(LocalDate.of(2026,05,20));
         request.setZoneid(1);
 
@@ -231,11 +231,11 @@ public class VehiculeServiceTest {
 
         Vehicule v = new Vehicule();
         v.setId(1);
-        v.setTypeVehicule(TypeVehicule.Utilitaire); 
+        v.setTypeVehicule(TypeVehicule.UTILITAIRE); 
         v.setDateControleTech(LocalDate.of(2026,04,15));
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
-        request.setTypeVehicule(TypeVehicule.Tracteur);
+        request.setTypeVehicule(TypeVehicule.TRACTEUR);
         request.setDateControleTech(LocalDate.of(2026,05,20));
         request.setZoneid(1);
 

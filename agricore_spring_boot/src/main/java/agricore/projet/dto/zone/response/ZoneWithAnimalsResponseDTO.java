@@ -68,7 +68,7 @@ public class ZoneWithAnimalsResponseDTO {
         ZoneWithAnimalsResponseDTO response = new ZoneWithAnimalsResponseDTO();
         response.setId(zone.getId());
         response.setFermierId(zone.getFermier().getId());
-        response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
+        response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         response.setAnimals(zone.getAnimals()
                 .stream()

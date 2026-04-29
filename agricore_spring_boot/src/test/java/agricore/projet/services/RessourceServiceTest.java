@@ -53,11 +53,11 @@ class RessourceServiceTest {
     private static final PrixLot PRIX_LOT = new PrixLot(new BigDecimal("2.00"), 100, Unite.GRAMME);
     private static final PrixRequestDTO PRIX_REQUEST_DTO = new PrixRequestDTO(new BigDecimal("2.00"), 100,
             Unite.GRAMME);
-    private static final NomRessource NOM_RESSOURCE = NomRessource.Blé;
+    private static final NomRessource NOM_RESSOURCE = NomRessource.BLE;
     private static final NomZone NOM_ZONE = NomZone.SILO;
     private static final int ID_INEXISTANT = 99;
     private static final int QUANTITE_MODIFIEE = 200;
-    private static final NomRessource NOM_RESSOURCE_UPDATE = NomRessource.Fraise;
+    private static final NomRessource NOM_RESSOURCE_UPDATE = NomRessource.FRAISE;
     private static final int QUANTITE_UPDATE = 300;
     private static final int STOCK_MIN_UPDATE = 50;
 

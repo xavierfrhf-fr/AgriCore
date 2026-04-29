@@ -55,7 +55,7 @@ public class ZoneResponseDTO {
         ZoneResponseDTO response = new ZoneResponseDTO();
         response.setId(zone.getId());
         response.setFermierId(zone.getFermier().getId());
-        response.setPosition(PositionResponseDTO.convert(zone.getPosition()));
+        response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         return response;
     }

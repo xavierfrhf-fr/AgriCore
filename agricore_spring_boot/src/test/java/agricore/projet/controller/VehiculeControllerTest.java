@@ -39,7 +39,7 @@ public class VehiculeControllerTest {
     private final int DELAI_AVANT_CONTROLE = (int) LocalDate.now().until(DATE_CONTROLE_TECH, java.time.temporal.ChronoUnit.DAYS);
     private final int ZONE_ID = 1;
     private final int VEHICULE_ID = 1;
-    private final TypeVehicule TYPE_VEHICULE = TypeVehicule.Utilitaire;
+    private final TypeVehicule TYPE_VEHICULE = TypeVehicule.UTILITAIRE;
 
     private final VehiculeResponseDTO VEHICULE_RESPONSE_DTO = new VehiculeResponseDTO(VEHICULE_ID, TYPE_VEHICULE, DATE_CONTROLE_TECH, DELAI_AVANT_CONTROLE, ZONE_ID);
     private final VehiculeRequestDTO VEHICULE_REQUEST_DTO = new VehiculeRequestDTO(TYPE_VEHICULE, DATE_CONTROLE_TECH, ZONE_ID);

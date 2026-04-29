@@ -8,33 +8,32 @@
       <thead>
       <tr>
         <th>Ressource</th>
-        <th>Unité</th>
-        <th>Qté</th>
-        <th>Prix</th>
+        <th>Quantité</th> <!--8 Kg-->
+        <th>Prix affiché</th>
         <th>Stock min</th>
         <th>Surplus</th>
+        <th>Lieu de stockage</th>
+        <th>Transformation</th> <!--Transformer la ressource-->
+        <th></th> <!--Modification/Validation (Update) -->
+        <th></th> <!--Suppression/Annulation (Delete)-->
+        <!--Patch quand on double clique sur une case en particulier-->
+
       </tr>
       </thead>
       <tbody>
-      <tr class="selection">
-        <td><img class="img-icone" src="assets/image/pomme.png" />Pomme</td>
-        <td><span class="badge">Kg</span></td>
-        <td>120</td>
-        <td>1.20 €</td>
-        <td>30</td>
-        <td class="surplus-oui">Oui</td>
-      </tr>
-      <tr>
-        <td><img class="img-icone" src="assets/image/fraise.png" />Fraise</td>
-        <td><span class="badge">Kg</span></td>
-        <td>8</td>
-        <td>3.50 €</td>
-        <td>20</td>
-        <td>Non</td>
+          <tr *ngFor="let ressource of ressources$ | async; trackBy: trackRessource">
+        <td><img class="img-icone" src="assets/image/pomme.png" />{{ressource.nom}}</td>
+        <td><span class="badge"></span></td> <!--ajouter les {{}} dans les td-->
+        <td></td> <!--quand clic pour patch ouvre un formulaire à part-->
+        <td></td> 
+        <td class="surplus-oui">Oui</td> <!--Calcul côté front-->
       </tr>
       </tbody>
     </table>
     <div class="boutons">
+        <button (click)="showForm = true" class="bouton bouton-creer"> <!--Ouvre le formulaire, mais est remplacé par un autre bouton ou pas, ou juste caché et apparaît dans le formulaire du coup-->
+          <img class="img-icone" src="assets/image/creer.png" />Créer
+        </button>
       <button class="bouton bouton-supprimer">
         <img class="img-icone" src="assets/image/croix.png" />Supprimer
       </button>
@@ -45,7 +44,7 @@
   </div>
 </div>
 
-<div>
+<agri-modal *ngIf="showForm" (submit)="creerOuModifier()" [form]="ressourceForm" [title]="(editingRessource) ? `Modifier` : `Créer`" (closed)="showForm = false">
   <span class="etiquette">Créer / Modifier une ressource</span>
   <div class="panneau" style="width: 400px">
     <p class="titre-section">
@@ -53,14 +52,17 @@
       <img class="img-icone" src="assets/image/pomme.png" />Pomme
     </p>
     <div class="formulaire">
+
       <div class="champ">
         <label>Nom de la ressource</label>
-        <select class="bordure-pixel">
-          <option>— Choisir —</option>
-          <option selected>Pomme</option>
-          <option>Fraise</option>
-        </select>
+          <agri-select class="bordure-pixel" label="nomRessource" id="nomRessourceId" [items]="(nomRessources$ | async) ?? []" item-value="nomAffichage" [control]="nomRessourceCtrl">
+    <ng-template let-nom="item">
+      {{ nom.nomAffichage }}
+    </ng-template>
+  </agri-select>
       </div>
+<!--TODO
+pour formulaire prix quand clic ouvre un formulaire à part
       <div class="champ">
         <label>Unité (auto)</label>
         <input class="bordure-pixel" value="Kg" readonly />
@@ -71,7 +73,8 @@
           <input class="bordure-pixel" type="number" value="120" />
         </div>
         <div class="champ">
-          <label>Prix (€)</label>
+          
+          <label>Prix (€)</label> 
           <input class="bordure-pixel" type="number" value="1.20" />
         </div>
       </div>
@@ -83,8 +86,9 @@
         <label>Surplus en vente ?</label>
         <span class="surplus-oui">Oui — surplus de 90 unité(s)</span>
       </div>
+-->
       <div class="boutons">
-        <button class="bouton bouton-creer">
+        <button class="bouton bouton-creer"> <!--Là c'est soit le créer soit le modifier qui s'affiche selon ce qui a déclenché le formulaire-->
           <img class="img-icone" src="assets/image/creer.png" />Créer
         </button>
         <button class="bouton bouton-modifier">
@@ -96,4 +100,5 @@
       </div>
     </div>
   </div>
-</div>
+    <agri-submit [editing]="!!editingRessource" [form]="ressourceForm" (cancel)="annulerEditer()" />
+</agri-modal>
