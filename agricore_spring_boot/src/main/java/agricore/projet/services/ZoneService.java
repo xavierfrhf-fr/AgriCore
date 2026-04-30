@@ -76,8 +76,7 @@ public class ZoneService {
         return zone.getId();
     }
 
-    public int patch(ZoneRequestDTO request, int id) {// VERIFIER si update partielle marche comme ca ?? De plus les
-                                                      // relations ManyToOne / OneToOne (en lazy seront elle ecrasé ??)
+    public int patch(ZoneRequestDTO request, int id) {
         Zone zone = daoZone.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Echec update partielle, car la zone avec id {} n'existe pas", id);
@@ -87,11 +86,12 @@ public class ZoneService {
             zone.setNomZone(request.getNomZone());
         }
         if (request.getPosition() != null) {
+            zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
             if (!positionService.zoneCanBeMoved(zone)) {
                 throw new InvalidZonePositionException(
                         "Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
             }
-            zone.setPosition(PositionRequestDTO.convert(request.getPosition()));
+
         }
         if (request.getFermierId() != null) {
             if (request.getFermierId() != zone.getFermier().getId()) {
