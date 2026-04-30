@@ -1,15 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ZoneShape } from '../../../model/zone/zone-shape';
 import { CellAbsolutePosition } from '../../../model/zone/position/cell-absolute-position';
 import { CellOffset } from '../../../model/zone/position/cell-offset';
 
 @Component({
   selector: 'app-map-component',
-  imports: [NgIf, AsyncPipe],
+  standalone: true,
+  imports: [AsyncPipe],
   templateUrl: './map-component.html',
   styleUrl: './map-component.css',
 })
@@ -23,7 +24,7 @@ export class MapComponent {
         { x: 1, y: 0 },
         { x: 1, y: 1 },
         { x: 0, y: 1 },
-        { x: 2, y: 1 }
+        { x: 2, y: 1 },
       ], // _cells
       0, // _anchorX
       0, // _anchorY
@@ -41,18 +42,27 @@ export class MapComponent {
       '',
     ),
   ];
+  @Input() shapes: ZoneShape[] | null = null;
+
+  private overlayCanvas?: ElementRef<HTMLCanvasElement>;
 
   @ViewChild('overlayCanvas')
   set overlayCanvasSetter(canvas: ElementRef<HTMLCanvasElement> | undefined) {
-    if (!canvas) {
+    this.overlayCanvas = canvas;
+    this.tryRender();
+  }
+
+  ngOnChanges(): void {
+    this.tryRender();
+  }
+
+  private tryRender(): void {
+    if (!this.overlayCanvas || !this.shapes) {
       return;
     }
 
-    this.overlayCanvas = canvas;
-    this.renderShapes(this.fakeZoneShapes);
+    this.renderShapes(this.shapes);
   }
-
-  private overlayCanvas!: ElementRef<HTMLCanvasElement>;
 
   constructor(protected dataService: DataService) {}
 
@@ -63,15 +73,20 @@ export class MapComponent {
   }
 
   drawShape(ctx: CanvasRenderingContext2D, shape: ZoneShape): void {
+    if (this.overlayCanvas == null){
+      return;
+    }
     const rect = this.overlayCanvas.nativeElement.getBoundingClientRect();
 
     const xCanva = rect.left; // Distance depuis le bord gauche de la fenêtre
     const yCanva = rect.top;
 
-    const cellAbsolutePositionStrings = new Set(shape.getAbsolutePosition(xCanva, yCanva).map((c) => `${c.x},${c.y}`));
+    const cellAbsolutePositionStrings = new Set(
+      shape.getAbsolutePosition(xCanva, yCanva).map((c) => `${c.x},${c.y}`),
+    );
 
     ctx.fillStyle = 'rgba(10, 10, 10, 0.35)';
-    ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
+    ctx.strokeStyle = 'rgb(234,0,255)';
     ctx.lineWidth = 2;
 
     for (const cell of shape.getAbsolutePosition(0, 0)) {
@@ -80,11 +95,62 @@ export class MapComponent {
 
       ctx.fillRect(px, py, this.cellSize, this.cellSize);
 
-      //this.drawCellBorders(ctx, cell, cellAbsolutePositionStrings);
+      this.drawCellBorders(ctx, cell, cellAbsolutePositionStrings);
     }
   }
 
+  private drawCellBorders(
+    ctx: CanvasRenderingContext2D,
+    cell: CellAbsolutePosition,
+    occupied: Set<string>,
+  ): void {
+    const x = cell.x * this.cellSize;
+    const y = cell.y * this.cellSize;
+    const s = this.cellSize;
+    //Pour chaque cellule d'une forme on dessine les traits si elle n'a pas de voisin
+    const hasTop = occupied.has(`${cell.x},${cell.y - 1}`);
+    const hasRight = occupied.has(`${cell.x + 1},${cell.y}`);
+    const hasBottom = occupied.has(`${cell.x},${cell.y + 1}`);
+    const hasLeft = occupied.has(`${cell.x - 1},${cell.y}`);
+
+    ctx.beginPath(); //On dessine les contours de la forme
+
+    //En haut a gauche x, y
+    //En haut a droite x + s, y
+    //En bas a gauche x, y + s
+    //En bas a droite x + s, y + s
+
+    if (!hasTop) {
+      //Haut gauche -> haut droite
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + s, y);
+    }
+
+    if (!hasRight) {
+      //Haut droite -> bas droite
+      ctx.moveTo(x + s, y);
+      ctx.lineTo(x + s, y + s);
+    }
+
+    if (!hasBottom) {
+      //Bas droite -> bas gauche
+      ctx.moveTo(x + s, y + s);
+      ctx.lineTo(x, y + s);
+    }
+
+    if (!hasLeft) {
+      //Bas gauche -> haut gauche
+      ctx.moveTo(x, y + s);
+      ctx.lineTo(x, y);
+    }
+
+    ctx.stroke();
+  }
+
   renderShapes(shapes: ZoneShape[]): void {
+    if (this.overlayCanvas == null) {
+      return;
+    }
     const canvas = this.overlayCanvas.nativeElement;
     const ctx = canvas.getContext('2d');
 
