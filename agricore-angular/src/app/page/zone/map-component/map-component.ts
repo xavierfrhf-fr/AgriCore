@@ -82,18 +82,23 @@ export class MapComponent {
     const yCanva = rect.top;
 
     const cellAbsolutePositionStrings = new Set(
-      shape.getAbsolutePosition(xCanva, yCanva).map((c) => `${c.x},${c.y}`),
+      shape.getAbsoluteCanvasPosition(this.cellSize).map((c) => `${c.x},${c.y}`),
     );
 
     ctx.fillStyle = 'rgba(10, 10, 10, 0.35)';
     ctx.strokeStyle = 'rgb(234,0,255)';
     ctx.lineWidth = 2;
 
-    for (const cell of shape.getAbsolutePosition(0, 0)) {
-      const px = cell.x * this.cellSize;
-      const py = cell.y * this.cellSize;
+    console.log("X canvas :", xCanva)
+    console.log("Y canvas :", yCanva);
 
-      ctx.fillRect(px, py, this.cellSize, this.cellSize);
+    for (const cell of shape.getAbsoluteCanvasPosition(this.cellSize)) {
+      ctx.fillRect(cell.x, cell.y, this.cellSize, this.cellSize);
+      console.log('cell Pos on canvas:');
+      console.log( cell);
+      console.log(cellAbsolutePositionStrings);
+
+
 
       this.drawCellBorders(ctx, cell, cellAbsolutePositionStrings);
     }
@@ -104,14 +109,14 @@ export class MapComponent {
     cell: CellAbsolutePosition,
     occupied: Set<string>,
   ): void {
-    const x = cell.x * this.cellSize;
-    const y = cell.y * this.cellSize;
+    const x = cell.x ;
+    const y = cell.y ;
     const s = this.cellSize;
     //Pour chaque cellule d'une forme on dessine les traits si elle n'a pas de voisin
-    const hasTop = occupied.has(`${cell.x},${cell.y - 1}`);
-    const hasRight = occupied.has(`${cell.x + 1},${cell.y}`);
-    const hasBottom = occupied.has(`${cell.x},${cell.y + 1}`);
-    const hasLeft = occupied.has(`${cell.x - 1},${cell.y}`);
+    const hasTop = occupied.has(`${cell.x},${cell.y - s}`);
+    const hasRight = occupied.has(`${cell.x + s},${cell.y}`);
+    const hasBottom = occupied.has(`${cell.x},${cell.y + s}`);
+    const hasLeft = occupied.has(`${cell.x - s},${cell.y}`);
 
     ctx.beginPath(); //On dessine les contours de la forme
 
