@@ -55,8 +55,8 @@ public class ZoneServiceTest {
         @Mock
         private IDAOUtilisateur daoUtilisateur;
 
-        private static final Position POSITION = new Position(1, 1, Rotation.DEG_O);
-        private static final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, Rotation.DEG_O);
+        private static final Position POSITION = new Position(1, 1, Rotation.DEG_0);
+        private static final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, Rotation.DEG_0);
         private static final int FERMIER_ID = 5;
         private static final Fermier FERMIER = new Fermier(FERMIER_ID, "testLogin", "testPassword");
 
@@ -227,7 +227,7 @@ public class ZoneServiceTest {
 
         private static Stream<Arguments> partielUpdateStream() {
                 Position posInitiale = POSITION;
-                Position posModifiee = new Position(2, 2, Rotation.DEG_O);
+                Position posModifiee = new Position(2, 2, Rotation.DEG_0);
 
                 return Stream.of(
 
@@ -235,13 +235,13 @@ public class ZoneServiceTest {
                                 Arguments.of(new ZoneRequestDTO(null, NomZone.CUVE, null), NomZone.CUVE, posInitiale),
 
                                 // Cas 2 : On ne change que la position (le nom doit rester l'initial)
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_O), null,
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0), null,
                                                 null), NomZone.CHAMPS, posModifiee),
 
                                 // Cas 3 : On change tout
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_O),
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0),
                                                 NomZone.CUVE, 5), NomZone.CUVE, posModifiee),
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_O),
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0),
                                                 NomZone.CUVE, 6), NomZone.CUVE, posModifiee),
                                 // Cas 4 : On envoie tout à null (rien ne doit changer)
                                 Arguments.of(new ZoneRequestDTO(null, null, null), NomZone.CHAMPS, posInitiale));

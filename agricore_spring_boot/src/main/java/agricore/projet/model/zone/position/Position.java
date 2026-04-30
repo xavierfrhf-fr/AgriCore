@@ -5,8 +5,6 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import java.util.Set;
-
 @Embeddable
 public class Position {
 
@@ -21,7 +19,7 @@ public class Position {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, columnDefinition = "varchar(15)")
-	private Rotation rotation = Rotation.DEG_O;
+	private Rotation rotation = Rotation.DEG_0;
 	
 	public Position() {
 	}

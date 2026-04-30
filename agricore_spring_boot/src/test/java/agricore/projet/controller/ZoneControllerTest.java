@@ -66,8 +66,8 @@ public class ZoneControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1,1, Rotation.DEG_O);
-    private final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1,1, Rotation.DEG_O);
+    private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1,1, Rotation.DEG_0);
+    private final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1,1, Rotation.DEG_0);
 
     private final int ZONE_ID_NOT_EXIST = 42;
     private final int ZONE_ID = 1;
@@ -155,7 +155,7 @@ public class ZoneControllerTest {
         // Position
         int anchorX = 1;
         int anchorY = 1;
-        Rotation rotation = Rotation.DEG_O;
+        Rotation rotation = Rotation.DEG_0;
 
         // Zone
         NomZone nomZone = NomZone.POULAILLER;
@@ -216,7 +216,7 @@ public class ZoneControllerTest {
         // Position
         int anchorX = 1;
         int anchorY = 1;
-        Rotation rotation = Rotation.DEG_O;
+        Rotation rotation = Rotation.DEG_0;
         // Zone
         NomZone nomZone = NomZone.POULAILLER;
         int fermierId = 1;
