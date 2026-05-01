@@ -55,7 +55,7 @@ public class ZoneService {
     }
 
     public int create(ZoneRequestDTO request) {
-        if (NomRessource.isZoneUnique(request.getNomZone())) {
+        if (request.getNomZone().isZoneUnique()) {
             if (daoZone.existsByNomZone(request.getNomZone())) {
                 throw new UniqueZoneAlreadyExistException(
                         "A zone of type: " + request.getNomZone() + " already exists");

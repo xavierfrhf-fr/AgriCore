@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import agricore.projet.repository.IDAOZone;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +20,23 @@ import agricore.projet.model.zone.position.Position;
 @RequestMapping("/api/data")
 public class DataController {
 
+    private final IDAOZone daoZone;
+
+    public DataController(IDAOZone daoZone) {
+        this.daoZone = daoZone;
+    }
+
     @GetMapping("/zone")
     public List<ZoneDataDTO> getZoneData() {
         List<ZoneDataDTO> dtos = new ArrayList<>();
         for (NomZone zone : NomZone.values()) {
-            dtos.add(ZoneDataDTO.from(zone));
+            ZoneDataDTO zoneData = ZoneDataDTO.from(zone);
+            if (zone.isZoneUnique()){
+                zoneData.setZoneCreatable(!this.daoZone.existsByNomZone(zone));
+            }else{
+                zoneData.setZoneCreatable(true);
+            }
+            dtos.add(zoneData);
         }
         return dtos;
     }

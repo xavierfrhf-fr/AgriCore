@@ -7,58 +7,58 @@ public enum NomZone {
 	CHAMPS("champ",
 			null,
 			ZoneShape.rectangle(4, 4),
-			true),
+			TypeZone.PLANTS),
 	POULAILLER("poulailler",
 			null,
 			ZoneShape.rectangle(4, 2),
-			false),
+			TypeZone.ANIMAL),
 	ETABLE("étable",
 			null,
 			ZoneShape.rectangle(3, 3),
-			false),
+			TypeZone.ANIMAL),
 	SILO("silo",
 			null,
 			ZoneShape.rectangle(1, 3),
-			false),
+			TypeZone.STORAGE),
 	CUVE("cuve",
 			null,
 			ZoneShape.rectangle(2, 2),
-			false),
+			TypeZone.STORAGE),
 	STOCK_DE_FRUIT("stockage de fruit",
 			null,
 			ZoneShape.rectangle(1, 1),
-			false),
+			TypeZone.STORAGE),
 	CUISINE("cuisine",
 			null,
 			ZoneShape.rectangle(2,2),
-			false),
+			TypeZone.UTILITY),
 	MOULIN("moulin",
 			null,
 			ZoneShape.rectangle(2,2),
-			false),
+			TypeZone.UTILITY),
 	FROMAGERIE("fromagerie",
 			null,
 			ZoneShape.rectangle(2,2),
-			false),
+			TypeZone.UTILITY),
 	PRESSOIR("pressoir",
 			null,
 			ZoneShape.rectangle(2,2),
-			false),
+			TypeZone.UTILITY),
 	CHAMBRE_FROIDE("chambre froide",
 			null,
 			ZoneShape.rectangle(3, 3),
-			false);
+			TypeZone.STORAGE);
 
 	private final ZoneShape zoneShape;
-	private final boolean autorisePlant;
 	private final String nomAffichage;
 	private final String pathSprite;
+	private final TypeZone typeZone;
 
-	private NomZone(String nomAffichage, String pathSprite, ZoneShape zoneShape, boolean autorisePlant) {
+	private NomZone(String nomAffichage, String pathSprite, ZoneShape zoneShape, TypeZone typeZone) {
 		this.zoneShape = zoneShape;
-		this.autorisePlant = autorisePlant;
 		this.nomAffichage = nomAffichage;
 		this.pathSprite = pathSprite;
+		this.typeZone = typeZone;
 
 	}
 
@@ -66,8 +66,8 @@ public enum NomZone {
 		return zoneShape;
 	}
 
-	public boolean isAutorisePlant() {
-		return autorisePlant;
+	public TypeZone getTypeZone() {
+		return typeZone;
 	}
 
 	public String getNomAffichage() {
@@ -76,6 +76,10 @@ public enum NomZone {
 
 	public String getPathSprite() {
 		return pathSprite;
+	}
+
+	public boolean isZoneUnique(){
+		return (this.typeZone.equals(TypeZone.STORAGE) || this.typeZone.equals(TypeZone.UTILITY));
 	}
 
 }
