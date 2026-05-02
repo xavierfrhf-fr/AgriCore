@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricore</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="accueil-page.css">
+</head>
+
+<body>
+    <header>
+        <img src="assets/image/accueil/images/stardew_valley_logo.png" alt="Logo"/>
+        <nav>
+            <ul>
+               
+            </ul>
+        </nav>
+    </header>
+
+  
+    <main>
+
+        <section>
+            <img src="assets/image/accueil/images/parallax3b.png" class="smog">
+
+        </section>
+
+        <section class="identification">
+
+
+            <form [formGroup]="loginForm">
+
+                <div class="input-wrapper">
+                    
+                    <input class="identifiant" type="text" formControlName="username" placeholder="login">
+
+                    <div class="text-danger" *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+                        <small>Le username est obligatoire</small>
+                    </div>
+                
+                    <input class="password"  type="password" formControlName="password" placeholder="mot de passe">
+
+                    <div class="text-danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                        <small>Le password est obligatoire</small>
+                    </div>   
+
+                </div>
+
+                <input class="connexion" type="submit" id="btn"  (click)="connexion()" [disabled]="loginForm.invalid">
+                
+            </form>
+
+        </section>
+
+       
+
+        
+    </main>
+
+
+    <footer>
+        <p>© 2026 AGRICORE - Tous droits réservés</p>
+        <img src="assets/image/accueil/images/stardew_bird.gif" class="bird">
+    </footer>
+    
+</body>
+</html>
