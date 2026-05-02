@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { ZoneShape } from '../../../model/zone/zone-shape';
 import { CellAbsolutePosition } from '../../../model/zone/position/cell-absolute-position';
 import { CellOffset } from '../../../model/zone/position/cell-offset';
@@ -10,7 +10,7 @@ import { CellOffset } from '../../../model/zone/position/cell-offset';
 @Component({
   selector: 'app-map-component',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, NgOptimizedImage],
   templateUrl: './map-component.html',
   styleUrl: './map-component.css',
 })
@@ -73,7 +73,7 @@ export class MapComponent {
   }
 
   drawShape(ctx: CanvasRenderingContext2D, shape: ZoneShape): void {
-    if (this.overlayCanvas == null){
+    if (this.overlayCanvas == null) {
       return;
     }
     const rect = this.overlayCanvas.nativeElement.getBoundingClientRect();
@@ -89,16 +89,14 @@ export class MapComponent {
     ctx.strokeStyle = 'rgb(234,0,255)';
     ctx.lineWidth = 2;
 
-    console.log("X canvas :", xCanva)
-    console.log("Y canvas :", yCanva);
+    //console.log("X canvas :", xCanva)
+    //console.log("Y canvas :", yCanva);
 
     for (const cell of shape.getAbsoluteCanvasPosition(this.cellSize)) {
       ctx.fillRect(cell.x, cell.y, this.cellSize, this.cellSize);
       console.log('cell Pos on canvas:');
-      console.log( cell);
+      console.log(cell);
       console.log(cellAbsolutePositionStrings);
-
-
 
       this.drawCellBorders(ctx, cell, cellAbsolutePositionStrings);
     }
@@ -109,8 +107,8 @@ export class MapComponent {
     cell: CellAbsolutePosition,
     occupied: Set<string>,
   ): void {
-    const x = cell.x ;
-    const y = cell.y ;
+    const x = cell.x;
+    const y = cell.y;
     const s = this.cellSize;
     //Pour chaque cellule d'une forme on dessine les traits si elle n'a pas de voisin
     const hasTop = occupied.has(`${cell.x},${cell.y - s}`);
@@ -152,6 +150,31 @@ export class MapComponent {
     ctx.stroke();
   }
 
+  placeSprite(shape: ZoneShape, ctx: CanvasRenderingContext2D) {
+    let cell: CellAbsolutePosition = shape.getSpriteAnchor(this.cellSize, 0, 0);
+    let xPos: number = cell.x;
+    let yPos: number = cell.y;
+    let targetWidth: number = shape.getSpriteWidth(this.cellSize);
+    let spritePath: string = shape.spritePath;
+
+    const img = new Image();
+    img.src = spritePath;
+
+    img.onload = () => {
+      // 1. Calcul de la hauteur proportionnelle
+      const aspectRatio = img.height / img.width;
+      const targetHeight = targetWidth * aspectRatio;
+
+      // 2. Calcul du point supérieur gauche (Top-Left)
+      // On soustrait la hauteur car l'axe Y descend vers le bas
+      const finalY = yPos - targetHeight;
+
+      // 3. Affichage sur le contexte (ctx)
+      // drawImage(image, x, y, width, height)
+      ctx.drawImage(img, xPos, finalY, targetWidth, targetHeight);
+    };
+  }
+
   renderShapes(shapes: ZoneShape[]): void {
     if (this.overlayCanvas == null) {
       return;
@@ -167,6 +190,7 @@ export class MapComponent {
 
     for (const shape of shapes) {
       this.drawShape(ctx, shape);
+      this.placeSprite(shape,ctx);
     }
   }
 }
