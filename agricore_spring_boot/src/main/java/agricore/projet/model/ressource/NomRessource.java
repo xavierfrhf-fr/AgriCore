@@ -72,11 +72,4 @@ public enum NomRessource {
         public String getPathSprite() {
                 return pathSprite;
         }
-
-        public static boolean isZoneUnique(NomZone zone) { // Les zones de stockage sont uniques, si une zone est une
-                                                           // zoneStockage c'est une zone unique
-                return Stream.of(NomRessource.values())
-                                .anyMatch(r -> r.getZoneStockage() == zone);
-        }
-
 }
