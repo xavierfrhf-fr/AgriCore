@@ -13,13 +13,13 @@ public class NomRessourceTest {
     @ParameterizedTest
     @EnumSource(value = NomZone.class, names = { "SILO", "CUVE", "STOCK_DE_FRUIT", "CHAMBRE_FROIDE" })
     public void isZoneUniqueShouldReturnTrueForStorageZones(NomZone zone) {
-        assertThat(NomRessource.isZoneUnique(zone)).isTrue();
+        assertThat(zone.isZoneUnique()).isTrue();
     }
 
     @ParameterizedTest
     @EnumSource(value = NomZone.class, names = { "CHAMPS", "POULAILLER", "ETABLE" })
     public void isZoneUniqueShouldReturnFalseForNonStorageZones(NomZone zone) {
-        assertThat(NomRessource.isZoneUnique(zone)).isFalse();
+        assertThat(zone.isZoneUnique()).isFalse();
     }
 
     @ParameterizedTest
@@ -31,7 +31,7 @@ public class NomRessourceTest {
     @ParameterizedTest
     @EnumSource(NomRessource.class)
     public void everyRessourceZoneShouldBeUnique(NomRessource ressource) {
-        assertThat(NomRessource.isZoneUnique(ressource.getZoneStockage())).isTrue();
+        assertThat(ressource.getZoneStockage().isZoneUnique()).isTrue();
     }
 
 }
