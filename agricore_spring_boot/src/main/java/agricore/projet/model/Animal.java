@@ -35,6 +35,9 @@ public class Animal {
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
+	@Enumerated(EnumType.STRING)
+    private TypeVehicule vehiculeAchatRequis;
+
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
@@ -124,6 +127,16 @@ public class Animal {
 		int delais = (int) LocalDate.now().until(dateVaccination, ChronoUnit.DAYS);
 		return delais;
 	}
+
+	public TypeVehicule getVehiculeAchatRequis() {
+		return vehiculeAchatRequis;
+	}
+
+	public void setVehiculeAchatRequis(TypeVehicule vehiculeAchatRequis) {
+		this.vehiculeAchatRequis = vehiculeAchatRequis;
+	}
+
+	
 
 	// Inutile car fait en bdd ?
 	// public boolean deplacer(Zone new_zone) {

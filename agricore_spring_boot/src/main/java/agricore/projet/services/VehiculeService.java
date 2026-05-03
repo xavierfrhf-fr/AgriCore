@@ -8,7 +8,11 @@ import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.exception.ZoneNotFoundException;
+import agricore.projet.model.Animal;
+import agricore.projet.model.Plante;
 import agricore.projet.model.Vehicule;
+import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.repository.IDAOVehicule;
@@ -24,6 +28,43 @@ public class VehiculeService {
         this.daoZone = daoZone;
         
     }
+
+    //Recolter plante et animal 
+
+    public String recolterPLante(Plante plante, Vehicule vehicule, int distanceKm) {
+
+        if (plante.getVehiculeRequis() != vehicule.getTypeVehicule() ) {
+            throw new RuntimeException("Pas le bon véhicule");
+        }
+
+        vehicule.consommerCarburant(distanceKm);
+
+        return "Le véhicule est aller chercher la récolte ! ";
+
+    }
+
+    public String acheterAnimal(Animal animal, Vehicule vehicule, int distanceKm) {
+
+        if (animal.getVehiculeAchatRequis() != vehicule.getTypeVehicule()) {
+             throw new RuntimeException("Pas le bon véhicule");
+        }
+
+        vehicule.consommerCarburant(distanceKm);
+
+        return "Le véhicule est aller chercher l'animal ! ";
+    }
+
+    public void fairePlein(Vehicule vehicule) {
+
+        //Essence stocké dans la zone 
+        Ressource carburant = vehicule.getZone().getRessources(NomRessource.ESSENCE);
+
+
+    }
+
+
+
+    //Controller
 
     public VehiculeResponseDTO findByIdDTO(Integer id) {
         return VehiculeResponseDTO.convert(daovehicule.findById(id).orElseThrow(() -> new VehiculeNotFound(id)));  //Throw(() -> new VehiculeN);

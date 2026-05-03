@@ -23,6 +23,8 @@ public class Plante {
 	@OneToOne
     @JoinColumn(name="zone_id")
     private Zone zone;
+	@Enumerated(EnumType.STRING)
+    private TypeVehicule vehiculeRequis;
 
 	//Gestion de l'humidité des plantes
 	//L'idée est d'avoir une valeur (attribut "humidite") qui représente le % d'eau de la plante (entre 0-100)
@@ -150,4 +152,16 @@ public class Plante {
 	public int tempsAvantRecolteEnJour(){
 		return (int) LocalDate.now().until(datePlantation.plusMonths(espece.getTempsPousseMois()), ChronoUnit.DAYS);
 	}
+
+	public TypeVehicule getVehiculeRequis() {
+		return vehiculeRequis;
+	}
+
+	public void setVehiculeRequis(TypeVehicule vehiculeRequis) {
+		this.vehiculeRequis = vehiculeRequis;
+	}
+
+	
+
+	
 }

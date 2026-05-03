@@ -43,12 +43,21 @@ public enum NomRessource {
                         Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
         JUS_POMME("jus de pomme",
                         CheminAsset.RESSOURCE + "jus-pomme.png",
-                        Unite.LITRE, NomZone.CUVE);
+                        Unite.LITRE, NomZone.CUVE),
+        ESSENCE("essence");
 
         private final Unite uniteStockage;
         private final NomZone zoneStockage;
         private final String nomAffichage;
         private final String pathSprite;
+
+        private NomRessource(String nomAffichage) {
+                this.nomAffichage = nomAffichage;
+                this.pathSprite = null;
+                this.uniteStockage = null;
+                this.zoneStockage = null;
+        }
+        
 
         private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
                 this.nomAffichage = nomAffichage;
