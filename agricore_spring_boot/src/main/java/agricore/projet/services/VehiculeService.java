@@ -59,6 +59,15 @@ public class VehiculeService {
         //Essence stocké dans la zone 
         Ressource carburant = vehicule.getZone().getRessources(NomRessource.ESSENCE);
 
+        // qtt carburant manquant dans le véhicule 
+        int manque = vehicule.getCapaciteReservoir() - vehicule.getCarburantActuel();
+
+        // set qtt stocker carburant zone 
+        carburant.setQuantite(carburant.getQuantite() - manque);
+
+        // set gtt carburant du vehicule => faire plein 
+        vehicule.setCarburantActuel(vehicule.getCapaciteReservoir());
+
 
     }
 
