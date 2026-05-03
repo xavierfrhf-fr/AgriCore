@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.data.RessourceDataDTO;
+import agricore.projet.dto.data.UniteDataDTO;
 import agricore.projet.dto.data.ZoneDataDTO;
 import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.ressource.Unite;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.position.MapSize;
 import agricore.projet.model.zone.position.Position;
@@ -50,6 +52,13 @@ public class DataController {
     public List<RessourceDataDTO> getRessourceData() {
         return Stream.of(NomRessource.values())
                 .map(RessourceDataDTO::convert)
+                .toList();
+    }
+
+    @GetMapping("/unite")
+    public List<UniteDataDTO> getUniteData() {
+        return Stream.of(Unite.values())
+                .map(UniteDataDTO::convert)
                 .toList();
     }
 }

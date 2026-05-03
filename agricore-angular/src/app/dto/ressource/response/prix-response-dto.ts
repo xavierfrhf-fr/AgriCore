@@ -1,5 +1,6 @@
 
 export interface PrixResponseDto {
+  id: string;
   prixPar: number;
   unite: string;
   quantiteLot: number;
