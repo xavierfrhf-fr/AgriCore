@@ -17,15 +17,36 @@ table {
   border-spacing: 2px;
 }
 th {
+  white-space: nowrap;
   background: #aaddf5;
   padding: 6px 8px;
   text-align: left;
   border-bottom: 2px solid #7ac8e8;
   text-transform: uppercase;
 }
+
+th:empty {
+  background-color: transparent;
+  border:none;
+}
+
 td {
-  padding: 5px 8px;
-  box-shadow:
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px 2px;
+    box-shadow:
+    -2px 0 0 var(--bordure),
+    2px 0 0 var(--bordure),
+    0 -2px 0 var(--bordure),
+    0 2px 0 var(--bordure),
+
+}
+
+td:not(:has(button)) {
+  font-size: larger;
+    box-shadow:
     -2px 0 0 var(--bordure),
     2px 0 0 var(--bordure),
     0 -2px 0 var(--bordure),
@@ -35,19 +56,37 @@ td {
     inset 0 -1px 0 #c4a97d,
     inset 0 1px 0 #c4a97d;
 }
+
 tr:nth-child(odd) td {
   background: #f5fcff;
 }
 tr:nth-child(even) td {
   background: #eaf7ff;
 }
-tr.selection td {
-  background: #ffe8a0 !important;
-  font-weight: bold;
-}
 
 /* Mise en page du formulaire */
-.formulaire {
+.creation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  
+
+  /* fond assombri */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35); 
+}
+
+.formulaire{
+  justify-self: center;
+  align-self: center;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -66,4 +105,26 @@ tr.selection td {
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 8px;
+}
+/*Transformer*/
+button[style*="background-color: orange"] {
+  min-width: 150px;
+}
+
+.bouton-creer.loading {
+  background-color: gold;
+  cursor: not-allowed;
+  opacity: 0.9;
+  min-width: 139px;
+}
+
+.bouton-modifier,
+.bouton-creer{
+  min-width: 112px;
+}
+
+
+.bouton-supprimer,
+.bouton-reinitialiser {
+  min-width: 128px;
 }

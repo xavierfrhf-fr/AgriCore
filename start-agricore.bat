@@ -22,7 +22,7 @@ if "%WAMP_PATH%"=="" (
 echo === Demarrage AgriCore ===
 echo Lancement de WAMP...
 start "" "%WAMP_PATH%"
-timeout /t 8 /nobreak >nul
+timeout /t 20 /nobreak >nul
 
 echo Lancement back et front...
 wt new-tab --title "AgriCore Back" -d "%PROJECT_ROOT%agricore_spring_boot" cmd /k mvnw.cmd spring-boot:run ; new-tab --title "AgriCore Front" -d "%PROJECT_ROOT%agricore-angular" cmd /k npm start
