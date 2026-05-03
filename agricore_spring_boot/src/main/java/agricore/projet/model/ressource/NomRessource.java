@@ -55,6 +55,20 @@ public enum NomRessource {
         this.zoneStockage = zoneStockage;
     }
 
+        private NomRessource(String nomAffichage) {
+                this.nomAffichage = nomAffichage;
+                this.pathSprite = null;
+                this.uniteStockage = null;
+                this.zoneStockage = null;
+        }
+        
+
+        private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
+                this.nomAffichage = nomAffichage;
+                this.pathSprite = pathSprite;
+                this.uniteStockage = uniteStockage;
+                this.zoneStockage = zoneStockage;
+        }
     public Unite getUniteStockage() {
         return uniteStockage;
     }

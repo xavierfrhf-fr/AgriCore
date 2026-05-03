@@ -35,6 +35,9 @@ public class Animal {
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
+	@Enumerated(EnumType.STRING)
+    private TypeVehicule vehiculeAchatRequis;
+
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
@@ -121,6 +124,25 @@ public class Animal {
 		return delais;
 	}
 
+	public TypeVehicule getVehiculeAchatRequis() {
+		return vehiculeAchatRequis;
+	}
+
+	public void setVehiculeAchatRequis(TypeVehicule vehiculeAchatRequis) {
+		this.vehiculeAchatRequis = vehiculeAchatRequis;
+	}
+
+	
+
+	// Inutile car fait en bdd ?
+	// public boolean deplacer(Zone new_zone) {
+	// Zone previous_zone = this.getZone();
+	// if (new_zone.addAnimal(this)) {
+	// previous_zone.getAnimals().remove(this);
+	// return true;
+	// }
+	// return false;
+	// }
 	public boolean isMale() {
 		return male;
 	}
