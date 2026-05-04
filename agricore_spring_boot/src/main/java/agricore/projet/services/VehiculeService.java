@@ -24,21 +24,17 @@ public class VehiculeService {
     private final IDAOVehicule daovehicule;
     private final IDAOZone daoZone;
     private final IDAORessource daoRessource;
-    private final Vehicule vehicule;
-    private final TypeVehicule typeVehicule;
+ 
     private final TransformationService transformationService;
 
     public VehiculeService( IDAOVehicule daovehicule, 
         IDAOZone daoZone,
         IDAORessource daoRessource,
-        Vehicule vehicule,
-        TypeVehicule typeVehicule,
         TransformationService transformationService) {
-        this.daovehicule = daovehicule;
+        
+            this.daovehicule = daovehicule;
         this.daoZone = daoZone;
         this.daoRessource= daoRessource;
-        this.vehicule = vehicule;
-        this.typeVehicule = typeVehicule;
         this.transformationService = transformationService;
         
     }
@@ -83,7 +79,7 @@ public class VehiculeService {
 
     //Recolter plante et animal 
 
-    public String recolterPLante(Plante plante, Vehicule vehicule, int distanceKm) {
+    public String recolterPlante(Plante plante, Vehicule vehicule, int distanceKm) {
 
         if (plante.getEspece().getVehiculeRequis() != vehicule.getTypeVehicule() ) {
             throw new RuntimeException("Pas le bon véhicule");
