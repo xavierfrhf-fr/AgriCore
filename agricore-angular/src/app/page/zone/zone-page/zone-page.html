@@ -1,0 +1,6 @@
+<p>zone-page works!</p>
+<button (click)="displayMap=!displayMap">Afficher Carte</button>
+@if (displayMap){
+  <app-map-component [shapes]="zoneShapes$ | async"></app-map-component>
+}
+

@@ -55,8 +55,8 @@ public class ZoneServiceTest {
         @Mock
         private IDAOUtilisateur daoUtilisateur;
 
-        private static final Position POSITION = new Position(1, 1, Rotation.DEG_O);
-        private static final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, Rotation.DEG_O);
+        private static final Position POSITION = new Position(1, 1, Rotation.DEG_0);
+        private static final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, Rotation.DEG_0);
         private static final int FERMIER_ID = 5;
         private static final Fermier FERMIER = new Fermier(FERMIER_ID, "testLogin", "testPassword");
 
@@ -99,8 +99,8 @@ public class ZoneServiceTest {
                 assertThat(result)
                                 .extracting(ZoneResponseDTO::getPosition)
                                 .usingRecursiveFieldByFieldElementComparator()
-                                .containsExactly(PositionResponseDTO.convert(POSITION),
-                                                PositionResponseDTO.convert(POSITION));
+                                .containsExactly(PositionResponseDTO.convert(ZONE1),
+                                                PositionResponseDTO.convert(ZONE2));
 
                 Assertions.assertEquals(ZONE_LIST.size(), result.size());
                 Mockito.verify(daoZone).findAll();
@@ -227,7 +227,7 @@ public class ZoneServiceTest {
 
         private static Stream<Arguments> partielUpdateStream() {
                 Position posInitiale = POSITION;
-                Position posModifiee = new Position(2, 2, Rotation.DEG_O);
+                Position posModifiee = new Position(2, 2, Rotation.DEG_0);
 
                 return Stream.of(
 
@@ -235,13 +235,13 @@ public class ZoneServiceTest {
                                 Arguments.of(new ZoneRequestDTO(null, NomZone.CUVE, null), NomZone.CUVE, posInitiale),
 
                                 // Cas 2 : On ne change que la position (le nom doit rester l'initial)
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_O), null,
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0), null,
                                                 null), NomZone.CHAMPS, posModifiee),
 
                                 // Cas 3 : On change tout
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_O),
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0),
                                                 NomZone.CUVE, 5), NomZone.CUVE, posModifiee),
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_O),
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0),
                                                 NomZone.CUVE, 6), NomZone.CUVE, posModifiee),
                                 // Cas 4 : On envoie tout à null (rien ne doit changer)
                                 Arguments.of(new ZoneRequestDTO(null, null, null), NomZone.CHAMPS, posInitiale));
@@ -311,7 +311,7 @@ public class ZoneServiceTest {
         public void getZoneWithVehiculesShouldContainVehicules() {
                 // GIVEN
                 LocalDate date = LocalDate.now();
-                Vehicule vehicule = new Vehicule(1, TypeVehicule.Utilitaire, date, ZONE1);
+                Vehicule vehicule = new Vehicule(1, TypeVehicule.UTILITAIRE, date, ZONE1);
 
                 Zone zoneWithVehicule = ZONE1;
                 zoneWithVehicule.setVehicules(List.of(vehicule));
@@ -323,7 +323,7 @@ public class ZoneServiceTest {
                 assertThat(response.getVehicules().size()).isEqualTo(1);
                 assertThat(response.getVehicules())
                                 .extracting("id", "typeVehicule", "dateControleTech", "delaiAvantControle", "zoneId")
-                                .containsExactly(tuple(1, TypeVehicule.Utilitaire, date, 0, ZONE1_ID));
+                                .containsExactly(tuple(1, TypeVehicule.UTILITAIRE, date, 0, ZONE1_ID));
 
                 assertThat(response)
                                 .extracting(ZoneWithVehiculesResponseDTO::getNomZone,
@@ -348,7 +348,7 @@ public class ZoneServiceTest {
                 // GIVEN
                 Ressource ressource = new Ressource(
                                 1,
-                                NomRessource.Fraise,
+                                NomRessource.FRAISE,
                                 1,
                                 new PrixLot(BigDecimal.valueOf(1.00), 100, Unite.GRAMME),
                                 1,
@@ -363,7 +363,7 @@ public class ZoneServiceTest {
                 assertThat(response.getRessources().size()).isEqualTo(1);
                 assertThat(response.getRessources())
                                 .extracting("id", "nom", "quantite", "stockMin", "zoneId", "zoneNom")
-                                .containsExactly(tuple(1, NomRessource.Fraise, 1, 1, ZONE1_ID, ZONE1_NOMZONE));
+                                .containsExactly(tuple(1, NomRessource.FRAISE, 1, 1, ZONE1_ID, ZONE1_NOMZONE));
 
                 assertThat(response.getRessources())
                                 .extracting("prixLot")

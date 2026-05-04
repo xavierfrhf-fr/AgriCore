@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.utilisateur.AuthRequest;
-import agricore.projet.dto.utilisateur.AuthResponse;
 import agricore.projet.dto.utilisateur.TokenResponse;
 import agricore.projet.model.Client;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.services.JwtUtils;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api") //peut etre appeler ce controlleur ConnexionController pour avoir que des controller de fermier/client/employe
 public class UtilisateurController {
     
 
@@ -26,8 +25,10 @@ public class UtilisateurController {
     private JwtUtils JwtUtils;
     private PasswordEncoder passwordEncoder;
     private IDAOUtilisateur daoUtilisateur;
+    
 
-    UtilisateurController(AuthenticationManager authenticationManager, JwtUtils JwtUtils, PasswordEncoder passwordEncoder, IDAOUtilisateur daoUtilisateur) {
+
+	UtilisateurController(AuthenticationManager authenticationManager, JwtUtils JwtUtils, PasswordEncoder passwordEncoder, IDAOUtilisateur daoUtilisateur) {
         this.authenticationManager = authenticationManager;
         this.JwtUtils = JwtUtils;
         this.passwordEncoder = passwordEncoder;

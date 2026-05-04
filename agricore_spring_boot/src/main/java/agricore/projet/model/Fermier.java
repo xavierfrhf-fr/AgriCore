@@ -8,16 +8,33 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Fermier extends Utilisateur {
-
-	@OneToMany(mappedBy = "fermier")
+	
+	@OneToMany(mappedBy="fermier")
 	private List<Employe> employe;
+	
+	@OneToMany(mappedBy="fermier")
+	private List<Zone> zones;
+	
 
-	@OneToMany(mappedBy = "fermier")
-	private List<Zone> zone;
+	public Fermier() {}
 
-	public Fermier() {
+	public List<Employe> getEmploye() {
+		return employe;
 	}
 
+	public List<Zone> getZone() {
+		return zones;
+	}
+
+	public void setEmploye(List<Employe> employe) {
+		this.employe = employe;
+	}
+
+	public void setZone(List<Zone> zone) {
+		this.zones = zone;
+	}
+	
+	
 	public Fermier(Integer id, String login, String password) {
 		super(id, login, password);
 	}

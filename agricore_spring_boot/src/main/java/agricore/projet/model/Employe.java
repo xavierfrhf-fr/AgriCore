@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 public class Employe extends Utilisateur {
 
 	@ManyToOne
-	@JoinColumn(name = "fermier_id")
+	@JoinColumn(name="fermier_id")
 	private Fermier fermier;
 
 	public Employe() {

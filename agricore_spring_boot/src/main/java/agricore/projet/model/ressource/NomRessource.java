@@ -1,35 +1,56 @@
 package agricore.projet.model.ressource;
 
-import java.util.stream.Stream;
-
 import agricore.projet.model.zone.NomZone;
+import agricore.projet.util.CheminAsset;
 
 public enum NomRessource {
-    Pomme(Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-    Poire(Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-    Fraise(Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-    LaitVache(Unite.LITRE, NomZone.CUVE),
-    LaitBrebis(Unite.LITRE, NomZone.CUVE),
-    LaitAnesse(Unite.LITRE, NomZone.CUVE),
-    Fromage(Unite.KILOGRAM, NomZone.CHAMBRE_FROIDE),
-    Mais(Unite.KILOGRAM, NomZone.SILO),
-    Tournesol(Unite.KILOGRAM, NomZone.SILO),
-    Blé(Unite.KILOGRAM, NomZone.SILO),
-    Colza(Unite.KILOGRAM, NomZone.SILO),
-    FarineBlé(Unite.KILOGRAM, NomZone.SILO),
-    Pate(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
-    JusDePomme(Unite.LITRE, NomZone.CUVE),
-    OeufPoule(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
-    OeufOie(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
-    OeufCanne(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
-    Plume(Unite.KILOGRAM, NomZone.POULAILLER),
-    Laine(Unite.KILOGRAM, NomZone.ETABLE);
-
+    POMME("pomme",
+            CheminAsset.RESSOURCE + "pomme.png", Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
+    POIRE("poire",
+            CheminAsset.RESSOURCE + "poire.png", Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
+    FRAISE("fraise",
+            CheminAsset.RESSOURCE + "fraise.png", Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
+    LAIT_VACHE("lait de vache",
+            CheminAsset.RESSOURCE + "lait.png", Unite.LITRE, NomZone.CUVE),
+    LAIT_BREBIS("lait de brebis",
+            CheminAsset.RESSOURCE + "lait.png", Unite.LITRE, NomZone.CUVE),
+    LAIT_ANESSE("lait d'anesse",
+            CheminAsset.RESSOURCE + "lait.png", Unite.LITRE, NomZone.CUVE),
+    FROMAGE("fromage",
+            CheminAsset.RESSOURCE + "fromage.png", Unite.KILOGRAM, NomZone.CHAMBRE_FROIDE),
+    MAIS("mais",
+            CheminAsset.RESSOURCE + "mais.png", Unite.KILOGRAM, NomZone.SILO),
+    TOURNESOL("tournesol",
+            CheminAsset.RESSOURCE + "fromage.png", Unite.KILOGRAM, NomZone.SILO),
+    BLE("blé",
+            CheminAsset.RESSOURCE + "ble.png",
+            Unite.KILOGRAM, NomZone.SILO),
+    COLZA("colza",
+            CheminAsset.RESSOURCE + "colza.png",
+            Unite.KILOGRAM, NomZone.SILO),
+    FARINE_BLE("farine de blé",
+            CheminAsset.RESSOURCE + "farine-blé.png",
+            Unite.KILOGRAM, NomZone.SILO),
+    PATE("pâte",
+            CheminAsset.RESSOURCE + "fromage.png",
+            Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    JUS_POMME("jus de pomme",
+            CheminAsset.RESSOURCE + "jus-pomme.png",
+            Unite.LITRE, NomZone.CUVE),
+    OEUF_POULE("oeuf de poule", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    OEUF_OIE("oeuf d'oie", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    OEUF_CANNE("oeuf de canne", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    PLUME("plume", CheminAsset.RESSOURCE + "plume.png", Unite.KILOGRAM, NomZone.POULAILLER),
+    LAINE("laine", CheminAsset.RESSOURCE + "laine.png", Unite.KILOGRAM, NomZone.ETABLE);
 
     private final Unite uniteStockage;
     private final NomZone zoneStockage;
+    private final String nomAffichage;
+    private final String pathSprite;
 
-    private NomRessource(Unite uniteStockage, NomZone zoneStockage) {
+    private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
+        this.nomAffichage = nomAffichage;
+        this.pathSprite = pathSprite;
         this.uniteStockage = uniteStockage;
         this.zoneStockage = zoneStockage;
     }
@@ -42,10 +63,11 @@ public enum NomRessource {
         return zoneStockage;
     }
 
-    public static boolean isZoneUnique(NomZone zone) { // Les zones de stockage sont uniques, si une zone est une
-                                                       // zoneStockage c'est une zone unique
-        return Stream.of(NomRessource.values())
-                .anyMatch(r -> r.getZoneStockage() == zone);
+    public String getNomAffichage() {
+        return nomAffichage;
     }
 
+    public String getPathSprite() {
+        return pathSprite;
+    }
 }

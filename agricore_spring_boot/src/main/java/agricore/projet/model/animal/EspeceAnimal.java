@@ -5,13 +5,13 @@ import agricore.projet.model.zone.NomZone;
 
 public enum EspeceAnimal {
 	Cochon(NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cochon")),
-	Vache(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LaitVache, "Vache", null, "Taureau")),
-	Mouton(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LaitBrebis, "Brebis", NomRessource.Laine, "Mouton")),
-	Poule(NomZone.POULAILLER, AnimalProduct.differentForMaleAndFemale(NomRessource.OeufPoule, "Poule", null, "Coq")),
-	Canne(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OeufCanne, "Canne", NomRessource.Plume, "Canard")),
-	Oie(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OeufOie, "Oie", NomRessource.Plume, "Jars")),
+	Vache(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_VACHE, "Vache", null, "Taureau")),
+	Mouton(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_BREBIS, "Brebis", NomRessource.LAINE, "Mouton")),
+	Poule(NomZone.POULAILLER, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_POULE, "Poule", null, "Coq")),
+	Canne(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_CANNE, "Canne", NomRessource.PLUME, "Canard")),
+	Oie(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_OIE, "Oie", NomRessource.PLUME, "Jars")),
 	Cheval(NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cheval")),
-	Ane(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LaitAnesse, "Anesse", null, "Ane")),
+	Ane(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_ANESSE, "Anesse", null, "Ane")),
 	Lapin(NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Lapin"));
 
 	private final NomZone allowedZone;

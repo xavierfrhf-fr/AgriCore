@@ -5,11 +5,13 @@ import agricore.projet.dto.ressource.request.RessourceRequestDTO;
 import agricore.projet.dto.ressource.request.TransformationRequestDTO;
 import agricore.projet.dto.ressource.response.TransformationResponseDTO;
 import agricore.projet.exception.RessourceNotFoundException;
+import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.PrixLot;
 import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.ressource.Transformation;
 import agricore.projet.repository.IDAORessource;
+import agricore.projet.repository.IDAOZone;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,16 +22,22 @@ public class TransformationService {
 
     private final IDAORessource daoRessource;
     private final RessourceService ressourceService;
-    public TransformationService(IDAORessource daoRessource, RessourceService ressourceService) {
+    private final IDAOZone daoZone;
+    public TransformationService(IDAORessource daoRessource, RessourceService ressourceService, IDAOZone daoZone) {
         this.daoRessource = daoRessource;
         this.ressourceService = ressourceService;
+        this.daoZone = daoZone;
     }
 
     public TransformationResponseDTO performTransformation(TransformationRequestDTO request) {
         //Méthode principale pour effectuer transformation
-        int nbTransfo = getMaxTransformation(request);
         Transformation transformation = Transformation.getTransformationByOutput(request.getProduct());
-        createMissingOutputResources(transformation);
+        if (!daoZone.existsByNomZone(transformation.getRequiredZone())) {//Check required Zone
+            throw new ZoneNotFoundException(transformation.getRequiredZone());
+        }
+
+        int nbTransfo = getMaxTransformation(request);
+        createMissingOutputResources(transformation);//A ameliorer avec try catch, et message d'erreur dans TransfoResponseDTO
         if (nbTransfo > 0){
             transformation.getInput().entrySet().forEach(entry -> {
                 changeQuantity(entry.getKey(), -entry.getValue()*nbTransfo);

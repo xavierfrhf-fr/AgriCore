@@ -1,99 +1,357 @@
 <div>
-  <span class="etiquette">Inventaire des ressources</span>
-  <div class="panneau" style="width: 500px">
-    <p class="titre-section">
-      <img class="img-icone" src="assets/image/inventaire.png" />Liste des ressources
+  <div class="panneau" style="width: fit-content">
+
+    <p class="titre-section"
+      style="display: flex; align-items: center; justify-content: space-between;">
+
+      <span>
+        <img class="img-icone" src="assets/image/inventaire.png" />
+        Liste des ressources
+      </span>
+
+      <button
+        (click)="ouvrirCreer()"
+        class="bouton bouton-creer"
+        [class.loading]="afficheRessourceForm">
+
+        <img class="img-icone" src="assets/image/creer.png" />
+
+        @if (afficheRessourceForm) {
+        Creation<span class="points-chargement"></span>
+        } @else {
+        Creer un nouveau type de ressource
+        }
+
+      </button>
+
     </p>
+
+    <!-- Patch quand on double clique sur une case en particulier -->
     <table>
       <thead>
-      <tr>
-        <th>Ressource</th>
-        <th>Unité</th>
-        <th>Qté</th>
-        <th>Prix</th>
-        <th>Stock min</th>
-        <th>Surplus</th>
-      </tr>
+        <tr>
+          <th>Ressource</th>
+          <th>Quantite</th> <!-- ex : 8 Kg -->
+          <th>(Stock)</th>
+          <th>Surplus</th>
+          <th>Prix affiche</th>
+          <th>Lieu de stockage</th>
+          <th></th> <!-- Transformer la ressource -->
+          <th></th> <!-- Modification / Validation -->
+          <th></th> <!-- Suppression / Annulation -->
+        </tr>
       </thead>
+
       <tbody>
-      <tr class="selection">
-        <td><img class="img-icone" src="assets/image/pomme.png" />Pomme</td>
-        <td><span class="badge">Kg</span></td>
-        <td>120</td>
-        <td>1.20 €</td>
-        <td>30</td>
-        <td class="surplus-oui">Oui</td>
-      </tr>
-      <tr>
-        <td><img class="img-icone" src="assets/image/fraise.png" />Fraise</td>
-        <td><span class="badge">Kg</span></td>
-        <td>8</td>
-        <td>3.50 €</td>
-        <td>20</td>
-        <td>Non</td>
-      </tr>
+        @for (ressource of (ressources$ | async); track ressource.id) {
+        <!-- Quand ligne selectionnee, style .ligne-en-edition applique -->
+        <tr [class.ligne-en-edition]="isLigneEnEdition(ressource)">
+
+          <!-- agrandir / reduire le padding haut et bas (en pratique cause par la hauteur des boutons) -->
+          <td style="text-transform: capitalize;"
+            [style.width]="colWidths[0]">
+            <img class="img-icone" [src]="getData(ressource.nom)?.pathSprite" />
+            {{ getData(ressource.nom)?.nomAffichage }}
+          </td>
+
+          <!-- Quantite -->
+          <td [style.width]="colWidths[1]"
+            [class.cellule-en-edition]="isCelluleEnEdition(ressource, 'quantite')"
+            (dblclick)="modifierCellule(ressource, 'quantite')">
+            @if (isLigneEnEdition(ressource)) {
+            <input style="width : 70%;"
+              class="bordure-pixel"
+              type="number"
+              [formControl]="quantiteCtrl" />
+            <span style="width : 30%; margin : 0;">{{
+              getData(ressource.nom)?.nomAffichageUnite }}</span> } @else {
+            {{ ressource.quantite }}
+            {{ getData(ressource.nom)?.nomAffichageUnite }}
+            }
+          </td>
+
+          <!-- Stock min -->
+          <td [style.width]="colWidths[2]"
+            [class.cellule-en-edition]="isCelluleEnEdition(ressource, 'stockMin')"
+            (dblclick)="modifierCellule(ressource, 'stockMin')">
+            @if (isLigneEnEdition(ressource)) {
+            <input style="width : 70%;" class="bordure-pixel" type="number"
+              [formControl]="stockMinCtrl" /> <span
+              style="width : 30%; margin : 0;">{{
+              getData(ressource.nom)?.nomAffichageUnite }}</span> }
+            @else {
+            {{ ressource.stockMin ?? '—' }}
+            {{ getData(ressource.nom)?.nomAffichageUnite }}
+            }
+          </td>
+
+          <!-- Surplus -->
+          <td [style.width]="colWidths[3]"
+            [class.surplus-oui]="hasSurplus(ressource)"
+            [class.surplus-non]="!hasSurplus(ressource)">
+            {{ hasSurplus(ressource) ? 'Oui' : 'Non' }}
+          </td>
+
+          <!-- Prix -->
+          <td [style.width]="colWidths[4]"
+            [class.cellule-en-edition]="isCelluleEnEdition(ressource, 'prixPar')"
+            (dblclick)="modifierCellule(ressource, 'prixPar')">
+            @if (isLigneEnEdition(ressource)) {
+            <!-- TODO: ouvrir sous-formulaire prix au clic -->
+            <!--autre possibilite [value]="ressource.prixLot?.affPrix ?? ''"-->
+            <input
+              class="bordure-pixel"
+              placeholder='...'
+              (click)="ouvrirCreerPrix()" />
+            } @else {
+            {{ressource.prixLot.affPrix}}
+            <!-- TODO: afficher prix selon le modele de prix -->
+            }
+          </td>
+
+          <!-- Zone -->
+          <td [style.width]="colWidths[5]" style="text-transform: capitalize;">
+            {{ getData(ressource.nom)?.nomAffichageZone }}
+          </td>
+
+          <!-- TRANSFORMER ET CRÉER DOIT ANNULER MODIFIER ET INVERSEMENT -->
+          <td [style.width]="colWidths[6]">
+            <button class="bouton bouton-modifier"
+              style="background-color: orange;"
+              [disabled]="isLigneEnEdition(ressource)">
+              <img class="img-icone" src="assets/image/transformer.png" />
+              Transformer
+            </button>
+          </td>
+
+          <!-- Modifier / Valider -->
+          <td [style.width]="colWidths[7]">
+            @if (!isLigneEnEdition(ressource)) {
+            <button (click)="ouvrirModifier(ressource)"
+              class="bouton bouton-modifier">
+              <img class="img-icone" src="assets/image/modifier.png" />
+              Modifier
+            </button>
+            } @else {
+            <!-- même asset que creer ; passer en vert quand en mode edition -->
+            <button (click)="validerModifier()" class="bouton bouton-creer"
+              [disabled]="ressourceForm.invalid">
+              <img class="img-icone" src="assets/image/creer.png" />
+              Valider
+            </button>
+            }
+          </td>
+
+          <!-- Supprimer / Annuler -->
+          <td [style.width]="colWidths[8]">
+            @if (!isLigneEnEdition(ressource)) {
+            <button (click)="supprimer(ressource)"
+              class="bouton bouton-supprimer">
+              <img class="img-icone" src="assets/image/croix.png" />
+              Supprimer
+            </button>
+            } @else {
+            <button (click)="annulerModifier()"
+              class="bouton bouton-reinitialiser">
+              <img class="img-icone" src="assets/image/reinitialiser.png" />
+              Annuler
+            </button>
+            }
+          </td>
+
+        </tr>
+        }
       </tbody>
     </table>
-    <div class="boutons">
-      <button class="bouton bouton-supprimer">
-        <img class="img-icone" src="assets/image/croix.png" />Supprimer
-      </button>
-      <button class="bouton bouton-reinitialiser">
-        <img class="img-icone" src="assets/image/deselectionner.png" />Désélectionner
-      </button>
-    </div>
+
   </div>
 </div>
 
-<div>
-  <span class="etiquette">Créer / Modifier une ressource</span>
+<!-- CRÉATION -->
+@if (afficheRessourceForm) {
+
+<div class="creation">
+
   <div class="panneau" style="width: 400px">
+
     <p class="titre-section">
-      <img class="img-icone" src="assets/image/liste.png" />Modifier la ressource...
-      <img class="img-icone" src="assets/image/pomme.png" />Pomme
+      <img class="img-icone" src="assets/image/liste.png" />
+      Creer la ressource...
     </p>
-    <div class="formulaire">
+
+    <form class="formulaire" [formGroup]="ressourceForm">
+
       <div class="champ">
         <label>Nom de la ressource</label>
-        <select class="bordure-pixel">
-          <option>— Choisir —</option>
-          <option selected>Pomme</option>
-          <option>Fraise</option>
-        </select>
+        <agri-select class="bordure-pixel"
+          label="nomRessource"
+          id="nomRessourceId"
+          [items]="(nomRessourcesFiltre$ | async) ?? []"
+          item-value="nom"
+          [control]="nomCtrl">
+          <ng-template let-nom="item">
+            {{ nom.nomAffichage }}
+          </ng-template>
+        </agri-select>
       </div>
+
       <div class="champ">
-        <label>Unité (auto)</label>
-        <input class="bordure-pixel" value="Kg" readonly />
+        <label>Unite (auto)</label>
+        <input class="bordure-pixel"
+          value="{{ getData(nomCtrl.value)?.nomAffichageUnite ?? '—' }}"
+          readonly />
       </div>
+
       <div class="duo">
         <div class="champ">
-          <label>Quantité</label>
-          <input class="bordure-pixel" type="number" value="120" />
+          <label>Quantite</label>
+          <input class="bordure-pixel" type="number"
+            formControlName="quantite" />
         </div>
+
         <div class="champ">
           <label>Prix (€)</label>
-          <input class="bordure-pixel" type="number" value="1.20" />
+          <!-- TODO: pour le formulaire prix, au clic ouvre un formulaire à part -->
+          <input
+            class="bordure-pixel"
+            [value]="prixParCtrl.value ? prixParCtrl.value + ' €' : ''"
+            readonly
+            (click)="ouvrirCreerPrix()" />
         </div>
       </div>
+
       <div class="champ">
         <label>Stock minimum</label>
-        <input class="bordure-pixel" type="number" value="30" />
+        <input class="bordure-pixel" type="number" formControlName="stockMin" />
       </div>
+
       <div class="champ">
         <label>Surplus en vente ?</label>
-        <span class="surplus-oui">Oui — surplus de 90 unité(s)</span>
+        @if (quantiteCtrl.value > stockMinCtrl.value && stockMinCtrl.value !=
+        null) {
+        <span class="surplus-oui">
+          Oui — surplus de {{ quantiteCtrl.value - stockMinCtrl.value }}
+          unite(s)
+        </span>
+        } @else {
+        <span class="surplus-non">Non</span>
+        }
       </div>
+
       <div class="boutons">
-        <button class="bouton bouton-creer">
-          <img class="img-icone" src="assets/image/creer.png" />Créer
+
+        <button type="button" class="bouton bouton-creer"
+          (click)="validerCreer()"
+          [disabled]="ressourceForm.invalid">
+          <img class="img-icone" src="assets/image/creer.png" />
+          Creer
         </button>
-        <button class="bouton bouton-modifier">
-          <img class="img-icone" src="assets/image/modifier.png" />Modifier
+
+        <button type="button" class="bouton bouton-reinitialiser"
+          (click)="annulerCreer()">
+          <img class="img-icone" src="assets/image/reinitialiser.png" />
+          Annuler
         </button>
-        <button class="bouton bouton-reinitialiser">
-          <img class="img-icone" src="assets/image/reinitialiser.png" />Réinitialiser
-        </button>
+
       </div>
-    </div>
+
+    </form>
   </div>
 </div>
+
+<!--agri-submit enlever pour boutons custom au dessus-->
+}
+
+<!-- PRIX -->
+@if (affichePrixForm) {
+
+<div class="creation">
+
+  <div class="panneau" style="width: 400px">
+
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/liste.png" />
+      Modifier le prix...
+    </p>
+
+    <form class="formulaire" [formGroup]="prixCtrl">
+
+      <div class="champ">
+        <label>Prix (€)</label>
+        <input
+          class="bordure-pixel"
+          type="number"
+          formControlName="prixPar" />
+      </div>
+
+      <div class="champ">
+        <label>Quantite du lot</label>
+        <input
+          class="bordure-pixel"
+          type="number"
+          formControlName="quantiteLot" />
+      </div>
+
+      <div class="champ">
+        <label>Unite</label>
+        <agri-select class="bordure-pixel"
+          label="unite"
+          id="uniteId"
+          [items]="(unites$ | async) ?? []"
+          item-value="nom"
+          [control]="uniteCtrl">
+          <ng-template let-unite="item">
+            {{ unite.affichage }}
+          </ng-template>
+        </agri-select>
+      </div>
+
+      <div class="champ">
+        <label>Apercu</label>
+
+        @if (prixParCtrl.value && quantiteLotCtrl.value && uniteCtrl.value) {
+        <span>
+          {{ prixParCtrl.value }} €
+          pour
+          {{ quantiteLotCtrl.value }}
+          {{ getUniteAffichage(uniteCtrl.value) }}
+        </span>
+        } @else {
+        <span>—</span>
+        }
+
+      </div>
+
+      <div class="boutons">
+
+        <button
+          type="button"
+          class="bouton bouton-creer"
+          (click)="validerCreerPrix()"
+          [disabled]="prixCtrl.invalid">
+
+          <img class="img-icone" src="assets/image/creer.png" />
+          Valider
+
+        </button>
+
+        <button
+          type="button"
+          class="bouton bouton-reinitialiser"
+          (click)="annulerCreerPrix()">
+
+          <img class="img-icone"
+            src="assets/image/reinitialiser.png" />
+          Annuler
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+}

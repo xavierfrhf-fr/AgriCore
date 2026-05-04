@@ -1,7 +1,5 @@
 package agricore.projet.model.zone.position;
 
-import jakarta.persistence.Embeddable;
-
 public record CellOffset(
         //Stock des positions relatives à anchorX et anchorY (l'ancre est stocké dans l'objet Position qui est embarqué en BDD)
         //Un ensemble de CellOffset représente une forme (de batiment)
@@ -16,7 +14,7 @@ public record CellOffset(
 
     public CellOffset rotate(Rotation rotation) {
         return switch (rotation) {
-            case DEG_O -> this;
+            case DEG_0 -> this;
             case DEG_90 -> new CellOffset(-y, x);
             case DEG_180 -> new CellOffset(-x, -y);
             case DEG_270 -> new CellOffset(y, -x);
