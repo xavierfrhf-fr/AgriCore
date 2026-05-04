@@ -94,9 +94,9 @@ export class MapComponent {
 
     for (const cell of shape.getAbsoluteCanvasPosition(this.cellSize)) {
       ctx.fillRect(cell.x, cell.y, this.cellSize, this.cellSize);
-      console.log('cell Pos on canvas:');
-      console.log(cell);
-      console.log(cellAbsolutePositionStrings);
+      //console.log('cell Pos on canvas:');
+      //console.log(cell);
+      //console.log(cellAbsolutePositionStrings);
 
       this.drawCellBorders(ctx, cell, cellAbsolutePositionStrings);
     }
@@ -158,6 +158,9 @@ export class MapComponent {
     let spritePath: string = shape.spritePath;
 
     const img = new Image();
+    console.log(spritePath);
+    console.log("target width :", targetWidth);
+    console.log("Anchor :", cell);
     img.src = spritePath;
 
     img.onload = () => {

@@ -11,17 +11,19 @@ public class ZoneDataDTO {
     private String nomZone;
     private List<CellOffset> shape;
     private TypeZone typeZone;
+    private String pathSprite;
     private boolean zoneUnique;
     private List<NomRessource> nomRessources;
     private boolean zoneCreatable = false;
 
     public ZoneDataDTO(String nomZone, List<CellOffset> shape, TypeZone typeZone, boolean zoneUnique,
-            List<NomRessource> nomRessources) {
+            List<NomRessource> nomRessources, String pathSprite) {
         this.nomZone = nomZone;
         this.shape = shape;
         this.typeZone = typeZone;
         this.zoneUnique = zoneUnique;
         this.nomRessources = nomRessources;
+        this.pathSprite = pathSprite;
     }
 
     public ZoneDataDTO() {
@@ -71,6 +73,14 @@ public class ZoneDataDTO {
         return zoneCreatable;
     }
 
+    public String getPathSprite() {
+        return pathSprite;
+    }
+
+    public void setPathSprite(String pathSprite) {
+        this.pathSprite = pathSprite;
+    }
+
     public void setZoneCreatable(boolean zoneCreatable) {
         this.zoneCreatable = zoneCreatable;
     }
@@ -79,6 +89,7 @@ public class ZoneDataDTO {
         ZoneDataDTO dto = new ZoneDataDTO();
         dto.setNomZone(nomZone.name());
         dto.setTypeZone(nomZone.getTypeZone());
+        dto.setPathSprite(nomZone.getPathSprite());
         dto.setZoneUnique(nomZone.isZoneUnique());
         dto.setShape(nomZone.getZoneShape()
                 .getShape()

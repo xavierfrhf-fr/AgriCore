@@ -50,40 +50,47 @@ export class ZoneShape {
   }
 
   getBottomLeftCell():CellGridPosition{
-    let xPos:number = 0;
+    let xPos:number = 20;
     let yPos:number = 0;
     let cell!:CellGridPosition;
 
     for (let cellGrid of this.getCellGridPosition()){
-      if (cellGrid.x > xPos && cellGrid.y > yPos){
+      console.log(cellGrid)
+      if (cellGrid.x <= xPos && cellGrid.y >= yPos){
+        console.log("Update of bottom left cell !")
         cell = cellGrid;
         xPos = cellGrid.x;
         yPos = cellGrid.y;
       }
     }
+    console.log("bottom left cell :", cell)
     return cell;
   }
 
   getSpriteAnchor(cellSize:number, originX:number, originY:number):CellAbsolutePosition{
     let cell:CellGridPosition = this.getBottomLeftCell();
     let cellAbs:CellAbsolutePosition = {} as CellAbsolutePosition;
-    cellAbs.x = (cell.x+1) * cellSize + originX;
-    cellAbs.y = (cell.y + 1) * cellSize + originY;
+    cellAbs.x = (cell.x) * cellSize + originX;
+    cellAbs.y = (cell.y+1) * cellSize + originY;
     return cellAbs;
   }
 
   getShapeWidth():number{
-    let minY:number = this._cells[0].y;
-    let maxY:number = this._cells[0].y;
+    let minX:number = 500000;
+    let maxX:number = 0;
     for (let cell of this._cells){
-      if (cell.y <minY){
-        minY = cell.y;
+
+      if (cell.x <minX){
+        minX = cell.x;
       }
-      if (cell.y > maxY){
-        maxY = cell.y;
+      if (cell.x > maxX){
+        maxX = cell.x;
       }
+      //console.log(cell);
+      //console.log("max x: ", maxX, " ; min x :", minX);
     }
-    return maxY - minY;
+    //console.log(maxX-minX)
+    return 1+maxX - minX;
   }
 
   getSpriteWidth(cellSize:number):number{
@@ -91,6 +98,6 @@ export class ZoneShape {
   }
 
   public static zoneShapeFromPositionDTO(position: PositionDTO): ZoneShape {
-    return new ZoneShape(position.cells, position.anchorX, position.anchorY, "");
+    return new ZoneShape(position.cells, position.anchorX, position.anchorY, position.pathSprite);
   }
 }
