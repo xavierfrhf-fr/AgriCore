@@ -1,10 +1,10 @@
 package agricore.projet.dto.zone.response;
 
+import java.util.List;
+
 import agricore.projet.dto.animal.response.AnimalResponse;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
-
-import java.util.List;
 
 public class ZoneWithAnimalsResponseDTO {
     private Integer id;

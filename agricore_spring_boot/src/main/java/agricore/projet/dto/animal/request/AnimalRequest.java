@@ -2,7 +2,7 @@ package agricore.projet.dto.animal.request;
 
 import java.time.LocalDate;
 
-import agricore.projet.model.EspeceAnimal;
+import agricore.projet.model.animal.EspeceAnimal;
 
 public class AnimalRequest {
 	

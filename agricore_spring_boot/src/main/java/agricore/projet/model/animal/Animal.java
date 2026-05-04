@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.animal;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -39,14 +39,16 @@ public class Animal {
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
 
-	public Animal(Integer id, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
+	public Animal(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
 		this.id = id;
+		this.male = male;
 		this.dateNaissance = dateNaissance;
 		this.dateVaccination = dateVaccination;
 		this.espece = espece;
 	}
 
-	public Animal(LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
+	public Animal(boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
+		this.male = male;
 		this.dateNaissance = dateNaissance;
 		this.dateVaccination = dateVaccination;
 		this.espece = espece;
@@ -119,14 +121,10 @@ public class Animal {
 		return delais;
 	}
 
-	// Inutile car fait en bdd ?
-	// public boolean deplacer(Zone new_zone) {
-	// Zone previous_zone = this.getZone();
-	// if (new_zone.addAnimal(this)) {
-	// previous_zone.getAnimals().remove(this);
-	// return true;
-	// }
-	// return false;
-	// }
+	public boolean isMale() {
+		return male;
+	}
+
+	
 
 }

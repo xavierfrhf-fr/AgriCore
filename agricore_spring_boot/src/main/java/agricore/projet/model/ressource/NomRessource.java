@@ -8,7 +8,9 @@ public enum NomRessource {
     Pomme(Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
     Poire(Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
     Fraise(Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-    Lait(Unite.LITRE, NomZone.CUVE),
+    LaitVache(Unite.LITRE, NomZone.CUVE),
+    LaitBrebis(Unite.LITRE, NomZone.CUVE),
+    LaitAnesse(Unite.LITRE, NomZone.CUVE),
     Fromage(Unite.KILOGRAM, NomZone.CHAMBRE_FROIDE),
     Mais(Unite.KILOGRAM, NomZone.SILO),
     Tournesol(Unite.KILOGRAM, NomZone.SILO),
@@ -16,7 +18,13 @@ public enum NomRessource {
     Colza(Unite.KILOGRAM, NomZone.SILO),
     FarineBlé(Unite.KILOGRAM, NomZone.SILO),
     Pate(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
-    JusDePomme(Unite.LITRE, NomZone.CUVE);
+    JusDePomme(Unite.LITRE, NomZone.CUVE),
+    OeufPoule(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    OeufOie(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    OeufCanne(Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
+    Plume(Unite.KILOGRAM, NomZone.POULAILLER),
+    Laine(Unite.KILOGRAM, NomZone.ETABLE);
+
 
     private final Unite uniteStockage;
     private final NomZone zoneStockage;

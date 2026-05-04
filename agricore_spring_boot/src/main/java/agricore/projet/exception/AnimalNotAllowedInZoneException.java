@@ -1,6 +1,6 @@
 package agricore.projet.exception;
 
-import agricore.projet.model.EspeceAnimal;
+import agricore.projet.model.animal.EspeceAnimal;
 import agricore.projet.model.zone.NomZone;
 
 public class AnimalNotAllowedInZoneException extends RuntimeException {
