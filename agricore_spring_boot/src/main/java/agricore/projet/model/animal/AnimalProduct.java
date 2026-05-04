@@ -6,29 +6,29 @@ public class AnimalProduct {
     private NomRessource maleRessource;
     private NomRessource femaleRessource;
     
-    private String maleNomAff;
-    private String femaleNomAff;
+    private String malenomAffichage;
+    private String femalenomAffichage;
 
-    public static AnimalProduct sameForMaleAndFemale(NomRessource ressource, String nomAff) {
+    public static AnimalProduct sameForMaleAndFemale(NomRessource ressource, String nomAffichage) {
         AnimalProduct product = new AnimalProduct();
         product.maleRessource = ressource;
         product.femaleRessource = ressource;
-        product.maleNomAff = nomAff;
-        product.femaleNomAff = nomAff;
+        product.malenomAffichage = nomAffichage;
+        product.femalenomAffichage = nomAffichage;
         return product;
     }
 
-    public static AnimalProduct differentForMaleAndFemale(NomRessource femaleRessource, String femaleNomAff, NomRessource maleRessource, String maleNomAff) {
+    public static AnimalProduct differentForMaleAndFemale(NomRessource femaleRessource, String femalenomAffichage, NomRessource maleRessource, String malenomAffichage) {
         AnimalProduct product = new AnimalProduct();
         product.femaleRessource = femaleRessource;
-        product.femaleNomAff = femaleNomAff;
+        product.femalenomAffichage = femalenomAffichage;
         product.maleRessource = maleRessource;
-        product.femaleNomAff = maleNomAff;
+        product.femalenomAffichage = malenomAffichage;
         return product;
     }
 
-    public String getNomAff(boolean isMale){
-        return isMale ? maleNomAff : femaleNomAff;
+    public String getnomAffichage(boolean isMale){
+        return isMale ? malenomAffichage : femalenomAffichage;
     }
 
     public NomRessource getNomRessource(boolean isMale){
