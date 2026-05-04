@@ -10,35 +10,86 @@ import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Animal;
 import agricore.projet.model.Plante;
+import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
-import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.Ressource;
-import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
-import agricore.projet.repository.IDAOZone;
+import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOVehicule;
+import agricore.projet.repository.IDAOZone;
 
 @Service
 public class VehiculeService {
 
     private final IDAOVehicule daovehicule;
     private final IDAOZone daoZone;
+    private final IDAORessource daoRessource;
+    private final Vehicule vehicule;
+    private final TypeVehicule typeVehicule;
+    private final TransformationService transformationService;
 
-    public VehiculeService( IDAOVehicule daovehicule, IDAOZone daoZone) {
+    public VehiculeService( IDAOVehicule daovehicule, 
+        IDAOZone daoZone,
+        IDAORessource daoRessource,
+        Vehicule vehicule,
+        TypeVehicule typeVehicule,
+        TransformationService transformationService) {
         this.daovehicule = daovehicule;
         this.daoZone = daoZone;
+        this.daoRessource= daoRessource;
+        this.vehicule = vehicule;
+        this.typeVehicule = typeVehicule;
+        this.transformationService = transformationService;
         
     }
+
+    public boolean besoinCarburant(Vehicule vehicule, int distanceKm) {
+		return vehicule.getCarburantActuel() >= distanceKm * vehicule.getTypeVehicule().getConsoParKm();
+	}
+
+	public void consommerCarburant(Vehicule vehicule, int distanceKm) {
+
+		int carburantNecessaire = distanceKm * vehicule.getTypeVehicule().getConsoParKm();
+
+		if (carburantNecessaire > vehicule.getCarburantActuel()) {
+
+			throw new RuntimeException("Pas assez de carburant");
+			
+		}
+
+		vehicule.setCarburantActuel( vehicule.getCarburantActuel() - carburantNecessaire);
+
+	}
+
+      public void fairePlein(Vehicule vehicule, Ressource carburant) {
+        //on modifie la logique du plein et on peut le faire qu'importe la position du véhicule. on récupère juste la ressource 
+        
+
+        // qtt carburant manquant dans le véhicule 
+        int manque = vehicule.getTypeVehicule().getCapaciteReservoir() - vehicule.getCarburantActuel();
+
+        if (transformationService.getAvailableStock(carburant.getNom(), true) < manque) return;
+
+        // set qtt stocker carburant
+        transformationService.changeQuantity(carburant.getNom(), manque);
+        //carburant.setQuantite(carburant.getQuantite() - manque);
+
+        // set gtt carburant du vehicule => faire plein 
+        vehicule.setCarburantActuel(vehicule.getTypeVehicule().getCapaciteReservoir());
+
+
+    }
+
 
     //Recolter plante et animal 
 
     public String recolterPLante(Plante plante, Vehicule vehicule, int distanceKm) {
 
-        if (plante.getVehiculeRequis() != vehicule.getTypeVehicule() ) {
+        if (plante.getEspece().getVehiculeRequis() != vehicule.getTypeVehicule() ) {
             throw new RuntimeException("Pas le bon véhicule");
         }
 
-        vehicule.consommerCarburant(distanceKm);
+        consommerCarburant(vehicule, distanceKm);
 
         return "Le véhicule est aller chercher la récolte ! ";
 
@@ -46,40 +97,16 @@ public class VehiculeService {
 
     public String acheterAnimal(Animal animal, Vehicule vehicule, int distanceKm) {
 
-        if (animal.getVehiculeAchatRequis() != vehicule.getTypeVehicule()) {
+        if (animal.getEspece().getVehiculeAchatRequis() != vehicule.getTypeVehicule()) {
              throw new RuntimeException("Pas le bon véhicule");
         }
 
-        vehicule.consommerCarburant(distanceKm);
+        consommerCarburant(vehicule,distanceKm);
 
         return "Le véhicule est aller chercher l'animal ! ";
     }
 
-    public void fairePlein(Vehicule vehicule) {
-
-        //Essence stocké dans la zone 
-
-        //chercher la zone du reservoire 
-        Zone reservoire = daoZone.findZoneByNomZone(NomZone.RESERVOIR_ESSENCE).orElseThrow( () -> new RuntimeException("Zone RESERVOIR_ESSENCE introuvable "));
-
-
-        Ressource carburant = reservoire.getRessources()
-                                .stream()
-                                .filter(ressource -> ressource.getNom() == NomRessource.ESSENCE)
-                                .findFirst()
-                                .orElseThrow(() -> new RuntimeException("Pas d'essence dans la zone")); //créer une erreur
-
-        // qtt carburant manquant dans le véhicule 
-        int manque = vehicule.getCapaciteReservoir() - vehicule.getCarburantActuel();
-
-        // set qtt stocker carburant zone 
-        carburant.setQuantite(carburant.getQuantite() - manque);
-
-        // set gtt carburant du vehicule => faire plein 
-        vehicule.setCarburantActuel(vehicule.getCapaciteReservoir());
-
-
-    }
+  
 
 
 

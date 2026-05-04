@@ -77,7 +77,7 @@ public class TransformationService {
         return Math.min(maxPossible, needed);
     }
 
-    private int getAvailableStock(NomRessource nomRessource,
+    public int getAvailableStock(NomRessource nomRessource,
                                   boolean bypassStockMin) {
         Ressource ressource = daoRessource.findByNom(nomRessource).orElseThrow(
                 () -> new RessourceNotFoundException(nomRessource)
@@ -86,7 +86,7 @@ public class TransformationService {
         return Math.max(0, ressource.getQuantite() - reserved);
     }
 
-    private void changeQuantity(NomRessource nomRessource, int varQte) {
+    public void changeQuantity(NomRessource nomRessource, int varQte) {
         //ATTENTION ne vérifie pas :
         // - Si la ressource existe en BDD
         // - Si la quantité est suffisante en cas de valeurs négative -> utilisation sans vérification préalable peut amener à des quantités négatives
