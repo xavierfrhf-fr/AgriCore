@@ -30,8 +30,7 @@ public class Vehicule {
 	private LocalDate dateControleTech;
 
 	private int carburantActuel;
-	private int capaciteReservoir;
-	private int consoParKm;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="zone_id")
@@ -42,23 +41,19 @@ public class Vehicule {
 	public Vehicule() {
 	}
 	
-	public Vehicule(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone, int carburantActuel, int capaciteReservoir, int consoParKm) {
+	public Vehicule(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone, int carburantActuel) {
 		this.id = id;
 		this.typeVehicule = typeVehicule;
 		this.dateControleTech = dateControleTech;
 		this.zone = zone;
 		this.carburantActuel = carburantActuel;
-		this.capaciteReservoir = capaciteReservoir;
-		this.consoParKm = consoParKm;
 	}
 	
-	public Vehicule( TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone, int carburantActuel, int capaciteReservoir, int consoParKm) {
+	public Vehicule( TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone, int carburantActuel) {
 		this.typeVehicule = typeVehicule;
 		this.dateControleTech = dateControleTech;
 		this.zone = zone;
 		this.carburantActuel = carburantActuel;
-		this.capaciteReservoir = capaciteReservoir;
-		this.consoParKm = consoParKm;
 	}
 	
 	public boolean rappelControle() {
@@ -76,27 +71,6 @@ public class Vehicule {
 		return delais;
 	}
 
-	public boolean besoinCarburant(int distanceKm) {
-		return carburantActuel >= distanceKm * consoParKm;
-	}
-
-	public void consommerCarburant(int distanceKm) {
-
-		int carburantNecessaire = distanceKm * consoParKm;
-
-		if (carburantNecessaire > carburantActuel) {
-
-			throw new RuntimeException("Pas assez de carburant");
-			
-		}
-
-		carburantActuel -= carburantNecessaire;
-
-	}
-
-	public void fairePlein() {
-		carburantActuel = capaciteReservoir;
-	}
 	
 
 
@@ -143,21 +117,7 @@ public class Vehicule {
 		this.carburantActuel = carburantActuel;
 	}
 
-	public int getCapaciteReservoir() {
-		return capaciteReservoir;
-	}
-
-	public void setCapaciteReservoir(int capaciteReservoir) {
-		this.capaciteReservoir = capaciteReservoir;
-	}
-
-	public int getConsoParKm() {
-		return consoParKm;
-	}
-
-	public void setConsoParKm(int consoParKm) {
-		this.consoParKm = consoParKm;
-	}
+	
 
 	@Override
 	public String toString() {

@@ -46,7 +46,7 @@ public enum NomRessource {
                         Unite.LITRE, NomZone.CUVE),
         ESSENCE("essence",
                 CheminAsset.RESSOURCE + "",
-                Unite.LITRE, NomZone.CUVE);
+                Unite.LITRE, NomZone.RESERVOIR_ESSENCE);
 
         private final Unite uniteStockage;
         private final NomZone zoneStockage;

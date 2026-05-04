@@ -35,8 +35,6 @@ public class Animal {
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
-	@Enumerated(EnumType.STRING)
-    private TypeVehicule vehiculeAchatRequis;
 
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
@@ -128,14 +126,7 @@ public class Animal {
 		return delais;
 	}
 
-	public TypeVehicule getVehiculeAchatRequis() {
-		return vehiculeAchatRequis;
-	}
-
-	public void setVehiculeAchatRequis(TypeVehicule vehiculeAchatRequis) {
-		this.vehiculeAchatRequis = vehiculeAchatRequis;
-	}
-
+	
 	
 
 	// Inutile car fait en bdd ?
