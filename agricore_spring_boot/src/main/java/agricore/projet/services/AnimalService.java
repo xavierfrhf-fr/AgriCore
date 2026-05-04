@@ -2,22 +2,25 @@ package agricore.projet.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import agricore.projet.dto.animal.request.AnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
 import agricore.projet.exception.AnimalNotAllowedInZoneException;
 import agricore.projet.exception.AnimalNotFoundException;
 import agricore.projet.exception.ZoneNotFoundException;
-import agricore.projet.model.Animal;
-import agricore.projet.model.EspeceAnimal;
+import agricore.projet.model.animal.Animal;
+import agricore.projet.model.animal.EspeceAnimal;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOAnimal;
 import agricore.projet.repository.IDAOZone;
 
+@Service
 public class AnimalService {
 
-    IDAOAnimal daoAnimal;
-    IDAOZone daoZone;
+    private final IDAOAnimal daoAnimal;
+    private final IDAOZone daoZone;
 
     AnimalService(IDAOAnimal daoAnimal, IDAOZone daoZone) {
         this.daoAnimal = daoAnimal;
