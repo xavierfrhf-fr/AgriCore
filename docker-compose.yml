@@ -1,0 +1,64 @@
+#Le nom du compose
+name: agricore-compose
+
+# Description des différents containers
+services:
+  #Desription du container mysql
+  agricore-mysql:
+    image: mysql:8.0.45
+    container_name: agricore-mysql
+    environment:
+      MYSQL_DATABASE: agricore
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - quest
+    ports:
+      - 3307:3306
+    healthcheck: #test pour verifier que le service soit pret
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 3s
+      retries: 10
+      interval: 5s
+
+  agricore-app:
+    image: agricore-boot
+    #build: ./biblio
+    container_name: agricore-app
+    networks:
+      - quest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://agricore-mysql:3306/agricore?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - 8080:8080
+    #dit au container java d'attendre la mise en place du container mysql
+    depends_on:
+      #- mysql
+      agricore-mysql: #ici on attends que mysql demarre et que le service soit pret a être utilisé
+        condition: service_healthy
+      #postgres:
+      #condition: service_healthy
+
+  agricore-angular:
+    image: agricore-angular
+    #le chemin de l'image dans le dockerfile
+    #build: ./biblio-angular
+    container_name: agricore-angular
+    networks:
+      - quest
+    ports:
+      - 4200:80
+    depends_on:
+      - agricore-app
+
+networks:
+  quest:
+    external: true
+    name: devops
+
+volumes:
+  mysql-data:
+    name: quest-mysql-data

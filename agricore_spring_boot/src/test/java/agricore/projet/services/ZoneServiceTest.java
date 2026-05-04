@@ -6,6 +6,8 @@ import agricore.projet.dto.zone.response.*;
 import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.*;
+import agricore.projet.model.animal.Animal;
+import agricore.projet.model.animal.EspeceAnimal;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.PrixLot;
 import agricore.projet.model.ressource.Ressource;
