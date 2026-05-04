@@ -47,6 +47,10 @@ public enum NomZone {
 	CHAMBRE_FROIDE("chambre froide",
 			null,
 			ZoneShape.rectangle(3, 3),
+			TypeZone.STORAGE),
+	RESERVOIR_ESSENCE("réservoir à essence",
+			null,
+			ZoneShape.rectangle(3,3),
 			TypeZone.STORAGE);
 
 	private final ZoneShape zoneShape;
