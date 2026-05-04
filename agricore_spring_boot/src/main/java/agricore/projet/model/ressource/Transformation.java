@@ -7,7 +7,7 @@ import java.util.Map;
 
 public enum Transformation {
     FROMAGE(
-            Map.of(NomRessource.LAIT,2),
+            Map.of(NomRessource.LAIT_VACHE,2),
             Map.of(NomRessource.FROMAGE, 1),
             NomZone.FROMAGERIE),
     JUS_DE_POMME(
@@ -19,7 +19,7 @@ public enum Transformation {
             Map.of(NomRessource.FARINE_BLE, 1),
             NomZone.MOULIN),
     PATE(
-            Map.of(NomRessource.LAIT, 1,
+            Map.of(NomRessource.LAIT_VACHE, 1,
                    NomRessource.FARINE_BLE, 2),
             Map.of(NomRessource.PATE,5),
             NomZone.CUISINE);

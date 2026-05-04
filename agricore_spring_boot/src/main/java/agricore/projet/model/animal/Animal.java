@@ -1,4 +1,4 @@
-package agricore.projet.model;
+package agricore.projet.model.animal;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -65,10 +65,6 @@ public class Animal {
 		this.id = id;
 	}
 
-	public boolean isMale() {
-		return male;
-	}
-
 	public void setMale(boolean male) {
 		this.male = male;
 	}
@@ -107,7 +103,7 @@ public class Animal {
 
 	@Override
 	public String toString() {
-		return "Animal [id=" + id + ", male=" + male + ", dateNaissance=" + dateNaissance + ", dateVaccination="
+		return "Animal [id=" + id + ", dateNaissance=" + dateNaissance + ", dateVaccination="
 				+ dateVaccination + ", espece=" + espece + "]";
 	}
 
@@ -125,14 +121,10 @@ public class Animal {
 		return delais;
 	}
 
-	// Inutile car fait en bdd ?
-	// public boolean deplacer(Zone new_zone) {
-	// Zone previous_zone = this.getZone();
-	// if (new_zone.addAnimal(this)) {
-	// previous_zone.getAnimals().remove(this);
-	// return true;
-	// }
-	// return false;
-	// }
+	public boolean isMale() {
+		return male;
+	}
+
+	
 
 }

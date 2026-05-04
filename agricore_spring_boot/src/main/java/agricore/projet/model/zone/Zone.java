@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import agricore.projet.model.*;
-
+import agricore.projet.model.animal.Animal;
 import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.zone.position.CellGridPosition;
 import agricore.projet.model.zone.position.Position;

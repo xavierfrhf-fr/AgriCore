@@ -24,13 +24,20 @@ export class RessourceService {
     return this.http.get<RessourceResponseDto>(`${this.apiUrl}/${id}`);
   }
 
-  public save(ressource: RessourceRequestDto): Observable<RessourceRequestDto> {
-    if (!ressource.id) {
-      return this.http.post<RessourceRequestDto>(this.apiUrl, ressource);
-    }
+  public add(ressource: RessourceRequestDto): Observable<RessourceResponseDto> {
+    return this.http.post<RessourceResponseDto>('/ressource', ressource);
+  }
 
-    return this.http.put<RessourceRequestDto>(
-        `${this.apiUrl}/${ressource.id}`, ressource);
+  public update(ressource: RessourceRequestDto):
+      Observable<RessourceResponseDto> {
+    return this.http.put<RessourceResponseDto>(
+        `/ressource/${ressource.id}`, ressource);
+  }
+
+  public patch(id: string, partial: Partial<RessourceRequestDto>):
+      Observable<RessourceResponseDto> {
+    return this.http.patch<RessourceResponseDto>(
+        `${this.apiUrl}/${id}`, partial);
   }
 
   public deleteById(id: string): Observable<void> {

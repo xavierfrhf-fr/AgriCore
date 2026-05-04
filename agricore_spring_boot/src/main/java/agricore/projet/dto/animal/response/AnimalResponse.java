@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.beans.BeanUtils;
 
-import agricore.projet.model.Animal;
-import agricore.projet.model.EspeceAnimal;
+import agricore.projet.model.animal.Animal;
+import agricore.projet.model.animal.EspeceAnimal;
 
 public class AnimalResponse {
 

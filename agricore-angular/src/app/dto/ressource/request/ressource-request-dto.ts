@@ -1,10 +1,7 @@
-
-import {PrixRequestDto} from './prix-request-dto';
-
 export interface RessourceRequestDto {
-  id: string;  // Je crois qu'il le faut indiqué ici même si c'est request
+  id?: string;  // présent uniquement pour PUT/PATCH, absent à la création
   nom: string;
   quantite: number;
-  prixLot: PrixRequestDto;
   stockMin: number;
+  prixLot: {prixPar: number; quantiteLot: number; unite: string;};
 }
