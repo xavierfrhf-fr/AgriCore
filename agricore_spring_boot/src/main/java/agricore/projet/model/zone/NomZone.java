@@ -63,6 +63,10 @@ public enum NomZone {
 			CheminAsset.ZONE + "HANGAR.png",
 			ZoneShape.rectangle(3,3),
 			"description",
+			TypeZone.STORAGE),
+	RESERVOIR_ESSENCE("réservoir à essence",
+			null,
+			ZoneShape.rectangle(3,3),
 			TypeZone.STORAGE);
 
 	private final ZoneShape zoneShape;

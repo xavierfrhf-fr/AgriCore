@@ -13,6 +13,7 @@ import agricore.projet.model.Plante;
 import agricore.projet.model.Vehicule;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.Ressource;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.repository.IDAOVehicule;
@@ -57,7 +58,16 @@ public class VehiculeService {
     public void fairePlein(Vehicule vehicule) {
 
         //Essence stocké dans la zone 
-        Ressource carburant = vehicule.getZone().getRessources(NomRessource.ESSENCE);
+
+        //chercher la zone du reservoire 
+        Zone reservoire = daoZone.findZoneByNomZone(NomZone.RESERVOIR_ESSENCE).orElseThrow( () -> new RuntimeException("Zone RESERVOIR_ESSENCE introuvable "));
+
+
+        Ressource carburant = reservoire.getRessources()
+                                .stream()
+                                .filter(ressource -> ressource.getNom() == NomRessource.ESSENCE)
+                                .findFirst()
+                                .orElseThrow(() -> new RuntimeException("Pas d'essence dans la zone")); //créer une erreur
 
         // qtt carburant manquant dans le véhicule 
         int manque = vehicule.getCapaciteReservoir() - vehicule.getCarburantActuel();
