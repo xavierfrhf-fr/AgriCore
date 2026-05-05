@@ -47,7 +47,11 @@ public enum NomZone {
 	CHAMBRE_FROIDE("chambre froide",
 			null,
 			ZoneShape.rectangle(3, 3),
-			TypeZone.STORAGE);
+			TypeZone.STORAGE),
+	HANGAR("hangar",
+			CheminAsset.ZONE + "HANGAR.png",
+			ZoneShape.rectangle(3,3),
+	   		TypeZone.STORAGE);
 
 	private final ZoneShape zoneShape;
 	private final String nomAffichage;
