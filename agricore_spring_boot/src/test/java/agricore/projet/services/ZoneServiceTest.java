@@ -313,7 +313,7 @@ public class ZoneServiceTest {
         public void getZoneWithVehiculesShouldContainVehicules() {
                 // GIVEN
                 LocalDate date = LocalDate.now();
-                Vehicule vehicule = new Vehicule(1, TypeVehicule.UTILITAIRE, date, ZONE1);
+                Vehicule vehicule = new Vehicule(TypeVehicule.UTILITAIRE, date, ZONE1, 1);
 
                 Zone zoneWithVehicule = ZONE1;
                 zoneWithVehicule.setVehicules(List.of(vehicule));
@@ -324,8 +324,8 @@ public class ZoneServiceTest {
 
                 assertThat(response.getVehicules().size()).isEqualTo(1);
                 assertThat(response.getVehicules())
-                                .extracting("id", "typeVehicule", "dateControleTech", "delaiAvantControle", "zoneId")
-                                .containsExactly(tuple(1, TypeVehicule.UTILITAIRE, date, 0, ZONE1_ID));
+                                .extracting( "typeVehicule", "dateControleTech", "delaiAvantControle", "zoneId")
+                                .containsExactly(tuple( TypeVehicule.UTILITAIRE, date, 0, ZONE1_ID));
 
                 assertThat(response)
                                 .extracting(ZoneWithVehiculesResponseDTO::getNomZone,
