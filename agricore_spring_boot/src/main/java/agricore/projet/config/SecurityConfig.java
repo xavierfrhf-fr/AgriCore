@@ -55,7 +55,7 @@ public class SecurityConfig {
 
             // Bypass de la sécurité pour les endpoints lors du dev et des tests, à retirer
             // en prod et ajouter le authenticated pour les sécuriser
-            // auth.requestMatchers("/**").permitAll();
+            //auth.requestMatchers("/**").permitAll();
             auth.requestMatchers("/**").authenticated();
 
         });

@@ -1,64 +1,82 @@
 package agricore.projet.model.zone;
 
-import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.zone.position.ZoneShape;
+import agricore.projet.util.CheminAsset;
 
 public enum NomZone {
 	CHAMPS("champ",
-			null,
+			CheminAsset.ZONE + "CHAMP.png",
 			ZoneShape.rectangle(4, 4),
+			"description",
 			TypeZone.PLANTS),
 	POULAILLER("poulailler",
-			null,
+			CheminAsset.ZONE + "poulailler.png",
 			ZoneShape.rectangle(4, 2),
+			"description",
 			TypeZone.ANIMAL),
 	ETABLE("étable",
-			null,
+			CheminAsset.ZONE + "etable.png",
 			ZoneShape.rectangle(3, 3),
+			"description",
 			TypeZone.ANIMAL),
 	SILO("silo",
-			null,
+			CheminAsset.ZONE + "silo.png",
 			ZoneShape.rectangle(1, 3),
+			"description",
 			TypeZone.STORAGE),
 	CUVE("cuve",
-			null,
+			CheminAsset.ZONE + "CUVE.png",
 			ZoneShape.rectangle(2, 2),
+			"description",
 			TypeZone.STORAGE),
 	STOCK_DE_FRUIT("stockage de fruit",
-			null,
+			CheminAsset.ZONE + "STOCK_FRUIT.png",
 			ZoneShape.rectangle(1, 1),
+			"description",
 			TypeZone.STORAGE),
 	CUISINE("cuisine",
-			null,
+			CheminAsset.ZONE + "CUISINE.png",
 			ZoneShape.rectangle(2,2),
+			"description",
 			TypeZone.UTILITY),
 	MOULIN("moulin",
-			null,
+			CheminAsset.ZONE + "MOULIN.png",
 			ZoneShape.rectangle(2,2),
+			"description",
 			TypeZone.UTILITY),
 	FROMAGERIE("fromagerie",
-			null,
+			CheminAsset.ZONE + "FROMAGERIE.png",
 			ZoneShape.rectangle(2,2),
+			"description",
 			TypeZone.UTILITY),
 	PRESSOIR("pressoir",
-			null,
+			CheminAsset.ZONE + "PRESSOIR.png",
 			ZoneShape.rectangle(2,2),
+			"description",
 			TypeZone.UTILITY),
 	CHAMBRE_FROIDE("chambre froide",
-			null,
+			CheminAsset.ZONE + "CHAMBRE_FROIDE.png",
 			ZoneShape.rectangle(3, 3),
+			"description",
+			TypeZone.STORAGE),
+	HANGAR("hangar",
+			CheminAsset.ZONE + "HANGAR.png",
+			ZoneShape.rectangle(3,3),
+			"description",
 			TypeZone.STORAGE);
 
 	private final ZoneShape zoneShape;
 	private final String nomAffichage;
+	private final String description;
 	private final String pathSprite;
 	private final TypeZone typeZone;
 
-	private NomZone(String nomAffichage, String pathSprite, ZoneShape zoneShape, TypeZone typeZone) {
+	private NomZone(String nomAffichage, String pathSprite, ZoneShape zoneShape, String description, TypeZone typeZone) {
 		this.zoneShape = zoneShape;
 		this.nomAffichage = nomAffichage;
 		this.pathSprite = pathSprite;
-		this.typeZone = typeZone;
+        this.description = description;
+        this.typeZone = typeZone;
 
 	}
 
@@ -76,6 +94,10 @@ public enum NomZone {
 
 	public String getPathSprite() {
 		return pathSprite;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public boolean isZoneUnique(){

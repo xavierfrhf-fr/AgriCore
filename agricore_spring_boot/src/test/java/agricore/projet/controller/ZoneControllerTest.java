@@ -66,7 +66,7 @@ public class ZoneControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1,1, Rotation.DEG_0);
+    private final PositionResponseDTO POSITION_RESP_DTO = new PositionResponseDTO(1,1, Rotation.DEG_0,"");
     private final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1,1, Rotation.DEG_0);
 
     private final int ZONE_ID_NOT_EXIST = 42;
