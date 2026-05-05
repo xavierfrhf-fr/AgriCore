@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
@@ -6,6 +6,8 @@ import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { ZoneShape } from '../../../model/zone/zone-shape';
 import { CellAbsolutePosition } from '../../../model/zone/position/cell-absolute-position';
 import { CellOffset } from '../../../model/zone/position/cell-offset';
+import { ZoneRequest } from '../../../dto/zone/request/zone-request';
+import { PositionDTO } from '../../../dto/zone/response/position-dto';
 
 @Component({
   selector: 'app-map-component',
@@ -44,6 +46,16 @@ export class MapComponent {
   ];
   @Input() shapes: ZoneShape[] | null = null;
 
+  @Input() mapMode: MapMode = 'VIEW';
+  @Input() placementShape?: ZoneShape;
+  @Output() zoneCreation = new EventEmitter<{ x: number; y: number }>();
+
+  private imageCache = new Map<string, HTMLImageElement>();
+
+  protected ghostX = 0;
+  protected ghostY = 0;
+  protected ghostWidth = 0;
+
   private overlayCanvas?: ElementRef<HTMLCanvasElement>;
 
   @ViewChild('overlayCanvas')
@@ -70,6 +82,15 @@ export class MapComponent {
     console.log('Init de map component');
     this.mapSize$ = this.dataService.getMapSize();
     this.mapSize$.subscribe((m) => console.log('MapSize : ' + m.x + ' X ' + m.y));
+  }
+
+  getImage(path: string): HTMLImageElement {
+    if (!this.imageCache.has(path)) {
+      const img = new Image();
+      img.src = path;
+      this.imageCache.set(path, img);
+    }
+    return this.imageCache.get(path)!;
   }
 
   drawShape(ctx: CanvasRenderingContext2D, shape: ZoneShape): void {
@@ -159,8 +180,8 @@ export class MapComponent {
 
     const img = new Image();
     console.log(spritePath);
-    console.log("target width :", targetWidth);
-    console.log("Anchor :", cell);
+    console.log('target width :', targetWidth);
+    console.log('Anchor :', cell);
     img.src = spritePath;
 
     img.onload = () => {
@@ -193,7 +214,61 @@ export class MapComponent {
 
     for (const shape of shapes) {
       this.drawShape(ctx, shape);
-      this.placeSprite(shape,ctx);
+      this.placeSprite(shape, ctx);
     }
+  }
+
+  getSpriteOffsetY(shape: ZoneShape): number {
+    const img = this.getImage(shape.spritePath);
+
+    if (!img.complete) {
+      return 0; // fallback temporaire
+    }
+
+    const targetWidth = shape.getSpriteWidth(this.cellSize);
+    const aspectRatio = img.height / img.width;
+    const spriteHeight = targetWidth * aspectRatio;
+
+    const shapeHeight = shape.getShapeHeightPx(this.cellSize);
+
+    return spriteHeight - shapeHeight;
+  }
+
+  followMouse(event: MouseEvent) {
+    if (this.mapMode !== 'CREATE' || !this.placementShape) {
+      return;
+    }
+
+    const { x, y } = this.getGridPosition(event);
+
+    const offsetY = this.getSpriteOffsetY(this.placementShape);
+
+    this.ghostX = x * this.cellSize;
+    this.ghostY = y * this.cellSize - offsetY;
+
+    this.ghostWidth = this.placementShape.getSpriteWidth(this.cellSize);
+  }
+
+  mouseClick(event: MouseEvent) {
+    if (this.mapMode === 'CREATE' && this.placementShape) {
+      const { x, y } = this.getGridPosition(event);
+      this.zoneCreation.emit({x,y})
+    }
+  }
+
+  getGridPosition(event: MouseEvent): { x: number; y: number } {
+    if (!this.overlayCanvas) {
+      return { x: 0, y: 0 };
+    }
+
+    const rect = this.overlayCanvas.nativeElement.getBoundingClientRect();
+
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    const x = Math.floor(mouseX / this.cellSize);
+    const y = Math.floor(mouseY / this.cellSize);
+
+    return { x, y };
   }
 }
