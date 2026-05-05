@@ -1,0 +1,104 @@
+nav {
+  background-color: transparent;
+  padding: 8px 16px;
+  width: 100vw;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  width: 95%;
+}
+
+.burger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.burger span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background-color: #3a2510;
+  border-radius: 2px;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+  justify-content: space-between;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.nav-links.ouvert {
+  max-height: 200px;
+}
+
+.bouton {
+  display: inline-block;
+  background-color: #e8a020;
+  box-shadow:
+    -2px 0 0 var(--bordure),
+    2px 0 0 var(--bordure),
+    0 -2px 0 var(--bordure),
+    0 2px 0 var(--bordure),
+    inset -1px 0 0 #c4a97d,
+    inset 1px 0 0 #c4a97d,
+    inset 0 -1px 0 #c4a97d,
+    inset 0 1px 0 #c4a97d;
+  border-radius: 2px;
+  padding: 10px 2px;
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.bouton:hover {
+  background-color: #d09010;
+}
+
+.nav-link {
+  font-family: 'Stardew Valley', monospace;
+  font-size: 20px;
+  color: #3a2510;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  display: block;
+}
+
+.nav-link.active {
+  color: #7a1a00;
+}
+
+.nav-gif {
+  display: none;
+  width: 40px;
+  margin: 0 auto;
+  z-index: 9999;
+  position: absolute;
+  top: -10px;
+}
+
+.nav-link.active .nav-gif.visible {
+  display: block;
+}
+
+.img-icone {
+  margin: 0;
+  margin-right: 2px;
+  width: 20px;
+  height: 20px;
+}
