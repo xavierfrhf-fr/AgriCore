@@ -66,6 +66,10 @@ public enum NomZone {
 			TypeZone.STORAGE),
 	RESERVOIR_ESSENCE("réservoir à essence",
 			null,
+			ZoneShape.rectangle(3, 3),
+			TypeZone.STORAGE),
+	RESERVOIR_ESSENCE("réservoir à essence",
+			null,
 			ZoneShape.rectangle(3,3),
 			TypeZone.STORAGE);
 
