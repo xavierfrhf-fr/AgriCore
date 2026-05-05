@@ -59,21 +59,21 @@ a {
     color: inherit;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
 
 body {
-    position: relative;
-    background-image: url("/assets/image/accueil/images/sun_wallpaper.png");
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("/assets/image/accueil/images/sun_wallpaper.png") ;
     
+    background-size: 100% 100%;
+    margin: 0;
+    
+
     background-position: center;
     background-repeat: no-repeat; 
-    min-height: 100vh;
-    min-width: 100vw;
+    height: 100vh;
+    width: 100vw;
     
     
 }
@@ -86,10 +86,10 @@ main {
 
 .smog {
     
-    height: auto;
+    height: 312px;
     bottom:100px;
     width: 480px;
-    animation: fly 120s linear infinite;
+    animation: fly 5s linear infinite;
 }
 
 
@@ -103,7 +103,7 @@ main {
 
 @keyframes fly {
   from {
-    transform: translateX(90vw)  ;
+    transform: translateX(80vw)  ;
   }
   to {
     transform: translateX(0vw);

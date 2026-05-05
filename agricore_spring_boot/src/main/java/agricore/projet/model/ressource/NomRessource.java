@@ -41,20 +41,21 @@ public enum NomRessource {
     OEUF_OIE("oeuf d'oie", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
     OEUF_CANNE("oeuf de canne", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
     PLUME("plume", CheminAsset.RESSOURCE + "plume.png", Unite.KILOGRAM, NomZone.HANGAR),
-    LAINE("laine", CheminAsset.RESSOURCE + "laine.png", Unite.KILOGRAM, NomZone.HANGAR);
+    LAINE("laine", CheminAsset.RESSOURCE + "laine.png", Unite.KILOGRAM, NomZone.HANGAR),
+    ESSENCE("essence", CheminAsset.RESSOURCE + "", Unite.LITRE, NomZone.RESERVOIR_ESSENCE);
 
-    private final Unite uniteStockage;
-    private final NomZone zoneStockage;
-    private final String nomAffichage;
-    private final String pathSprite;
+        private final Unite uniteStockage;
+        private final NomZone zoneStockage;
+        private final String nomAffichage;
+        private final String pathSprite;
+      
 
-    private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
-        this.nomAffichage = nomAffichage;
-        this.pathSprite = pathSprite;
-        this.uniteStockage = uniteStockage;
-        this.zoneStockage = zoneStockage;
-    }
-
+        private NomRessource(String nomAffichage, String pathSprite, Unite uniteStockage, NomZone zoneStockage) {
+                this.nomAffichage = nomAffichage;
+                this.pathSprite = pathSprite;
+                this.uniteStockage = uniteStockage;
+                this.zoneStockage = zoneStockage;
+        }
     public Unite getUniteStockage() {
         return uniteStockage;
     }
