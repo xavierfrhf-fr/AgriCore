@@ -58,6 +58,7 @@ export class MapComponent {
   @Input() placementShape?: ZoneShape;
   @Output() zoneCreation = new EventEmitter<{ x: number; y: number }>();
   @Output() cancelCreation = new EventEmitter<void>();
+  @Output() deleteZoneByPos = new EventEmitter<{ x: number; y: number }>();
   private imageCache = new Map<string, HTMLImageElement>();
 
   protected ghostX = 0;
@@ -267,6 +268,7 @@ export class MapComponent {
   @HostListener('document:keydown.escape', ['$event'])
   onEscape(event: Event) {
     if (!(event instanceof KeyboardEvent)) return;
+    this.closeContextMenu();
 
     if (this.mapMode === 'CREATE') {
       this.cancelCreation.emit();
@@ -275,6 +277,7 @@ export class MapComponent {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
+    this.closeContextMenu();
     if (!this.overlayCanvas) {
       return;
     }
@@ -299,5 +302,55 @@ export class MapComponent {
     const y = Math.floor(mouseY / this.cellSize);
 
     return { x, y };
+  }
+
+  getZoneShapeAt(x: number, y: number): ZoneShape | null {
+    if (!this.shapes) {
+      return null;
+    }
+    for (const zoneShape of this.shapes) {
+      for (const cell of zoneShape.getCellGridPosition()) {
+        if (cell.x === x && cell.y === y) {
+          return zoneShape;
+        }
+      }
+    }
+    return null;
+  }
+
+  contextMenu = {
+    visible: false,
+    x: 0,
+    y: 0,
+    building: null as any,
+  };
+
+  openContextMenu(x: number, y: number, building: any) {
+    this.contextMenu = {
+      visible: true,
+      x,
+      y,
+      building,
+    };
+  }
+
+  closeContextMenu() {
+    this.contextMenu.visible = false;
+  }
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    event.preventDefault();
+
+    const { x, y } = this.getGridPosition(event);
+
+    const zoneShape = this.getZoneShapeAt(x, y);
+    if (!zoneShape) return;
+
+    this.openContextMenu(event.x, event.y, zoneShape);
+  }
+
+  deleteBuilding(shape: ZoneShape) {
+    this.deleteZoneByPos.emit({x:shape.anchorX, y:shape.anchorY})
   }
 }

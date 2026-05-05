@@ -33,5 +33,18 @@
 
 
   </div>
+  @if (contextMenu.visible){
+    <div
+      class="context-menu"
+      [style.left.px]="contextMenu.x"
+      [style.top.px]="contextMenu.y"
+    >
+      <ul>
+        <li (click)="deleteBuilding(contextMenu.building)">Supprimer</li>
+        <li>Consulter zone</li>
+      </ul>
+    </div>
+  }
+
 }
 

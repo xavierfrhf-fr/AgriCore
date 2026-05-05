@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MapComponent } from '../map-component/map-component';
 import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
-import { map, Observable, startWith, Subject, switchMap } from 'rxjs';
+import { async, asyncScheduler, map, Observable, startWith, Subject, switchMap } from 'rxjs';
 import { ZoneService } from '../../../service/zone/zone-service';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
@@ -95,5 +95,21 @@ export class ZonePage implements OnInit {
     delete this.zoneCreationType;
     delete this.placementShape;
     this.mapMode = 'VIEW';
+  }
+
+  protected deleteZoneByPos(event: { x: number; y: number }) {
+    this.getZoneAtPos(event.x, event.y).subscribe((zone) => {
+      if (!zone) return;
+
+      this.zoneService.deleteZoneById(zone.id).subscribe(() => this.reloadAll());
+    });
+  }
+
+  private getZoneAtPos(x: number, y: number): Observable<ZoneDTO | undefined> {
+    return this.zones$.pipe(
+      map((zones) =>
+        zones.find((zone) => zone.position.anchorX === x && zone.position.anchorY === y),
+      ),
+    );
   }
 }

@@ -22,4 +22,7 @@ export class ZoneService {
     return this.httpClient.post<ZoneDTO>(`zone`,req);
   }
 
+  deleteZoneById(id:number):Observable<boolean> {
+    return this.httpClient.delete<boolean>(`zone/${id}`)
+  }
 }
