@@ -23,6 +23,7 @@ export class ZoneService {
   }
 
   deleteZoneById(id:number):Observable<boolean> {
+    console.log("Delete de la zone "+id)
     return this.httpClient.delete<boolean>(`zone/${id}`)
   }
 }

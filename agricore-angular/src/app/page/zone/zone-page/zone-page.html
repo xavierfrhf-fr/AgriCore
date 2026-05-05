@@ -19,7 +19,7 @@
     <table>
 
       <tbody>
-        @for (zoneData of zoneDatas$ |async; track zoneData) {
+        @for (zoneData of zoneDatas$ |async; track zoneData.nomZone) {
           <tr>
             <td><img [src]="zoneData.pathSprite" height="150px"></td>
             <td><p>{{zoneData.nomAffichage | titlecase}}</p><p>{{zoneData.description}}</p></td>

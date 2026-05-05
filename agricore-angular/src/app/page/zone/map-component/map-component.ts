@@ -188,9 +188,9 @@ export class MapComponent {
     let spritePath: string = shape.spritePath;
 
     const img = new Image();
-    console.log(spritePath);
-    console.log('target width :', targetWidth);
-    console.log('Anchor :', cell);
+    //console.log(spritePath);
+    //console.log('target width :', targetWidth);
+    //console.log('Anchor :', cell);
     img.src = spritePath;
 
     img.onload = () => {
@@ -341,6 +341,7 @@ export class MapComponent {
   @HostListener('contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
     event.preventDefault();
+    this.closeContextMenu();
 
     const { x, y } = this.getGridPosition(event);
 
@@ -351,6 +352,7 @@ export class MapComponent {
   }
 
   deleteBuilding(shape: ZoneShape) {
-    this.deleteZoneByPos.emit({x:shape.anchorX, y:shape.anchorY})
+    console.log('DELETE !!!!');
+    this.deleteZoneByPos.emit({ x: shape.anchorX, y: shape.anchorY });
   }
 }

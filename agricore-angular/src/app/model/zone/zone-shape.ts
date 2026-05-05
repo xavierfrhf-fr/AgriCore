@@ -56,15 +56,15 @@ export class ZoneShape {
     let cell!: CellGridPosition;
 
     for (let cellGrid of this.getCellGridPosition()) {
-      console.log(cellGrid);
+      //console.log(cellGrid);
       if (cellGrid.x <= xPos && cellGrid.y >= yPos) {
-        console.log('Update of bottom left cell !');
+        //console.log('Update of bottom left cell !');
         cell = cellGrid;
         xPos = cellGrid.x;
         yPos = cellGrid.y;
       }
     }
-    console.log('bottom left cell :', cell);
+    //console.log('bottom left cell :', cell);
     return cell;
   }
 

@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { MapComponent } from '../map-component/map-component';
 import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
-import { async, asyncScheduler, map, Observable, startWith, Subject, switchMap } from 'rxjs';
+import {
+  async,
+  asyncScheduler,
+  filter,
+  map,
+  Observable,
+  startWith,
+  Subject,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { ZoneService } from '../../../service/zone/zone-service';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
@@ -98,11 +109,23 @@ export class ZonePage implements OnInit {
   }
 
   protected deleteZoneByPos(event: { x: number; y: number }) {
-    this.getZoneAtPos(event.x, event.y).subscribe((zone) => {
-      if (!zone) return;
+    console.log("deleteZoneByPos", event);
 
-      this.zoneService.deleteZoneById(zone.id).subscribe(() => this.reloadAll());
-    });
+    this.zones$
+      .pipe(
+        take(1),
+        map((zones) =>
+          zones.find((z) => z.position.anchorX === event.x && z.position.anchorY === event.y),
+        ),
+        filter((zone): zone is ZoneDTO => !!zone),
+        switchMap((zone) => {
+          console.log("appel service", zone.id);
+          return this.zoneService.deleteZoneById(zone.id);
+        }),
+      )
+      .subscribe(() => {
+        this.reloadAll();
+      });
   }
 
   private getZoneAtPos(x: number, y: number): Observable<ZoneDTO | undefined> {
