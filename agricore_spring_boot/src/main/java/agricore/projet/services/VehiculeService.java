@@ -87,25 +87,31 @@ public class VehiculeService {
 
     //Recolter plante et animal 
 
-    public String recolterPlante(Plante plante, Vehicule vehicule, int distanceKm) {
+    public String recolterPlante(Plante plante, Vehicule vehicule) {
+
+        int surface_zone_plante = plante.getZone().getNomZone().getZoneShape().getShape().size(); // récupère la surface de la zone de la plante (en nombre de cellule => nb fois 1km)
+
+        int distance = 2 * surface_zone_plante; // distance aller-retour
 
         if (plante.getEspece().getVehiculeRequis() != vehicule.getTypeVehicule() ) {
             throw new RuntimeException("Pas le bon véhicule");
         }
 
-        consommerCarburant(vehicule, distanceKm);
+        consommerCarburant(vehicule, distance);
 
         return "Le véhicule est aller chercher la récolte ! ";
 
     }
 
-    public String acheterAnimal(Animal animal, Vehicule vehicule, int distanceKm) {
+    public String acheterAnimal(Animal animal, Vehicule vehicule) {
+
+        int distance = animal.getEspece().getDistanceKmAchat();
 
         if (animal.getEspece().getVehiculeAchatRequis() != vehicule.getTypeVehicule()) {
              throw new RuntimeException("Pas le bon véhicule");
         }
 
-        consommerCarburant(vehicule,distanceKm);
+        consommerCarburant(vehicule,distance);
 
         return "Le véhicule est aller chercher l'animal ! ";
     }

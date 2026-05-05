@@ -45,7 +45,7 @@ public class VehiculeServiceCarburantTest {
     private IDAORessource daoRessource;
  
     private Vehicule vehicule;
-    private TypeVehicule typeVehicule;
+    private Zone zone;
     private Ressource carburant;
     private Plante plante;
     private Animal animal;
@@ -54,9 +54,9 @@ public class VehiculeServiceCarburantTest {
  
     @BeforeEach
     void setUp() {
-        //Zone 
+        // Zone
         Position pos = new Position();
-        Zone zone = new Zone(pos, NomZone.CHAMPS, null);
+        zone = new Zone(pos, NomZone.CHAMPS, null);
  
         // Setup Vehicule
         LocalDate date = LocalDate.parse("2026-05-05");
@@ -71,6 +71,7 @@ public class VehiculeServiceCarburantTest {
         // Setup Plante
         plante = new Plante();
         plante.setEspece(especePlante);
+        plante.setZone(zone);
  
         // Setup Animal
         animal = new Animal();
@@ -194,23 +195,27 @@ public class VehiculeServiceCarburantTest {
     @Test
     @DisplayName("recolterPlante - Récolte avec le bon véhicule et réduit le carburant")
     void testRecolterPlanteAvecBonVehicule() {
-        vehicule.setTypeVehicule(TypeVehicule.MOISSONNEUSE);
-        vehicule.setCarburantActuel(200);
-        int distanceKm = 2; // 2 * 40 = 80
+        Zone petitZone = new Zone(new Position(), NomZone.POULAILLER, null); // 4x2 = 8 cellules
+        plante.setZone(petitZone);
+        plante.setEspece(EspecePlante.Fraisier); // nécessite PICKUP
 
-        String result = vehiculeService.recolterPlante(plante, vehicule, distanceKm);
+        vehicule.setTypeVehicule(TypeVehicule.PICKUP);
+        vehicule.setCarburantActuel(250); // 8*2=16 km * 13 (conso par km pickup) = 208
+
+        String result = vehiculeService.recolterPlante(plante, vehicule);
 
         assertEquals("Le véhicule est aller chercher la récolte ! ", result);
-        assertEquals(120, vehicule.getCarburantActuel());
+        assertEquals(42, vehicule.getCarburantActuel());
     }
 
     @Test
     @DisplayName("recolterPlante - Lève une exception avec le mauvais véhicule")
     void testRecolterPlanteAvecMauvaisVehicule() {
-        plante.setEspece(EspecePlante.Blé);
+        plante.setZone(zone);
+        plante.setEspece(EspecePlante.Fraisier);
         vehicule.setTypeVehicule(TypeVehicule.TRACTEUR);
 
-        assertThrows(RuntimeException.class, () -> vehiculeService.recolterPlante(plante, vehicule, 1));
+        assertThrows(RuntimeException.class, () -> vehiculeService.recolterPlante(plante, vehicule));
     }
 
     @Test
@@ -219,9 +224,8 @@ public class VehiculeServiceCarburantTest {
         vehicule.setTypeVehicule(TypeVehicule.TRACTEUR);
         vehicule.setCarburantActuel(200);
         animal.setEspece(EspeceAnimal.Vache);
-        int distanceKm = 2; // 2 * 30 = 60
 
-        String result = vehiculeService.acheterAnimal(animal, vehicule, distanceKm);
+        String result = vehiculeService.acheterAnimal(animal, vehicule);
 
         assertEquals("Le véhicule est aller chercher l'animal ! ", result);
         assertEquals(140, vehicule.getCarburantActuel());
@@ -233,6 +237,6 @@ public class VehiculeServiceCarburantTest {
         vehicule.setTypeVehicule(TypeVehicule.PICKUP);
         animal.setEspece(EspeceAnimal.Vache);
 
-        assertThrows(RuntimeException.class, () -> vehiculeService.acheterAnimal(animal, vehicule, 1));
+        assertThrows(RuntimeException.class, () -> vehiculeService.acheterAnimal(animal, vehicule));
     }
 }
