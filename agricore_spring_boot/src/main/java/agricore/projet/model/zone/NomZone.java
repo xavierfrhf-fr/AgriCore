@@ -65,10 +65,25 @@ public enum NomZone {
 			"description",
 			TypeZone.STORAGE),
 	RESERVOIR_ESSENCE("réservoir à essence",
-			CheminAsset.ZONE + "",
+			CheminAsset.ZONE + "CITERNE.png",
 			ZoneShape.rectangle(3, 3),
 			"description",
-			TypeZone.STORAGE);
+			TypeZone.STORAGE),
+	VERGER("verger",
+			CheminAsset.ZONE + "VERGER.png",
+			ZoneShape.rectangle(3,2),
+			"description",
+			TypeZone.PLANTS),
+	SERRE("serre",
+			CheminAsset.ZONE + "serre.png",
+			ZoneShape.rectangle(2,3),
+			"description",
+			TypeZone.PLANTS),
+	VOLIERE("voliere",
+			CheminAsset.ZONE+"VOLIERE.png",
+			ZoneShape.rectangle(4,1),
+			"description",
+			TypeZone.ANIMAL);
 
 	private final ZoneShape zoneShape;
 	private final String nomAffichage;
