@@ -8,8 +8,11 @@ import agricore.projet.services.PlanteService;
 @RestController
 @RequestMapping("/api/plante")
 public class PlanteController {
-	PlanteService planteService;
+	private final PlanteService planteService;
 	
+	public PlanteController(PlanteService planteService) {
+		this.planteService = planteService;
+	}
 	//on recoit un url api/plante en mode get, on veut la liste des toutes les plantes
 	//on appelle la methode findAll qui est dans le service
 /*	@GetMapping
