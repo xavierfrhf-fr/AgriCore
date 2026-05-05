@@ -11,7 +11,7 @@ public class PlanteRequestDTO {
     private LocalDate datePlantation;
 	private LocalDate dateRecolte;
 	private EspecePlante espece;
-    private Integer zoneId; //comprends pas pk
+    private Integer zoneId; 
 	private LocalDateTime dernierUpdate;
 	private double humidite;
 

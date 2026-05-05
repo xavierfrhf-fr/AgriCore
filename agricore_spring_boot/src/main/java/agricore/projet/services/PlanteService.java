@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.plante.request.PlanteRequestDTO;
 import agricore.projet.dto.plante.response.PlanteResponseDTO;
+import agricore.projet.exception.PlanteNonAutoriseDansZoneException;
+import agricore.projet.exception.PlanteNotFoundException;
 import agricore.projet.exception.ZoneNotFoundException;
+import agricore.projet.model.EspecePlante;
 import agricore.projet.model.Plante;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOPlante;
 import agricore.projet.repository.IDAOZone;
@@ -22,6 +26,14 @@ public class PlanteService {
 	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone) {
 		this.daoPlante = daoPlante;
 		this.daoZone = daoZone;
+	}
+
+	public boolean isPlanteAutoriseDansZone(EspecePlante espece, NomZone nomZone){
+		if (!espece.getAllowedZone().equals(nomZone)){
+            throw new PlanteNonAutoriseDansZoneException(nomZone, espece);
+        }else{
+            return true;
+        }
 	}
 
 	// le controller a besoin de la methode findAll
@@ -43,8 +55,8 @@ public class PlanteService {
 
         Plante p = new Plante();
 
-        p.setDateNaissance(plante.getDateNaissance());
-        p.setDateVaccination(plante.getDateVaccination());
+        p.setDatePlantation(plante.getDatePlantation());
+        p.setDateRecolte(plante.getDateRecolte());
         p.setEspece(plante.getEspece());
 
         Zone zone = daoZone
@@ -53,14 +65,39 @@ public class PlanteService {
                         ()-> new ZoneNotFoundException(plante.getZoneId())
                 );
 
-        if (isPlanteAllowedInZone(plante.getEspece(), zone.getNomZone())){
+        if (isPlanteAutoriseDansZone(plante.getEspece(), zone.getNomZone())){
             p.setZone(zone);
         }
 
-        a.setMale(plante.isMale());
-
-        return PlanteResponseDTO.convert(daoPlante.save(a));
+        return PlanteResponseDTO.convert(daoPlante.save(p));
     }
 
+	public PlanteResponseDTO update(Integer id, PlanteRequestDTO plante) {
 
+		Plante p =daoPlante.findById(id).orElse(null);
+
+		if(p == null) {
+			throw new PlanteNotFoundException(id);
+		}
+
+		p.setDatePlantation(plante.getDatePlantation());
+        p.setDateRecolte(plante.getDateRecolte());
+        p.setEspece(plante.getEspece());
+
+		Zone zone = daoZone
+                .findById(plante.getZoneId())
+                .orElseThrow(
+                        ()-> new ZoneNotFoundException(plante.getZoneId())
+                );
+
+        if (isPlanteAutoriseDansZone(plante.getEspece(), zone.getNomZone())){
+            p.setZone(zone);
+        }
+
+        return PlanteResponseDTO.convert(daoPlante.save(p));
+	}
+
+	public void deleteById(Integer id) {
+		daoPlante.deleteById(id);
+	}
 }
