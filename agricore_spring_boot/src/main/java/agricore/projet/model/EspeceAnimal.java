@@ -15,7 +15,7 @@ public enum EspeceAnimal {
 
 	private final NomZone allowedZone;
 
-	private TypeVehicule vehiculeAchatRequis;
+	public TypeVehicule vehiculeAchatRequis;
 
 	private EspeceAnimal(NomZone allowedZone, TypeVehicule vehiculeAchatRequis) {
 		this.allowedZone = allowedZone;
