@@ -31,7 +31,6 @@ public class Vehicule {
 
 	private int carburantActuel;
 	
-	
 	@ManyToOne
 	@JoinColumn(name="zone_id")
 	private Zone zone;
