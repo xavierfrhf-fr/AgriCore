@@ -5,5 +5,6 @@ export interface Animal {
     dateVaccination: string;
     espece: string;
     zone: string;
-    pathSprite: string
+    pathSprite: string;
+    nomAffichage: string;
 }

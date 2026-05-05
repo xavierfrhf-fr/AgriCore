@@ -5,23 +5,21 @@ import agricore.projet.model.zone.NomZone;
 import agricore.projet.util.CheminAsset;
 
 public enum EspeceAnimal {
-	COCHON(CheminAsset.ANIMAL + "cochon.png",NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cochon")),
-	VACHE(CheminAsset.ANIMAL + "vache.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_VACHE, "Vache", null, "Taureau")),
-	MOUTON(CheminAsset.ANIMAL + "mouton.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_BREBIS, "Brebis", NomRessource.LAINE, "Mouton")),
-	CHEVRE(CheminAsset.ANIMAL + "chevre.png", NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_CHEVRE, "Chèvre", null, "Bouc")),
-	POULE(CheminAsset.ANIMAL + "poule.png",NomZone.POULAILLER, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_POULE, "Poule", null, "Coq")),
-	CANNE(CheminAsset.ANIMAL + "canne.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_CANNE, "Canne", NomRessource.PLUME, "Canard")),
-	OIE(CheminAsset.ANIMAL + "oie.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_OIE, "Oie", NomRessource.PLUME, "Jars")),
-	CHEVAL(CheminAsset.ANIMAL + "cheval.png",NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cheval")),
-	ANE(CheminAsset.ANIMAL + "ane.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_ANESSE, "Anesse", null, "Ane")),
-	LAPIN(CheminAsset.ANIMAL + "lapin.png",NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Lapin"));
+	COCHON(NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cochon", CheminAsset.ANIMAL + "cochon.png")),
+	VACHE(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_VACHE, "Vache", CheminAsset.ANIMAL + "vache.png", null, "Taureau", CheminAsset.ANIMAL + "taureau.png")),
+	MOUTON(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_BREBIS, "Brebis", CheminAsset.ANIMAL + "brebis.png", NomRessource.LAINE, "Mouton", CheminAsset.ANIMAL + "mouton.png")),
+	CHEVRE(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_CHEVRE, "Chèvre", CheminAsset.ANIMAL + "chevre.png", null, "Bouc", CheminAsset.ANIMAL + "bouc.png")),
+	POULE(NomZone.POULAILLER, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_POULE, "Poule", CheminAsset.ANIMAL + "poule.png", null, "Coq", CheminAsset.ANIMAL + "coq.png")),
+	CANNE(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_CANNE, "Canne", CheminAsset.ANIMAL + "canne.png", NomRessource.PLUME, "Canard",CheminAsset.ANIMAL + "canard.png")),
+	OIE(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_OIE, "Oie", CheminAsset.ANIMAL + "oie.png", NomRessource.PLUME, "Jars", CheminAsset.ANIMAL + "oie.png")),
+	CHEVAL(NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cheval",CheminAsset.ANIMAL + "cheval.png")),
+	ANE(NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_ANESSE, "Anesse",CheminAsset.ANIMAL + "ane.png", null, "Ane",CheminAsset.ANIMAL + "ane.png")),
+	LAPIN(NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Lapin",CheminAsset.ANIMAL + "lapin.png"));
 
-	private final String pathSprite;
 	private final NomZone allowedZone;
 	private final AnimalProduct product;
 
-	private EspeceAnimal(String pathSprite, NomZone allowedZone, AnimalProduct product) {
-		this.pathSprite = pathSprite;
+	private EspeceAnimal(NomZone allowedZone, AnimalProduct product) {
 		this.allowedZone = allowedZone;
 		this.product = product;
 	}
@@ -33,11 +31,6 @@ public enum EspeceAnimal {
 	public AnimalProduct getProduct() {
 		return product;
 	}
-
-	public String getPathSprite() {
-		return pathSprite;
-	}
-
 	
 	
 }

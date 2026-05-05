@@ -6,32 +6,43 @@ public class AnimalProduct {
     private NomRessource maleRessource;
     private NomRessource femaleRessource;
     
-    private String malenomAffichage;
-    private String femalenomAffichage;
+    private String malePathSprite;
+    private String femalePathSprite;
+    
+    private String maleNomAffichage;
+    private String femaleNomAffichage;
 
-    public static AnimalProduct sameForMaleAndFemale(NomRessource ressource, String nomAffichage) {
+    public static AnimalProduct sameForMaleAndFemale(NomRessource ressource, String nomAffichage, String pathSprite) {
         AnimalProduct product = new AnimalProduct();
         product.maleRessource = ressource;
         product.femaleRessource = ressource;
-        product.malenomAffichage = nomAffichage;
-        product.femalenomAffichage = nomAffichage;
+        product.maleNomAffichage = nomAffichage;
+        product.femaleNomAffichage = nomAffichage;
+        product.malePathSprite = pathSprite;
+        product.femalePathSprite = pathSprite;
         return product;
     }
 
-    public static AnimalProduct differentForMaleAndFemale(NomRessource femaleRessource, String femalenomAffichage, NomRessource maleRessource, String malenomAffichage) {
+    public static AnimalProduct differentForMaleAndFemale(NomRessource femaleRessource, String femaleNomAffichage, String femalePathSprite, NomRessource maleRessource, String maleNomAffichage,  String malePathSprite) {
         AnimalProduct product = new AnimalProduct();
         product.femaleRessource = femaleRessource;
-        product.femalenomAffichage = femalenomAffichage;
+        product.femaleNomAffichage = femaleNomAffichage;
         product.maleRessource = maleRessource;
-        product.femalenomAffichage = malenomAffichage;
+        product.maleNomAffichage = maleNomAffichage;
+        product.malePathSprite = malePathSprite;
+        product.femalePathSprite = femalePathSprite;
         return product;
     }
 
-    public String getnomAffichage(boolean isMale){
-        return isMale ? malenomAffichage : femalenomAffichage;
+    public String getNomAffichage(boolean isMale){
+        return isMale ? maleNomAffichage : femaleNomAffichage;
     }
 
     public NomRessource getNomRessource(boolean isMale){
         return isMale ? maleRessource : femaleRessource;
+    }
+
+    public String getPathSprite(boolean isMale) {
+        return isMale ? malePathSprite : femalePathSprite;
     }
 }

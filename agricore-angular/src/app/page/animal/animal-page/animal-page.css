@@ -1,8 +1,122 @@
 /* Icônes inline */
 .animal-inline {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-right: 2px;
-  vertical-align:text-top;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-right: 2px;
+    vertical-align: text-top;
+}
+
+.animal-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: repeat(150px);
+}
+
+.panneau-animal {
+    margin: 10px;
+}
+
+.case-animal-infos {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.case-animal-img-name {
+    text-align: center;
+    padding: 2px 2px;
+    box-shadow:
+        -2px 0 0 var(--bordure),
+        2px 0 0 var(--bordure),
+        0 -2px 0 var(--bordure),
+        0 2px 0 var(--bordure)
+}
+
+/* Tableau animal */
+table {
+    width: 100%;
+    border-spacing: 2px;
+}
+
+th {
+    white-space: nowrap;
+    background: #aaddf5;
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 2px solid #7ac8e8;
+    text-transform: uppercase;
+}
+
+th:empty {
+    background-color: transparent;
+    border: none;
+}
+
+td {
+    vertical-align: middle;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 2px;
+    box-shadow:
+        -2px 0 0 var(--bordure),
+        2px 0 0 var(--bordure),
+        0 -2px 0 var(--bordure),
+        0 2px 0 var(--bordure),
+
+}
+
+td:not(:has(button)) {
+    font-size: larger;
+    box-shadow:
+        -2px 0 0 var(--bordure),
+        2px 0 0 var(--bordure),
+        0 -2px 0 var(--bordure),
+        0 2px 0 var(--bordure),
+        inset -1px 0 0 #c4a97d,
+        inset 1px 0 0 #c4a97d,
+        inset 0 -1px 0 #c4a97d,
+        inset 0 1px 0 #c4a97d;
+}
+
+tr:nth-child(odd) td {
+    background: #f5fcff;
+}
+
+tr:nth-child(even) td {
+    background: #eaf7ff;
+}
+
+/*Boutons */
+.boutons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+/*Transformer*/
+button[style*="background-color: orange"] {
+    min-width: 150px;
+}
+
+.bouton-creer.loading {
+    background-color: gold;
+    cursor: not-allowed;
+    opacity: 0.9;
+    min-width: 139px;
+}
+
+.bouton-modifier,
+.bouton-creer {
+    min-width: 112px;
+}
+
+
+.bouton-supprimer,
+.bouton-reinitialiser {
+    min-width: 128px;
 }
