@@ -44,15 +44,15 @@ public class VehiculeService {
 
 	public void consommerCarburant(Vehicule vehicule, int distanceKm) {
 
-		int carburantNecessaire = distanceKm * vehicule.getTypeVehicule().getConsoParKm();
+		//int carburantNecessaire = distanceKm * vehicule.getTypeVehicule().getConsoParKm();
 
-		if (carburantNecessaire > vehicule.getCarburantActuel()) {
+		if (!besoinCarburant(vehicule, distanceKm)) {
 
 			throw new RuntimeException("Pas assez de carburant");
 			
 		}
 
-		vehicule.setCarburantActuel( vehicule.getCarburantActuel() - carburantNecessaire);
+		vehicule.setCarburantActuel( vehicule.getCarburantActuel() - (distanceKm * vehicule.getTypeVehicule().getConsoParKm()));
 
 	}
 
@@ -144,8 +144,9 @@ public class VehiculeService {
         Vehicule v = new Vehicule();
         v.setTypeVehicule(vehiculeRequestDTO.getTypeVehicule());
         v.setDateControleTech(vehiculeRequestDTO.getDateControleTech());
+        v.setCarburantActuel(vehiculeRequestDTO.getCarburantActuel());
 
-        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneid()));
+        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneId()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneId()));
 
         v.setZone(z);
 
@@ -163,10 +164,10 @@ public class VehiculeService {
         //maj entity
         v.setTypeVehicule(vehiculeRequestDTO.getTypeVehicule());
         v.setDateControleTech(vehiculeRequestDTO.getDateControleTech());
-
+        v.setCarburantActuel(vehiculeRequestDTO.getCarburantActuel());
 
         //set zone
-        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneid()));
+        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneId()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneId()));
         v.setZone(z);
 
         //save entity

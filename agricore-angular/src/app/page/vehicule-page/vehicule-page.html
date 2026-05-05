@@ -1,1 +1,177 @@
-<p>vehicule-page works!</p>
+<div>
+  <div class="panneau" style="width: fit-content">
+
+    <p class="titre-section"
+      style="display: flex; align-items: center; justify-content: space-between;">
+
+      <span>
+        <img class="img-icone" src="assets/image/inventaire.png" />
+        Liste des véhicules
+      </span>
+
+      <button
+        (click)="ouvrirCreer()"
+        class="bouton bouton-creer"
+        [class.loading]="afficheVehiculeForm">
+
+        <img class="img-icone" src="assets/image/creer.png" />
+
+        @if (afficheVehiculeForm) {
+        Création<span class="points-chargement"></span>
+        } @else {
+        Créer un nouveau véhicule
+        }
+
+      </button>
+
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Type de véhicule</th>
+          <th>Carburant actuel</th>
+          <th>Date contrôle technique</th>
+          <th>Délai avant contrôle</th>
+          <th>Zone</th>
+          <th>Modification</th> <!-- Modification / Validation -->
+          <th>Suppression</th> <!-- Suppression / Annulation -->
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (vehicule of (vehicules$ | async); track vehicule.id) {
+        <tr [class.ligne-en-edition]="isLigneEnEdition(vehicule)">
+
+          <td style="text-transform: capitalize;">
+            {{ vehicule.typeVehicule }}
+          </td>
+
+          <td>
+            @if (isLigneEnEdition(vehicule)) {
+            <input type="number" [formControl]="carburantActuelCtrl" />
+            } @else {
+            {{ vehicule.carburantActuel }} L
+            }
+          </td>
+
+          <td>
+            @if (isLigneEnEdition(vehicule)) {
+            <input type="date" [formControl]="dateControleTechCtrl" />
+            } @else {
+            {{ vehicule.dateControleTech | date:'dd/MM/yyyy' }}
+            }
+          </td>
+
+          <td>
+            {{ delaiAvantControle(vehicule) }} jours
+            @if (rappelControle(vehicule)) {
+            <span style="color: green;">(OK)</span>
+            } @else {
+            <span style="color: red;">(À renouveler)</span>
+            }
+          </td>
+
+          <td style="text-transform: capitalize;">
+            {{ vehicule.zoneNom }}
+          </td>
+
+          <!-- Modifier / Valider -->
+          <td>
+            @if (isLigneEnEdition(vehicule)) {
+            <button type="button" class="bouton bouton-creer" (click)="validerModifier()">
+              <img class="img-icone" src="assets/image/creer.png" />
+              Valider
+            </button>
+            <button type="button" class="bouton bouton-reinitialiser" (click)="annulerModifier()">
+              <img class="img-icone" src="assets/image/reinitialiser.png" />
+              Annuler
+            </button>
+            } @else {
+            <button type="button" class="bouton bouton-modifier" (click)="ouvrirModifier(vehicule)">
+              <img class="img-icone" src="assets/image/modifier.png" />
+              Modifier
+            </button>
+            }
+          </td>
+
+          <!-- Supprimer / Annuler -->
+          <td>
+            <button type="button" class="bouton bouton-supprimer" (click)="supprimer(vehicule)">
+              <img class="img-icone" src="assets/image/supprimer.png" />
+              Supprimer
+            </button>
+          </td>
+
+        </tr>
+        }
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<!-- CRÉATION -->
+@if (afficheVehiculeForm) {
+
+<div class="creation">
+
+  <div class="panneau" style="width: 400px">
+
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/liste.png" />
+      Créer le véhicule...
+    </p>
+
+    <form class="formulaire" [formGroup]="vehiculeForm">
+
+      <div class="champ">
+        <label>Type de véhicule</label>
+        <select class="bordure-pixel" formControlName="typeVehicule">
+          @for (type of (typeVehicules$ | async); track type) {
+          <option [ngValue]="type">{{ type.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="champ">
+        <label>Date contrôle technique</label>
+        <input class="bordure-pixel" type="date" formControlName="dateControleTech" />
+      </div>
+
+      <div class="champ">
+        <label>Carburant actuel (L)</label>
+        <input class="bordure-pixel" type="number" formControlName="carburantActuel" />
+      </div>
+
+      <div class="champ">
+        <label>Zone</label>
+        <select class="bordure-pixel" formControlName="zoneId">
+          @for (zone of (zones$ | async); track zone.id) {
+          <option [value]="zone.id">{{ zone.nomZone }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="boutons">
+
+        <button type="button" class="bouton bouton-creer"
+          (click)="validerCreer()"
+          [disabled]="vehiculeForm.invalid">
+          <img class="img-icone" src="assets/image/creer.png" />
+          Créer
+        </button>
+
+        <button type="button" class="bouton bouton-reinitialiser"
+          (click)="annulerCreer()">
+          <img class="img-icone" src="assets/image/reinitialiser.png" />
+          Annuler
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+</div>
+
+}
