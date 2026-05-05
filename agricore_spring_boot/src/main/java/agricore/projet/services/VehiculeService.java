@@ -56,21 +56,30 @@ public class VehiculeService {
 
 	}
 
-      public void fairePlein(Vehicule vehicule, Ressource carburant) {
-        //on modifie la logique du plein et on peut le faire qu'importe la position du véhicule. on récupère juste la ressource 
-        
+    public void fairePlein(Vehicule vehicule, Ressource carburant) {
+    //on modifie la logique du plein et on peut le faire qu'importe la position du véhicule. on récupère juste la ressource 
+    
 
-        // qtt carburant manquant dans le véhicule 
-        int manque = vehicule.getTypeVehicule().getCapaciteReservoir() - vehicule.getCarburantActuel();
+    // qtt carburant manquant dans le véhicule 
+    int manque =  vehicule.getTypeVehicule().getCapaciteReservoir() - vehicule.getCarburantActuel();
 
-        if (transformationService.getAvailableStock(carburant.getNom(), true) < manque) return;
+    if (carburant.getQuantite() < manque) {
+        throw new RuntimeException("Pas assez de carburant en stock pour faire le plein");
+    }
 
-        // set qtt stocker carburant
-        transformationService.changeQuantity(carburant.getNom(), manque);
-        //carburant.setQuantite(carburant.getQuantite() - manque);
+    // set qtt stocker carburant
+    daoRessource
+            .findByNom(carburant.getNom())
+            .map (ressource ->  {
+                ressource.setQuantite(ressource.getQuantite()-manque);
+                daoRessource.save(ressource);
+                return null;
+            });
+    //transformationService.changeQuantity(carburant.getNom(), manque);
+    //carburant.setQuantite(carburant.getQuantite() - manque);
 
-        // set gtt carburant du vehicule => faire plein 
-        vehicule.setCarburantActuel(vehicule.getTypeVehicule().getCapaciteReservoir());
+    // set gtt carburant du vehicule => faire plein 
+    vehicule.setCarburantActuel(vehicule.getTypeVehicule().getCapaciteReservoir());
 
 
     }
