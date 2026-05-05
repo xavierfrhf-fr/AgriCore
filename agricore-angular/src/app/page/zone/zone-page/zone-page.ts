@@ -6,12 +6,14 @@ import { ZoneService } from '../../../service/zone/zone-service';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
 import { ZoneShape } from '../../../model/zone/zone-shape';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { ZoneDataDTO } from '../../../dto/zone/response/zone-data-dto';
+import { ZoneRequest } from '../../../dto/zone/request/zone-request';
+import { PositionDTO } from '../../../dto/zone/response/position-dto';
 
 @Component({
   selector: 'app-zone-page',
-  imports: [MapComponent, AsyncPipe],
+  imports: [MapComponent, AsyncPipe, TitleCasePipe],
   templateUrl: './zone-page.html',
   styleUrl: './zone-page.css',
 })
@@ -22,7 +24,10 @@ export class ZonePage implements OnInit {
   protected zoneDatas$!: Observable<ZoneDataDTO[]>;
   protected zoneShapes$!: Observable<ZoneShape[]>;
 
-  protected displayMap: boolean = false;
+  protected mapMode: MapMode = 'OFF';
+  protected placementShape?: ZoneShape;
+  protected zoneCreationType?: string;
+  protected isCreation: boolean = false;
 
   constructor(
     protected zoneService: ZoneService,
@@ -58,5 +63,31 @@ export class ZonePage implements OnInit {
   protected reloadAll(): void {
     this.reloadZone();
     this.reloadZoneData();
+  }
+
+  protected startZoneCreation(zoneData: ZoneDataDTO) {
+    this.mapMode = 'CREATE';
+    this.placementShape = ZoneShape.zoneShapeFromZoneDataDTO(zoneData);
+    this.zoneCreationType = zoneData.nomZone;
+  }
+
+  protected createZone(event: { x: number; y: number }): void {
+    if (this.zoneCreationType == null) {
+      return;
+    }
+
+    let zoneRequest: ZoneRequest = {} as ZoneRequest;
+    let positionRequest: PositionDTO = {} as PositionDTO;
+    positionRequest.anchorX = event.x;
+    positionRequest.anchorY = event.y;
+    positionRequest.rotation = 'DEG_0';
+    zoneRequest.position = positionRequest;
+    zoneRequest.nomZone = this.zoneCreationType;
+    zoneRequest.fermierId = 3;
+    this.zoneService.insert(zoneRequest).subscribe(()=>this.reloadAll())
+
+    delete this.zoneCreationType;
+    delete this.placementShape;
+
   }
 }

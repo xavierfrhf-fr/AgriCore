@@ -21,3 +21,10 @@
   inset: 0;
   pointer-events: none;
 }
+
+.placement-ghost {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.7;
+  transform: translateY(0); /* ancre en bas gauche */
+}
