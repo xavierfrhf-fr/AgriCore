@@ -3,14 +3,14 @@ package agricore.projet.model;
 import agricore.projet.model.zone.NomZone;
 
 public enum EspecePlante {
-	Maïs(5, 0.05), // le champ pousse en 5 mois, il consomme 50 000L/jour et sa fréquence
+	Maïs(5, 0.05, NomZone.CHAMPS), // le champ pousse en 5 mois, il consomme 50 000L/jour et sa fréquence
 					// d'arrosage de base(sans pluie) est tous les 7 jours
-	Tournesol(5, 0.02),
-	Blé(8, 0.01),
-	Colza(10, 0.01),
-	Pommier(10, 0.01),
-	Fraisier(10, 0.01),
-	Poirier(10, 0.01);
+	Tournesol(5, 0.02, NomZone.CHAMPS),
+	Blé(8, 0.01, NomZone.CHAMPS),
+	Colza(10, 0.01, NomZone.CHAMPS),
+	Pommier(10, 0.01, NomZone.CHAMPS),
+	Fraisier(10, 0.01, NomZone.CHAMPS),
+	Poirier(10, 0.01, NomZone.CHAMPS);
 
 	private int tempsPousseMois;
 	private double consommationEauParMin; // en litres
@@ -22,11 +22,6 @@ public enum EspecePlante {
 		this.allowedZone = allowedZone;
 	}
 	
-
-	private EspecePlante(int tempsPousseMois, double consommationEauParMin) {
-		this.tempsPousseMois = tempsPousseMois;
-		this.consommationEauParMin = consommationEauParMin;
-	}
 
 
 	public int getTempsPousseMois() {

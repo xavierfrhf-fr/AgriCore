@@ -1,5 +1,7 @@
 package agricore.projet.services;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 //permet de decider comment on cree une plante
 import java.util.List;
 
@@ -55,9 +57,11 @@ public class PlanteService {
 
         Plante p = new Plante();
 
-        p.setDatePlantation(plante.getDatePlantation());
-        p.setDateRecolte(plante.getDateRecolte());
+        p.setDatePlantation(LocalDate.now());
+        p.setDateRecolte(p.getDatePlantation().plusMonths(plante.getEspece().getTempsPousseMois()));
         p.setEspece(plante.getEspece());
+		p.setHumidite(100);
+		p.setDernierUpdate(LocalDateTime.now());
 
         Zone zone = daoZone
                 .findById(plante.getZoneId())
@@ -80,9 +84,11 @@ public class PlanteService {
 			throw new PlanteNotFoundException(id);
 		}
 
-		p.setDatePlantation(plante.getDatePlantation());
-        p.setDateRecolte(plante.getDateRecolte());
+		p.setDatePlantation(LocalDate.now());
+        p.setDateRecolte(p.getDatePlantation().plusMonths(plante.getEspece().getTempsPousseMois()));
         p.setEspece(plante.getEspece());
+		p.setHumidite(100);
+		p.setDernierUpdate(LocalDateTime.now());
 
 		Zone zone = daoZone
                 .findById(plante.getZoneId())
