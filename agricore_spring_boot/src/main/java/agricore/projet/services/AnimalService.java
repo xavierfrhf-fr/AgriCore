@@ -48,13 +48,11 @@ public class AnimalService {
         a.setDateVaccination(animal.getDateVaccination());
         a.setEspece(animal.getEspece());
 
-        System.out.println("coucou1");
         Zone zone = daoZone
                 .findById(animal.getZoneId())
                 .orElseThrow(
                         ()-> new ZoneNotFoundException(animal.getZoneId())
                 );
-                System.out.println("coucou2");
 
         if (isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone())){
             a.setZone(zone);

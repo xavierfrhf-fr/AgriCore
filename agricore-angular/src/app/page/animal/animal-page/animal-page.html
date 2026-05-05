@@ -1,1 +1,26 @@
-<p>animal-page works!</p>
+<h1>Liste des animaux</h1>
+
+<table>
+    <thead>
+        <th>Animal</th>
+        <th>Date de Naissance</th>
+        <th>Dernière vaccination</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let a of animals$ | async">
+            <td><img class="animal-inline" [src]="a.pathSprite" /> <br/> {{a.espece}} -
+             @if (a.male) {
+            <img class="img-icone" src="assets/image/animal/male.png" /> } @else {
+            <img class="img-icone" src="assets/image/animal/femelle.png" />
+            }</td>
+
+            <td>{{a.dateNaissance}}</td>
+            <td>{{a.dateVaccination}}</td>
+            <td><button type="button" class="bouton-modifier">Modifier</button>
+                <button type="button" class="bouton-supprimer">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br />

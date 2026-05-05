@@ -16,8 +16,9 @@ public class AnimalResponse {
     private EspeceAnimal espece;
     private Integer zoneId;
     private String zoneName;
+    private String pathSprite;
 
-    public AnimalResponse(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece, Integer zoneId, String zoneName) {
+    public AnimalResponse(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece, Integer zoneId, String zoneName, String pathSprite) {
         this.id = id;
         this.male = male;
         this.dateNaissance = dateNaissance;
@@ -25,6 +26,7 @@ public class AnimalResponse {
         this.espece = espece;
         this.zoneId = zoneId;
         this.zoneName = zoneName;
+        this.pathSprite = pathSprite;
     }
 
     public AnimalResponse() {}
@@ -85,13 +87,22 @@ public class AnimalResponse {
         this.zoneName = zoneName;
     }
 
+    public String getPathSprite() {
+        return pathSprite;
+    }
+
+    public void setPathSprite(String pathSprite) {
+        this.pathSprite = pathSprite;
+    }
+   
+
     public static AnimalResponse convert(Animal animal) {
         AnimalResponse response = new AnimalResponse();
         BeanUtils.copyProperties(animal, response);
         response.setZoneId(animal.getZone().getId());
         response.setZoneName(animal.getZone().getNomZone().toString());
+        response.setPathSprite(animal.getEspece().getPathSprite());
         return response;
 
     }
-
 }

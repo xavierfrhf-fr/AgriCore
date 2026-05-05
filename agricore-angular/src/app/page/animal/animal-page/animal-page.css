@@ -1,0 +1,8 @@
+/* Icônes inline */
+.animal-inline {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-right: 2px;
+  vertical-align:text-top;
+}
