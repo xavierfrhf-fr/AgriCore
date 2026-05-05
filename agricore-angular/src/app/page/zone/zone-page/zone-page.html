@@ -42,6 +42,7 @@
   [mapMode]="mapMode"
   [placementShape]="placementShape"
   (zoneCreation)="createZone($event)"
+  (cancelCreation)="stopZoneCreation()"
   ></app-map-component>
 } @else {
   <button (click)="mapMode='VIEW'">Afficher Carte</button>

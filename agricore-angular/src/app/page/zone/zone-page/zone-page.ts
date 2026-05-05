@@ -84,10 +84,16 @@ export class ZonePage implements OnInit {
     zoneRequest.position = positionRequest;
     zoneRequest.nomZone = this.zoneCreationType;
     zoneRequest.fermierId = 3;
-    this.zoneService.insert(zoneRequest).subscribe(()=>this.reloadAll())
+    this.zoneService.insert(zoneRequest).subscribe(() => this.reloadAll());
 
     delete this.zoneCreationType;
     delete this.placementShape;
+    this.mapMode = 'VIEW';
+  }
 
+  protected stopZoneCreation() {
+    delete this.zoneCreationType;
+    delete this.placementShape;
+    this.mapMode = 'VIEW';
   }
 }

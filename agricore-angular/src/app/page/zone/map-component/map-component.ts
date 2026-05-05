@@ -1,8 +1,16 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ZoneShape } from '../../../model/zone/zone-shape';
 import { CellAbsolutePosition } from '../../../model/zone/position/cell-absolute-position';
 import { CellOffset } from '../../../model/zone/position/cell-offset';
@@ -12,7 +20,7 @@ import { PositionDTO } from '../../../dto/zone/response/position-dto';
 @Component({
   selector: 'app-map-component',
   standalone: true,
-  imports: [AsyncPipe, NgOptimizedImage],
+  imports: [AsyncPipe],
   templateUrl: './map-component.html',
   styleUrl: './map-component.css',
 })
@@ -49,7 +57,7 @@ export class MapComponent {
   @Input() mapMode: MapMode = 'VIEW';
   @Input() placementShape?: ZoneShape;
   @Output() zoneCreation = new EventEmitter<{ x: number; y: number }>();
-
+  @Output() cancelCreation = new EventEmitter<void>();
   private imageCache = new Map<string, HTMLImageElement>();
 
   protected ghostX = 0;
@@ -252,7 +260,28 @@ export class MapComponent {
   mouseClick(event: MouseEvent) {
     if (this.mapMode === 'CREATE' && this.placementShape) {
       const { x, y } = this.getGridPosition(event);
-      this.zoneCreation.emit({x,y})
+      this.zoneCreation.emit({ x, y });
+    }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscape(event: Event) {
+    if (!(event instanceof KeyboardEvent)) return;
+
+    if (this.mapMode === 'CREATE') {
+      this.cancelCreation.emit();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    if (!this.overlayCanvas) {
+      return;
+    }
+    const clickedInside = this.overlayCanvas.nativeElement.contains(event.target as Node);
+
+    if (!clickedInside && this.mapMode === 'CREATE') {
+      this.cancelCreation.emit();
     }
   }
 

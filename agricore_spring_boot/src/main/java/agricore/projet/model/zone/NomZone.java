@@ -11,7 +11,7 @@ public enum NomZone {
 			TypeZone.PLANTS),
 	POULAILLER("poulailler",
 			CheminAsset.ZONE + "poulailler.png",
-			ZoneShape.rectangle(4, 2),
+			ZoneShape.rectangle(2, 2),
 			"description",
 			TypeZone.ANIMAL),
 	ETABLE("étable",
