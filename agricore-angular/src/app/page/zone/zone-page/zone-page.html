@@ -1,4 +1,42 @@
 <p>zone-page works!</p>
+<div class="tabs">
+  <button
+    [class.active]="isCreation"
+    (click)="isCreation = true">
+    Création de zones
+  </button>
+
+  <button
+    [class.active]="!isCreation"
+    (click)="isCreation = false">
+    Modification de zones
+  </button>
+</div>
+
+@if (isCreation) {
+  <div>
+    aa
+    <table>
+
+      <tbody>
+        @for (zoneData of zoneDatas$ |async; track zoneData) {
+          <tr>
+            <td><img [src]="zoneData.pathSprite" height="150px"></td>
+            <td><p>{{zoneData.nomAffichage | titlecase}}</p><p>{{zoneData.description}}</p></td>
+            <td>Bouton création</td>
+          </tr>
+        }
+
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <div >
+
+  </div>
+}
+
+
 <button (click)="displayMap=!displayMap">Afficher Carte</button>
 @if (displayMap){
   <app-map-component [shapes]="zoneShapes$ | async"></app-map-component>

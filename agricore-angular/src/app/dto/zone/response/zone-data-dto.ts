@@ -7,6 +7,7 @@ export interface ZoneDataDTO {
   zoneUnique:boolean;
   nomRessources:string;
   zoneCreatable:boolean;
-  nomAffichage:string;//to do
-  description:string//to do
+  nomAffichage:string;
+  description:string;
+  pathSprite:string;
 }

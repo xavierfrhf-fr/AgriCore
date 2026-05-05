@@ -6,12 +6,12 @@ import { ZoneService } from '../../../service/zone/zone-service';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
 import { ZoneShape } from '../../../model/zone/zone-shape';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { ZoneDataDTO } from '../../../dto/zone/response/zone-data-dto';
 
 @Component({
   selector: 'app-zone-page',
-  imports: [MapComponent, AsyncPipe],
+  imports: [MapComponent, AsyncPipe, TitleCasePipe],
   templateUrl: './zone-page.html',
   styleUrl: './zone-page.css',
 })
@@ -23,6 +23,7 @@ export class ZonePage implements OnInit {
   protected zoneShapes$!: Observable<ZoneShape[]>;
 
   protected displayMap: boolean = false;
+  protected isCreation: boolean = false;
 
   constructor(
     protected zoneService: ZoneService,
