@@ -12,11 +12,13 @@ public class PositionResponseDTO {
     private Integer anchorY;
     private Rotation rotation;
     private List<CellOffset> cells;
+    private String pathSprite;
 
-    public PositionResponseDTO(Integer anchorX, Integer anchorY, Rotation rotation) {
+    public PositionResponseDTO(Integer anchorX, Integer anchorY, Rotation rotation, String pathSprite) {
         this.anchorX = anchorX;
         this.anchorY = anchorY;
         this.rotation = rotation;
+        this.pathSprite = pathSprite;
     }
 
     public PositionResponseDTO() {}
@@ -53,6 +55,14 @@ public class PositionResponseDTO {
         this.cells = cells;
     }
 
+    public String getPathSprite() {
+        return pathSprite;
+    }
+
+    public void setPathSprite(String pathSprite) {
+        this.pathSprite = pathSprite;
+    }
+
     public static PositionResponseDTO convert(Zone zone){
         Position position = zone.getPosition();
         PositionResponseDTO response = new PositionResponseDTO();
@@ -66,6 +76,8 @@ public class PositionResponseDTO {
                               .stream()
                               .toList()
         );
+
+        response.setPathSprite(zone.getNomZone().getPathSprite());
 
         return response;
     }
