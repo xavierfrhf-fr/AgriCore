@@ -14,6 +14,19 @@ nav {
   width: 95%;
 }
 
+.logout {
+  position: absolute;
+  position-anchor: --burger-menu;
+  bottom: anchor(top);
+  left: anchor(center);
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+}
+
+#burger-menu {
+  anchor-name: --burger-menu;
+}
+
 .burger {
   display: flex;
   flex-direction: column;

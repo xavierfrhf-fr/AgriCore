@@ -1,12 +1,15 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
+
+import {NavigationAgricore} from './component/navigation/navigation';
+import {Auth} from './service/auth';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NavigationAgricore],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('AgriCore');
+  protected authService: Auth = inject(Auth);
 }

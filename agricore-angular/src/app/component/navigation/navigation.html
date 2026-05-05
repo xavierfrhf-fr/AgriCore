@@ -1,6 +1,10 @@
 <nav>
   <div class="nav-container">
-    <button class="burger" (click)="menuOuvert = !menuOuvert">
+    <button class="burger logout" anchor="burger-menu">
+      <img src="assets/image/logout.png">
+    </button>
+
+    <button class="burger" id="burger-menu" (click)="menuOuvert = !menuOuvert">
       <span></span><span></span><span></span>
     </button>
 

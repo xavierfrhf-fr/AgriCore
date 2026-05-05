@@ -6,6 +6,7 @@ import {combineLatest, map, Observable, startWith, Subject, switchMap} from 'rxj
 import {AgriModal} from '../../component/agri-modal/agri-modal';
 import {AgriSelect} from '../../component/form/agri-select/agri-select';
 import {AgriSubmit} from '../../component/form/agri-submit/agri-submit';
+import {NavigationAgricore} from '../../component/navigation/navigation';
 import {PrixRequestDto} from '../../dto/ressource/request/prix-request-dto';
 import {RessourceRequestDto} from '../../dto/ressource/request/ressource-request-dto';
 import {PrixResponseDto} from '../../dto/ressource/response/prix-response-dto';
@@ -19,11 +20,8 @@ import {RessourceService} from './../../service/ressource/ressource-service';
 
 @Component({
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    AgriSelect,
-    AgriSubmit,
-    AgriModal,
+    CommonModule, ReactiveFormsModule, AgriSelect, AgriSubmit, AgriModal,
+    NavigationAgricore
   ],
   templateUrl: './ressource-page.html',
   styleUrl: './ressource-page.css',
