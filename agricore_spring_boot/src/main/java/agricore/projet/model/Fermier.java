@@ -35,8 +35,8 @@ public class Fermier extends Utilisateur {
 	}
 	
 	
-	public Fermier(Integer id, String login, String password) {
-		super(id, login, password);
+	public Fermier(Integer id, String login, String password, String nom, String prenom) {
+		super(id, login, password, nom, prenom);
 	}
 
 	@Override

@@ -44,6 +44,8 @@ public class EmployeService {
 		Employe e = new Employe();
 		e.setLogin(request.getLogin());
 		e.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
+		e.setNom(request.getNom());
+		e.setPrenom(request.getPrenom());
 		return EmployeResponseDTO.convert(daoUtilisateur.save(e));
 	}
 
@@ -53,6 +55,8 @@ public class EmployeService {
 				.orElseThrow(() -> new RuntimeException("Employe introuvable pour l'id " + id));
 		e.setLogin(request.getLogin());
 		e.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
+		e.setNom(request.getNom());
+		e.setPrenom(request.getPrenom());
 		return EmployeResponseDTO.convert(daoUtilisateur.save(e));
 	}
 
