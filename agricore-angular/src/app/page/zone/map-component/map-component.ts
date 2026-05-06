@@ -115,8 +115,8 @@ export class MapComponent {
       shape.getAbsoluteCanvasPosition(this.cellSize).map((c) => `${c.x},${c.y}`),
     );
 
-    ctx.fillStyle = 'rgba(10, 10, 10, 0.35)';
-    ctx.strokeStyle = 'rgb(234,0,255)';
+    ctx.fillStyle = 'rgba(96,96,96,0.38)';
+    ctx.strokeStyle = 'rgba(2,1,1,0.58)';
     ctx.lineWidth = 2;
 
     //console.log("X canvas :", xCanva)

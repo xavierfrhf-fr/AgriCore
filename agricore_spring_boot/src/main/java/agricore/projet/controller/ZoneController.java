@@ -10,6 +10,7 @@ import agricore.projet.services.ZoneService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -28,8 +29,17 @@ public class ZoneController {
     }
 
     @GetMapping
-    public List<ZoneResponseDTO> getAllZone(){
-        return zoneService.getAllZone();
+    public List<ZoneResponseDTO> getAllZone() {
+        Comparator<ZoneResponseDTO> comparator =
+                Comparator
+                        // Les zones "unique" d'abord
+                        .comparing((ZoneResponseDTO zone) -> !zone.getNomZone().isZoneUnique())
+                        // Puis tri alphabétique
+                        .thenComparing(zone -> zone.getNomZone().name());
+        return zoneService.getAllZone()
+                .stream()
+                .sorted(comparator)
+                .toList();
     }
 
     @PostMapping()
