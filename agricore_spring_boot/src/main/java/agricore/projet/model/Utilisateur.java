@@ -28,10 +28,10 @@ public abstract class Utilisateur {
 	@Column(nullable=false)//rajouter length
 	protected String password;
 
-	@Column(nullable=false)
+	@Column(nullable=true)
 	protected String nom;
 
-	@Column(nullable=false)
+	@Column(nullable=true)
 	protected String prenom;
 
 	public Utilisateur() {
