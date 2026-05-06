@@ -3,7 +3,7 @@ import { CellOffset } from '../../../model/zone/position/cell-offset';
 export interface ZoneDataDTO {
   nomZone:string;
   shape:CellOffset[];
-  typeZone:String;
+  typeZone:string;
   zoneUnique:boolean;
   nomRessources:string;
   zoneCreatable:boolean;

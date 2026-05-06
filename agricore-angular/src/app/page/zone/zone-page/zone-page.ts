@@ -4,6 +4,7 @@ import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
 import {
   async,
   asyncScheduler,
+  combineLatest,
   filter,
   map,
   Observable,
@@ -21,10 +22,11 @@ import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { ZoneDataDTO } from '../../../dto/zone/response/zone-data-dto';
 import { ZoneRequest } from '../../../dto/zone/request/zone-request';
 import { PositionDTO } from '../../../dto/zone/response/position-dto';
+import { ZoneInfoPipe } from '../../../pipe/zone-info-pipe';
 
 @Component({
   selector: 'app-zone-page',
-  imports: [MapComponent, AsyncPipe, TitleCasePipe],
+  imports: [MapComponent, AsyncPipe, TitleCasePipe, ZoneInfoPipe],
   templateUrl: './zone-page.html',
   styleUrl: './zone-page.css',
 })
@@ -38,7 +40,9 @@ export class ZonePage implements OnInit {
   protected mapMode: MapMode = 'VIEW';
   protected placementShape?: ZoneShape;
   protected zoneCreationType?: string;
-  protected isCreation: boolean = true;
+  protected isCreation: boolean = false;
+
+  protected zonesWithData$!: Observable<{ zone: ZoneDTO; zoneData: ZoneDataDTO | undefined; }[]>;
 
   constructor(
     protected zoneService: ZoneService,
@@ -57,6 +61,17 @@ export class ZonePage implements OnInit {
     this.zoneDatas$ = this.refreshZoneData$.pipe(
       startWith(0),
       switchMap(() => this.dataService.getZoneData()),
+    );
+
+    this.zonesWithData$ = combineLatest([this.zones$, this.zoneDatas$]).pipe(
+      map(([zones, zoneDatas]) =>
+        zones.map((zone) => ({
+          zone,
+          zoneData: zoneDatas.find(
+            (data) => data.nomZone?.trim().toLowerCase() === zone.nomZone?.trim().toLowerCase(),
+          ),
+        })),
+      ),
     );
   }
 
@@ -109,7 +124,7 @@ export class ZonePage implements OnInit {
   }
 
   protected deleteZoneByPos(event: { x: number; y: number }) {
-    console.log("deleteZoneByPos", event);
+    console.log('deleteZoneByPos', event);
 
     this.zones$
       .pipe(
@@ -119,13 +134,17 @@ export class ZonePage implements OnInit {
         ),
         filter((zone): zone is ZoneDTO => !!zone),
         switchMap((zone) => {
-          console.log("appel service", zone.id);
+          console.log('appel service', zone.id);
           return this.zoneService.deleteZoneById(zone.id);
         }),
       )
       .subscribe(() => {
         this.reloadAll();
       });
+  }
+
+  protected deleteZoneById(id:number):void{
+    this.zoneService.deleteZoneById(id).subscribe(()=>this.reloadAll());
   }
 
   private getZoneAtPos(x: number, y: number): Observable<ZoneDTO | undefined> {
@@ -135,4 +154,6 @@ export class ZonePage implements OnInit {
       ),
     );
   }
+
+  protected readonly ZoneShape = ZoneShape;
 }
