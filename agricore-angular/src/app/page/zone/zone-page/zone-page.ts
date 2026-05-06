@@ -35,10 +35,10 @@ export class ZonePage implements OnInit {
   protected zoneDatas$!: Observable<ZoneDataDTO[]>;
   protected zoneShapes$!: Observable<ZoneShape[]>;
 
-  protected mapMode: MapMode = 'OFF';
+  protected mapMode: MapMode = 'VIEW';
   protected placementShape?: ZoneShape;
   protected zoneCreationType?: string;
-  protected isCreation: boolean = false;
+  protected isCreation: boolean = true;
 
   constructor(
     protected zoneService: ZoneService,
