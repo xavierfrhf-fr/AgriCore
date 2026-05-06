@@ -7,6 +7,8 @@ public class EmployeRequestDTO {
 	
 	private String login;
 	private String password;
+	private String nom;
+	private String prenom;
 	
 	
 	public String getLogin() {
@@ -21,7 +23,19 @@ public class EmployeRequestDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public String getPrenom() {
+		return prenom;
+	}
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
 	public static EmployeRequestDTO convert (Employe employe) {
 		EmployeRequestDTO request = new EmployeRequestDTO();
 		BeanUtils.copyProperties(employe, request);

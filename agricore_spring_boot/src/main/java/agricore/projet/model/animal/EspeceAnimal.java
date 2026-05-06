@@ -6,26 +6,25 @@ import agricore.projet.model.zone.NomZone;
 import agricore.projet.util.CheminAsset;
 
 public enum EspeceAnimal {
-	Cochon(CheminAsset.ANIMAL + "cochon.png",NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cochon"), TypeVehicule.TRACTEUR, 2),
-	Vache(CheminAsset.ANIMAL + "vache.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_VACHE, "Vache", null, "Taureau"), TypeVehicule.TRACTEUR, 2),
-	Mouton(CheminAsset.ANIMAL + "mouton.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_BREBIS, "Brebis", NomRessource.LAINE, "Mouton"), TypeVehicule.TRACTEUR, 2),
-	Poule(CheminAsset.ANIMAL + "poule.png",NomZone.POULAILLER, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_POULE, "Poule", null, "Coq"), TypeVehicule.TRACTEUR, 1),
-	Canne(CheminAsset.ANIMAL + "canne.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_CANNE, "Canne", NomRessource.PLUME, "Canard"), TypeVehicule.TRACTEUR, 2),
-	Oie(CheminAsset.ANIMAL + "oie.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.OEUF_OIE, "Oie", NomRessource.PLUME, "Jars"), TypeVehicule.TRACTEUR, 2),
-	Cheval(CheminAsset.ANIMAL + "cheval.png",NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Cheval"), TypeVehicule.TRACTEUR, 3),
-	Ane(CheminAsset.ANIMAL + "ane.png",NomZone.ETABLE, AnimalProduct.differentForMaleAndFemale(NomRessource.LAIT_ANESSE, "Anesse", null, "Ane"), TypeVehicule.TRACTEUR, 2),
-	Lapin(CheminAsset.ANIMAL + "lapin.png",NomZone.ETABLE, AnimalProduct.sameForMaleAndFemale(null, "Lapin"), TypeVehicule.TRACTEUR, 1);
+	COCHON(NomZone.ETABLE, AnimalDimorphisme.sameForMaleAndFemale(null, "Cochon", CheminAsset.ANIMAL + "cochon.png"), TypeVehicule.TRACTEUR, 2),
+	VACHE(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.LAIT_VACHE, "Vache", CheminAsset.ANIMAL + "vache.png", null, "Taureau", CheminAsset.ANIMAL + "taureau.png"), TypeVehicule.TRACTEUR, 2),
+	MOUTON(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.LAIT_BREBIS, "Brebis", CheminAsset.ANIMAL + "brebis.png", NomRessource.LAINE, "Mouton", CheminAsset.ANIMAL + "mouton.png"), TypeVehicule.TRACTEUR, 2),
+	CHEVRE(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.LAIT_CHEVRE, "Chèvre", CheminAsset.ANIMAL + "chevre.png", null, "Bouc", CheminAsset.ANIMAL + "bouc.png"), TypeVehicule.TRACTEUR, 2),
+	POULE(NomZone.POULAILLER, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.OEUF_POULE, "Poule", CheminAsset.ANIMAL + "poule.png", NomRessource.PLUME, "Coq", CheminAsset.ANIMAL + "coq.png"), TypeVehicule.TRACTEUR, 1),
+	CANNE(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.OEUF_CANNE, "Canne", CheminAsset.ANIMAL + "canne.png", NomRessource.PLUME, "Canard",CheminAsset.ANIMAL + "canard.png"), TypeVehicule.TRACTEUR, 2),
+	OIE(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.OEUF_OIE, "Oie", CheminAsset.ANIMAL + "oie.png", NomRessource.PLUME, "Jars", CheminAsset.ANIMAL + "oie.png"), TypeVehicule.TRACTEUR, 2),
+	CHEVAL(NomZone.ETABLE, AnimalDimorphisme.sameForMaleAndFemale(null, "Cheval",CheminAsset.ANIMAL + "cheval.png"), TypeVehicule.TRACTEUR, 3),
+	ANE(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.LAIT_ANESSE, "Anesse",CheminAsset.ANIMAL + "ane.png", null, "Ane",CheminAsset.ANIMAL + "ane.png"), TypeVehicule.TRACTEUR, 2),
+	LAPIN(NomZone.ETABLE, AnimalDimorphisme.sameForMaleAndFemale(null, "Lapin",CheminAsset.ANIMAL + "lapin.png"), TypeVehicule.TRACTEUR, 1);
 
-	private final String pathSprite;
 	private final NomZone allowedZone;
-	private final AnimalProduct product;
+	private final AnimalDimorphisme dimorphisme;
 	private TypeVehicule vehiculeAchatRequis;
 	private int distanceKmAchat;
 
-	private EspeceAnimal(String pathSprite, NomZone allowedZone, AnimalProduct product,TypeVehicule vehiculeAchatRequis, int distanceKmAchat) {
-		this.pathSprite = pathSprite;
+	private EspeceAnimal(NomZone allowedZone, AnimalDimorphisme dimorphisme, TypeVehicule vehiculeAchatRequis, int distanceKmAchat) {
 		this.allowedZone = allowedZone;
-		this.product = product;
+		this.dimorphisme = dimorphisme;
 		this.vehiculeAchatRequis = vehiculeAchatRequis;
 		this.distanceKmAchat = distanceKmAchat;
 	}
@@ -34,12 +33,8 @@ public enum EspeceAnimal {
 		return allowedZone;
 	}
 
-	public AnimalProduct getProduct() {
-		return product;
-	}
-
-	public String getPathSprite() {
-		return pathSprite;
+	public AnimalDimorphisme getDimorphisme() {
+		return dimorphisme;
 	}
 
 	public TypeVehicule getVehiculeAchatRequis() {
@@ -49,7 +44,6 @@ public enum EspeceAnimal {
 	public int getDistanceKmAchat() {
 		return distanceKmAchat;
 	}
-
 	
 	
 }

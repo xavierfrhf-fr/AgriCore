@@ -3,12 +3,12 @@
   display: grid;
   width: fit-content;
   user-select: none;
-  border-right: 1px solid rgba(60, 163, 50, 0.5);
-  border-bottom: 1px solid rgba(60, 163, 50, 0.5);
+  border-right: 1px solid rgba(84, 140, 80, 0.38);
+  border-bottom: 1px solid rgba(84, 140, 80, 0.38);
 
   background-image:
-    linear-gradient(to right, rgba(60, 163, 50, 0.5) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(60, 163, 50, 0.5) 1px, transparent 1px);
+    linear-gradient(to right, rgba(84, 140, 80, 0.38) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(84, 140, 80, 0.38) 1px, transparent 1px);
 }
 
 .map-container {

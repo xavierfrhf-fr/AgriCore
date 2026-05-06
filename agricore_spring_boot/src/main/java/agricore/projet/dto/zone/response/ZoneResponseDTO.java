@@ -1,6 +1,7 @@
 package agricore.projet.dto.zone.response;
 
 import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.TypeZone;
 import agricore.projet.model.zone.Zone;
 
 //TODO
@@ -9,6 +10,7 @@ public class ZoneResponseDTO {
     private PositionResponseDTO position;
     private NomZone nomZone;
     private Integer fermierId;
+    private TypeZone typeZone;
 
     public ZoneResponseDTO() {}
 
@@ -17,6 +19,7 @@ public class ZoneResponseDTO {
         this.position = position;
         this.nomZone = nomZone;
         this.fermierId = fermierId;
+        this.typeZone = nomZone.getTypeZone();
     }
 
     public Integer getId() {
@@ -31,8 +34,13 @@ public class ZoneResponseDTO {
         return nomZone;
     }
 
+    public TypeZone getTypeZone() {
+        return typeZone;
+    }
+
     public void setNomZone(NomZone nomZone) {
         this.nomZone = nomZone;
+        this.typeZone = nomZone.getTypeZone();
     }
 
     public PositionResponseDTO getPosition() {

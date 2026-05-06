@@ -1,14 +1,26 @@
 package agricore.projet.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 @Entity
 public class Client extends Utilisateur {
-	
+
+	@Column(nullable = true)
+	private String mail;
+
 	public Client() {}
 
-	public Client(Integer id, String login, String password) {
-		super(id, login, password);
+	public Client(Integer id, String login, String password,  String nom, String prenom, String mail) {
+		super(id, login, password, nom, prenom);
+		this.mail = mail;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 	
 

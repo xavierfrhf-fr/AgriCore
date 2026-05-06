@@ -9,6 +9,8 @@ import agricore.projet.model.Fermier;
 public class FermierWithEmployeResponseDTO {
 	private Integer Id;
 	private String login;
+	private String nom;
+	private String prenom;
 	private List<EmployeResponseDTO> employes;
 	
 	
@@ -35,6 +37,22 @@ public class FermierWithEmployeResponseDTO {
 
 	public void setEmployes(List<EmployeResponseDTO> employes) {
 		this.employes = employes;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
 	}
 
 	public static FermierWithEmployeResponseDTO convert (Fermier fermier) {

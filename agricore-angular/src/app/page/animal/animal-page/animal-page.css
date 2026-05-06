@@ -1,0 +1,134 @@
+/* Icônes */
+.animal-inline {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-right: 2px;
+    vertical-align: text-top;
+}
+
+.animal-infos {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    margin-right: 20px;
+    vertical-align: text-top;
+}
+
+.img-icone-sexe {
+    width: 18px;
+    height: 18px;
+}
+
+/* Grille d'animaux  */
+.animal-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-rows: repeat(150px);
+}
+
+.warning-animal {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
+.panneau-animal {
+    position: relative;
+    margin: 5px;
+    text-align: center;
+    width: 300px
+}
+
+.case-animal-infos {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#animal-number {
+    font-weight: bold;
+    margin: 5px;
+}
+
+#animal-dates {
+    margin: 5px;
+}
+
+.case-animal-text {
+    text-align: center;
+}
+
+.case-animal-img-name {
+    text-align: center;
+    padding: 2px 2px;
+    width: 110px;
+    height: 110px;
+    box-shadow:
+        -2px 0 0 var(--bordure),
+        2px 0 0 var(--bordure),
+        0 -2px 0 var(--bordure),
+        0 2px 0 var(--bordure)
+}
+
+/* Formulaire infos détaillées + modif + création */
+.form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+
+    /* fond assombri */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.detailed-infos-up {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.close-window {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+/*Boutons */
+.boutons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 0px;
+}
+
+/*Transformer*/
+button[style*="background-color: orange"] {
+    min-width: 150px;
+}
+
+.bouton-creer.loading {
+    background-color: gold;
+    cursor: not-allowed;
+    opacity: 0.9;
+    min-width: 139px;
+}
+
+.bouton-modifier,
+.bouton-creer {
+    min-width: 112px;
+}
+
+
+.bouton-supprimer,
+.bouton-reinitialiser {
+    min-width: 128px;
+}

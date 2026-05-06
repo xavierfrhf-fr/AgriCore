@@ -14,8 +14,8 @@ public class Employe extends Utilisateur {
 	public Employe() {
 	}
 
-	public Employe(Integer id, String login, String password) {
-		super(id, login, password);
+	public Employe(Integer id, String login, String password, String nom, String prenom) {
+		super(id, login, password, nom, prenom);
 	}
 
 	@Override

@@ -43,6 +43,9 @@ public class ClientService {
 		Client c = new Client();
 		c.setLogin(request.getLogin());
 		c.setPassword(passwordEncoder.encode(request.getPassword())); //on ne stock pas en clair les mdp dans la bbd
+		c.setNom(request.getNom());
+		c.setPrenom(request.getPrenom());
+		c.setMail(request.getEmail());
 		return ClientResponseDTO.convert(daoUtilisateur.save(c));
 	}
 
@@ -52,6 +55,9 @@ public class ClientService {
 				.orElseThrow(() -> new RuntimeException("Client introuvable pour l'id " + id));
 		c.setLogin(request.getLogin());
 		c.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
+		c.setNom(request.getNom());
+		c.setPrenom(request.getPrenom());
+		c.setMail(request.getEmail());
 		return ClientResponseDTO.convert(daoUtilisateur.save(c));
 	}
 

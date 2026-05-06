@@ -60,7 +60,7 @@ public class ZoneServiceTest {
         private static final Position POSITION = new Position(1, 1, Rotation.DEG_0);
         private static final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, Rotation.DEG_0);
         private static final int FERMIER_ID = 5;
-        private static final Fermier FERMIER = new Fermier(FERMIER_ID, "testLogin", "testPassword");
+        private static final Fermier FERMIER = new Fermier(FERMIER_ID, "testLogin", "testPassword", "testNom", "testPrenom");
 
         private static final int ZONE_ID_NOT_EXIST = 100;
         private static final int ZONE1_ID = 0;
@@ -395,7 +395,7 @@ public class ZoneServiceTest {
         public void getZoneWithAnimalsShouldContainAnimals() {
                 LocalDate now = LocalDate.now();
                 // GIVEN
-                Animal animal = new Animal(1, true, now, now, EspeceAnimal.Vache);
+                Animal animal = new Animal(1, true, now, now, EspeceAnimal.VACHE);
                 animal.setZone(ZONE1);
                 Zone zoneWithAnimal = ZONE1;
                 zoneWithAnimal.setAnimals(List.of(animal));
@@ -408,7 +408,7 @@ public class ZoneServiceTest {
                 assertThat(response.getAnimals())
                                 .extracting("id", "male", "dateNaissance", "dateVaccination", "espece", "zoneId",
                                                 "zoneName")
-                                .containsExactly(tuple(1, true, now, now, EspeceAnimal.Vache, ZONE1_ID,
+                                .containsExactly(tuple(1, true, now, now, EspeceAnimal.VACHE, ZONE1_ID,
                                                 ZONE1_NOMZONE.name()));
 
                 assertThat(response)
