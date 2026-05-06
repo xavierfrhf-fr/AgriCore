@@ -2,6 +2,7 @@ package agricore.projet.dto.data;
 
 import agricore.projet.model.ressource.Transformation;
 import agricore.projet.model.zone.NomZone;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

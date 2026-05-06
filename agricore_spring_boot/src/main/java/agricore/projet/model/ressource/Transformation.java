@@ -53,4 +53,10 @@ public enum Transformation {
                 .findFirst()
                 .orElseThrow(()->new IllegalArgumentException("No transformation allows to produce:"+nomRessource));
     }
+
+    public static boolean isProductUnique(NomRessource nomRessource){
+        return Arrays.stream(values())
+                .filter(transformation -> transformation.output.containsKey(nomRessource))
+                .count() == 1;
+    }
 }

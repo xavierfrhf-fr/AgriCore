@@ -36,7 +36,7 @@ public class TransformationService {
             throw new ZoneNotFoundException(transformation.getRequiredZone());
         }
 
-        int nbTransfo = getMaxTransformation(request);
+        int nbTransfo = getMaxTransformation(request.getProduct(), request.isBypassStockMin(), request.getDesiredQuantity(), request.isPartial());
         createMissingOutputResources(transformation);//A ameliorer avec try catch, et message d'erreur dans TransfoResponseDTO
         if (nbTransfo > 0){
             transformation.getInput().entrySet().forEach(entry -> {
@@ -49,11 +49,16 @@ public class TransformationService {
         return TransformationResponseDTO.generate(request,transformation,nbTransfo);
     }
 
-    private int getMaxTransformation(TransformationRequestDTO request) {
-        Transformation transformation = Transformation.getTransformationByOutput(request.getProduct());
+    public int getMaxTransformation(NomRessource product, boolean byPassStockMin, Integer desiredQuantity, boolean partial) {
+        Transformation transformation = Transformation.getTransformationByOutput(product);
 
-        int targetQuantity = request.getDesiredQuantity();
-        int outputPerTransfo = transformation.getOutput().get(request.getProduct());
+        int targetQuantity = Integer.MAX_VALUE;
+
+        if (desiredQuantity != null){
+            targetQuantity = (int) desiredQuantity;
+        }
+
+        int outputPerTransfo = transformation.getOutput().get(product);
         int transfoNeeded = (int) Math.ceil((double) targetQuantity / outputPerTransfo);// arrondi supérieur -> si je veux 3 fromages et qu'un craft en donne 2 -> faire 2 crafts.
 
         // 4. Calculer combien de crafts sont techniquement POSSIBLES avec le stock
@@ -61,13 +66,13 @@ public class TransformationService {
                 .entrySet()
                 .stream()
                 .mapToInt(entry -> {
-                    int stockDispo = getAvailableStock(entry.getKey(), request.isBypassStockMin());
+                    int stockDispo = getAvailableStock(entry.getKey(), byPassStockMin);
                     return stockDispo / entry.getValue();
                 })
                 .min()
                 .orElse(0);
 
-        return applyPartial(maxTransfoPossible, transfoNeeded, request.isPartial());
+        return applyPartial(maxTransfoPossible, transfoNeeded, partial);
     }
 
     private int applyPartial(int maxPossible, int needed, boolean isPartial) {
