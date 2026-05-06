@@ -7,10 +7,10 @@ import java.util.Map;
 
 public enum Transformation {
     FROMAGE(
-            Map.of(NomRessource.LAIT_VACHE,2),
+            Map.of(NomRessource.LAIT_VACHE, 2),
             Map.of(NomRessource.FROMAGE, 1),
             NomZone.FROMAGERIE),
-    JUS_DE_POMME(
+    JUS_POMME(
             Map.of(NomRessource.POMME, 5),
             Map.of(NomRessource.JUS_POMME, 1),
             NomZone.PRESSOIR),
@@ -20,16 +20,15 @@ public enum Transformation {
             NomZone.MOULIN),
     PATE(
             Map.of(NomRessource.LAIT_VACHE, 1,
-                   NomRessource.FARINE_BLE, 2),
-            Map.of(NomRessource.PATE,5),
+                    NomRessource.FARINE_BLE, 2),
+            Map.of(NomRessource.PATE, 5),
             NomZone.CUISINE);
-
 
     private final Map<NomRessource, Integer> input;
     private final Map<NomRessource, Integer> output;
     private final NomZone requiredZone;
 
-    Transformation(Map<NomRessource, Integer> input, Map<NomRessource, Integer> output, NomZone requiredZone){
+    Transformation(Map<NomRessource, Integer> input, Map<NomRessource, Integer> output, NomZone requiredZone) {
         this.input = input;
         this.output = output;
         this.requiredZone = requiredZone;
@@ -47,10 +46,16 @@ public enum Transformation {
         return requiredZone;
     }
 
-    public static Transformation getTransformationByOutput(NomRessource nomRessource){
+    public static Transformation getTransformationByOutput(NomRessource nomRessource) {
         return Arrays.stream(values())
                 .filter(transformation -> transformation.output.containsKey(nomRessource))
                 .findFirst()
-                .orElseThrow(()->new IllegalArgumentException("No transformation allows to produce:"+nomRessource));
+                .orElseThrow(() -> new IllegalArgumentException("No transformation allows to produce:" + nomRessource));
+    }
+
+    public static boolean isProductUnique(NomRessource nomRessource) {
+        return Arrays.stream(values())
+                .filter(transformation -> transformation.output.containsKey(nomRessource))
+                .count() == 1;
     }
 }

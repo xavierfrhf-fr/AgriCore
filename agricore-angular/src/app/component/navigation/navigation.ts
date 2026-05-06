@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
@@ -8,5 +8,10 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   styleUrl: './navigation.css',
 })
 export class NavigationAgricore {
-  menuOuvert = false;
+  @Input() menuOuvert:boolean = true;
+  @Output() toggleMenuOuvert: EventEmitter<void> = new EventEmitter<void>;
+
+  protected toggleMenu(){
+    this.toggleMenuOuvert.emit();
+  }
 }
