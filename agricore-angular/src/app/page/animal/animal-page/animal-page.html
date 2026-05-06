@@ -1,7 +1,9 @@
 <h1>Liste des animaux</h1>
 
 <div class="animal-list">
-    <div *ngFor="let a of animals$ | async" class="panneau panneau-animal" style="width: 300px">
+    <div *ngFor="let a of animals$ | async" class="panneau panneau-animal">
+        @if (a.delaisVaccination
+        < 30) {<img class="img-icone warning-animal" src="assets/image/warning-sign.png" (click)="detailedInfos(a)" />}
         <div class="case-animal-infos" title="Plus d'infos" (click)="detailedInfos(a)">
             <div class="case-animal-img-name">
                 <img class="animal-inline" [src]="a.pathSprite" /> <br /> {{a.nomAffichage}} -
@@ -44,27 +46,45 @@
         <div class="detailed-infos-up">
             <img class="animal-infos" [src]="animal.pathSprite" />
             <div class="detailed-infos-up-text">
-                Sexe : @if (animal.male) {
-                Male <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /> } @else {
-                Femelle <img class="img-icone img-icone-sexe" src="assets/image/animal/femelle.png" />
-                } <br />
-                Date de naissance : {{animal.dateNaissance | date:'dd/MM/yyyy'}} <br />
-                Dernière vaccination : {{animal.dateVaccination | date:'dd/MM/yyyy'}} <br />
-                Prochaine vaccination dans :
-                    @if (animal.delaisVaccination < 7) { <span style="color: red;">{{animal.delaisVaccination}} jours
-                    </span>}
-                @else if (animal.delaisVaccination < 30) { <span style="color: orange;">{{animal.delaisVaccination}}
-                    jours
-                </span>}
-            @else {
-            {{animal.delaisVaccination}} jours
-            }
+                <p>Sexe : @if (animal.male) {
+                    Male <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /> } @else {
+                    Femelle <img class="img-icone img-icone-sexe" src="assets/image/animal/femelle.png" />
+                    }</p>
+                <p>Date de naissance : {{animal.dateNaissance | date:'dd/MM/yyyy'}}</p>
+                <p>Age : ??</p>
+            </div>
+        </div>
+
+        <div class="detailed-infos-down">
+            <p>Dernière vaccination le {{animal.dateVaccination | date:'dd/MM/yyyy'}}</p>
+            <p>@if (animal.delaisVaccination < 0) {<span style="color: red;">Vaccination en retard de
+                    {{-animal.delaisVaccination}} jours</span>}
+                    @else if (animal.delaisVaccination < 7) {Prochaine vaccination dans <span style="color: red;">
+                        {{animal.delaisVaccination}} jours
+                        </span>}
+                        @else if (animal.delaisVaccination < 30) {Prochaine vaccination dans <span
+                            style="color: orange;">{{animal.delaisVaccination}}
+                            jours
+                            </span>}
+                            @else {
+                            Prochaine vaccination dans {{animal.delaisVaccination}} jours
+                            }
+            </p>
+            <div style="display: flex; flex-wrap: nowrap; justify-content: space-around; align-items: center;">
+                <div>
+                    <p>Zone :</p>
+                    <div style="text-align: center;"><img [src]="animal.zonePathSprite" /><br />
+                        {{animal.zone}}</div>
+                </div>
+                @if (animal.produit!="") {
+                <div>
+                    <p>Produit :</p><img class="img-icone" [src]="animal.produitPathSprite" /> {{animal.produit}}
+                </div>
+                }
+            </div>
+        </div>
+
     </div>
-</div>
-
-<div class="detailed-infos-down"></div>
-
-</div>
 </div>
 }
 

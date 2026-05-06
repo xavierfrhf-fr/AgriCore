@@ -35,6 +35,6 @@ export class AnimalPage {
 
   closeDetailedInfos() {
     this.afficheDetailedInfos = false;
-    this.animal = {id: 0, male: true, dateNaissance: new Date(), dateVaccination: new Date(), espece: "", zone: "", pathSprite: "", nomAffichage: "", delaisVaccination: 0};
+    this.animal = {id: 0, espece: "", male: true, dateNaissance: new Date(), dateVaccination: new Date(), delaisVaccination: 0,  pathSprite: "", nomAffichage: "", zone: "", zonePathSprite: "", produit: "", produitPathSprite: ""};
   }
 }

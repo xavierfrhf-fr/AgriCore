@@ -16,8 +16,8 @@
 }
 
 .img-icone-sexe {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
 }
 
 /* Grille d'animaux  */
@@ -27,9 +27,17 @@
     grid-template-rows: repeat(150px);
 }
 
+.warning-animal {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
 .panneau-animal {
+    position: relative;
     margin: 5px;
     text-align: center;
+    width: 300px
 }
 
 .case-animal-infos {
@@ -45,7 +53,7 @@
 }
 
 #animal-dates {
-    margin:5px;
+    margin: 5px;
 }
 
 .case-animal-text {
@@ -55,8 +63,8 @@
 .case-animal-img-name {
     text-align: center;
     padding: 2px 2px;
-    width:110px;
-    height:110px;
+    width: 110px;
+    height: 110px;
     box-shadow:
         -2px 0 0 var(--bordure),
         2px 0 0 var(--bordure),
@@ -66,21 +74,21 @@
 
 /* Formulaire infos détaillées + modif + création */
 .form {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  
 
-  /* fond assombri */
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.35); 
+
+    /* fond assombri */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .detailed-infos-up {
@@ -90,7 +98,7 @@
 
 .close-window {
     position: absolute;
-    right:5px;
+    right: 5px;
     top: 5px;
 }
 
