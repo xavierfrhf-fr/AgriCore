@@ -1,3 +1,9 @@
+.tables-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 10px;
+}
+
 .tabs {
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -18,7 +24,7 @@
 }
 
 
-table {
+.creation-table {
   width: 50%;
   border-collapse: collapse;
   margin-inline: 600px;

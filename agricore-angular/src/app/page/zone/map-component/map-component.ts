@@ -221,10 +221,13 @@ export class MapComponent {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (const shape of shapes) {
-      this.drawShape(ctx, shape);
-      this.placeSprite(shape, ctx);
-    }
+
+    [...shapes]
+      .sort((a, b) => a.anchorY - b.anchorY)
+      .forEach(shape => {
+        this.drawShape(ctx, shape);
+        this.placeSprite(shape, ctx);
+      });
   }
 
   getSpriteOffsetY(shape: ZoneShape): number {

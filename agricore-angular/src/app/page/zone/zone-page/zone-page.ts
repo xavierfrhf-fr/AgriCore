@@ -23,6 +23,7 @@ import { ZoneDataDTO } from '../../../dto/zone/response/zone-data-dto';
 import { ZoneRequest } from '../../../dto/zone/request/zone-request';
 import { PositionDTO } from '../../../dto/zone/response/position-dto';
 import { ZoneInfoPipe } from '../../../pipe/zone-info-pipe';
+import { ZoneGroups } from './ZoneGroups';
 
 @Component({
   selector: 'app-zone-page',
@@ -33,6 +34,7 @@ import { ZoneInfoPipe } from '../../../pipe/zone-info-pipe';
 export class ZonePage implements OnInit {
   private refreshZone$: Subject<void> = new Subject<void>();
   protected zones$!: Observable<ZoneDTO[]>;
+  protected zonesComplete$!: Observable<ZoneDTO[]>;
   private refreshZoneData$: Subject<void> = new Subject<void>();
   protected zoneDatas$!: Observable<ZoneDataDTO[]>;
   protected zoneShapes$!: Observable<ZoneShape[]>;
@@ -42,7 +44,8 @@ export class ZonePage implements OnInit {
   protected zoneCreationType?: string;
   protected isCreation: boolean = false;
 
-  protected zonesWithData$!: Observable<{ zone: ZoneDTO; zoneData: ZoneDataDTO | undefined; }[]>;
+  protected zonesWithData$!: Observable<{ zone: ZoneDTO; zoneData: ZoneDataDTO | undefined }[]>;
+  protected zoneGroups$!: Observable<ZoneGroups>;
 
   constructor(
     protected zoneService: ZoneService,
@@ -73,6 +76,25 @@ export class ZonePage implements OnInit {
         })),
       ),
     );
+
+    this.zoneGroups$ = combineLatest([this.zones$, this.zoneDatas$]).pipe(
+      map(([zones, zoneDatas]) => {
+        const zonesWithData = zones.map((zone) => ({
+          zone,
+          zoneData: zoneDatas.find(
+            (data) => data.nomZone?.trim().toLowerCase() === zone.nomZone?.trim().toLowerCase(),
+          ),
+        }));
+
+        return {
+          plantZone: zonesWithData.filter((item) => item.zone.typeZone === 'PLANTS'),
+          animalZone: zonesWithData.filter((item) => item.zone.typeZone === 'ANIMAL'),
+          utilityZone: zonesWithData.filter((item) => item.zone.typeZone === 'UTILITY'),
+          storageZone: zonesWithData.filter((item) => item.zone.typeZone === 'STORAGE'),
+        };
+      }),
+    );
+
   }
 
   protected reloadZone(): void {
@@ -143,8 +165,8 @@ export class ZonePage implements OnInit {
       });
   }
 
-  protected deleteZoneById(id:number):void{
-    this.zoneService.deleteZoneById(id).subscribe(()=>this.reloadAll());
+  protected deleteZoneById(id: number): void {
+    this.zoneService.deleteZoneById(id).subscribe(() => this.reloadAll());
   }
 
   private getZoneAtPos(x: number, y: number): Observable<ZoneDTO | undefined> {
