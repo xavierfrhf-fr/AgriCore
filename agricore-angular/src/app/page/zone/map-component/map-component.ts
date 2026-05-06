@@ -1,8 +1,16 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ZoneShape } from '../../../model/zone/zone-shape';
 import { CellAbsolutePosition } from '../../../model/zone/position/cell-absolute-position';
 import { CellOffset } from '../../../model/zone/position/cell-offset';
@@ -12,13 +20,13 @@ import { PositionDTO } from '../../../dto/zone/response/position-dto';
 @Component({
   selector: 'app-map-component',
   standalone: true,
-  imports: [AsyncPipe, NgOptimizedImage],
+  imports: [AsyncPipe],
   templateUrl: './map-component.html',
   styleUrl: './map-component.css',
 })
 export class MapComponent {
   protected mapSize$!: Observable<MapSize>;
-  protected cellSize: number = 64;
+  protected cellSize: number = 32;
   protected fakeZoneShapes: ZoneShape[] = [
     new ZoneShape(
       [
@@ -49,7 +57,8 @@ export class MapComponent {
   @Input() mapMode: MapMode = 'VIEW';
   @Input() placementShape?: ZoneShape;
   @Output() zoneCreation = new EventEmitter<{ x: number; y: number }>();
-
+  @Output() cancelCreation = new EventEmitter<void>();
+  @Output() deleteZoneByPos = new EventEmitter<{ x: number; y: number }>();
   private imageCache = new Map<string, HTMLImageElement>();
 
   protected ghostX = 0;
@@ -179,9 +188,9 @@ export class MapComponent {
     let spritePath: string = shape.spritePath;
 
     const img = new Image();
-    console.log(spritePath);
-    console.log('target width :', targetWidth);
-    console.log('Anchor :', cell);
+    //console.log(spritePath);
+    //console.log('target width :', targetWidth);
+    //console.log('Anchor :', cell);
     img.src = spritePath;
 
     img.onload = () => {
@@ -252,7 +261,30 @@ export class MapComponent {
   mouseClick(event: MouseEvent) {
     if (this.mapMode === 'CREATE' && this.placementShape) {
       const { x, y } = this.getGridPosition(event);
-      this.zoneCreation.emit({x,y})
+      this.zoneCreation.emit({ x, y });
+    }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscape(event: Event) {
+    if (!(event instanceof KeyboardEvent)) return;
+    this.closeContextMenu();
+
+    if (this.mapMode === 'CREATE') {
+      this.cancelCreation.emit();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    this.closeContextMenu();
+    if (!this.overlayCanvas) {
+      return;
+    }
+    const clickedInside = this.overlayCanvas.nativeElement.contains(event.target as Node);
+
+    if (!clickedInside && this.mapMode === 'CREATE') {
+      this.cancelCreation.emit();
     }
   }
 
@@ -270,5 +302,57 @@ export class MapComponent {
     const y = Math.floor(mouseY / this.cellSize);
 
     return { x, y };
+  }
+
+  getZoneShapeAt(x: number, y: number): ZoneShape | null {
+    if (!this.shapes) {
+      return null;
+    }
+    for (const zoneShape of this.shapes) {
+      for (const cell of zoneShape.getCellGridPosition()) {
+        if (cell.x === x && cell.y === y) {
+          return zoneShape;
+        }
+      }
+    }
+    return null;
+  }
+
+  contextMenu = {
+    visible: false,
+    x: 0,
+    y: 0,
+    building: null as any,
+  };
+
+  openContextMenu(x: number, y: number, building: any) {
+    this.contextMenu = {
+      visible: true,
+      x,
+      y,
+      building,
+    };
+  }
+
+  closeContextMenu() {
+    this.contextMenu.visible = false;
+  }
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    event.preventDefault();
+    this.closeContextMenu();
+
+    const { x, y } = this.getGridPosition(event);
+
+    const zoneShape = this.getZoneShapeAt(x, y);
+    if (!zoneShape) return;
+
+    this.openContextMenu(event.x, event.y, zoneShape);
+  }
+
+  deleteBuilding(shape: ZoneShape) {
+    console.log('DELETE !!!!');
+    this.deleteZoneByPos.emit({ x: shape.anchorX, y: shape.anchorY });
   }
 }

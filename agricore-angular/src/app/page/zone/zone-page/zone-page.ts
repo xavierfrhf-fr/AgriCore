@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { MapComponent } from '../map-component/map-component';
 import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
-import { map, Observable, startWith, Subject, switchMap } from 'rxjs';
+import {
+  async,
+  asyncScheduler,
+  filter,
+  map,
+  Observable,
+  startWith,
+  Subject,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { ZoneService } from '../../../service/zone/zone-service';
 import { MapSize } from '../../../model/zone/position/map-size';
 import { DataService } from '../../../service/data-service';
@@ -24,10 +35,10 @@ export class ZonePage implements OnInit {
   protected zoneDatas$!: Observable<ZoneDataDTO[]>;
   protected zoneShapes$!: Observable<ZoneShape[]>;
 
-  protected mapMode: MapMode = 'OFF';
+  protected mapMode: MapMode = 'VIEW';
   protected placementShape?: ZoneShape;
   protected zoneCreationType?: string;
-  protected isCreation: boolean = false;
+  protected isCreation: boolean = true;
 
   constructor(
     protected zoneService: ZoneService,
@@ -84,10 +95,44 @@ export class ZonePage implements OnInit {
     zoneRequest.position = positionRequest;
     zoneRequest.nomZone = this.zoneCreationType;
     zoneRequest.fermierId = 3;
-    this.zoneService.insert(zoneRequest).subscribe(()=>this.reloadAll())
+    this.zoneService.insert(zoneRequest).subscribe(() => this.reloadAll());
 
     delete this.zoneCreationType;
     delete this.placementShape;
+    this.mapMode = 'VIEW';
+  }
 
+  protected stopZoneCreation() {
+    delete this.zoneCreationType;
+    delete this.placementShape;
+    this.mapMode = 'VIEW';
+  }
+
+  protected deleteZoneByPos(event: { x: number; y: number }) {
+    console.log("deleteZoneByPos", event);
+
+    this.zones$
+      .pipe(
+        take(1),
+        map((zones) =>
+          zones.find((z) => z.position.anchorX === event.x && z.position.anchorY === event.y),
+        ),
+        filter((zone): zone is ZoneDTO => !!zone),
+        switchMap((zone) => {
+          console.log("appel service", zone.id);
+          return this.zoneService.deleteZoneById(zone.id);
+        }),
+      )
+      .subscribe(() => {
+        this.reloadAll();
+      });
+  }
+
+  private getZoneAtPos(x: number, y: number): Observable<ZoneDTO | undefined> {
+    return this.zones$.pipe(
+      map((zones) =>
+        zones.find((zone) => zone.position.anchorX === x && zone.position.anchorY === y),
+      ),
+    );
   }
 }

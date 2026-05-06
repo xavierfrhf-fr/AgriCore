@@ -320,7 +320,7 @@ public class ZoneControllerTest {
                 POSITION_RESP_DTO,
                 NOM_ZONE,
                 FERMIER_ID,
-                List.of(new VehiculeResponseDTO(1, TypeVehicule.UTILITAIRE, date, 0, ZONE_ID)));
+                List.of(new VehiculeResponseDTO(1, TypeVehicule.UTILITAIRE, date, 0,0, ZONE_ID,NOM_ZONE.name())));
         Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID)).thenReturn(zoneWithVehiculesResponseDTO);
         // WHEN
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(URL + "/vehicule/" + ZONE_ID));
