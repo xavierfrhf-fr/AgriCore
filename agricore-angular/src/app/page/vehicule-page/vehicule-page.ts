@@ -117,7 +117,7 @@ export class VehiculePage implements OnInit {
     if (this.vehiculeForm.invalid) return;
 
     const dto: VehiculeRequestDTO = this.vehiculeForm.getRawValue(); //récupère les valeurs du formulaire 
-    dto.typeVehicule = this.typeVehiculeCtrl.value; //mapping de la valeur typevehicule du dto avec la valeur du select du form 
+    dto.typeVehicule = this.typeVehiculeCtrl.value.name; //mapping de la valeur typevehicule du dto avec la valeur du select du form 
     this.vehiculeService.add(dto).subscribe(() => {  //appel l'api post 
       this.afficheVehiculeForm = false;
       this.vehiculeForm.reset();
