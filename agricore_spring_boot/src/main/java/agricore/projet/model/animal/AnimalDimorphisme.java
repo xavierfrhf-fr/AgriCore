@@ -2,7 +2,7 @@ package agricore.projet.model.animal;
 
 import agricore.projet.model.ressource.NomRessource;
 
-public class AnimalProduct {
+public class AnimalDimorphisme {
     private NomRessource maleRessource;
     private NomRessource femaleRessource;
     
@@ -12,8 +12,8 @@ public class AnimalProduct {
     private String maleNomAffichage;
     private String femaleNomAffichage;
 
-    public static AnimalProduct sameForMaleAndFemale(NomRessource ressource, String nomAffichage, String pathSprite) {
-        AnimalProduct product = new AnimalProduct();
+    public static AnimalDimorphisme sameForMaleAndFemale(NomRessource ressource, String nomAffichage, String pathSprite) {
+        AnimalDimorphisme product = new AnimalDimorphisme();
         product.maleRessource = ressource;
         product.femaleRessource = ressource;
         product.maleNomAffichage = nomAffichage;
@@ -23,8 +23,8 @@ public class AnimalProduct {
         return product;
     }
 
-    public static AnimalProduct differentForMaleAndFemale(NomRessource femaleRessource, String femaleNomAffichage, String femalePathSprite, NomRessource maleRessource, String maleNomAffichage,  String malePathSprite) {
-        AnimalProduct product = new AnimalProduct();
+    public static AnimalDimorphisme differentForMaleAndFemale(NomRessource femaleRessource, String femaleNomAffichage, String femalePathSprite, NomRessource maleRessource, String maleNomAffichage,  String malePathSprite) {
+        AnimalDimorphisme product = new AnimalDimorphisme();
         product.femaleRessource = femaleRessource;
         product.femaleNomAffichage = femaleNomAffichage;
         product.maleRessource = maleRessource;

@@ -111,8 +111,8 @@ public class AnimalResponse {
         BeanUtils.copyProperties(animal, response);
         response.setZoneId(animal.getZone().getId());
         response.setZoneName(animal.getZone().getNomZone().toString());
-        response.setPathSprite(animal.getEspece().getProduct().getPathSprite(animal.isMale()));
-        response.setNomAffichage(animal.getEspece().getProduct().getNomAffichage(animal.isMale()));
+        response.setPathSprite(animal.getEspece().getDimorphisme().getPathSprite(animal.isMale()));
+        response.setNomAffichage(animal.getEspece().getDimorphisme().getNomAffichage(animal.isMale()));
         return response;
     }
 }
