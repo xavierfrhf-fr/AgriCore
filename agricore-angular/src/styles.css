@@ -1,15 +1,15 @@
 /* Polices */
 @font-face {
-  font-family: "Stardew Valley";
-  src: url("/assets/font/StardewValley.ttf") format("truetype");
+  font-family: 'Stardew Valley';
+  src: url('/assets/font/StardewValley.ttf') format('truetype');
 }
 @font-face {
-  font-family: "Stardew Valley Regular";
-  src: url("/assets/font/StardewValley-Regular.ttf") format("truetype");
+  font-family: 'Stardew Valley Regular';
+  src: url('/assets/font/StardewValley-Regular.ttf') format('truetype');
 }
 @font-face {
-  font-family: "Stardew Valley AllCaps";
-  src: url("/assets/font/StardewValley-AllCaps.ttf") format("truetype");
+  font-family: 'Stardew Valley AllCaps';
+  src: url('/assets/font/StardewValley-AllCaps.ttf') format('truetype');
 }
 
 /* Variables */
@@ -25,6 +25,13 @@
   --vert: #27ae60;
   --bleu: #2980b9;
   --rouge: #c0392b;
+  --brown: #8a4a08;
+  --brown-soft: #c28a52;
+  --cream: #fff1b8;
+  --cream-dark: #e7c77d;
+  --strawberry: #b7352d;
+  --strawberry-dark: #8f261f;
+  --mint-bg: #dff2f2;
 }
 
 * {
@@ -34,14 +41,10 @@
 html,
 body {
   margin: 0;
-  font-family: "Stardew Valley";
+  font-family: 'Stardew Valley';
   font-size: large;
   background: var(--fond);
   color: var(--texte);
-}
-
-body {
-  padding: 24px;
 }
 
 /* Panneaux et bordures */
@@ -95,7 +98,7 @@ label {
   height: 22px;
   object-fit: contain;
   margin-right: 2px;
-  vertical-align:text-top;
+  vertical-align: text-top;
 }
 
 /* Champs du tableau */
@@ -103,11 +106,10 @@ tr.ligne-en-edition td:not(:has(button)) {
   background: gold !important;
   font-weight: bold;
 }
- 
+
 td.cellule-en-edition {
   background: gold !important;
   font-weight: bold;
-
 }
 
 /* Champs de formulaire */
@@ -154,21 +156,30 @@ input[readonly] {
 /* Animations */
 .points-chargement {
   display: inline-block;
-  width: 20px; 
+  width: 20px;
   text-align: left;
 }
 
 .points-chargement::after {
-  content: "";
+  content: '';
   display: inline-block;
   animation: dots 1.5s steps(4, end) infinite;
 }
 
 @keyframes dots {
-  0%   { content: ""; }
-  25%  { content: "."; }
-  50%  { content: ".."; }
-  75%  { content: "..."; }
-  100% { content: ""; }
-
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
+  100% {
+    content: '';
+  }
 }
