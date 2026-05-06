@@ -51,7 +51,7 @@ export class ZoneShape {
   }
 
   getBottomLeftCell(): CellGridPosition {
-    let xPos: number = 20;
+    let xPos: number = 20000000;
     let yPos: number = 0;
     let cell!: CellGridPosition;
 
