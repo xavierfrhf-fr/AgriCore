@@ -1,4 +1,17 @@
-<p>zone-page works!</p>
+
+@if (mapMode !== 'OFF'){
+  <button (click)="mapMode='OFF'">Masquer Carte</button>
+  <app-map-component [shapes]="zoneShapes$ | async"
+                     [mapMode]="mapMode"
+                     [placementShape]="placementShape"
+                     (zoneCreation)="createZone($event)"
+                     (cancelCreation)="stopZoneCreation()"
+                     (deleteZoneByPos)="deleteZoneByPos($event)"
+  ></app-map-component>
+} @else {
+  <button (click)="mapMode='VIEW'">Afficher Carte</button>
+}
+
 <div class="tabs">
   <button
     [class.active]="isCreation"
@@ -15,13 +28,12 @@
 
 @if (isCreation) {
   <div>
-    aa
     <table>
 
       <tbody>
-        @for (zoneData of zoneDatas$ |async; track zoneData) {
+        @for (zoneData of zoneDatas$ |async; track zoneData.nomZone) {
           <tr>
-            <td><img [src]="zoneData.pathSprite" height="150px"></td>
+            <td><img [src]="zoneData.pathSprite" height="90px"></td>
             <td><p>{{zoneData.nomAffichage | titlecase}}</p><p>{{zoneData.description}}</p></td>
             <td><button (click)="startZoneCreation(zoneData)">CREER ZONE</button></td>
           </tr>
@@ -36,14 +48,5 @@
   </div>
 }
 
-@if (mapMode !== 'OFF'){
-  <button (click)="mapMode='OFF'">Masquer Carte</button>
-  <app-map-component [shapes]="zoneShapes$ | async"
-  [mapMode]="mapMode"
-  [placementShape]="placementShape"
-  (zoneCreation)="createZone($event)"
-  ></app-map-component>
-} @else {
-  <button (click)="mapMode='VIEW'">Afficher Carte</button>
-}
+
 
