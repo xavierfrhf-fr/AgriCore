@@ -7,17 +7,20 @@ import jakarta.validation.constraints.NotNull;
 
 public class VehiculeRequestDTO {
 
-    @NotNull
+    
     private TypeVehicule typeVehicule;
     @NotNull
     private LocalDate dateControleTech;
     @NotNull
-    private Integer Zoneid;
+    private Integer zoneId;
+    @NotNull
+    private Integer carburantActuel;
 
-    public VehiculeRequestDTO(TypeVehicule typeVehicule, LocalDate dateControleTech, Integer zoneid) {
+    public VehiculeRequestDTO(TypeVehicule typeVehicule, LocalDate dateControleTech, Integer zoneId, Integer carburantActuel) {
         this.typeVehicule = typeVehicule;
         this.dateControleTech = dateControleTech;
-        Zoneid = zoneid;
+        this.zoneId = zoneId;
+        this.carburantActuel = carburantActuel;
     }
 
     public VehiculeRequestDTO() {}
@@ -38,12 +41,20 @@ public class VehiculeRequestDTO {
         this.dateControleTech = dateControleTech;
     }
 
-    public Integer getZoneid() {
-        return Zoneid;
+    public Integer getZoneId() {
+        return zoneId;
     }
 
-    public void setZoneid(Integer zoneid) {
-        Zoneid = zoneid;
+    public void setZoneId(Integer zoneId) {
+        this.zoneId = zoneId;
+    }
+
+    public Integer getCarburantActuel() {
+        return carburantActuel;
+    }
+
+    public void setCarburantActuel(Integer carburantActuel) {
+        this.carburantActuel = carburantActuel;
     }
    
 

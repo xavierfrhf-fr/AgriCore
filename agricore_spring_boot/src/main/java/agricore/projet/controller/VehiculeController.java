@@ -1,5 +1,7 @@
 package agricore.projet.controller;
 
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
+import agricore.projet.dto.vehicule.response.TypeVehiculeDTO;
+import agricore.projet.model.TypeVehicule;
 import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.services.VehiculeService;
 import jakarta.validation.Valid;
@@ -30,7 +34,12 @@ public class VehiculeController {
         this.vehiculeService = vehiculeService;
     }
 
-
+    @GetMapping("/types")
+    public List<TypeVehiculeDTO> getTypesVehicule() {
+        return Arrays.stream(TypeVehicule.values())
+                .map(tv -> new TypeVehiculeDTO(tv.name(), tv.getCapaciteReservoir(), tv.getConsoParKm()))
+                .toList();
+    }
 
     @GetMapping
     public List<VehiculeResponseDTO> getAll() {
