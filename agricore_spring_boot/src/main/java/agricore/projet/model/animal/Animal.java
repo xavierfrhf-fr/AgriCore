@@ -35,6 +35,7 @@ public class Animal {
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
+
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
@@ -121,6 +122,18 @@ public class Animal {
 		return delais;
 	}
 
+	
+	
+
+	// Inutile car fait en bdd ?
+	// public boolean deplacer(Zone new_zone) {
+	// Zone previous_zone = this.getZone();
+	// if (new_zone.addAnimal(this)) {
+	// previous_zone.getAnimals().remove(this);
+	// return true;
+	// }
+	// return false;
+	// }
 	public boolean isMale() {
 		return male;
 	}

@@ -23,6 +23,7 @@ public class Plante {
 	@OneToOne
     @JoinColumn(name="zone_id")
     private Zone zone;
+	
 
 	//Gestion de l'humidité des plantes
 	//L'idée est d'avoir une valeur (attribut "humidite") qui représente le % d'eau de la plante (entre 0-100)
@@ -150,4 +151,10 @@ public class Plante {
 	public int tempsAvantRecolteEnJour(){
 		return (int) LocalDate.now().until(datePlantation.plusMonths(espece.getTempsPousseMois()), ChronoUnit.DAYS);
 	}
+
+	
+
+	
+
+	
 }

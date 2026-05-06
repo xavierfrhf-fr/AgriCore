@@ -2,7 +2,9 @@
 @if (mapSize$ | async; as mapSize) {
   <div class="map-container"
        [style.width.px]="mapSize.x * cellSize"
-       [style.height.px]="mapSize.y * cellSize">
+       [style.height.px]="mapSize.y * cellSize"
+       (mousemove)="followMouse($event)"
+       (click)="mouseClick($event)">
 
     <div class="map-grid"
          [style.width.px]="mapSize.x * cellSize"
@@ -17,6 +19,16 @@
             [width]="mapSize.x * cellSize"
             [height]="mapSize.y * cellSize">
     </canvas>
+
+    @if (mapMode === 'CREATE' && placementShape) {
+      <img
+        class="placement-ghost"
+        [src]="placementShape.spritePath"
+        [style.left.px]="ghostX"
+        [style.top.px]="ghostY"
+        [style.width.px]="ghostWidth"
+      />
+    }
 
 
 

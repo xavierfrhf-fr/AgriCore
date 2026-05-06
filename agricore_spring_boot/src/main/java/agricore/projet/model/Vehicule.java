@@ -28,6 +28,8 @@ public class Vehicule {
 	private TypeVehicule typeVehicule;
 	
 	private LocalDate dateControleTech;
+
+	private int carburantActuel;
 	
 	@ManyToOne
 	@JoinColumn(name="zone_id")
@@ -38,17 +40,19 @@ public class Vehicule {
 	public Vehicule() {
 	}
 	
-	public Vehicule(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone) {
+	public Vehicule(Integer id, TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone, int carburantActuel) {
 		this.id = id;
 		this.typeVehicule = typeVehicule;
 		this.dateControleTech = dateControleTech;
 		this.zone = zone;
+		this.carburantActuel = carburantActuel;
 	}
 	
-	public Vehicule( TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone) {
+	public Vehicule( TypeVehicule typeVehicule, LocalDate dateControleTech, Zone zone, int carburantActuel) {
 		this.typeVehicule = typeVehicule;
 		this.dateControleTech = dateControleTech;
 		this.zone = zone;
+		this.carburantActuel = carburantActuel;
 	}
 	
 	public boolean rappelControle() {
@@ -65,7 +69,11 @@ public class Vehicule {
 		
 		return delais;
 	}
+
 	
+
+
+	//Getters et Setters
 	public Integer getId() {
 		return id;
 	}
@@ -97,6 +105,18 @@ public class Vehicule {
 	public void setZone(Zone zone) {
 		this.zone = zone;
 	}
+
+	
+
+	public int getCarburantActuel() {
+		return carburantActuel;
+	}
+
+	public void setCarburantActuel(int carburantActuel) {
+		this.carburantActuel = carburantActuel;
+	}
+
+	
 
 	@Override
 	public String toString() {

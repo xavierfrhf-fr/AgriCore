@@ -1,34 +1,109 @@
 package agricore.projet.services;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 //permet de decider comment on cree une plante
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import agricore.projet.dto.plante.request.PlanteRequestDTO;
 import agricore.projet.dto.plante.response.PlanteResponseDTO;
+import agricore.projet.exception.PlanteNonAutoriseDansZoneException;
+import agricore.projet.exception.PlanteNotFoundException;
+import agricore.projet.exception.ZoneNotFoundException;
+import agricore.projet.model.EspecePlante;
+import agricore.projet.model.Plante;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOPlante;
 import agricore.projet.repository.IDAOZone;
 
 @Service
 public class PlanteService {
-	@Autowired 
-	IDAOPlante daoPlante;
-	IDAOZone daoZone;
-	
-	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone){
+
+	private final IDAOPlante daoPlante;
+	private final IDAOZone daoZone;
+
+	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone) {
 		this.daoPlante = daoPlante;
 		this.daoZone = daoZone;
-		}
-	//le controller a besoin de la methode findAll
-	//on veut parcourir la liste
-	public List<PlanteResponseDTO> getAllPlante()
-	{
-		return daoPlante.findAll()//recupere ttes les plantes dans la base
-				.stream()//permet de pouvoir par la suite tranformer les donnees
-				.map(PlanteResponseDTO::convert) //transforme chaque plante en PlanteResponse - meme chose que .map(plante ->PlanteResponseDTO.convert(plante))
-				.toList();//permet de produire une liste
-		}
-	
+	}
 
+	public boolean isPlanteAutoriseDansZone(EspecePlante espece, NomZone nomZone){
+		if (!espece.getAllowedZone().equals(nomZone)){
+            throw new PlanteNonAutoriseDansZoneException(nomZone, espece);
+        }else{
+            return true;
+        }
+	}
+
+	// le controller a besoin de la methode findAll
+	// on veut parcourir la liste
+	public List<PlanteResponseDTO> findAll() {
+		return daoPlante.findAll()// recupere ttes les plantes dans la base
+				.stream()// permet de pouvoir par la suite tranformer les donnees
+				.map(PlanteResponseDTO::convert) // transforme chaque plante en PlanteResponse - meme chose que
+													// .map(plante ->PlanteResponseDTO.convert(plante))
+				.toList();// permet de produire une liste
+	}
+
+	public PlanteResponseDTO findById(Integer id) {
+
+		return PlanteResponseDTO.convert(daoPlante.findById(id).orElse(null));
+	}
+
+	public PlanteResponseDTO insert(PlanteRequestDTO plante) {
+
+        Plante p = new Plante();
+
+        p.setDatePlantation(LocalDate.now());
+        p.setDateRecolte(p.getDatePlantation().plusMonths(plante.getEspece().getTempsPousseMois()));
+        p.setEspece(plante.getEspece());
+		p.setHumidite(100);
+		p.setDernierUpdate(LocalDateTime.now());
+
+        Zone zone = daoZone
+                .findById(plante.getZoneId())
+                .orElseThrow(
+                        ()-> new ZoneNotFoundException(plante.getZoneId())
+                );
+
+        if (isPlanteAutoriseDansZone(plante.getEspece(), zone.getNomZone())){
+            p.setZone(zone);
+        }
+
+        return PlanteResponseDTO.convert(daoPlante.save(p));
+    }
+
+	public PlanteResponseDTO update(Integer id, PlanteRequestDTO plante) {
+
+		Plante p =daoPlante.findById(id).orElse(null);
+
+		if(p == null) {
+			throw new PlanteNotFoundException(id);
+		}
+
+		p.setDatePlantation(LocalDate.now());
+        p.setDateRecolte(p.getDatePlantation().plusMonths(plante.getEspece().getTempsPousseMois()));
+        p.setEspece(plante.getEspece());
+		p.setHumidite(100);
+		p.setDernierUpdate(LocalDateTime.now());
+
+		Zone zone = daoZone
+                .findById(plante.getZoneId())
+                .orElseThrow(
+                        ()-> new ZoneNotFoundException(plante.getZoneId())
+                );
+
+        if (isPlanteAutoriseDansZone(plante.getEspece(), zone.getNomZone())){
+            p.setZone(zone);
+        }
+
+        return PlanteResponseDTO.convert(daoPlante.save(p));
+	}
+
+	public void deleteById(Integer id) {
+		daoPlante.deleteById(id);
+	}
 }
-

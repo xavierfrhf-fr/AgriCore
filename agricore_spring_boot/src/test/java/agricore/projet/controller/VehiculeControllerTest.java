@@ -37,14 +37,16 @@ public class VehiculeControllerTest {
 
     private final LocalDate DATE_CONTROLE_TECH = LocalDate.now().plusDays(10);
     private final int DELAI_AVANT_CONTROLE = (int) LocalDate.now().until(DATE_CONTROLE_TECH, java.time.temporal.ChronoUnit.DAYS);
+    private final int CARBURANT_ACTUEL = 50;
+    private final String ZONE_NOM = "Test Zone";
     private final int ZONE_ID = 1;
     private final int VEHICULE_ID = 1;
     private final TypeVehicule TYPE_VEHICULE = TypeVehicule.UTILITAIRE;
 
-    private final VehiculeResponseDTO VEHICULE_RESPONSE_DTO = new VehiculeResponseDTO(VEHICULE_ID, TYPE_VEHICULE, DATE_CONTROLE_TECH, DELAI_AVANT_CONTROLE, ZONE_ID);
-    private final VehiculeRequestDTO VEHICULE_REQUEST_DTO = new VehiculeRequestDTO(TYPE_VEHICULE, DATE_CONTROLE_TECH, ZONE_ID);
+    private final VehiculeResponseDTO VEHICULE_RESPONSE_DTO = new VehiculeResponseDTO(VEHICULE_ID, TYPE_VEHICULE, DATE_CONTROLE_TECH, DELAI_AVANT_CONTROLE, CARBURANT_ACTUEL, ZONE_ID, ZONE_NOM);
+    private final VehiculeRequestDTO VEHICULE_REQUEST_DTO = new VehiculeRequestDTO(TYPE_VEHICULE, DATE_CONTROLE_TECH, ZONE_ID, CARBURANT_ACTUEL);
 
-    private final VehiculeRequestDTO VEHICULE_REQUEST_DTO_INVALID = new VehiculeRequestDTO(null, null, null);
+    private final VehiculeRequestDTO VEHICULE_REQUEST_DTO_INVALID = new VehiculeRequestDTO(null, null, null, null);
 
     private final String URL = "/api/vehicule";
     private final String URL_ID = URL + "/" + VEHICULE_ID;

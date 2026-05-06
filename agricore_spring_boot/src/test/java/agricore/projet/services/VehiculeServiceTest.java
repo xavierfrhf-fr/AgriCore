@@ -23,6 +23,7 @@ import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.repository.IDAOVehicule;
@@ -47,11 +48,13 @@ public class VehiculeServiceTest {
         //given 
         Zone zone = new Zone();
         zone.setId(1);
+        zone.setNomZone(NomZone.CHAMPS);
 
-        Vehicule v = new Vehicule();
+        Vehicule v = new Vehicule();  // ← Crée un Vehicule, pas un DTO
         v.setId(1);
         v.setTypeVehicule(TypeVehicule.UTILITAIRE);
         v.setDateControleTech(LocalDate.now().plusDays(10));
+        v.setCarburantActuel(50);  // ← Ajoute le carburant
         v.setZone(zone);
 
         //when 
@@ -59,10 +62,14 @@ public class VehiculeServiceTest {
         VehiculeResponseDTO rez = vehiculeService.findByIdDTO(1);
 
         //then
+        //then
         assertNotNull(rez);
         assertEquals(1, rez.getId());
         assertEquals(TypeVehicule.UTILITAIRE, rez.getTypeVehicule());
         assertEquals(LocalDate.now().plusDays(10), rez.getDateControleTech());
+        assertEquals(50, rez.getCarburantActuel());  // ← Vérifie le carburant
+        assertEquals(1, rez.getZoneId());  // ← Vérifie la zone ID
+        assertEquals("champ", rez.getZoneNom());  // ← Vérifie que le nom est bien mappé
     }
 
     @Test
@@ -80,27 +87,36 @@ public class VehiculeServiceTest {
         //given 
         Zone zone = new Zone();
         zone.setId(1);
+        zone.setNomZone(NomZone.CHAMPS);
 
         Vehicule v1 = new Vehicule();
         v1.setId(1);
         v1.setTypeVehicule(TypeVehicule.UTILITAIRE);
         v1.setDateControleTech(LocalDate.now().plusDays(10));
+        v1.setCarburantActuel(50);
         v1.setZone(zone);
 
         Vehicule v2 = new Vehicule();
         v2.setId(2);
         v2.setTypeVehicule(TypeVehicule.TRACTEUR);
         v2.setDateControleTech(LocalDate.now().plusDays(20));
+        v2.setCarburantActuel(60);
         v2.setZone(zone);
 
         //when
         when(vehiculeRepository.findAll()).thenReturn(List.of(v1, v2));
 
-        var rez = vehiculeService.findAllDTO();
+        List<VehiculeResponseDTO> rez = vehiculeService.findAllDTO();
 
         //then
         assertNotNull(rez);
         assertEquals(2, rez.size());
+        assertEquals(1, rez.get(0).getId());
+        assertEquals(TypeVehicule.UTILITAIRE, rez.get(0).getTypeVehicule());
+        assertEquals(50, rez.get(0).getCarburantActuel());
+        assertEquals(2, rez.get(1).getId());
+        assertEquals(TypeVehicule.TRACTEUR, rez.get(1).getTypeVehicule());
+        assertEquals(60, rez.get(1).getCarburantActuel());
 
     }
 
@@ -124,16 +140,19 @@ public class VehiculeServiceTest {
 
         Zone zone = new Zone();
         zone.setId(1);
+        zone.setNomZone(NomZone.CHAMPS);
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
-        request.setTypeVehicule(TypeVehicule.UTILITAIRE);
-        request.setDateControleTech(LocalDate.of(2026,04,15));
-        request.setZoneid(1);
+        request.setTypeVehicule(TypeVehicule.TRACTEUR);
+        request.setDateControleTech(LocalDate.of(2026,05,20));
+        request.setZoneId(1);
+        request.setCarburantActuel(60);
 
         Vehicule tosave = new Vehicule();
         tosave.setId(1);
         tosave.setTypeVehicule(request.getTypeVehicule());
         tosave.setDateControleTech(request.getDateControleTech());
+        tosave.setCarburantActuel(request.getCarburantActuel());
         tosave.setZone(zone);
 
         //when
@@ -146,8 +165,9 @@ public class VehiculeServiceTest {
 
         assertNotNull(rez);
         assertEquals(1,rez.getId());
-        assertEquals(TypeVehicule.UTILITAIRE, rez.getTypeVehicule());
-        assertEquals(LocalDate.of(2026,04,15), rez.getDateControleTech());
+        assertEquals(TypeVehicule.TRACTEUR, rez.getTypeVehicule());
+        assertEquals(LocalDate.of(2026,05,20), rez.getDateControleTech());
+        assertEquals(60, rez.getCarburantActuel());
 
     }
 
@@ -158,7 +178,8 @@ public class VehiculeServiceTest {
         VehiculeRequestDTO request = new VehiculeRequestDTO();
         request.setTypeVehicule(TypeVehicule.UTILITAIRE);
         request.setDateControleTech(LocalDate.of(2026,04,15));
-        request.setZoneid(1);
+        request.setZoneId(1);
+        request.setCarburantActuel(50);
 
         //when
         when(daoZone.findById(1)).thenReturn(Optional.empty());
@@ -174,22 +195,26 @@ public class VehiculeServiceTest {
 
         Zone zone = new Zone();
         zone.setId(1);
+        zone.setNomZone(NomZone.CHAMPS);
         Vehicule v = new Vehicule();
         v.setId(1);
         v.setTypeVehicule(TypeVehicule.UTILITAIRE); 
         v.setDateControleTech(LocalDate.of(2026,04,15));
+        v.setCarburantActuel(50);
         v.setZone(zone);
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
         request.setTypeVehicule(TypeVehicule.TRACTEUR);
         request.setDateControleTech(LocalDate.of(2026,05,20));
-        request.setZoneid(1);
+        request.setZoneId(1);
+        request.setCarburantActuel(60);
         
         
         Vehicule updated = new Vehicule();
         updated.setId(1);
         updated.setTypeVehicule(request.getTypeVehicule());
         updated.setDateControleTech(request.getDateControleTech());
+        updated.setCarburantActuel(request.getCarburantActuel());
         updated.setZone(zone);
 
 
@@ -217,7 +242,7 @@ public class VehiculeServiceTest {
         VehiculeRequestDTO request = new VehiculeRequestDTO();
         request.setTypeVehicule(TypeVehicule.TRACTEUR);
         request.setDateControleTech(LocalDate.of(2026,05,20));
-        request.setZoneid(1);
+        request.setZoneId(1);
 
         //when
         when(vehiculeRepository.findById(1)).thenReturn(Optional.empty());
@@ -228,17 +253,21 @@ public class VehiculeServiceTest {
     @Test
     void shouldThrowExceptionWhenUpdatingZoneNotFound() {
         //given 
+        Zone zone = new Zone();
+        zone.setId(1);
 
         Vehicule v = new Vehicule();
         v.setId(1);
         v.setTypeVehicule(TypeVehicule.UTILITAIRE); 
         v.setDateControleTech(LocalDate.of(2026,04,15));
+        v.setCarburantActuel(50);
+        v.setZone(zone);
 
         VehiculeRequestDTO request = new VehiculeRequestDTO();
         request.setTypeVehicule(TypeVehicule.TRACTEUR);
         request.setDateControleTech(LocalDate.of(2026,05,20));
-        request.setZoneid(1);
-
+        request.setZoneId(1);
+        request.setCarburantActuel(60);
         //when
         when(vehiculeRepository.findById(1)).thenReturn(Optional.of(v));
         when(daoZone.findById(1)).thenReturn(Optional.empty());

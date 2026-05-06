@@ -8,22 +8,119 @@ import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.exception.ZoneNotFoundException;
+import agricore.projet.model.Plante;
 import agricore.projet.model.Vehicule;
+import agricore.projet.model.animal.Animal;
+import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.zone.Zone;
-import agricore.projet.repository.IDAOZone;
+import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOVehicule;
+import agricore.projet.repository.IDAOZone;
 
 @Service
 public class VehiculeService {
 
     private final IDAOVehicule daovehicule;
     private final IDAOZone daoZone;
+    private final IDAORessource daoRessource;
+ 
+    private final TransformationService transformationService;
 
-    public VehiculeService( IDAOVehicule daovehicule, IDAOZone daoZone) {
-        this.daovehicule = daovehicule;
+    public VehiculeService( IDAOVehicule daovehicule, 
+        IDAOZone daoZone,
+        IDAORessource daoRessource,
+        TransformationService transformationService) {
+        
+            this.daovehicule = daovehicule;
         this.daoZone = daoZone;
+        this.daoRessource= daoRessource;
+        this.transformationService = transformationService;
         
     }
+
+    public boolean besoinCarburant(Vehicule vehicule, int distanceKm) {
+		return vehicule.getCarburantActuel() >= distanceKm * vehicule.getTypeVehicule().getConsoParKm();
+	}
+
+	public void consommerCarburant(Vehicule vehicule, int distanceKm) {
+
+		//int carburantNecessaire = distanceKm * vehicule.getTypeVehicule().getConsoParKm();
+
+		if (!besoinCarburant(vehicule, distanceKm)) {
+
+			throw new RuntimeException("Pas assez de carburant");
+			
+		}
+
+		vehicule.setCarburantActuel( vehicule.getCarburantActuel() - (distanceKm * vehicule.getTypeVehicule().getConsoParKm()));
+
+	}
+
+    public void fairePlein(Vehicule vehicule, Ressource carburant) {
+    //on modifie la logique du plein et on peut le faire qu'importe la position du véhicule. on récupère juste la ressource 
+    
+
+    // qtt carburant manquant dans le véhicule 
+    int manque =  vehicule.getTypeVehicule().getCapaciteReservoir() - vehicule.getCarburantActuel();
+
+    if (carburant.getQuantite() < manque) {
+        throw new RuntimeException("Pas assez de carburant en stock pour faire le plein");
+    }
+
+    // set qtt stocker carburant
+    daoRessource
+            .findByNom(carburant.getNom())
+            .map (ressource ->  {
+                ressource.setQuantite(ressource.getQuantite()-manque);
+                daoRessource.save(ressource);
+                return null;
+            });
+    //transformationService.changeQuantity(carburant.getNom(), manque);
+    //carburant.setQuantite(carburant.getQuantite() - manque);
+
+    // set gtt carburant du vehicule => faire plein 
+    vehicule.setCarburantActuel(vehicule.getTypeVehicule().getCapaciteReservoir());
+
+
+    }
+
+
+    //Recolter plante et animal 
+
+    public String recolterPlante(Plante plante, Vehicule vehicule) {
+
+        int surface_zone_plante = plante.getZone().getNomZone().getZoneShape().getShape().size(); // récupère la surface de la zone de la plante (en nombre de cellule => nb fois 1km)
+
+        int distance = 2 * surface_zone_plante; // distance aller-retour
+
+        if (plante.getEspece().getVehiculeRequis() != vehicule.getTypeVehicule() ) {
+            throw new RuntimeException("Pas le bon véhicule");
+        }
+
+        consommerCarburant(vehicule, distance);
+
+        return "Le véhicule est aller chercher la récolte ! ";
+
+    }
+
+    public String acheterAnimal(Animal animal, Vehicule vehicule) {
+
+        int distance = animal.getEspece().getDistanceKmAchat();
+
+        if (animal.getEspece().getVehiculeAchatRequis() != vehicule.getTypeVehicule()) {
+             throw new RuntimeException("Pas le bon véhicule");
+        }
+
+        consommerCarburant(vehicule,distance);
+
+        return "Le véhicule est aller chercher l'animal ! ";
+    }
+
+  
+
+
+
+    //Controller
 
     public VehiculeResponseDTO findByIdDTO(Integer id) {
         return VehiculeResponseDTO.convert(daovehicule.findById(id).orElseThrow(() -> new VehiculeNotFound(id)));  //Throw(() -> new VehiculeN);
@@ -47,8 +144,9 @@ public class VehiculeService {
         Vehicule v = new Vehicule();
         v.setTypeVehicule(vehiculeRequestDTO.getTypeVehicule());
         v.setDateControleTech(vehiculeRequestDTO.getDateControleTech());
+        v.setCarburantActuel(vehiculeRequestDTO.getCarburantActuel());
 
-        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneid()));
+        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneId()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneId()));
 
         v.setZone(z);
 
@@ -66,10 +164,10 @@ public class VehiculeService {
         //maj entity
         v.setTypeVehicule(vehiculeRequestDTO.getTypeVehicule());
         v.setDateControleTech(vehiculeRequestDTO.getDateControleTech());
-
+        v.setCarburantActuel(vehiculeRequestDTO.getCarburantActuel());
 
         //set zone
-        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneid()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneid()));
+        Zone z = daoZone.findById(vehiculeRequestDTO.getZoneId()).orElseThrow(() -> new ZoneNotFoundException(vehiculeRequestDTO.getZoneId()));
         v.setZone(z);
 
         //save entity
