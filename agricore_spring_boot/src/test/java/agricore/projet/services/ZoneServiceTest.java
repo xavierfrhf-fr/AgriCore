@@ -60,7 +60,7 @@ public class ZoneServiceTest {
         private static final Position POSITION = new Position(1, 1, Rotation.DEG_0);
         private static final PositionRequestDTO POSITION_REQ_DTO = new PositionRequestDTO(1, 1, Rotation.DEG_0);
         private static final int FERMIER_ID = 5;
-        private static final Fermier FERMIER = new Fermier(FERMIER_ID, "testLogin", "testPassword");
+        private static final Fermier FERMIER = new Fermier(FERMIER_ID, "testLogin", "testPassword", "testNom", "testPrenom");
 
         private static final int ZONE_ID_NOT_EXIST = 100;
         private static final int ZONE1_ID = 0;

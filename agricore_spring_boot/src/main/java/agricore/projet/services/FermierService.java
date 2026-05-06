@@ -46,6 +46,8 @@ public class FermierService {
 		Fermier c = new Fermier();
 		c.setLogin(request.getLogin());
 		c.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
+		c.setNom(request.getNom());
+		c.setPrenom(request.getPrenom());
 		return FermierResponseDTO.convert(daoUtilisateur.save(c));
 	}
 
@@ -54,6 +56,8 @@ public class FermierService {
 				.orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
 		c.setLogin(request.getLogin());
 		c.setPassword(passwordEncoder.encode(request.getPassword()));  //on ne stock pas en clair les mdp dans la bbd
+		c.setNom(request.getNom());
+		c.setPrenom(request.getPrenom());
 		return FermierResponseDTO.convert(daoUtilisateur.save(c));
 	}
 

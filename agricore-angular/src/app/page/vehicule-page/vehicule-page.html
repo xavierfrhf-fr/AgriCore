@@ -49,10 +49,15 @@
 
           <td>
             @if (isLigneEnEdition(vehicule)) {
-            <input type="number" [formControl]="carburantActuelCtrl" />
+            <input type="number" [formControl]="carburantActuelCtrl"/> <!-- //ici la validation fonctionne comme ça car on a pas de form , faudrait faire un form par champ mais pas reussi (... carburantActuelCtrl est directement attacher a sa valeur dans formgroup et qu'on fait un set validator avec updateCarburantValidators() quand on fait modifier sans le champ form group ici donc pas reconnu ) -->
+            <div *ngIf="carburantActuelCtrl.errors?.['max'] && carburantActuelCtrl.touched">
+            Dépasse la capacité du réservoir
+            </div>
             } @else {
             {{ vehicule.carburantActuel }} L
             }
+
+            
           </td>
 
           <td>
@@ -129,8 +134,8 @@
         <label>Type de véhicule</label>
         <select class="bordure-pixel" formControlName="typeVehicule">
           @for (type of (typeVehicules$ | async); track type) {
-          <option [ngValue]="type">{{ type.name }}</option>
-          }
+          <option [ngValue]="type">{{ type.name }}</option><!--  // ici on prend l'objet en entier donc faire attention a la serialisation de jackson et bien mapper la valeur name de l'enum dans le dto front -->
+          } <!-- // recuperer l'objet permet de recuperer la valeur capaciteRservoir pour la fonction updateCarburantValidators afin de maj dynamiquement dans le form création le max du carburantActuel -->
         </select>
       </div>
 
@@ -142,6 +147,11 @@
       <div class="champ">
         <label>Carburant actuel (L)</label>
         <input class="bordure-pixel" type="number" formControlName="carburantActuel" />
+        <div *ngIf="carburantActuelCtrl.invalid && (carburantActuelCtrl.dirty || carburantActuelCtrl.touched)">
+          <span *ngIf="carburantActuelCtrl.errors?.['max']">
+            Dépasse la capacité du réservoir
+          </span>
+        </div>
       </div>
 
       <div class="champ">
