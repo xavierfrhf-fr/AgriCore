@@ -1,17 +1,20 @@
 package agricore.projet.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
+import agricore.projet.dto.zone.response.*;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.TypeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.zone.request.PositionRequestDTO;
 import agricore.projet.dto.zone.request.ZoneRequestDTO;
-import agricore.projet.dto.zone.response.ZoneResponseDTO;
-import agricore.projet.dto.zone.response.ZoneWithAnimalsResponseDTO;
-import agricore.projet.dto.zone.response.ZoneWithRessourcesResponseDTO;
-import agricore.projet.dto.zone.response.ZoneWithVehiculesResponseDTO;
 import agricore.projet.exception.InvalidZonePositionException;
 import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
@@ -153,5 +156,48 @@ public class ZoneService {
                     logger.warn("Zone avec id {} n'existe pas", id);
                     return new ZoneNotFoundException(id);
                 }));
+    }
+
+    public List<ZoneResponseDTO> getAllZoneWithRelation(){
+        List<ZoneResponseDTO> result = new ArrayList<>();
+
+        result.addAll(this.getAllZoneWithAnimals());
+        result.addAll(this.getAllZoneWithRessources());
+        result.addAll(this.getAllZoneWithPlants());
+        result.addAll(this.getAllZoneWithVehicules());
+
+        return result;
+    }
+
+    public List<ZoneWithVehiculesResponseDTO> getAllZoneWithVehicules(){
+        return daoZone
+                .findByNomZonesWithVehicule(Set.of())
+                .stream()
+                .map(ZoneWithVehiculesResponseDTO::convert)
+                .toList();
+    }
+
+    public List<ZoneWithAnimalsResponseDTO> getAllZoneWithAnimals(){
+        return daoZone
+                .findByNomZonesWithAnimal(NomZone.getNomZonesByTypeZone(TypeZone.PLANTS))
+                .stream()
+                .map(ZoneWithAnimalsResponseDTO::convert)
+                .toList();
+    }
+
+    public List<ZoneWithRessourcesResponseDTO> getAllZoneWithRessources(){
+        return daoZone
+                .findByNomZonesWithRessource(NomZone.getNomZonesByTypeZone(TypeZone.STORAGE))
+                .stream()
+                .map(ZoneWithRessourcesResponseDTO::convert)
+                .toList();
+    }
+
+    public List<ZoneWithPlantsResponseDTO> getAllZoneWithPlants(){
+        return daoZone
+                .findByNomZonesWithPlant(NomZone.getNomZonesByTypeZone(TypeZone.PLANTS))
+                .stream()
+                .map(ZoneWithPlantsResponseDTO::convert)
+                .toList();
     }
 }

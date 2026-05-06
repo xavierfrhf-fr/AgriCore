@@ -6,53 +6,15 @@ import agricore.projet.model.zone.Zone;
 
 import java.util.List;
 
-public class ZoneWithVehiculesResponseDTO {
-    private Integer id;
-    private PositionResponseDTO position;
-    private NomZone nomZone;
-    private Integer fermierId;
+public class ZoneWithVehiculesResponseDTO extends ZoneResponseDTO {
+
     private List<VehiculeResponseDTO> vehicules;
 
     public ZoneWithVehiculesResponseDTO() {}
 
     public ZoneWithVehiculesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, List<VehiculeResponseDTO> vehicules) {
-        this.id = id;
-        this.position = position;
-        this.nomZone = nomZone;
-        this.fermierId = fermierId;
+        super(id, position, nomZone, fermierId);
         this.vehicules = vehicules;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public PositionResponseDTO getPosition() {
-        return position;
-    }
-
-    public void setPosition(PositionResponseDTO position) {
-        this.position = position;
-    }
-
-    public NomZone getNomZone() {
-        return nomZone;
-    }
-
-    public void setNomZone(NomZone nomZone) {
-        this.nomZone = nomZone;
-    }
-
-    public Integer getFermierId() {
-        return fermierId;
-    }
-
-    public void setFermierId(Integer fermierId) {
-        this.fermierId = fermierId;
     }
 
     public List<VehiculeResponseDTO> getVehicules() {

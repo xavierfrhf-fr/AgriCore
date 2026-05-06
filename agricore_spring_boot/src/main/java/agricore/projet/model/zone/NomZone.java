@@ -3,6 +3,10 @@ package agricore.projet.model.zone;
 import agricore.projet.model.zone.position.ZoneShape;
 import agricore.projet.util.CheminAsset;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public enum NomZone {
 	CHAMPS("champ",
 			CheminAsset.ZONE + "CHAMP.png",
@@ -137,6 +141,16 @@ public enum NomZone {
 
 	public boolean isZoneUnique(){
 		return (this.typeZone.equals(TypeZone.STORAGE) || this.typeZone.equals(TypeZone.UTILITY));
+	}
+
+	public static Set<NomZone> getNomZonesByTypeZone(TypeZone typeZone) {
+		return Arrays
+				.stream(NomZone.values())
+				.filter(nomZone ->
+						nomZone.getTypeZone() == typeZone
+				)
+				.collect(Collectors.toSet()
+				);
 	}
 
 }
