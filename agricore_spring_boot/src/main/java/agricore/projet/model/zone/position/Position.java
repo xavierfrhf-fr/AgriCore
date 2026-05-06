@@ -9,7 +9,7 @@ import jakarta.persistence.Enumerated;
 public class Position {
 
 	//TAILLE DE LA CARTE:
-	public static final MapSize mapSize = new MapSize(50, 25);
+	public static final MapSize mapSize = new MapSize(50, 15);
 
 	@Column(nullable = false)
 	private Integer anchorX;
