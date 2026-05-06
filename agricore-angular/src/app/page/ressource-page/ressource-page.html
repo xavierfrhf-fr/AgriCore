@@ -1,5 +1,4 @@
-<div style="display:flex; justify-content: center;  align-items: center;
-  height: 100vh;">
+<div style="display:flex; justify-content: center; width: 100%;">
   <div class="panneau" style="width: fit-content;   margin: 0 auto;">
 
     <p class="titre-section"
@@ -18,9 +17,9 @@
         <img class="img-icone" src="assets/image/creer.png" />
 
         @if (afficheRessourceForm) {
-        Creation<span class="points-chargement"></span>
+        Création<span class="points-chargement"></span>
         } @else {
-        Creer un nouveau type de ressource
+        Créer un nouveau type de ressource
         }
 
       </button>
@@ -32,10 +31,10 @@
       <thead>
         <tr>
           <th>Ressource</th>
-          <th>Quantite</th> <!-- ex : 8 Kg -->
+          <th>Quantité</th> <!-- ex : 8 Kg -->
           <th>(Stock)</th>
           <th>Surplus</th>
-          <th>Prix affiche</th>
+          <th>Prix affiché</th>
           <th>Lieu de stockage</th>
           <th> <button (click)="ouvrirTransformationList()"
               class="bouton bouton-modifier"
