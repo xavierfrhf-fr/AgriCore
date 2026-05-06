@@ -43,8 +43,8 @@ public enum NomRessource {
         OEUF_OIE("oeuf d'oie", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
         OEUF_CANNE("oeuf de canne", CheminAsset.RESSOURCE + "oeuf.png", Unite.ARBITRAIRE, NomZone.CHAMBRE_FROIDE),
         PLUME("plume", CheminAsset.RESSOURCE + "plume.png", Unite.KILOGRAM, NomZone.HANGAR),
-        LAINE("laine", CheminAsset.RESSOURCE + "laine.png", Unite.KILOGRAM, NomZone.HANGAR);
-    ESSENCE("essence", CheminAsset.RESSOURCE + "", Unite.LITRE, NomZone.RESERVOIR_ESSENCE);
+        LAINE("laine", CheminAsset.RESSOURCE + "laine.png", Unite.KILOGRAM, NomZone.HANGAR),
+        ESSENCE("essence", CheminAsset.RESSOURCE + "", Unite.LITRE, NomZone.RESERVOIR_ESSENCE);
 
         private final Unite uniteStockage;
         private final NomZone zoneStockage;
