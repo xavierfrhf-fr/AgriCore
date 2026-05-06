@@ -11,6 +11,6 @@ export const routes: Routes = [
   {path: 'accueil', component: AccueilPage, title: "Page d'acceuil"},
   {path: 'ressource', component: RessourcePage, title: 'Gestion des ressources'},
   {path: 'zone', component: ZonePage, title: 'Gestion des zones'},
-  {path: 'animal', component: AnimalPage, title: 'Gestion des animaux'}
+  {path: 'animal', component: AnimalPage, title: 'Gestion des animaux'},
   {path: 'vehicule', component: VehiculePage, title: 'Gestion des véhicules'}
 ];
