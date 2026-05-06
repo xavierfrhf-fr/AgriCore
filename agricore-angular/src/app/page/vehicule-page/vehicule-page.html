@@ -50,9 +50,14 @@
           <td>
             @if (isLigneEnEdition(vehicule)) {
             <input type="number" [formControl]="carburantActuelCtrl" />
+            <div *ngIf="carburantActuelCtrl.errors?.['max'] && carburantActuelCtrl.touched">
+            Dépasse la capacité du réservoir
+            </div>
             } @else {
             {{ vehicule.carburantActuel }} L
             }
+
+            
           </td>
 
           <td>
@@ -129,7 +134,7 @@
         <label>Type de véhicule</label>
         <select class="bordure-pixel" formControlName="typeVehicule">
           @for (type of (typeVehicules$ | async); track type) {
-          <option [ngValue]="type">{{ type.name }}</option>
+          <option [ngValue]="type.name">{{ type.name }}</option>
           }
         </select>
       </div>
