@@ -19,7 +19,7 @@
             </div>
         </div>
         <br />
-        <button class="bouton bouton-modifier">
+        <button class="bouton bouton-modifier" style="margin-right: 5px;">
             <img class="img-icone" src="assets/image/modifier.png" />
             Modifier
         </button> <button class=" bouton bouton-supprimer">
@@ -71,15 +71,19 @@
                             }
             </p>
             <div style="display: flex; flex-wrap: nowrap; justify-content: space-around; align-items: center;">
-                <div>
-                    <p>Zone :</p>
-                    <div style="text-align: center;"><img [src]="animal.zonePathSprite" /><br />
-                        {{animal.zone}}</div>
-                </div>
+                <a routerLink="/zone" style="text-decoration: none; color: inherit;">
+                    <div title="Voir les zones">
+                        <p>Zone :</p>
+                        <div style="text-align: center;"><img [src]="animal.zonePathSprite" /><br />
+                            {{animal.zone}}</div>
+                    </div>
+                </a>
                 @if (animal.produit!="") {
-                <div>
-                    <p>Produit :</p><img class="img-icone" [src]="animal.produitPathSprite" /> {{animal.produit}}
-                </div>
+                <a routerLink="/ressource" style="text-decoration: none; color: inherit;">
+                    <div title="Voir les ressources">
+                        <p>Produit :</p><img class="img-icone" [src]="animal.produitPathSprite" /> {{animal.produit}}
+                    </div>
+                </a>
                 }
             </div>
         </div>
