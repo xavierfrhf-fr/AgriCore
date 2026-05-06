@@ -13,11 +13,7 @@ import { filter } from 'rxjs';
 export class App {
   protected readonly title = signal('AgriCore');
   affichNav = true;
-  menuOuvert:boolean = true;
 
-  protected toggleMenu(){
-    this.menuOuvert = !this.menuOuvert;
-  }
 
   private routesWithoutNavbar:string[] = ['/accueil','/boutique/panier'];
 

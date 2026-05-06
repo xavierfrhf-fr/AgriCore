@@ -8,10 +8,10 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   styleUrl: './navigation.css',
 })
 export class NavigationAgricore {
-  @Input() menuOuvert:boolean = true;
-  @Output() toggleMenuOuvert: EventEmitter<void> = new EventEmitter<void>;
+  menuOuvert:boolean = true;
+
 
   protected toggleMenu(){
-    this.toggleMenuOuvert.emit();
+    this.menuOuvert = !this.menuOuvert;
   }
 }
