@@ -28,13 +28,21 @@ public abstract class Utilisateur {
 	@Column(nullable=false)//rajouter length
 	protected String password;
 
+	@Column(nullable=false)
+	protected String nom;
+
+	@Column(nullable=false)
+	protected String prenom;
+
 	public Utilisateur() {
 	}
 
-	public Utilisateur(Integer id, String login, String password) {
+	public Utilisateur(Integer id, String login, String password, String nom, String prenom) {
 		this.id = id;
 		this.login = login;
 		this.password = password;
+		this.nom = nom;
+		this.prenom = prenom;
 	}
 
 	public Integer getId() {
@@ -61,4 +69,19 @@ public abstract class Utilisateur {
 		this.password = password;
 	}
 
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
 }
