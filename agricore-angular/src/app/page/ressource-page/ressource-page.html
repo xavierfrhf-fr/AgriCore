@@ -1,12 +1,13 @@
-<div>
-  <div class="panneau" style="width: fit-content">
+<div style="display:flex; justify-content: center;  align-items: center;
+  height: 100vh;">
+  <div class="panneau" style="width: fit-content;   margin: 0 auto;">
 
     <p class="titre-section"
       style="display: flex; align-items: center; justify-content: space-between;">
 
-      <span>
+      <span style="letter-spacing: 0px;">
         <img class="img-icone" src="assets/image/inventaire.png" />
-        Liste des ressources
+        LISTE DES RESSOURCES
       </span>
 
       <button
@@ -36,7 +37,12 @@
           <th>Surplus</th>
           <th>Prix affiche</th>
           <th>Lieu de stockage</th>
-          <th></th> <!-- Transformer la ressource -->
+          <th> <button (click)="ouvrirTransformationList()"
+              class="bouton bouton-modifier"
+              style="background-color: orange;">
+              <img class="img-icone" src="assets/image/livre-recette.png" />
+              Transformations
+            </button></th> <!-- Transformer la ressource -->
           <th></th> <!-- Modification / Validation -->
           <th></th> <!-- Suppression / Annulation -->
         </tr>
@@ -116,7 +122,8 @@
 
           <!-- TRANSFORMER ET CRÉER DOIT ANNULER MODIFIER ET INVERSEMENT -->
           <td [style.width]="colWidths[6]">
-            <button class="bouton bouton-modifier"
+            <button (click)="ouvrirTransformationForm(ressource)"
+              class="bouton bouton-modifier"
               style="background-color: orange;"
               [disabled]="isLigneEnEdition(ressource)">
               <img class="img-icone" src="assets/image/transformer.png" />
@@ -258,8 +265,6 @@
     </form>
   </div>
 </div>
-
-<!--agri-submit enlever pour boutons custom au dessus-->
 }
 
 <!-- PRIX -->
@@ -349,6 +354,106 @@
       </div>
 
     </form>
+
+  </div>
+
+</div>
+
+}
+
+<!-- LISTE DES TRANSFORMATIONS -->
+@if (afficheTransformationList) {
+
+<div class="creation">
+
+  <div class="panneau" style="width: fit-content">
+
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/livre-recette.png" />
+      LIVRE DE RECETTES
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Transformation</th>
+          <th>Quantite obtenue</th> <!--Inclure l'unité-->
+          <th>Lieu de stockage</th> <!--si existe pas griser-->
+          <th>Ingredient(s)</th>
+          <th>quantite requise</th> <!--Inclure l'unité-->
+          <th>Lieu de transformation</th> <!--si existe pas griser-->
+          <!-- si pas assez griser-->
+
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (transformation of (transformations$ | async); track
+        transformation.transformation) {
+        <tr>
+
+          <td style="text-transform: capitalize;" [style.width]="colWidths[0]">
+            <img class="img-icone"
+              [src]="getData(transformation.transformation)?.pathSprite" />
+            {{ getData(transformation.transformation)?.nomAffichage }}
+          </td>
+
+          <td [style.width]="colWidths[1]">
+            @for (produit of transformation.produits; track
+            produit.nomRessource) {
+            {{ produit.quantite }}
+            {{ getData(transformation.transformation)?.nomAffichageUnite }}
+            }
+          </td>
+
+          <td style="text-transform: capitalize;" [style.width]="colWidths[2]">
+            {{ getData(transformation.transformation)?.nomAffichageZone }}
+          </td>
+
+          <td style="text-transform: capitalize;" [style.width]="colWidths[3]">
+            @for (ingredient of transformation.ingredients; track
+            ingredient.nomRessource) {
+            <div>
+              <!--div pour que les ingrédients se mettent les uns sous les autres sinon ils se mettent à la suite sur la même ligne-->
+              <img class="img-icone"
+                [src]="getData(ingredient.nomRessource)?.pathSprite" />
+              {{ getData(ingredient.nomRessource)?.nomAffichage }}
+            </div>
+            }
+          </td>
+
+          <td [style.width]="colWidths[4]">
+            @for (ingredient of transformation.ingredients; track
+            ingredient.nomRessource) {
+            <div>{{ ingredient.quantite }} {{
+              getData(ingredient.nomRessource)?.nomAffichageUnite }}</div>
+            }
+          </td>
+
+          <!--style="text-transform: capitalize;" force la majuscule mais pas les minuscules-->
+          <td [style.width]="colWidths[2]">
+            {{ transformation.requiredZone | lowercase | titlecase }}
+          </td>
+
+        </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="boutons">
+
+      <button
+        type="button"
+        class="bouton bouton-reinitialiser"
+        (click)="fermerTransformationList()">
+
+        <img class="img-icone"
+          src="assets/image/reinitialiser.png" />
+        Fermer
+
+      </button>
+
+    </div>
 
   </div>
 

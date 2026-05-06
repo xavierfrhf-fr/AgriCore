@@ -1,4 +1,5 @@
 :host {
+  
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
@@ -25,7 +26,7 @@ th {
   text-transform: uppercase;
 }
 
-th:empty {
+th:empty, th:has(button) {
   background-color: transparent;
   border:none;
 }
@@ -42,6 +43,10 @@ td {
     0 -2px 0 var(--bordure),
     0 2px 0 var(--bordure),
 
+}
+
+td:has(button) {
+  text-align: center;
 }
 
 td:not(:has(button)) {

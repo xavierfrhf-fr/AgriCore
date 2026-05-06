@@ -37,9 +37,9 @@ public class DataController {
         List<ZoneDataDTO> dtos = new ArrayList<>();
         for (NomZone zone : NomZone.values()) {
             ZoneDataDTO zoneData = ZoneDataDTO.from(zone);
-            if (zone.isZoneUnique()){
+            if (zone.isZoneUnique()) {
                 zoneData.setZoneCreatable(!this.daoZone.existsByNomZone(zone));
-            }else{
+            } else {
                 zoneData.setZoneCreatable(true);
             }
             dtos.add(zoneData);
@@ -66,44 +66,38 @@ public class DataController {
                 .toList();
     }
 
-    @GetMapping("transfo")
+    @GetMapping("/transfo")
     public List<TransformationDataDTO> getTransformationData() {
         List<TransformationDataDTO> dtos = new ArrayList<>();
-
 
         for (Transformation transformation : Transformation.values()) {
             Integer maxTransfo;
             try {
                 maxTransfo = getMaxTransfo(transformation);
-            }catch (RessourceNotFoundException e){
+            } catch (RessourceNotFoundException e) {
                 System.out.println(e.getMessage());
                 maxTransfo = 0;
             }
 
-
             List<TransformationPartDTO> produits = new ArrayList<>();
-            for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()){
+            for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
                 produits.add(new TransformationPartDTO(
                         output.getKey(),
                         output.getValue(),
                         output.getKey().getUniteStockage(),
                         true,
-                        output.getValue() * maxTransfo
-                        ));
+                        output.getValue() * maxTransfo));
             }
 
             List<TransformationPartDTO> ingredients = new ArrayList<>();
-            for (Map.Entry<NomRessource, Integer> input : transformation.getInput().entrySet()){
+            for (Map.Entry<NomRessource, Integer> input : transformation.getInput().entrySet()) {
                 ingredients.add(new TransformationPartDTO(
                         input.getKey(),
                         input.getValue(),
                         input.getKey().getUniteStockage(),
                         false,
-                        input.getValue() * maxTransfo
-                ));
+                        input.getValue() * maxTransfo));
             }
-
-
 
             dtos.add(new TransformationDataDTO(
                     transformation,
@@ -111,18 +105,16 @@ public class DataController {
                     daoZone.existsByNomZone(transformation.getRequiredZone()),
                     maxTransfo,
                     ingredients,
-                    produits
-            ));
-
+                    produits));
 
         }
         return dtos;
     }
 
     private int getMaxTransfo(Transformation transformation) {
-        for (Map.Entry<NomRessource, Integer> output: transformation.getOutput().entrySet()) {
+        for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
             if (Transformation.isProductUnique(output.getKey())) {
-                return transformationService.getMaxTransformation(output.getKey(),false,null,true);
+                return transformationService.getMaxTransformation(output.getKey(), false, null, true);
             }
         }
         throw new RuntimeException("Error during max transformation computation (DataController -> getMaxTransfo)");
