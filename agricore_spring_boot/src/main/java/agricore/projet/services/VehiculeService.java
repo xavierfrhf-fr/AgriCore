@@ -53,7 +53,7 @@ public class VehiculeService {
 		}
 
 		vehicule.setCarburantActuel( vehicule.getCarburantActuel() - (distanceKm * vehicule.getTypeVehicule().getConsoParKm()));
-
+        daovehicule.save(vehicule);
 	}
 
     public void fairePlein(Vehicule vehicule, Ressource carburant) {
@@ -80,7 +80,7 @@ public class VehiculeService {
 
     // set gtt carburant du vehicule => faire plein 
     vehicule.setCarburantActuel(vehicule.getTypeVehicule().getCapaciteReservoir());
-
+    daovehicule.save(vehicule);
 
     }
 
