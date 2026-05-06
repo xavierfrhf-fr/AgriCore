@@ -11,20 +11,17 @@ import {RessourceRequestDto} from '../../dto/ressource/request/ressource-request
 import {PrixResponseDto} from '../../dto/ressource/response/prix-response-dto';
 import {RessourceResponseDto} from '../../dto/ressource/response/ressource-response-dto';
 import {RessourceDataDto} from '../../dto/ressource/ressource-data-dto';
+import {TransformationDataDto} from '../../dto/ressource/transformation-data-dto';
 import {UniteDataDto} from '../../dto/ressource/unite-data-dto';
+import {TransformationService} from '../../service/ressource/transformation-service';
 import {UniteService} from '../../service/ressource/unite-service';
 
 import {NomRessourceService} from './../../service/ressource/nom-ressource-service';
 import {RessourceService} from './../../service/ressource/ressource-service';
 
 @Component({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    AgriSelect,
-    AgriSubmit,
-    AgriModal,
-  ],
+  imports:
+      [CommonModule, ReactiveFormsModule, AgriSelect, AgriSubmit, AgriModal],
   templateUrl: './ressource-page.html',
   styleUrl: './ressource-page.css',
 })
@@ -32,6 +29,7 @@ export class RessourcePage implements OnInit, AfterViewInit {
   private ressourceService = inject(RessourceService);
   private nomRessourceService = inject(NomRessourceService);
   private uniteService = inject(UniteService);
+  private transformationService = inject(TransformationService);
   private formBuilder = inject(FormBuilder);
 
   private refresh$ = new Subject<void>();
@@ -48,8 +46,13 @@ export class RessourcePage implements OnInit, AfterViewInit {
 
   protected prix$!: Observable<PrixResponseDto[]>;
 
+  protected transformations$!: Observable<TransformationDataDto[]>;
+  protected transformationsList: TransformationDataDto[] = [];
+
   protected afficheRessourceForm = false;
   protected affichePrixForm = false;
+  protected afficheTransformationForm = false;
+  protected afficheTransformationList = false;
 
   // États d'édition
 
@@ -118,6 +121,13 @@ export class RessourcePage implements OnInit, AfterViewInit {
       this.nomRessourcesList = list;
     });
 
+    this.transformations$ = this.refresh$.pipe(
+        startWith(null), switchMap(() => this.transformationService.getAll()));
+
+    this.transformationService.getAll().subscribe(list => {
+      this.transformationsList = list;
+    });
+
     this.initForm();
   }
 
@@ -174,6 +184,28 @@ export class RessourcePage implements OnInit, AfterViewInit {
 
   hasSurplus(ressource: RessourceResponseDto): boolean {
     return ressource.quantite > ressource.stockMin;
+  }
+
+
+  ouvrirTransformationList(): void {
+    this.annulerModifier();
+    this.annulerCreer();
+    this.annulerEditionCellule();
+    this.afficheTransformationList = true;
+  }
+
+  fermerTransformationList(): void {
+    this.afficheTransformationList = false;
+  }
+
+  ouvrirTransformationForm(ressource: RessourceResponseDto): void {
+    this.afficheTransformationForm = true;
+  }
+
+  validerTransformationForm(): void {}
+
+  annulerTransformationForm(): void {
+    this.afficheTransformationForm = false;
   }
 
   private reload(): void {
