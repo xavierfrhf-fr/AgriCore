@@ -2,18 +2,18 @@
 
 <div class="animal-list">
     <div *ngFor="let a of animals$ | async" class="panneau panneau-animal" style="width: 300px">
-        <div class="case-animal-infos">
+        <div class="case-animal-infos" title="Plus d'infos" (click)="detailedInfos(a)">
             <div class="case-animal-img-name">
                 <img class="animal-inline" [src]="a.pathSprite" /> <br /> {{a.nomAffichage}} -
                 @if (a.male) {
-                <img class="img-icone" src="assets/image/animal/male.png" /> } @else {
-                <img class="img-icone" src="assets/image/animal/femelle.png" />
+                <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /> } @else {
+                <img class="img-icone img-icone-sexe" src="assets/image/animal/femelle.png" />
                 }
             </div>
             <div class="case-animal-text">
-                <p id="animal-number">N° : 123456</p>
-                <p id="animal-dates">Naissance : <br/> {{a.dateNaissance}} <br/>
-                    Vaccination : <br/> {{a.dateVaccination}}</p>
+                <p id="animal-number">N° : {{a.id.toString().padStart(6, "0")}}</p>
+                <p id="animal-dates">Naissance : <br /> {{a.dateNaissance | date:'dd/MM/yyyy'}} <br />
+                    Vaccination : <br /> {{a.dateVaccination | date:'dd/MM/yyyy'}}</p>
             </div>
         </div>
         <br />
@@ -26,6 +26,47 @@
         </button>
     </div>
 </div>
+
+
+<!-- INFOS DETAILLEES PAR ANIMAL -->
+@if (afficheDetailedInfos) {
+
+<div class="form">
+
+    <div class="panneau" style="width: 400px; position:absolute;">
+        <img class="img-icone close-window" src="assets/image/croix.png" (click)="closeDetailedInfos()" />
+
+        <p class="titre-section">
+            <img class="img-icone" src="assets/image/liste.png" />
+            {{animal.nomAffichage}} n° {{animal.id.toString().padStart(6, "0")}}
+        </p>
+
+        <div class="detailed-infos-up">
+            <img class="animal-infos" [src]="animal.pathSprite" />
+            <div class="detailed-infos-up-text">
+                Sexe : @if (animal.male) {
+                Male <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /> } @else {
+                Femelle <img class="img-icone img-icone-sexe" src="assets/image/animal/femelle.png" />
+                } <br />
+                Date de naissance : {{animal.dateNaissance | date:'dd/MM/yyyy'}} <br />
+                Dernière vaccination : {{animal.dateVaccination | date:'dd/MM/yyyy'}} <br />
+                Prochaine vaccination dans :
+                    @if (animal.delaisVaccination < 7) { <span style="color: red;">{{animal.delaisVaccination}} jours
+                    </span>}
+                @else if (animal.delaisVaccination < 30) { <span style="color: orange;">{{animal.delaisVaccination}}
+                    jours
+                </span>}
+            @else {
+            {{animal.delaisVaccination}} jours
+            }
+    </div>
+</div>
+
+<div class="detailed-infos-down"></div>
+
+</div>
+</div>
+}
 
 
 <br />

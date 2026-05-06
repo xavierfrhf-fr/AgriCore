@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Animal } from '../../model/animal';
 import { HttpClient } from '@angular/common/http';
 
@@ -12,7 +12,13 @@ export class AnimalService {
   constructor(private http: HttpClient) { }
 
   public findAll(): Observable<Animal[]> {
-    return this.http.get<Animal[]>("/animal");
+    return this.http.get<Animal[]>("/animal").pipe(
+    map(animaux => animaux.map(a => ({
+      ...a,
+      dateVaccination: new Date(a.dateVaccination),
+      dateNaissance: new Date(a.dateNaissance)
+    })))
+  );
   }
 
   public add(newAnimal: Animal): Observable<Animal> {

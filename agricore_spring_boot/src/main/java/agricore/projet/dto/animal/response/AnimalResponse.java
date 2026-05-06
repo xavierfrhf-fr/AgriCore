@@ -18,12 +18,14 @@ public class AnimalResponse {
     private String zoneName;
     private String pathSprite;
     private String nomAffichage;
+    private int delaisVaccination;
 
-    public AnimalResponse(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece, Integer zoneId, String zoneName, String pathSprite, String nomAffichage) {
+    public AnimalResponse(Integer id, boolean male, LocalDate dateNaissance, LocalDate dateVaccination, int delaisVaccination, EspeceAnimal espece, Integer zoneId, String zoneName, String pathSprite, String nomAffichage) {
         this.id = id;
         this.male = male;
         this.dateNaissance = dateNaissance;
         this.dateVaccination = dateVaccination;
+        this.delaisVaccination = delaisVaccination;
         this.espece = espece;
         this.zoneId = zoneId;
         this.zoneName = zoneName;
@@ -105,6 +107,13 @@ public class AnimalResponse {
         this.nomAffichage = nomAffichage;
     }
     
+     public int getDelaisVaccination() {
+        return delaisVaccination;
+    }
+
+    public void setDelaisVaccination(int delaisVaccination) {
+        this.delaisVaccination = delaisVaccination;
+    }
 
     public static AnimalResponse convert(Animal animal) {
         AnimalResponse response = new AnimalResponse();
@@ -113,6 +122,9 @@ public class AnimalResponse {
         response.setZoneName(animal.getZone().getNomZone().toString());
         response.setPathSprite(animal.getEspece().getDimorphisme().getPathSprite(animal.isMale()));
         response.setNomAffichage(animal.getEspece().getDimorphisme().getNomAffichage(animal.isMale()));
+        response.setDelaisVaccination(animal.delaiAvantVaccin());
         return response;
     }
+
+   
 }

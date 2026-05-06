@@ -1,4 +1,4 @@
-/* Icônes inline */
+/* Icônes */
 .animal-inline {
     width: 80px;
     height: 80px;
@@ -7,6 +7,20 @@
     vertical-align: text-top;
 }
 
+.animal-infos {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    margin-right: 20px;
+    vertical-align: text-top;
+}
+
+.img-icone-sexe {
+  width: 18px;
+  height: 18px;
+}
+
+/* Grille d'animaux  */
 .animal-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -50,60 +64,34 @@
         0 2px 0 var(--bordure)
 }
 
-/* Tableau animal */
-table {
-    width: 100%;
-    border-spacing: 2px;
+/* Formulaire infos détaillées + modif + création */
+.form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  
+
+  /* fond assombri */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35); 
 }
 
-th {
-    white-space: nowrap;
-    background: #aaddf5;
-    padding: 6px 8px;
-    text-align: left;
-    border-bottom: 2px solid #7ac8e8;
-    text-transform: uppercase;
+.detailed-infos-up {
+    display: flex;
+    flex-wrap: nowrap;
 }
 
-th:empty {
-    background-color: transparent;
-    border: none;
-}
-
-td {
-    vertical-align: middle;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    padding: 2px 2px;
-    box-shadow:
-        -2px 0 0 var(--bordure),
-        2px 0 0 var(--bordure),
-        0 -2px 0 var(--bordure),
-        0 2px 0 var(--bordure),
-
-}
-
-td:not(:has(button)) {
-    font-size: larger;
-    box-shadow:
-        -2px 0 0 var(--bordure),
-        2px 0 0 var(--bordure),
-        0 -2px 0 var(--bordure),
-        0 2px 0 var(--bordure),
-        inset -1px 0 0 #c4a97d,
-        inset 1px 0 0 #c4a97d,
-        inset 0 -1px 0 #c4a97d,
-        inset 0 1px 0 #c4a97d;
-}
-
-tr:nth-child(odd) td {
-    background: #f5fcff;
-}
-
-tr:nth-child(even) td {
-    background: #eaf7ff;
+.close-window {
+    position: absolute;
+    right:5px;
+    top: 5px;
 }
 
 /*Boutons */
