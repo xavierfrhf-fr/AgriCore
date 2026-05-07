@@ -41,8 +41,8 @@
                 <div class="texte prix">4€ /100g</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminuer('fraise')">-</button>
-                    <span class="quantite">{{ quantite.fraise }}</span>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
                     <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
@@ -53,9 +53,9 @@
                 <div class="texte prix">2€ /1L</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('lait')">-</button>
+                    <span class="quantite">{{ quantites.lait }}</span>
+                    <button class="btn" (click)="augmente('lait')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -65,9 +65,9 @@
                 <div class="texte prix">6€ /100g</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fromage')">-</button>
+                    <span class="quantite">{{ quantites.fromage }}</span>
+                    <button class="btn" (click)="augmente('fromage')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -77,9 +77,9 @@
                 <div class="texte prix">2€ /1kg</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('poire')">-</button>
+                    <span class="quantite">{{ quantites.poire }}</span>
+                    <button class="btn" (click)="augmente('poire')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -89,9 +89,9 @@
                 <div class="texte prix">4€ /1kg</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -101,9 +101,9 @@
                 <div class="texte prix">1€ /100g</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -113,9 +113,9 @@
                 <div class="texte prix">3€ /x10</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -123,9 +123,9 @@
                 <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -133,9 +133,9 @@
                 <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -143,9 +143,9 @@
                 <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
 
@@ -154,9 +154,9 @@
                 <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
@@ -164,9 +164,9 @@
                 <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminue('fraise')">-</button>
+                    <span class="quantite">{{ quantites.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
 
