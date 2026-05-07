@@ -20,6 +20,7 @@ import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.Fermier;
 import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
@@ -157,6 +158,18 @@ public class ZoneService {
                     return new ZoneNotFoundException(id);
                 }));
     }
+
+    public List<ZoneResponseDTO> getZoneByName(String name) {
+                logger.trace("find by name des {}", name);
+
+        List<ZoneResponseDTO> result = daoZone.findByName(NomZone.valueOf(name))
+                .stream()
+                .map(ZoneResponseDTO::convert)
+                .toList();
+        logger.trace("find zones by name {} ({} zones trouvees)", name, result.size());
+        return result;
+    }
+
 
     public List<ZoneResponseDTO> getAllZoneWithRelation(){
         List<ZoneResponseDTO> result = new ArrayList<>();

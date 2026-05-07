@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Animal } from '../../model/animal';
 import { HttpClient } from '@angular/common/http';
+import { AnimalRequest } from '../../dto/animal/animal-request';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,8 @@ export class AnimalService {
     return this.http.post<Animal>("/animal", newAnimal);
   }
 
-   public update(updatedAnimal: Animal): Observable<Animal> {
-    return this.http.put<Animal>(`/matiere/${updatedAnimal.id}`,updatedAnimal);
+   public update(updatedAnimal: AnimalRequest): Observable<Animal> {
+    return this.http.put<Animal>(`/animal/${updatedAnimal.id}`,updatedAnimal);
   }
 
   public delete(id: number): Observable<Animal> {

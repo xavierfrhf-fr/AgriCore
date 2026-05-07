@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/zone")
@@ -79,5 +82,11 @@ public class ZoneController {
     public List<ZoneResponseDTO> getAllZonesComplete(){
         return zoneService.getAllZoneWithRelation();
     }
+
+    @GetMapping("/by-name/{name}")
+    public List<ZoneResponseDTO> getZoneByName(@PathVariable String name) {
+        return zoneService.getZoneByName(name);
+    }
+    
 
 }

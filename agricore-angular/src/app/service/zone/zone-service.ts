@@ -18,6 +18,10 @@ export class ZoneService {
     return this.httpClient.get<ZoneDTO>(`zone/${id}`);
   }
 
+  public findByName(name:string):Observable<ZoneDTO[]>{
+    return this.httpClient.get<ZoneDTO[]>(`zone/by-name/${name}`);
+  }
+
   public findAllWithData():Observable<ZoneDTO[]>{
     return this.httpClient.get<ZoneDTO[]>("zone/complete");
   }
