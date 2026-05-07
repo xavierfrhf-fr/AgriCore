@@ -18,6 +18,7 @@
 .img-icone-sexe {
     width: 18px;
     height: 18px;
+    vertical-align: middle;
 }
 
 /* Grille d'animaux  */
@@ -140,46 +141,56 @@ button[style*="background-color: orange"] {
 
 /* Mise en page du formulaire */
 .creation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  
 
-  /* fond assombri */
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.35); 
+
+    /* fond assombri */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.35);
 }
 
-.formulaire{
-  justify-self: center;
-  align-self: center;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.formulaire {
+    justify-self: center;
+    align-self: center;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
+
 .champ {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
+
 .duo {
-  display: flex;
-  gap: 10px;
+    display: flex;
+    gap: 10px;
 }
+
 .boutons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
 }
+
 label {
     text-transform: none;
+}
+
+.champ label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
