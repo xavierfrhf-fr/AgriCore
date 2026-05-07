@@ -6,6 +6,7 @@ import { AccueilPage } from './page/accueil-page/accueil-page';
 import { VehiculePage } from './page/vehicule-page/vehicule-page';
 import { PanierPage } from './page/boutique/panier-page/panier-page';
 import { AnimalPage } from './page/animal/animal-page/animal-page';
+import { ProduitsPage } from './page/produits-page/produits-page';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'vehicule', component: VehiculePage, title: 'Gestion des véhicules' },
   { path: 'boutique/panier', component: PanierPage, title: 'Page validation du panier' },
   { path: 'animal', component: AnimalPage, title: 'Gestion des animaux' },
+  {path: 'boutique', component: ProduitsPage, title: 'Boutique'}
 ];
