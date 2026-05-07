@@ -162,9 +162,16 @@ public class ZoneService {
         List<ZoneResponseDTO> result = new ArrayList<>();
 
         result.addAll(this.getAllZoneWithAnimals());
+//        System.out.println(this.getAllZoneWithAnimals());
         result.addAll(this.getAllZoneWithRessources());
+//        System.out.println(this.getAllZoneWithRessources());
         result.addAll(this.getAllZoneWithPlants());
+//        System.out.println(this.getAllZoneWithPlants());
         result.addAll(this.getAllZoneWithVehicules());
+        System.out.println(this.getAllZoneWithVehicules());
+//        for (ZoneResponseDTO dto : result) {
+//            System.out.println(""+dto.getId()+dto.getTypeZone()+dto.getNomZone());
+//        }
 
         return result;
     }
@@ -179,7 +186,7 @@ public class ZoneService {
 
     public List<ZoneWithAnimalsResponseDTO> getAllZoneWithAnimals(){
         return daoZone
-                .findByNomZonesWithAnimal(NomZone.getNomZonesByTypeZone(TypeZone.PLANTS))
+                .findByNomZonesWithAnimal(NomZone.getNomZonesByTypeZone(TypeZone.ANIMAL))
                 .stream()
                 .map(ZoneWithAnimalsResponseDTO::convert)
                 .toList();

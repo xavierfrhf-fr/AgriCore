@@ -9,7 +9,7 @@ export interface ZoneDTO {
   position:PositionDTO;
   nomZone:string;
   fermierId:number;
-  animals?:Array<Animal>
+  animals:Animal[]
   plante?:null
   ressources?:Array<RessourceResponseDto>
   vehicules?:Array<VehiculeResponseDTO>

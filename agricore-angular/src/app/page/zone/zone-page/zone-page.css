@@ -29,3 +29,22 @@
   border-collapse: collapse;
   margin-inline: 600px;
 }
+
+.flex-list {
+  display: grid;
+
+
+
+  gap: 10px;
+
+  width: fit-content;
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.flex-list li {
+  width: 35px;
+  height: 35px;
+}

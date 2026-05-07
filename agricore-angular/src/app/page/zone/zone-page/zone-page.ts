@@ -77,7 +77,7 @@ export class ZonePage implements OnInit {
       ),
     );
 
-    this.zoneGroups$ = combineLatest([this.zones$, this.zoneDatas$]).pipe(
+    this.zoneGroups$ = combineLatest([this.zoneService.findAllWithData(), this.zoneDatas$]).pipe(
       map(([zones, zoneDatas]) => {
         const zonesWithData = zones.map((zone) => ({
           zone,
@@ -94,7 +94,7 @@ export class ZonePage implements OnInit {
         };
       }),
     );
-
+    this.zoneGroups$.forEach((d) => console.log(d));
   }
 
   protected reloadZone(): void {
@@ -177,5 +177,10 @@ export class ZonePage implements OnInit {
     );
   }
 
+  getColumnCount(size: number): number {
+    return Math.ceil(Math.sqrt(size));
+  }
+
   protected readonly ZoneShape = ZoneShape;
+  protected readonly console = console;
 }

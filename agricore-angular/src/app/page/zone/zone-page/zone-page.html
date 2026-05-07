@@ -60,34 +60,43 @@
       <!-- plantZone -->
       <table>
         <tbody>
-          @for (item of groups.plantZone; track item.zone.id) {
+          @for (item of groups.plantZone; track item.zone) {
             <tr>
               <td>
                 <img [src]="item.zoneData?.pathSprite" height="80px">
                 <p>{{ item.zone.nomZone }}</p>
               </td>
-              <td>case</td>
-              <td>case</td>
             </tr>
           }
         </tbody>
       </table>
 
+
       <!-- animalZone -->
       <table>
         <tbody>
-          @for (item of groups.animalZone; track item.zone.id) {
+          @for (item of groups.animalZone; track item.zone) {
             <tr>
+
               <td>
                 <img [src]="item.zoneData?.pathSprite" height="80px">
                 <p>{{ item.zone.nomZone }}</p>
               </td>
-              <td>case</td>
-              <td>case</td>
+              <td>
+                <p>Cette zone contient {{item.zone.animals.length}} animaux :</p>
+                <ul class="flex-list" [style.grid-template-columns]="'repeat(' + getColumnCount(item.zone.animals.length) + ', 35px)'">
+
+                @for (animal of item.zone.animals; track animal.id) {
+                  <li><img [src]="animal.pathSprite" height="35px" (click)="null"></li>
+                }
+
+                </ul>
+              </td>
             </tr>
           }
         </tbody>
       </table>
+
         <!-- utilityZone -->
       <table>
         <tbody>
@@ -96,7 +105,6 @@
               <td>
                 <img [src]="item.zoneData?.pathSprite" height="80px">
                 <p>{{ item.zone.nomZone }}</p>
-              </td>
               <td>case</td>
               <td>case</td>
             </tr>
@@ -105,16 +113,26 @@
       </table>
 
       <!-- storage zone -->
+
       <table>
         <tbody>
           @for (item of groups.storageZone; track item.zone.id) {
             <tr>
               <td>
+
                 <img [src]="item.zoneData?.pathSprite" height="80">
                 <p>{{ item.zone.nomZone }}</p>
               </td>
-              <td>case</td>
-              <td>case</td>
+              <td>
+                <ul>
+
+
+                  @for (ressource of item.zone.ressources; track ressource.id) {
+                    <li [title]="ressource.nom"><img [src]="ressource.pathSprite" height="25px" > : {{ressource.quantite}} {{ressource.uniteAffichage}}</li>
+                  }
+
+                </ul>
+              </td>
             </tr>
           }
         </tbody>
