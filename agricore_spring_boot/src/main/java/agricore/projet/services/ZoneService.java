@@ -191,7 +191,7 @@ public class ZoneService {
 
     public List<ZoneWithVehiculesResponseDTO> getAllZoneWithVehicules(){
         return daoZone
-                .findByNomZonesWithVehicule(Set.of())
+                .findByNomZonesWithVehicule(NomZone.getNomZonesByTypeZone(TypeZone.UTILITY))
                 .stream()
                 .map(ZoneWithVehiculesResponseDTO::convert)
                 .toList();

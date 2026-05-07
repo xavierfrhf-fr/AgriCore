@@ -8,6 +8,7 @@ import {
   filter,
   map,
   Observable,
+  shareReplay,
   startWith,
   Subject,
   switchMap,
@@ -24,6 +25,8 @@ import { ZoneRequest } from '../../../dto/zone/request/zone-request';
 import { PositionDTO } from '../../../dto/zone/response/position-dto';
 import { ZoneInfoPipe } from '../../../pipe/zone-info-pipe';
 import { ZoneGroups } from './ZoneGroups';
+import { TransformationDataDto } from '../../../dto/ressource/transformation-data-dto';
+import { TransformationService } from '../../../service/ressource/transformation-service';
 
 @Component({
   selector: 'app-zone-page',
@@ -44,12 +47,15 @@ export class ZonePage implements OnInit {
   protected zoneCreationType?: string;
   protected isCreation: boolean = false;
 
+  protected transformationData$!: Observable<TransformationDataDto[]>;
+
   protected zonesWithData$!: Observable<{ zone: ZoneDTO; zoneData: ZoneDataDTO | undefined }[]>;
   protected zoneGroups$!: Observable<ZoneGroups>;
 
   constructor(
     protected zoneService: ZoneService,
     protected dataService: DataService,
+    protected transformationService: TransformationService,
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +71,8 @@ export class ZonePage implements OnInit {
       startWith(0),
       switchMap(() => this.dataService.getZoneData()),
     );
+
+    this.transformationData$ = this.transformationService.getAll();
 
     this.zonesWithData$ = combineLatest([this.zones$, this.zoneDatas$]).pipe(
       map(([zones, zoneDatas]) =>
