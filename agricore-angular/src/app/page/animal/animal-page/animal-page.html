@@ -4,8 +4,8 @@
     <div *ngFor="let a of animals$ | async" class="panneau panneau-animal">
         @if (a.delaisVaccination
         < 30) {<img class="img-icone warning-animal" src="assets/image/warning-sign.png" (click)="detailedInfos(a)" />}
-        <div class="case-animal-infos" title="Plus d'infos" (click)="detailedInfos(a)">
-            <div class="case-animal-img-name">
+        <div class="case-animal-infos" title="Plus d'infos">
+            <div class="case-animal-img-name click" (click)="detailedInfos(a)">
                 <img class="animal-inline" [src]="a.pathSprite" /> <br /> {{a.nomAffichage}} -
                 @if (a.male) {
                 <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /> } @else {
@@ -19,7 +19,7 @@
             </div>
         </div>
         <br />
-        <button class="bouton bouton-modifier" style="margin-right: 5px;">
+        <button class="bouton bouton-modifier" style="margin-right: 5px;" (click)="updateInfos(a)">
             <img class="img-icone" src="assets/image/modifier.png" />
             Modifier
         </button> <button class=" bouton bouton-supprimer">
@@ -31,12 +31,12 @@
 
 
 <!-- INFOS DETAILLEES PAR ANIMAL -->
-@if (afficheDetailedInfos) {
+@if (afficheDetailedInfos && animal) {
 
 <div class="form">
 
     <div class="panneau" style="width: 400px; position:absolute;">
-        <img class="img-icone close-window" src="assets/image/croix.png" (click)="closeDetailedInfos()" />
+        <img class="img-icone close-window click" src="assets/image/croix.png" (click)="closeDetailedInfos()" />
 
         <p class="titre-section">
             <img class="img-icone" src="assets/image/liste.png" />
@@ -46,17 +46,21 @@
         <div class="detailed-infos-up">
             <img class="animal-infos" [src]="animal.pathSprite" />
             <div class="detailed-infos-up-text">
-                <p>Sexe : @if (animal.male) {
+                <p>Sexe :
+                    @if (animal.male) {
                     Male <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /> } @else {
                     Femelle <img class="img-icone img-icone-sexe" src="assets/image/animal/femelle.png" />
                     }</p>
-                <p>Date de naissance : {{animal.dateNaissance | date:'dd/MM/yyyy'}}</p>
-                <p>Age : ??</p>
+                <p>Date de naissance :
+                    {{animal.dateNaissance | date:'dd/MM/yyyy'}}
+                <p>Age : {{animal.age}}</p>
             </div>
         </div>
 
         <div class="detailed-infos-down">
-            <p>Dernière vaccination le {{animal.dateVaccination | date:'dd/MM/yyyy'}}</p>
+            <p>Dernière vaccination le
+                {{animal.dateVaccination | date:'dd/MM/yyyy'}}
+            </p>
             <p>@if (animal.delaisVaccination < 0) {<span style="color: red;">Vaccination en retard de
                     {{-animal.delaisVaccination}} jours</span>}
                     @else if (animal.delaisVaccination < 7) {Prochaine vaccination dans <span style="color: red;">
@@ -71,26 +75,54 @@
                             }
             </p>
             <div style="display: flex; flex-wrap: nowrap; justify-content: space-around; align-items: center;">
-                <a routerLink="/zone" style="text-decoration: none; color: inherit;">
+                <a routerLink="/zone" style="text-decoration: none; color: inherit;" class="click">
                     <div title="Voir les zones">
                         <p>Zone :</p>
                         <div style="text-align: center;"><img [src]="animal.zonePathSprite" /><br />
-                            {{animal.zone}}</div>
+                            {{animal.zone}} n° {{animal.zoneId}}</div>
                     </div>
                 </a>
                 @if (animal.produit!="") {
                 <a routerLink="/ressource" style="text-decoration: none; color: inherit;">
-                    <div title="Voir les ressources">
+                    <div title="Voir les ressources" class="click">
                         <p>Produit :</p><img class="img-icone" [src]="animal.produitPathSprite" /> {{animal.produit}}
                     </div>
                 </a>
                 }
             </div>
         </div>
-
     </div>
 </div>
 }
 
+@if(afficheModifForm) {
+<div class="creation">
 
-<br />
+    <div class="panneau" style="width: 400px">
+
+        <p class="titre-section">
+            <img class="img-icone" src="assets/image/liste.png" />
+            Modifier {{animal?.espece}} n° {{animal?.id}}
+        </p>
+
+        <!-- <form class="formulaire" [formGroup]="animalForm">
+
+
+            <div class="boutons">
+
+                <button class="bouton bouton-creer" [disabled]="animalForm.invalid" (click)="validateUpdateInfos()">
+                    <img class="img-icone" src="assets/image/creer.png" />
+                    Valider
+                </button>
+
+                <button type="button" class="bouton bouton-reinitialiser" (click)="cancel()">
+                    <img class="img-icone" src="assets/image/reinitialiser.png" />
+                    Annuler
+                </button>
+
+            </div>
+
+        </form> -->
+    </div>
+</div>
+}

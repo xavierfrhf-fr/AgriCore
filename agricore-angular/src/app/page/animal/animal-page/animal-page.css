@@ -102,6 +102,11 @@
     top: 5px;
 }
 
+.click:hover {
+    transform: scale(1.2);
+    transition-duration: 0.1s;
+}
+
 /*Boutons */
 .boutons {
     display: flex;
