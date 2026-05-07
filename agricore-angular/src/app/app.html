@@ -1,1 +1,14 @@
+@if (affichHeader) {
+<app-header />
+}
+@if (affichNav) {
+<navigation />
+}
+<div [class.fond]="affichFond" [style.transform]="fondTransform"></div>
+@if (affichFond) {
+<img class="nuage" src="assets/image/accueil/images/parallax3b.png" />
+}
 <router-outlet />
+@if (affichFooter) {
+<app-footer />
+}

@@ -109,31 +109,14 @@ public class Animal {
 	}
 
 	public void vacciner() {
-		dateVaccination = LocalDate.now().plusYears(1);
-	}
-
-	public LocalDate rappelVaccin() {
-		LocalDate dateRappel = dateVaccination.minusMonths(1);
-		return dateRappel;
+		dateVaccination = LocalDate.now();
 	}
 
 	public int delaiAvantVaccin() {
-		int delais = (int) LocalDate.now().until(dateVaccination, ChronoUnit.DAYS);
+		int delais = (int) LocalDate.now().until(dateVaccination.plusYears(1), ChronoUnit.DAYS);
 		return delais;
 	}
 
-	
-	
-
-	// Inutile car fait en bdd ?
-	// public boolean deplacer(Zone new_zone) {
-	// Zone previous_zone = this.getZone();
-	// if (new_zone.addAnimal(this)) {
-	// previous_zone.getAnimals().remove(this);
-	// return true;
-	// }
-	// return false;
-	// }
 	public boolean isMale() {
 		return male;
 	}

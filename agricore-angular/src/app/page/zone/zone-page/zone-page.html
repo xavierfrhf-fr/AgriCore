@@ -16,13 +16,13 @@
   <button
     [class.active]="isCreation"
     (click)="isCreation = true">
-    Création de zones
+    Création de batiments
   </button>
 
   <button
     [class.active]="!isCreation"
     (click)="isCreation = false">
-    Modification de zones
+    List des batiments existants
   </button>
 </div>
 
@@ -32,19 +32,49 @@
 
       <tbody>
         @for (zoneData of zoneDatas$ |async; track zoneData.nomZone) {
-          <tr>
-            <td><img [src]="zoneData.pathSprite" height="90px"></td>
-            <td><p>{{zoneData.nomAffichage | titlecase}}</p><p>{{zoneData.description}}</p></td>
-            <td><button (click)="startZoneCreation(zoneData)">CREER ZONE</button></td>
-          </tr>
+
+            <tr>
+              <td><img [src]="zoneData.pathSprite" height="90px"> <p>Taille : {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeWidth()}} X {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeHeight()}}</p></td>
+
+              <td>
+                <p>{{zoneData.nomAffichage | titlecase}} - {{zoneData | zoneInfo}}</p>
+                <p>{{zoneData.description}}</p>
+              </td>
+              <td>
+                @if (zoneData.zoneCreatable){
+                <button (click)="startZoneCreation(zoneData)">CREER ZONE</button>
+                } @else {
+                  <button disabled>CREER ZONE</button>
+                }
+              </td>
+            </tr>
+
         }
 
       </tbody>
     </table>
   </div>
 } @else {
-  <div >
+  <div>
+    aa
+    <table>
 
+      <tbody>
+        @for (item of zonesWithData$ | async; track item.zone.id) {
+          @if (item.zoneData; as zoneData) {
+            <tr>
+              <td><img [src]="zoneData.pathSprite" height="90px"> <p>Taille : {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeWidth()}} X {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeHeight()}}</p></td>
+              <td>
+                <p>{{zoneData.nomAffichage | titlecase}} - {{zoneData | zoneInfo}}</p>
+                <p>{{zoneData.description}}</p>
+              </td>
+              <td><button (click)="deleteZoneById(item.zone.id)">DELETE</button></td>
+            </tr>
+          }
+        }
+
+      </tbody>
+    </table>
   </div>
 }
 

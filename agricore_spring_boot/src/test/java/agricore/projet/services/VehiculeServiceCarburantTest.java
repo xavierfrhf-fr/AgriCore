@@ -50,7 +50,7 @@ public class VehiculeServiceCarburantTest {
     private Plante plante;
     private Animal animal;
     private EspecePlante especePlante = EspecePlante.Blé;
-    private EspeceAnimal especeAnimal = EspeceAnimal.Vache;
+    private EspeceAnimal especeAnimal = EspeceAnimal.VACHE;
  
     @BeforeEach
     void setUp() {
@@ -223,7 +223,7 @@ public class VehiculeServiceCarburantTest {
     void testAcheterAnimalAvecBonVehicule() {
         vehicule.setTypeVehicule(TypeVehicule.TRACTEUR);
         vehicule.setCarburantActuel(200);
-        animal.setEspece(EspeceAnimal.Vache);
+        animal.setEspece(EspeceAnimal.VACHE);
 
         String result = vehiculeService.acheterAnimal(animal, vehicule);
 
@@ -235,7 +235,7 @@ public class VehiculeServiceCarburantTest {
     @DisplayName("acheterAnimal - Lève une exception avec le mauvais véhicule")
     void testAcheterAnimalAvecMauvaisVehicule() {
         vehicule.setTypeVehicule(TypeVehicule.PICKUP);
-        animal.setEspece(EspeceAnimal.Vache);
+        animal.setEspece(EspeceAnimal.VACHE);
 
         assertThrows(RuntimeException.class, () -> vehiculeService.acheterAnimal(animal, vehicule));
     }
