@@ -13,15 +13,16 @@ quantites = {
     fraise: 0,
     lait: 0,
     fromage: 0,
+    poire: 0,
     pomme: 0,
     mais: 0
   };
 
-  augmenter(produit: keyof typeof this.quantites) {
+  augmente(produit: keyof typeof this.quantites) {
     this.quantites[produit]++;
   }
 
-  diminuer(produit: keyof typeof this.quantites) {
+  diminue(produit: keyof typeof this.quantites) {
     if (this.quantites[produit] > 0) {
       this.quantites[produit]--;
     }
@@ -41,5 +42,5 @@ quantites = {
       return qte - 1;
     }
     return 0;
-  }*/
-
+  }
+}*/
