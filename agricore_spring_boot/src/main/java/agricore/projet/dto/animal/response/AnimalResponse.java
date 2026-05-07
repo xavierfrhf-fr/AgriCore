@@ -12,26 +12,30 @@ public class AnimalResponse {
     private EspeceAnimal espece;
     private boolean male;
     private LocalDate dateNaissance;
+    private int age;
     private LocalDate dateVaccination;
     private int delaisVaccination;
     private String pathSprite;
     private String nomAffichage;
+    private int zoneId;
     private String zone;
     private String zonePathSprite;
     private String produit;
     private String produitPathSprite;
 
-    public AnimalResponse(Integer id, EspeceAnimal espece, boolean male, LocalDate dateNaissance, LocalDate dateVaccination,
+    public AnimalResponse(Integer id, EspeceAnimal espece, boolean male, LocalDate dateNaissance, int age, LocalDate dateVaccination,
             int delaisVaccination,  String pathSprite,
-            String nomAffichage, String zone, String zonePathSprite, String produit, String produitPathSprite) {
+            String nomAffichage, int zoneId, String zone, String zonePathSprite, String produit, String produitPathSprite) {
         this.id = id;      
           this.espece = espece;
         this.male = male;
         this.dateNaissance = dateNaissance;
+        this.age = age;
         this.dateVaccination = dateVaccination;
         this.delaisVaccination = delaisVaccination;
         this.pathSprite = pathSprite;
         this.nomAffichage = nomAffichage;
+        this.zoneId = zoneId;
         this.zone = zone;
         this.zonePathSprite = zonePathSprite;
         this.produit = produit;
@@ -59,6 +63,14 @@ public class AnimalResponse {
 
     public LocalDate getDateNaissance() {
         return dateNaissance;
+    }
+
+    public int getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(int zoneId) {
+        this.zoneId = zoneId;
     }
 
     public void setDateNaissance(LocalDate dateNaissance) {
@@ -137,13 +149,23 @@ public class AnimalResponse {
         this.zonePathSprite = zonePathSprite;
     }
 
+      public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public static AnimalResponse convert(Animal animal) {
         AnimalResponse response = new AnimalResponse();
         response.setId(animal.getId());
         response.setMale(animal.isMale());
         response.setDateNaissance(animal.getDateNaissance());
+        response.setAge(animal.getAge());
         response.setDateVaccination(animal.getDateVaccination());
         response.setEspece(animal.getEspece());
+        response.setZoneId(animal.getZone().getId());
         response.setZone(animal.getZone().getNomZone().getNomAffichage());
         response.setZonePathSprite(animal.getZone().getNomZone().getPathSprite());
         response.setPathSprite(animal.getEspece().getDimorphisme().getPathSprite(animal.isMale()));
