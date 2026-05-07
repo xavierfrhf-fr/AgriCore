@@ -13,6 +13,7 @@ public class RessourceResponseDTO {
     private int stockMin;
     private Integer zoneId;
     private NomZone zoneNom; // Pour eviter une seconde requete pour le nom que l on voudra afficher
+    private String pathSprite;
 
     public RessourceResponseDTO(Integer id, NomRessource nom, String uniteAffichage, int quantite,
             PrixResponseDTO prixLot, int stockMin, Integer zoneId,
@@ -25,6 +26,7 @@ public class RessourceResponseDTO {
         this.stockMin = stockMin;
         this.zoneId = zoneId;
         this.zoneNom = zoneNom;
+        this.pathSprite= nom.getPathSprite();
     }
 
     public RessourceResponseDTO() {
@@ -44,6 +46,11 @@ public class RessourceResponseDTO {
 
     public void setNom(NomRessource nom) {
         this.nom = nom;
+        this.pathSprite = nom.getPathSprite();
+    }
+
+    public String getPathSprite() {
+        return pathSprite;
     }
 
     public String getuniteAffichage() {
