@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import agricore.projet.model.animal.EspeceAnimal;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.Unite;
 import agricore.projet.model.zone.NomZone;
@@ -119,6 +120,13 @@ public class DataController {
             }
         }
         throw new RuntimeException("Error during max transformation computation (DataController -> getMaxTransfo)");
+    }
+
+    @GetMapping("/animal")
+    public List<AnimalDataDTO> getAnimalData() {
+        return Stream.of(EspeceAnimal.values())
+                .map(AnimalDataDTO::convert)
+                .toList();
     }
 
     @GetMapping("/plante")

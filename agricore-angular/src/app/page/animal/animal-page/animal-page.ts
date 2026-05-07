@@ -5,11 +5,13 @@ import { AnimalService } from '../../../service/animal/animal-service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from "@angular/router";
-import { AnimalRequest } from '../../../dto/animal/animal-request';
+import { AnimalRequest } from '../../../dto/animal/request/animal-request';
 import { FormField } from "@angular/forms/signals";
 import { AgriSelect } from '../../../component/form/agri-select/agri-select';
 import { ZoneService } from '../../../service/zone/zone-service';
 import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
+import { AnimalData } from '../../../dto/animal/response/animal-data';
+import { DataService } from '../../../service/data-service';
 
 @Component({
   selector: 'app-animal-page',
@@ -20,15 +22,21 @@ import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
 export class AnimalPage {
 
   private animalService: AnimalService = inject(AnimalService);
+  private dataService: DataService = inject(DataService);
   private zoneService: ZoneService = inject(ZoneService);
   private formBuilder = inject(FormBuilder);
 
   protected animals$!: Observable<Animal[]>;
+  protected especesExistantes$!: Observable<AnimalData[]>;
   protected zonesDisponibles$!: Observable<ZoneDTO[]>;
   protected refresh$: Subject<void> = new Subject<void>();
+  protected refreshEspeces$: Subject<void> = new Subject<void>();
 
   protected afficheDetailedInfos: boolean = false;
   protected afficheModifForm: boolean = false;
+  protected afficheCreateForm: boolean = false;
+  protected createMaleSelected: boolean = false;
+
   protected animal!: Animal | null;
   protected age!: number;
   protected zone$!: Observable<ZoneDTO>;
@@ -41,15 +49,20 @@ export class AnimalPage {
   protected zoneCtrl!: FormControl;
 
   ngOnInit(): void {
+
     this.animals$ = this.refresh$.pipe(
       startWith(0), switchMap(() => this.animalService.findAll())
     );
 
-    this.isMaleCtrl = this.formBuilder.control('', Validators.required);
+    this.especesExistantes$ = this.refreshEspeces$.pipe(
+      startWith(0), switchMap(() => this.dataService.getAnimalData())
+    );
+
+    this.isMaleCtrl = this.formBuilder.control('false', Validators.required);
     this.dateNaissanceCtrl = this.formBuilder.control(new Date(), Validators.required);
     this.dateVaccinationCtrl = this.formBuilder.control(new Date(), Validators.required);
-    this.especeCtrl = this.formBuilder.control('', Validators.required);
-    this.zoneCtrl = this.formBuilder.control(0, Validators.required);
+    this.especeCtrl = this.formBuilder.control(null, Validators.required);
+    this.zoneCtrl = this.formBuilder.control(-1, Validators.required);
 
 
     this.animalForm = this.formBuilder.group({
@@ -58,6 +71,10 @@ export class AnimalPage {
       dateVaccination: this.dateVaccinationCtrl,
       espece: this.especeCtrl,
       zoneId: this.zoneCtrl
+    });
+
+    this.isMaleCtrl.valueChanges.subscribe(value => {
+      this.createMaleSelected = value === 'true';
     });
   }
 
@@ -83,8 +100,6 @@ export class AnimalPage {
       switchMap(zone => this.zoneService.findByName(zone.nomZone))
     );
 
-    console.log(this.zonesDisponibles$)
-
     this.animalForm.patchValue({
       male: animal.male ? 'true' : 'false',
       dateNaissance: animal.dateNaissance ? new Date(animal.dateNaissance).toISOString().split('T')[0] : '',
@@ -97,10 +112,10 @@ export class AnimalPage {
   validateUpdateInfos(): void {
     if (this.animalForm.invalid || !this.animal) return;
 
-    const animalResponse: AnimalRequest = this.animalForm.getRawValue();
-    animalResponse.id = this.animal.id;
+    const animalRequest: AnimalRequest = this.animalForm.getRawValue();
+    animalRequest.id = this.animal.id;
 
-    this.animalService.update(animalResponse).subscribe(() => {
+    this.animalService.update(animalRequest).subscribe(() => {
       this.animal = null;
       this.afficheDetailedInfos = false;
       this.afficheModifForm = false;
@@ -111,11 +126,51 @@ export class AnimalPage {
 
   cancel(): void {
     this.afficheModifForm = false;
+    this.afficheCreateForm = false;
     this.animal = null;
   }
 
   deleteAnimal(id: number) {
     this.animalService.delete(id).subscribe(() => {
+      this.refresh$.next();
+    })
+  }
+
+  vacciner(animal: Animal) {
+    this.animalForm.patchValue({
+      male: animal.male ? 'true' : 'false',
+      dateNaissance: animal.dateNaissance ? new Date(animal.dateNaissance).toISOString().split('T')[0] : '',
+      dateVaccination: animal.dateVaccination ? new Date(Date.now()).toISOString().split('T')[0] : '',
+      espece: animal.espece,
+      zoneId: animal.zoneId
+    });
+
+    const animalRequest: AnimalRequest = this.animalForm.getRawValue();
+    animalRequest.id = animal.id;
+
+    this.animalService.update(animalRequest).subscribe(() => {
+      this.animalForm.reset();
+      this.refresh$.next();
+      this.animalService.findById(animal.id).subscribe(updated => {
+        this.animal = updated;
+      });
+    })
+  }
+
+  openCreateForm() {
+    this.afficheCreateForm = true;
+  }
+
+  createAnimal() {
+    if (this.animalForm.invalid || !this.animal) return;
+
+    const animalRequest: AnimalRequest = this.animalForm.getRawValue();
+
+    this.animalService.add(animalRequest).subscribe(() => {
+      this.animal = null;
+      this.afficheDetailedInfos = false;
+      this.afficheModifForm = false;
+      this.animalForm.reset();
       this.refresh$.next();
     })
   }

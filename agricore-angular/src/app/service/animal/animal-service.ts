@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Animal } from '../../model/animal';
 import { HttpClient } from '@angular/common/http';
-import { AnimalRequest } from '../../dto/animal/animal-request';
+import { AnimalRequest } from '../../dto/animal/request/animal-request';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,11 @@ export class AnimalService {
   );
   }
 
-  public add(newAnimal: Animal): Observable<Animal> {
+  public findById(id: number): Observable<Animal> {
+    return this.http.get<Animal>(`/animal/${id}`);
+  }
+
+  public add(newAnimal: AnimalRequest): Observable<Animal> {
     return this.http.post<Animal>("/animal", newAnimal);
   }
 

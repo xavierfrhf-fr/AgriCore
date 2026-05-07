@@ -1,4 +1,10 @@
-<h1>Liste des animaux</h1>
+<div class="page-head">
+    <h1>Liste des animaux</h1>
+    <button (click)="openCreateForm()" class="bouton bouton-creer">
+        <img class="img-icone" src="assets/image/creer.png" />
+        Ajouter un animal à la ferme
+    </button>
+</div>
 
 <div class="animal-list">
     <div *ngFor="let a of animals$ | async" class="panneau panneau-animal">
@@ -62,6 +68,10 @@
             <p>Dernière vaccination le
                 {{animal.dateVaccination | date:'dd/MM/yyyy'}}
             </p>
+            <button (click)="vacciner(animal)" class="bouton bouton-creer">
+                <img class="img-icone" src="assets/image/animal/aiguille.png" />
+                Vacciner
+            </button>
             <p>@if (animal.delaisVaccination < 0) {<span style="color: red;">Vaccination en retard de
                     {{-animal.delaisVaccination}} jours</span>}
                     @else if (animal.delaisVaccination < 7) {Prochaine vaccination dans <span style="color: red;">
@@ -126,13 +136,13 @@
 
             <div class="champ">
                 <label>Date de naissance</label>
-                <input type="date" class="bordure-pixel" [value]="animal?.dateNaissance"
+                <input type="date" class="bordure-pixel champ-date" [value]="animal?.dateNaissance"
                     formControlName="dateNaissance" />
             </div>
 
             <div class="champ">
                 <label>Date de dernière vaccination</label>
-                <input type="date" class="bordure-pixel" [value]="animal?.dateVaccination"
+                <input type="date" class="bordure-pixel champ-date" [value]="animal?.dateVaccination"
                     formControlName="dateVaccination" />
             </div>
 
@@ -150,6 +160,79 @@
                 <button class="bouton bouton-creer" [disabled]="animalForm.invalid" (click)="validateUpdateInfos()">
                     <img class="img-icone" src="assets/image/creer.png" />
                     Valider
+                </button>
+
+                <button type="button" class="bouton bouton-reinitialiser" (click)="cancel()">
+                    <img class="img-icone" src="assets/image/reinitialiser.png" />
+                    Annuler
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+}
+
+@if(afficheCreateForm) {
+<div class="creation">
+
+    <div class="panneau" style="width: 450px">
+
+        <p class="titre-section">
+            <img class="img-icone" src="assets/image/liste.png" />
+            Ajout d'un animal à la ferme
+        </p>
+
+        <form class="formulaire" [formGroup]="animalForm">
+
+            <div class="champ">
+                <label>Espèce</label>
+                <select class="bordure-pixel" formControlName="espece">
+                    <option [ngValue]="null" disabled>-- Choisir une espèce --</option>
+                    @for (espece of (especesExistantes$ | async); track espece) {
+                    <option [ngValue]="espece">@if (createMaleSelected) {{{espece.nomAffichageMale}}} @else
+                        {{{espece.nomAffichageFemelle}}}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="champ">
+                <p>Sexe :
+                    <label><input type="radio" value="true" name="male" formControlName="male" />
+                        Mâle</label>
+                    <label><input type="radio" value="false" name="male" formControlName="male" />
+                        Femelle</label>
+                </p>
+            </div>
+
+            <div class="champ">
+                <label>Date de naissance</label>
+                <input type="date" class="bordure-pixel champ-date" [value]="animal?.dateNaissance"
+                    formControlName="dateNaissance" />
+            </div>
+
+            <div class="champ">
+                <label>Date de dernière vaccination</label>
+                <input type="date" class="bordure-pixel champ-date" [value]="animal?.dateVaccination"
+                    formControlName="dateVaccination" />
+            </div>
+
+            <div class="champ">
+                <label>Zone</label>
+                <select class="bordure-pixel" formControlName="zoneId">
+                    <option [ngValue]="-1" disabled>-- Choisir une zone --</option>
+                    @for (zone of (zonesDisponibles$ | async); track zone) {
+                    <option [ngValue]="zone.id">{{ zone.nomZone }} n° {{zone.id}} </option>
+                    }
+                </select>
+            </div>
+
+            <div class="boutons">
+
+                <button class="bouton bouton-creer" [disabled]="animalForm.invalid" (click)="createAnimal()">
+                    <img class="img-icone" src="assets/image/creer.png" />
+                    Ajouter
                 </button>
 
                 <button type="button" class="bouton bouton-reinitialiser" (click)="cancel()">
