@@ -15,7 +15,8 @@ quantites = {
     fromage: 0,
     poire: 0,
     pomme: 0,
-    mais: 0
+    mais: 0,
+    oeufs: 0
   };
 
   augmente(produit: keyof typeof this.quantites) {
