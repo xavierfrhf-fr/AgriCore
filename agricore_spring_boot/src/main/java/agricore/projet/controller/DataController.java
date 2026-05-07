@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import agricore.projet.dto.data.*;
 import agricore.projet.exception.RessourceNotFoundException;
+import agricore.projet.model.EspecePlante;
 import agricore.projet.model.ressource.Transformation;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.services.TransformationService;
@@ -127,4 +128,18 @@ public class DataController {
                 .map(AnimalDataDTO::convert)
                 .toList();
     }
+
+    @GetMapping("/plante")
+    public List<PlanteDataDTO> getPlanteData() {
+        List<PlanteDataDTO> dtos = new ArrayList<>();
+        for (EspecePlante especePlante : EspecePlante.values()) {
+            boolean isCreatable = daoZone
+                    .findByName(especePlante.getAllowedZone())
+                    .stream()
+                    .anyMatch(z -> z.getPlante() == null);
+            dtos.add(PlanteDataDTO.convert(especePlante, isCreatable));
+        }
+        return dtos;
+    }
+
 }

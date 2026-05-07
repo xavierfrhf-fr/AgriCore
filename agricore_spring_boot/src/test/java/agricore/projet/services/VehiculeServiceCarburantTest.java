@@ -49,7 +49,7 @@ public class VehiculeServiceCarburantTest {
     private Ressource carburant;
     private Plante plante;
     private Animal animal;
-    private EspecePlante especePlante = EspecePlante.Blé;
+    private EspecePlante especePlante = EspecePlante.BLE;
     private EspeceAnimal especeAnimal = EspeceAnimal.VACHE;
  
     @BeforeEach
@@ -197,7 +197,7 @@ public class VehiculeServiceCarburantTest {
     void testRecolterPlanteAvecBonVehicule() {
         Zone petitZone = new Zone(new Position(), NomZone.POULAILLER, null); // 4x2 = 8 cellules
         plante.setZone(petitZone);
-        plante.setEspece(EspecePlante.Fraisier); // nécessite PICKUP
+        plante.setEspece(EspecePlante.FRAISIER); // nécessite PICKUP
 
         vehicule.setTypeVehicule(TypeVehicule.PICKUP);
         vehicule.setCarburantActuel(250); // 8*2=16 km * 13 (conso par km pickup) = 208
@@ -212,7 +212,7 @@ public class VehiculeServiceCarburantTest {
     @DisplayName("recolterPlante - Lève une exception avec le mauvais véhicule")
     void testRecolterPlanteAvecMauvaisVehicule() {
         plante.setZone(zone);
-        plante.setEspece(EspecePlante.Fraisier);
+        plante.setEspece(EspecePlante.FRAISIER);
         vehicule.setTypeVehicule(TypeVehicule.TRACTEUR);
 
         assertThrows(RuntimeException.class, () -> vehiculeService.recolterPlante(plante, vehicule));

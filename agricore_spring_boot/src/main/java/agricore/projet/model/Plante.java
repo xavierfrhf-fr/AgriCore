@@ -19,6 +19,7 @@ public class Plante {
 	@Column(name="date_recolte")
 	private LocalDate dateRecolte;
 	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "varchar(100)")
 	private EspecePlante espece;
 	@OneToOne
     @JoinColumn(name="zone_id")
