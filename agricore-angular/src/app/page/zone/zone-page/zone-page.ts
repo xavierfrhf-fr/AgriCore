@@ -105,6 +105,18 @@ export class ZonePage implements OnInit {
     this.zoneGroups$.forEach((d) => console.log(d));
   }
 
+  protected getTransformationsFromNomZone(nomZone: string): Observable<TransformationDataDto[]> {
+    return this.transformationData$.pipe(
+      map(transformations =>
+        transformations.filter(
+          transformation =>
+            transformation.requiredZone.trim().toLowerCase() ===
+            nomZone.trim().toLowerCase(),
+        ),
+      ),
+    );
+  }
+
   protected reloadZone(): void {
     this.refreshZone$.next();
     this.zoneShapes$ = this.zones$.pipe(
