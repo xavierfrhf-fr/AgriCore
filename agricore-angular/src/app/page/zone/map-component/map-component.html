@@ -10,7 +10,11 @@
          [style.height.px]="mapSize.y * cellSize"
          [style.grid-template-columns]="'repeat(' + mapSize.x + ', ' + cellSize + 'px)'"
          [style.grid-template-rows]="'repeat(' + mapSize.y + ', ' + cellSize + 'px)'"
-         [style.background-size]="cellSize + 'px ' + cellSize + 'px'">
+         [style.background-size]="cellSize + 'px ' + cellSize + 'px'"
+          style = "background: url('assets/image/zone/map_background.png')"
+    >
+
+
     </div>
 
     <canvas #overlayCanvas

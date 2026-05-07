@@ -9,6 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Set;
 
 public interface IDAOZone extends JpaRepository<Zone, Integer> {
     @Query("SELECT z FROM Zone z LEFT JOIN FETCH z.animals WHERE z.id = :id") // EUUUH FAUT VERIFIER QUE CA MARCHE
@@ -27,5 +30,17 @@ public interface IDAOZone extends JpaRepository<Zone, Integer> {
     List<Zone> findByName(@Param("name") NomZone name);
 
     boolean existsByNomZone(NomZone nomZone);
+
+    @Query("SELECT DISTINCT z FROM Zone z LEFT JOIN FETCH z.ressources WHERE z.nomZone IN :nomZones")
+    ArrayList<Zone> findByNomZonesWithRessource(@Param("nomZones") Set<NomZone> nomZones);
+
+    @Query("SELECT DISTINCT z FROM Zone z LEFT JOIN FETCH z.vehicules WHERE z.nomZone IN :nomZones")
+    ArrayList<Zone> findByNomZonesWithVehicule(@Param("nomZones") Set<NomZone> nomZones);
+
+    @Query("SELECT DISTINCT z FROM Zone z LEFT JOIN FETCH z.animals WHERE z.nomZone IN :nomZones")
+    ArrayList<Zone> findByNomZonesWithAnimal(@Param("nomZones") Set<NomZone> nomZones);
+
+    @Query("SELECT DISTINCT z FROM Zone z LEFT JOIN FETCH z.plante WHERE z.nomZone IN :nomZones")
+    ArrayList<Zone> findByNomZonesWithPlant(@Param("nomZones") Set<NomZone> nomZones);
 
 }

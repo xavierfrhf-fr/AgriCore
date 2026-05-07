@@ -62,7 +62,7 @@ public class ZoneResponseDTO {
     public static ZoneResponseDTO convert (Zone zone){
         ZoneResponseDTO response = new ZoneResponseDTO();
         response.setId(zone.getId());
-        response.setFermierId(zone.getFermier().getId());
+        //response.setFermierId(zone.getFermier().getId());
         response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         return response;

@@ -35,9 +35,7 @@ public class ZoneController {
     public List<ZoneResponseDTO> getAllZone() {
         Comparator<ZoneResponseDTO> comparator =
                 Comparator
-                        // Les zones "unique" d'abord
                         .comparing((ZoneResponseDTO zone) -> !zone.getNomZone().isZoneUnique())
-                        // Puis tri alphabétique
                         .thenComparing(zone -> zone.getNomZone().name());
         return zoneService.getAllZone()
                 .stream()
@@ -78,6 +76,11 @@ public class ZoneController {
     @GetMapping("/animals/{id}")
     public ZoneWithAnimalsResponseDTO getZoneWithAnimals(@PathVariable Integer id){
         return zoneService.getZoneWithAnimals(id);
+    }
+
+    @GetMapping("/complete")
+    public List<ZoneResponseDTO> getAllZonesComplete(){
+        return zoneService.getAllZoneWithRelation();
     }
 
     @GetMapping("/by-name/{name}")

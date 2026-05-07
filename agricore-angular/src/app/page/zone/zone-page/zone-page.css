@@ -1,3 +1,9 @@
+.tables-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 10px;
+}
+
 .tabs {
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -18,8 +24,27 @@
 }
 
 
-table {
+.creation-table {
   width: 50%;
   border-collapse: collapse;
   margin-inline: 600px;
+}
+
+.flex-list {
+  display: grid;
+
+
+
+  gap: 10px;
+
+  width: fit-content;
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.flex-list li {
+  width: 35px;
+  height: 35px;
 }

@@ -22,6 +22,10 @@ export class ZoneService {
     return this.httpClient.get<ZoneDTO[]>(`zone/by-name/${name}`);
   }
 
+  public findAllWithData():Observable<ZoneDTO[]>{
+    return this.httpClient.get<ZoneDTO[]>("zone/complete");
+  }
+
   public insert(req:ZoneRequest):Observable<ZoneDTO>{
     return this.httpClient.post<ZoneDTO>(`zone`,req);
   }

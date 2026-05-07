@@ -28,11 +28,9 @@
 
 @if (isCreation) {
   <div>
-    <table>
-
+    <table class="creation-table">
       <tbody>
         @for (zoneData of zoneDatas$ |async; track zoneData.nomZone) {
-
             <tr>
               <td><img [src]="zoneData.pathSprite" height="90px"> <p>Taille : {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeWidth()}} X {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeHeight()}}</p></td>
 
@@ -55,27 +53,94 @@
     </table>
   </div>
 } @else {
-  <div>
-    aa
-    <table>
+  @if (zoneGroups$ | async; as groups) {
 
-      <tbody>
-        @for (item of zonesWithData$ | async; track item.zone.id) {
-          @if (item.zoneData; as zoneData) {
+    <div class="tables-container">
+
+      <!-- plantZone -->
+      <table>
+        <tbody>
+          @for (item of groups.plantZone; track item.zone) {
             <tr>
-              <td><img [src]="zoneData.pathSprite" height="90px"> <p>Taille : {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeWidth()}} X {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeHeight()}}</p></td>
               <td>
-                <p>{{zoneData.nomAffichage | titlecase}} - {{zoneData | zoneInfo}}</p>
-                <p>{{zoneData.description}}</p>
+                <img [src]="item.zoneData?.pathSprite" height="80px">
+                <p>{{ item.zone.nomZone }}</p>
               </td>
-              <td><button (click)="deleteZoneById(item.zone.id)">DELETE</button></td>
             </tr>
           }
-        }
+        </tbody>
+      </table>
 
-      </tbody>
-    </table>
+
+      <!-- animalZone -->
+      <table>
+        <tbody>
+          @for (item of groups.animalZone; track item.zone) {
+            <tr>
+
+              <td>
+                <img [src]="item.zoneData?.pathSprite" height="80px">
+                <p>{{ item.zone.nomZone }}</p>
+              </td>
+              <td>
+                <p>Cette zone contient {{item.zone.animals.length}} animaux :</p>
+                <ul class="flex-list" [style.grid-template-columns]="'repeat(' + getColumnCount(item.zone.animals.length) + ', 35px)'">
+
+                @for (animal of item.zone.animals; track animal.id) {
+                  <li><img [src]="animal.pathSprite" height="35px" (click)="null"></li>
+                }
+
+                </ul>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+        <!-- utilityZone -->
+      <table>
+        <tbody>
+          @for (item of groups.utilityZone; track item.zone.id) {
+            <tr>
+              <td>
+                <img [src]="item.zoneData?.pathSprite" height="80px">
+                <p>{{ item.zone.nomZone }}</p>
+              <td>case</td>
+              <td>case</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- storage zone -->
+
+      <table>
+        <tbody>
+          @for (item of groups.storageZone; track item.zone.id) {
+            <tr>
+              <td>
+
+                <img [src]="item.zoneData?.pathSprite" height="80">
+                <p>{{ item.zone.nomZone }}</p>
+              </td>
+              <td>
+                <ul>
+
+
+                  @for (ressource of item.zone.ressources; track ressource.id) {
+                    <li [title]="ressource.nom"><img [src]="ressource.pathSprite" height="25px" > : {{ressource.quantite}} {{ressource.uniteAffichage}}</li>
+                  }
+
+                </ul>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
   </div>
+  }
+
 }
 
 
