@@ -1,0 +1,180 @@
+body {
+  margin: 0;
+  background-color: #ebdbc8;
+  padding-bottom: 80px;
+}
+
+header {
+  background-color: #cda372;
+  min-height: 120px;
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  text-align: center;
+  font-weight: bold;
+  font-family: Stardew Valley;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.haut {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+.logo p {
+  font-size: 20px;
+  color: #7a4707;
+}
+
+.logo img {
+  height: 70px;
+  display: flex;
+  justify-content: center;
+}
+
+.paysage img {
+  height: 100px;
+}
+
+.logo,
+.paysage,
+.boutique {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.boutique span {
+  margin: 2px 0;
+  font-size: 25px;
+  display: flex;
+  align-content: center;
+  font-weight: bold;
+  font-family: Stardew Valley;
+
+  color: #7a4707;
+}
+
+.boutique img {
+  width: 50px;
+  height: 50px;
+}
+
+.logo img {
+  height: 70px;
+}
+
+.tableau {
+  width: 90%;
+  margin: 40px auto;
+}
+
+/* legende tableau */
+.legende {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr 2fr 1fr;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+/* lignes */
+.ligne {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 2fr 2fr 1fr;
+  align-items: center;
+
+  background: #e8d8b8;
+  border-radius: 25px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+/* produit */
+.produit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.produit img {
+  width: 40px;
+}
+
+/* badges (prix, stock) */
+.badge {
+  background: #c8a77d;
+  padding: 6px 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* inputs */
+input {
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  background: #c8a77d;
+  text-align: center;
+}
+
+/* statut */
+.statut {
+  padding: 8px 12px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ok {
+  background: #c9d11a;
+}
+
+.warn {
+  background: #f5a623;
+}
+
+.danger {
+  background: #ff4d2d;
+  color: white;
+}
+
+footer {
+  background-color: #b27a37;
+  height: 60px;
+  border-top-right-radius: 50px;
+  border-top-left-radius: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center; /* centre verticalement */
+  justify-content: space-evenly; /* aligne à gauche */
+  padding-left: 10px;
+}
+
+.btn-img {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-img img {
+  display: block;
+  height: 30px;
+}
+.btn-img span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-weight: bold;
+  pointer-events: none;
+  font-family: Stardew Valley;
+  font-size: 20px;
+}

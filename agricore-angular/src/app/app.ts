@@ -1,10 +1,10 @@
-import {Component, HostListener, signal} from '@angular/core';
-import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
-import {filter} from 'rxjs';
+import { Component, HostListener, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 
-import {Footer} from './component/footer/footer';
-import {Header} from './component/header/header';
-import {NavigationAgricore} from './component/navigation/navigation';
+import { Footer } from './component/footer/footer';
+import { Header } from './component/header/header';
+import { NavigationAgricore } from './component/navigation/navigation';
 
 @Component({
   selector: 'app-root',
@@ -28,23 +28,19 @@ export class App {
   affichFooter = true;
   affichFond = true;
 
-  private routesWithoutNavbar: string[] = ['/accueil', '/boutique/panier','/boutique'];
-  private routesWithoutHeader: string[] = ['/accueil', '/boutique/panier','/boutique'];
-  private routesWithoutFooter: string[] = ['/accueil', '/boutique/panier','/boutique'];
-  private routesWithoutFond: string[] = ['/accueil', '/boutique/panier','/boutique'];
-
+  private routesWithoutNavbar: string[] = ['/accueil', '/boutique/panier'];
+  private routesWithoutHeader: string[] = ['/accueil', '/boutique/panier', '/boutique/vente'];
+  private routesWithoutFooter: string[] = ['/accueil'];
+  private routesWithoutFond: string[] = ['/accueil', '/boutique/panier', '/boutique/vente'];
 
   constructor(private router: Router) {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-        .subscribe((event: NavigationEnd) => {
-          this.affichNav =
-              !this.routesWithoutNavbar.includes(event.urlAfterRedirects);
-          this.affichHeader =
-              !this.routesWithoutHeader.includes(event.urlAfterRedirects);
-          this.affichFooter =
-              !this.routesWithoutFooter.includes(event.urlAfterRedirects);
-          this.affichFond =
-              !this.routesWithoutFond.includes(event.urlAfterRedirects);
-        });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.affichNav = !this.routesWithoutNavbar.includes(event.urlAfterRedirects);
+        this.affichHeader = !this.routesWithoutHeader.includes(event.urlAfterRedirects);
+        this.affichFooter = !this.routesWithoutFooter.includes(event.urlAfterRedirects);
+        this.affichFond = !this.routesWithoutFond.includes(event.urlAfterRedirects);
+      });
   }
 }

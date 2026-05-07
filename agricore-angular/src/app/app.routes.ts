@@ -10,16 +10,24 @@ import { ProduitsPage } from './page/produits-page/produits-page';
 import { PlantePage } from './page/plante-page/plante-page';
 import { GestionEmployes } from './page/gestion-employes/gestion-employes';
 import { fermierGuard } from './guards/auth-guard';
+import { VentePage } from './page/boutique/vente-page/vente-page';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
   { path: 'accueil', component: AccueilPage, title: "Page d'accueil" },
-  { path: 'gestion-employes', component: GestionEmployes, title: 'Gestion des employés', canActivate: [fermierGuard] },
+  {
+    path: 'gestion-employes',
+    component: GestionEmployes,
+    title: 'Gestion des employés',
+    canActivate: [fermierGuard],
+  },
   { path: 'ressource', component: RessourcePage, title: 'Gestion des ressources' },
   { path: 'zone', component: ZonePage, title: 'Gestion des zones' },
   { path: 'vehicule', component: VehiculePage, title: 'Gestion des véhicules' },
   { path: 'boutique/panier', component: PanierPage, title: 'Page validation du panier' },
+  { path: 'boutique/vente', component: VentePage, title: 'Gestion des ventes' },
   { path: 'animal', component: AnimalPage, title: 'Gestion des animaux' },
-  {path: 'boutique', component: ProduitsPage, title: 'Boutique'},
-  {path: 'plante', component: PlantePage, title: 'Gestion des plantes'}
+  { path: 'boutique', component: ProduitsPage, title: 'Boutique' },
+  { path: 'plante', component: PlantePage, title: 'Gestion des plantes' },
+  { path: 'boutique', component: ProduitsPage, title: 'Boutique' },
 ];
