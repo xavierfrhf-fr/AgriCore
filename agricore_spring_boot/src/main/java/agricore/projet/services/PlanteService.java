@@ -106,4 +106,13 @@ public class PlanteService {
 	public void deleteById(Integer id) {
 		daoPlante.deleteById(id);
 	}
+
+	public void arroser(Integer id) {
+		
+		Plante p =daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
+
+		p.arroser();
+		this.daoPlante.save(p);
+
+	}
 }
