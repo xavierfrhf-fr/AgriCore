@@ -98,6 +98,11 @@ public enum NomZone {
 			CheminAsset.ZONE+"VOLIERE.png",
 			ZoneShape.rectangle(4,1),
 			"Enclos pour élever oiseaux en toute sécurité.",
+			TypeZone.ANIMAL),
+	CLAPIER("clapier",
+			CheminAsset.ZONE+"CLAPIER.png",
+			ZoneShape.rectangle(3,2),
+			"Clapier pour élever des petits lapins trop mignons.",
 			TypeZone.ANIMAL);
 
 	private final ZoneShape zoneShape;
