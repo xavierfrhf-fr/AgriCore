@@ -1,0 +1,43 @@
+header {
+  background-color: #cda372;
+  min-height: 120px;
+  border-bottom-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Stardew Valley';
+}
+
+.haut {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo p { font-size: 20px; color: #7a4707; letter-spacing: 1px;}
+.logo img { height: 70px; display: flex; justify-content: center; }
+
+.paysage img { height: 100px; }
+
+.slogan {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+  font-family: 'Stardew Valley';
+  margin-right: 25px;
+}
+
+.slogan p {
+  margin: 2px 0;
+  font-size: 24px;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  color: #7a4707;
+}
+
+.maison, .vache, .feuille {
+  height: 25px;
+  margin-right: 6px;
+}
