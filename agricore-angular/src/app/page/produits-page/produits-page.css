@@ -1,0 +1,280 @@
+
+
+        body {
+            margin: 0;
+            background-color: #ebdbc8;
+            padding-bottom: 80px;
+        }
+
+        header {
+            background-color: #cda372;
+            min-height: 120px;
+            border-bottom-right-radius: 50px;
+            border-bottom-left-radius: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-family: Stardew Valley;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .haut {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo p {
+            font-size: 20px;
+            color: #7a4707;
+        }
+
+        .logo img {
+            height: 70px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .paysage img {
+            display: flex;
+            justify-content: center;
+            height: 100px;
+        }
+
+        /*images en haut a droite*/
+        .images {
+
+            padding-right: 20px;
+
+        }
+
+        .images p {
+            display: flex;
+            align-items: center;
+            /* aligne verticalement */
+            gap: 10px;
+            /* espace entre image et texte */
+            margin: 0px 0;
+            font-family: Stardew Valley;
+            color: #7a4707;
+        }
+
+        .images img {
+            height: 40px;
+            width: 40px;
+        }
+
+        .maison,
+        .vache,
+        .feuille {
+            height: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 70px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /*CONTENU SCROLLABLE*/
+
+        .titre p {
+            margin: 9px 0;
+            text-align: center;
+            color: #47280C;
+            font-size: 25px;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            font-weight: bold;
+        }
+
+        .produits {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            /* 6 colonnes */
+            gap: 40px;
+            padding-right: 80px;
+            padding-left: 80px;
+        }
+
+        /* chaque bloc image */
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* image principale */
+        .card .base {
+            width: 100%;
+            display: block;
+        }
+
+        /* image par-dessus (prouduit)*/
+        .card .overlay {
+            position: absolute;
+
+            z-index: 2;
+            transform: translateX(-50%);
+            /* ajuste pour vrai centrage */
+        }
+
+        .fraise {
+            top: 0%;
+            /* distance du haut */
+            left: 50%;
+            /* centre horizontal */
+            width: 110px;
+            height: auto;
+        }
+
+        .lait {
+            top: 5%;
+            left: 50%;
+            width: 120px;
+            height: auto;
+        }
+
+        .fromage {
+            top: 10%;
+            left: 50%;
+            width: 160px;
+            height: auto;
+        }
+
+        .poire {
+            top: 7%;
+            left: 50%;
+            width: 110px;
+            height: auto;
+        }
+
+        .pomme {
+            top: 10%;
+            left: 50%;
+            width: 110px;
+            height: auto;
+        }
+
+        .mais {
+            top: 0%;
+            left: 50%;
+            width: 140px;
+            height: auto;
+        }
+
+        .oeuf {
+            top: 13%;
+            left: 50%;
+            width: 60px;
+            height: auto;
+        }
+
+        /*nom prduit*/
+        .texte {
+            position: absolute;
+
+            transform: translate(-50%, -50%);
+
+            color: #47280C;
+            font-size: 25px;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .nom {
+            top: 60%;
+            left: 50%;
+        }
+
+        .prix {
+            top: 71%;
+            left: 50%;
+        }
+
+        /* boutons par-dessus */
+        .buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background-color: #b27a37;
+            border-radius: 10px;
+            width: 25px;
+            height: 25px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+        .btn:hover {
+            background-color: #6e472d;
+            transform: scale(1.1);
+        }
+
+        .btn:active {
+            transform: scale(0.9);
+        }
+
+
+
+        footer {
+            background-color: #b27a37;
+            height: 60px;
+            border-top-right-radius: 50px;
+            border-top-left-radius: 50px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            /* centre verticalement */
+            justify-content: space-evenly;
+            /* aligne à gauche */
+            padding-left: 10px;
+
+            z-index: 10;
+        }
+
+        .btn-img {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-img img {
+            display: block;
+            height: 30px;
+        }
+
+        .btn-img span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: black;
+            font-weight: bold;
+            pointer-events: none;
+            font-family: Stardew Valley;
+            font-size: 20px;
+        }

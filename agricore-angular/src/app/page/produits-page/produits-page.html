@@ -1,0 +1,194 @@
+<header>
+    <meta charset="utf-8" />
+    <title>Agricore</title>
+    <link class="page" rel="icon" type="image" href="img/logo-titre-onglet.PNG" />
+
+</header>
+<!-- Banniere du haut -->
+
+<div class="contenu">
+    <header>
+        <div class="haut">
+            <div class="logo">
+                <img src="img/logo-titre.png" />
+                <p>La ferme chez vous !</p>
+            </div>
+
+            <div class="paysage">
+                <img src="img/banniere.png" />
+            </div>
+            <div class="images">
+                <p><img class="maison" src="img/maison.png" />Production locale</p>
+                <p><img class="vache" src="img/vache.png" />Bien-être animal</p>
+                <p><img class="feuille" src="img/feuille.png" />Zero produit chimique</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu scrollable -->
+    <div class="content">
+        <div class="titre">
+
+            <p>NOS PRODUITS FRAIS</p>
+            <p>Click & collect à la ferme</p>
+        </div>
+
+        <div class="produits">
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay fraise" src="img/fraise2.png" alt="">
+                <div class="texte nom">fraises</div>
+                <div class="texte prix">4€ /100g</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">{{ qteFraise }}</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay lait" src="img/lait.png" alt="">
+                <div class="texte nom">lait</div>
+                <div class="texte prix">2€ /1L</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay fromage" src="img/fromage.png" alt="">
+                <div class="texte nom">fromage</div>
+                <div class="texte prix">6€ /100g</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay poire" src="img/poire.png" alt="">
+                <div class="texte nom">poire</div>
+                <div class="texte prix">2€ /1kg</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay pomme" src="img/pomme2.png" alt="">
+                <div class="texte nom">pomme</div>
+                <div class="texte prix">4€ /1kg</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay mais" src="img/mais.png" alt="">
+                <div class="texte nom">maïs</div>
+                <div class="texte prix">1€ /100g</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay oeuf" src="img/oeuf.png" alt="">
+                <div class="texte nom">oeufs</div>
+                <div class="texte prix">3€ /x10</div>
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay" src="img/fraise.png" alt="">
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay" src="img/fraise.png" alt="">
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay" src="img/fraise.png" alt="">
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay" src="img/fraise.png" alt="">
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+            <div class="card">
+                <img class="base" src="img/tableauBois.png" alt="">
+                <img class="overlay" src="img/fraise.png" alt="">
+
+                <div class="buttons">
+                    <button class="btn" (click)="diminue(qteFraise)">-</button>
+                    <span class="quantite">0</span>
+                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+<!-- Banniere du haut -->
+<footer>
+    <nav>
+        <a href="" class="btn-img">
+            <img src="img/textBox.png" />
+            <span>Accueil</span>
+        </a>
+        <a href="" class="btn-img">
+            <span>Déconnexion</span>
+            <img src="img/textBox.png" />
+        </a>
+        <a href="" class="btn-img">
+            <span>Stock</span>
+            <img src="img/textBox.png" />
+        </a>
+    </nav>
+</footer>
