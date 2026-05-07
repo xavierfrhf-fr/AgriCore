@@ -27,7 +27,7 @@ export class AnimalService {
   }
 
    public update(updatedAnimal: AnimalRequest): Observable<Animal> {
-    return this.http.put<Animal>(`/matiere/${updatedAnimal.id}`,updatedAnimal);
+    return this.http.put<Animal>(`/animal/${updatedAnimal.id}`,updatedAnimal);
   }
 
   public delete(id: number): Observable<Animal> {

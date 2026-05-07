@@ -7,25 +7,31 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { RouterLink, RouterModule } from "@angular/router";
 import { AnimalRequest } from '../../../dto/animal/animal-request';
 import { FormField } from "@angular/forms/signals";
+import { AgriSelect } from '../../../component/form/agri-select/agri-select';
+import { ZoneService } from '../../../service/zone/zone-service';
+import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
 
 @Component({
   selector: 'app-animal-page',
-  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterLink, RouterModule, FormField],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterLink, RouterModule],
   templateUrl: './animal-page.html',
   styleUrl: './animal-page.css',
 })
 export class AnimalPage {
 
   private animalService: AnimalService = inject(AnimalService);
+  private zoneService: ZoneService = inject(ZoneService);
   private formBuilder = inject(FormBuilder);
 
   protected animals$!: Observable<Animal[]>;
+  protected zonesDisponibles$!: Observable<ZoneDTO[]>;
   protected refresh$: Subject<void> = new Subject<void>();
 
   protected afficheDetailedInfos: boolean = false;
   protected afficheModifForm: boolean = false;
   protected animal!: Animal | null;
   protected age!: number;
+  protected zone$!: Observable<ZoneDTO>;
 
   protected animalForm!: FormGroup;
   protected isMaleCtrl!: FormControl;
@@ -68,13 +74,23 @@ export class AnimalPage {
   updateInfos(animal: Animal) {
     this.animal = animal;
     this.afficheModifForm = true;
+    this.zone$ = this.refresh$.pipe(
+      startWith(0), switchMap(() => this.zoneService.findById(animal.zoneId))
+    );
+    this.zonesDisponibles$ = this.refresh$.pipe(
+      startWith(0),
+      switchMap(() => this.zone$),
+      switchMap(zone => this.zoneService.findByName(zone.nomZone))
+    );
+
+    console.log(this.zonesDisponibles$)
 
     this.animalForm.patchValue({
-      male: animal.male,
-      dateNaissasnce: animal.dateNaissance,
-      dateVaccination: animal.dateVaccination,
+      male: animal.male ? 'true' : 'false',
+      dateNaissance: animal.dateNaissance ? new Date(animal.dateNaissance).toISOString().split('T')[0] : '',
+      dateVaccination: animal.dateVaccination ? new Date(animal.dateVaccination).toISOString().split('T')[0] : '',
       espece: animal.espece,
-      zone: animal.zoneId
+      zoneId: animal.zoneId
     });
   }
 
@@ -88,11 +104,19 @@ export class AnimalPage {
       this.animal = null;
       this.afficheDetailedInfos = false;
       this.afficheModifForm = false;
+      this.animalForm.reset();
+      this.refresh$.next();
     })
   }
 
-cancel(): void {
-  this.afficheModifForm = false;
-  this.animal = null;
-}
+  cancel(): void {
+    this.afficheModifForm = false;
+    this.animal = null;
+  }
+
+  deleteAnimal(id: number) {
+    this.animalService.delete(id).subscribe(() => {
+      this.refresh$.next();
+    })
+  }
 }
