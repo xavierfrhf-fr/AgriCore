@@ -9,4 +9,5 @@ export interface RessourceResponseDto {
   stockMin: number;
   zoneId: number;
   zoneNom: string;
+  pathSprite: string;
 }

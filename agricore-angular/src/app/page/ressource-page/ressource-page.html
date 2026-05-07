@@ -124,7 +124,7 @@
             <button (click)="ouvrirTransformationForm(ressource)"
               class="bouton bouton-modifier"
               style="background-color: orange;"
-              [disabled]="isLigneEnEdition(ressource)">
+              [disabled]="isLigneEnEdition(ressource) || !aPossibleTransformation(ressource)">
               <img class="img-icone" src="assets/image/transformer.png" />
               Transformer
             </button>
@@ -269,7 +269,7 @@
 <!-- PRIX -->
 @if (affichePrixForm) {
 
-<div class="creation">
+<div style="z-index : 9999" class="creation">
 
   <div class="panneau" style="width: 400px">
 
@@ -358,6 +358,169 @@
 
 </div>
 
+}
+
+<!-- FORMULAIRE DE TRANSFORMATION -->
+@if (afficheTransformationForm) {
+<div style="z-index : 9000" class="creation">
+  <div class="panneau" style="min-width: 440px; width: fit-content;">
+
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/transformer.png" />
+      Transformer : {{ getData(ressourceEnTransformation?.nom ??
+      '')?.nomAffichage }}
+    </p>
+
+    @if (transformationsDuForm.length === 0) {
+    <p style="color: var(--texte-discret);">Aucune transformation disponible
+      pour cette ressource.</p>
+    } @else {
+
+    @if (transformationsDuForm.length > 1) {
+    <div class="four-recette-selector">
+      @for (transfo of transformationsDuForm; track transfo.transformation) {
+      <button
+        type="button"
+        class="bouton four-recette-btn"
+        [class.four-recette-btn-actif]="transformationSelectionnee?.transformation === transfo.transformation"
+        (click)="selectionnerTransformation(transfo)">
+        <img class="img-icone"
+          [src]="getData(transfo.transformation)?.pathSprite" />
+        {{ getData(transfo.transformation)?.nomAffichage }}
+      </button>
+      }
+    </div>
+    }
+
+    @if (transformationSelectionnee) {
+    <div class="four"
+      [class.four-indisponible]="!estTransformationDisponible(transformationSelectionnee)">
+
+      <div class="four-colonne">
+        <span class="etiquette">Ingrédients</span>
+        @for (ingredient of transformationSelectionnee.ingredients; track
+        ingredient.nomRessource) {
+        <div class="four-case" [class.four-case-manque]="ingredient.max === 0">
+          <img class="img-icone"
+            [src]="getData(ingredient.nomRessource)?.pathSprite" />
+          <span>{{ getData(ingredient.nomRessource)?.nomAffichage }}</span>
+          <span class="four-quantite">× {{ ingredient.quantite }}</span>
+          <span class="four-dispo">{{ ingredient.max }} {{
+            getData(ingredient.nomRessource)?.nomAffichageUnite }} dispo</span>
+        </div>
+        }
+      </div>
+
+      <div class="four-milieu">
+        <div class="four-zone"
+          [class.four-zone-ok]="transformationSelectionnee.zoneExist"
+          [class.four-zone-ko]="!transformationSelectionnee.zoneExist">
+          @if (transformationSelectionnee.zoneExist) { ✓ } @else { ⚠ }
+          {{ transformationSelectionnee.requiredZone | lowercase | titlecase }}
+        </div>
+        <div class="four-fleche">→</div>
+      </div>
+
+      <div class="four-colonne">
+        <span class="etiquette">Résultat</span>
+        @for (produit of transformationSelectionnee.produits; track
+        produit.nomRessource) {
+        <div class="four-case">
+          <img class="img-icone"
+            [src]="getData(produit.nomRessource)?.pathSprite" />
+          <span>{{ getData(produit.nomRessource)?.nomAffichage }}</span>
+          <span class="four-quantite">× {{ produit.quantite }}</span>
+        </div>
+        <div class="four-stockage">
+          Stockage : {{ getData(produit.nomRessource)?.nomAffichageZone }}
+        </div>
+        <div class="four-prix-actions">
+
+          @if (getPrixAffichageProduit(produit.nomRessource)) {
+
+          <button
+            type="button"
+            class="bouton bouton-modifier"
+            (click)="ouvrirPrixProduitTransfo(produit.nomRessource)">
+
+            <img class="img-icone" src="assets/image/modifier.png" />
+            {{ getPrixAffichageProduit(produit.nomRessource) }}
+
+          </button>
+
+          } @else {
+
+          <button
+            type="button"
+            class="bouton bouton-creer"
+            (click)="ouvrirPrixProduitTransfo(produit.nomRessource)">
+
+            Ajouter un prix
+
+          </button>
+
+          }
+
+        </div>
+        }
+      </div>
+
+    </div>
+
+    @if (!estTransformationDisponible(transformationSelectionnee)) {
+    <p style="color: var(--rouge); font-size: 0.9rem; margin: 8px 0 0;">
+      @if (!transformationSelectionnee.zoneExist) {
+      Zone de transformation introuvable.
+      } @else {
+      Stock insuffisant pour réaliser cette transformation.
+      }
+    </p>
+    }
+
+    <form class="formulaire" [formGroup]="transformationForm"
+      style="margin-top: 14px;">
+
+      <div class="champ">
+        <label>Quantité désirée (max : {{ getQuantiteMax() }})</label>
+        <input class="bordure-pixel" type="number"
+          formControlName="quantiteDesire" min="1" />
+      </div>
+
+      <div class="four-options">
+        <!--<label style="text-transform: none;">
+          <input type="checkbox" formControlName="partial" />
+          Transformation partielle
+        </label>
+        <label style="text-transform: none;">
+          <input type="checkbox" formControlName="bypassStockMin" />
+          Utiliser le stock réservé
+        </label> -->
+      </div>
+
+      <div class="boutons">
+        <button
+          type="button"
+          class="bouton bouton-creer"
+          (click)="validerTransformationForm()"
+          [disabled]="transformationForm.invalid || !estTransformationDisponible(transformationSelectionnee)">
+          <img class="img-icone" src="assets/image/transformer.png" />
+          Transformer
+        </button>
+        <button
+          type="button"
+          class="bouton bouton-reinitialiser"
+          (click)="annulerTransformationForm()">
+          <img class="img-icone" src="assets/image/reinitialiser.png" />
+          Annuler
+        </button>
+      </div>
+
+    </form>
+    }
+    }
+
+  </div>
+</div>
 }
 
 <!-- LISTE DES TRANSFORMATIONS -->
