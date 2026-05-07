@@ -86,15 +86,6 @@ input[type='week']::-webkit-calendar-picker-indicator {
   text-align: right;
 }
 
-body {
-  margin: 0;
-  background-color: #ebdbc8;
-  padding-bottom: 80px;
-  background-position: center;
-  width: 100%;
-  padding: 0;
-}
-
 header {
   background-color: #cda372;
   min-height: 120px;
@@ -103,8 +94,11 @@ header {
   text-align: center;
   font-weight: bold;
   font-family: Stardew Valley;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
+
   z-index: 1000;
 }
 

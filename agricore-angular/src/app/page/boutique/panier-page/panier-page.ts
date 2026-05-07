@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-panier-page',
@@ -6,4 +6,11 @@ import { Component } from '@angular/core';
   templateUrl: './panier-page.html',
   styleUrl: './panier-page.css',
 })
-export class PanierPage {}
+export class PanierPage implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    document.body.removeAttribute('style');
+  }
+  ngOnInit(): void {
+    document.body.style.backgroundColor = '#ebdbc8';
+  }
+}
