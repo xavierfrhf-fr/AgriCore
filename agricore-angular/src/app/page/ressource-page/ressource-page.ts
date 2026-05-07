@@ -172,8 +172,6 @@ export class RessourcePage implements OnInit, AfterViewInit {
     });
   }
 
-
-
   getData(nom: string): RessourceDataDto|undefined {
     return this.nomRessourcesList.find(r => r.nom === nom);
   }

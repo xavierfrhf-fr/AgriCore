@@ -32,7 +32,7 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}")
-    public AnimalResponse getAnimalById(@RequestParam int id) {
+    public AnimalResponse getAnimalById(@PathVariable int id) {
         return animalService.findById(id);
     }
 

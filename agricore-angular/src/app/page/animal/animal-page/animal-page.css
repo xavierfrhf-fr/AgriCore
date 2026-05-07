@@ -137,6 +137,7 @@ button[style*="background-color: orange"] {
 .bouton-modifier,
 .bouton-creer {
     min-width: 112px;
+    max-height: 50px;
 }
 
 
@@ -213,6 +214,10 @@ select:hover {
     gap: 3px;
 }
 
+.champ-date {
+    width: fit-content;
+}
+
 .duo {
     display: flex;
     gap: 10px;
@@ -233,4 +238,11 @@ label {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+}
+
+/* Mise en page générale */
+.page-head {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
 }
