@@ -9,8 +9,25 @@ import { Component } from '@angular/core';
   styleUrl: './produits-page.css',
 })
 export class ProduitsPage {
+quantites = {
+    fraise: 0,
+    lait: 0,
+    fromage: 0,
+    pomme: 0,
+    mais: 0
+  };
 
+  augmenter(produit: keyof typeof this.quantites) {
+    this.quantites[produit]++;
+  }
 
+  diminuer(produit: keyof typeof this.quantites) {
+    if (this.quantites[produit] > 0) {
+      this.quantites[produit]--;
+    }
+  }
+}
+/*
     qteFraise = 0;
   qteLait = 0;
   qteFromage = 0;
@@ -24,5 +41,5 @@ export class ProduitsPage {
       return qte - 1;
     }
     return 0;
-  }
-}
+  }*/
+

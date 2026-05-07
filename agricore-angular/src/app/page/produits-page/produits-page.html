@@ -1,26 +1,26 @@
-<header>
+<!--<header>
     <meta charset="utf-8" />
     <title>Agricore</title>
-    <link class="page" rel="icon" type="image" href="img/logo-titre-onglet.PNG" />
+    <link class="page" rel="icon" type="image" href="assets/image/boutique/logo-titre-onglet.PNG" />
 
-</header>
+</header>-->
 <!-- Banniere du haut -->
 
 <div class="contenu">
     <header>
         <div class="haut">
             <div class="logo">
-                <img src="img/logo-titre.png" />
+                <img src="assets/image/boutique/logo-titre.png" />
                 <p>La ferme chez vous !</p>
             </div>
 
             <div class="paysage">
-                <img src="img/banniere.png" />
+                <img src="assets/image/boutique/banniere.png" />
             </div>
             <div class="images">
-                <p><img class="maison" src="img/maison.png" />Production locale</p>
-                <p><img class="vache" src="img/vache.png" />Bien-être animal</p>
-                <p><img class="feuille" src="img/feuille.png" />Zero produit chimique</p>
+                <p><img class="maison" src="assets/image/boutique/maison.png" />Production locale</p>
+                <p><img class="vache" src="assets/image/boutique/vache.png" />Bien-être animal</p>
+                <p><img class="feuille" src="assets/image/boutique/feuille.png" />Zero produit chimique</p>
             </div>
         </div>
     </header>
@@ -35,20 +35,20 @@
 
         <div class="produits">
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay fraise" src="img/fraise2.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay fraise" src="assets/image/boutique/fraise2.png" alt="">
                 <div class="texte nom">fraises</div>
                 <div class="texte prix">4€ /100g</div>
 
                 <div class="buttons">
-                    <button class="btn" (click)="diminue(qteFraise)">-</button>
-                    <span class="quantite">{{ qteFraise }}</span>
-                    <button class="btn" (click)="augmente(qteFraise)">+</button>
+                    <button class="btn" (click)="diminuer('fraise')">-</button>
+                    <span class="quantite">{{ quantite.fraise }}</span>
+                    <button class="btn" (click)="augmente('fraise')">+</button>
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay lait" src="img/lait.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay lait" src="assets/image/boutique/lait.png" alt="">
                 <div class="texte nom">lait</div>
                 <div class="texte prix">2€ /1L</div>
 
@@ -59,8 +59,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay fromage" src="img/fromage.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay fromage" src="assets/image/boutique/fromage.png" alt="">
                 <div class="texte nom">fromage</div>
                 <div class="texte prix">6€ /100g</div>
 
@@ -71,8 +71,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay poire" src="img/poire.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay poire" src="assets/image/boutique/poire.png" alt="">
                 <div class="texte nom">poire</div>
                 <div class="texte prix">2€ /1kg</div>
 
@@ -83,8 +83,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay pomme" src="img/pomme2.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay pomme" src="assets/image/boutique/pomme2.png" alt="">
                 <div class="texte nom">pomme</div>
                 <div class="texte prix">4€ /1kg</div>
 
@@ -95,8 +95,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay mais" src="img/mais.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay mais" src="assets/image/boutique/mais.png" alt="">
                 <div class="texte nom">maïs</div>
                 <div class="texte prix">1€ /100g</div>
 
@@ -107,8 +107,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay oeuf" src="img/oeuf.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay oeuf" src="assets/image/boutique/oeuf.png" alt="">
                 <div class="texte nom">oeufs</div>
                 <div class="texte prix">3€ /x10</div>
 
@@ -119,8 +119,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay" src="img/fraise.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
                     <button class="btn" (click)="diminue(qteFraise)">-</button>
@@ -129,8 +129,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay" src="img/fraise.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
                     <button class="btn" (click)="diminue(qteFraise)">-</button>
@@ -139,8 +139,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay" src="img/fraise.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
                     <button class="btn" (click)="diminue(qteFraise)">-</button>
@@ -150,8 +150,8 @@
             </div>
 
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay" src="img/fraise.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
                     <button class="btn" (click)="diminue(qteFraise)">-</button>
@@ -160,8 +160,8 @@
                 </div>
             </div>
             <div class="card">
-                <img class="base" src="img/tableauBois.png" alt="">
-                <img class="overlay" src="img/fraise.png" alt="">
+                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
 
                 <div class="buttons">
                     <button class="btn" (click)="diminue(qteFraise)">-</button>
@@ -179,16 +179,16 @@
 <footer>
     <nav>
         <a href="" class="btn-img">
-            <img src="img/textBox.png" />
+            <img src="assets/image/boutique/textBox.png" />
             <span>Accueil</span>
         </a>
         <a href="" class="btn-img">
             <span>Déconnexion</span>
-            <img src="img/textBox.png" />
+            <img src="assets/image/boutique/textBox.png" />
         </a>
         <a href="" class="btn-img">
             <span>Stock</span>
-            <img src="img/textBox.png" />
+            <img src="assets/image/boutique/textBox.png" />
         </a>
     </nav>
 </footer>

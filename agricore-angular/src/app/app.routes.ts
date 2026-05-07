@@ -5,6 +5,7 @@ import {AnimalPage} from './page/animal/animal-page/animal-page';
 import {RessourcePage} from './page/ressource-page/ressource-page';
 import {VehiculePage} from './page/vehicule-page/vehicule-page';
 import {ZonePage} from './page/zone/zone-page/zone-page';
+import { ProduitsPage } from './page/produits-page/produits-page';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'accueil', pathMatch: 'full'},
@@ -15,5 +16,6 @@ export const routes: Routes = [
   },
   {path: 'zone', component: ZonePage, title: 'Gestion des zones'},
   {path: 'animal', component: AnimalPage, title: 'Gestion des animaux'},
-  {path: 'vehicule', component: VehiculePage, title: 'Gestion des véhicules'}
+  {path: 'vehicule', component: VehiculePage, title: 'Gestion des véhicules'},
+  {path: 'boutique', component: ProduitsPage, title: 'Boutique'}
 ];
