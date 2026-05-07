@@ -121,6 +121,11 @@ public class Animal {
 		return male;
 	}
 
+	public int getAge() {
+		int age = (int) this.dateNaissance.until(LocalDate.now(),ChronoUnit.YEARS);
+		return age;
+	}
+
 	
 
 }
