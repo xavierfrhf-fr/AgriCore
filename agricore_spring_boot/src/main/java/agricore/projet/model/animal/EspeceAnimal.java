@@ -15,7 +15,7 @@ public enum EspeceAnimal {
 	OIE(NomZone.POULAILLER, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.OEUF_OIE, "Oie", CheminAsset.ANIMAL + "oie.png", NomRessource.PLUME, "Jars", CheminAsset.ANIMAL + "oie.png"), TypeVehicule.TRACTEUR, 2),
 	CHEVAL(NomZone.ETABLE, AnimalDimorphisme.sameForMaleAndFemale(null, "Cheval",CheminAsset.ANIMAL + "cheval.png"), TypeVehicule.TRACTEUR, 3),
 	ANE(NomZone.ETABLE, AnimalDimorphisme.differentForMaleAndFemale(NomRessource.LAIT_ANESSE, "Anesse",CheminAsset.ANIMAL + "ane.png", null, "Ane",CheminAsset.ANIMAL + "ane.png"), TypeVehicule.TRACTEUR, 2),
-	LAPIN(NomZone.ETABLE, AnimalDimorphisme.sameForMaleAndFemale(null, "Lapin",CheminAsset.ANIMAL + "lapin.png"), TypeVehicule.TRACTEUR, 1);
+	LAPIN(NomZone.CLAPIER, AnimalDimorphisme.sameForMaleAndFemale(null, "Lapin",CheminAsset.ANIMAL + "lapin.png"), TypeVehicule.TRACTEUR, 1);
 
 	private final NomZone allowedZone;
 	private final AnimalDimorphisme dimorphisme;
