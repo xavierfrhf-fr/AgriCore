@@ -53,7 +53,7 @@
                     }</p>
                 <p>Date de naissance :
                     {{animal.dateNaissance | date:'dd/MM/yyyy'}}
-                <p>Age : {{animal.age}}</p>
+                <p>Age : {{animal.age}} ans</p>
             </div>
         </div>
 
@@ -102,11 +102,19 @@
 
         <p class="titre-section">
             <img class="img-icone" src="assets/image/liste.png" />
-            Modifier {{animal?.espece}} n° {{animal?.id}}
+            Modifier {{animal?.nomAffichage}} n° {{animal?.id}}
         </p>
 
-        <!-- <form class="formulaire" [formGroup]="animalForm">
+        <form class="formulaire" [formGroup]="animalForm">
 
+            <div class="champ">
+                <p>Sexe : 
+                <input type="radio" value="true" name="male" formControlName="male"/>
+                <label>Male - <img class="img-icone img-icone-sexe" src="assets/image/animal/male.png" /></label>
+                 <input type="radio" value="false" name="male" formControlName="male"/>
+                <label>Femelle - <img class="img-icone img-icone-sexe" src="assets/image/animal/femelle.png" /></label>
+            </p>
+            </div>
 
             <div class="boutons">
 
@@ -122,7 +130,7 @@
 
             </div>
 
-        </form> -->
+        </form>
     </div>
 </div>
 }
