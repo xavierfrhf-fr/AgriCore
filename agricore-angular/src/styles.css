@@ -43,8 +43,35 @@ body {
   margin: 0;
   font-family: 'Stardew Valley';
   font-size: large;
-  background: var(--fond);
+  background: transparent;
   color: var(--texte);
+}
+
+body {
+  padding: 24px;
+}
+
+app-header {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+navigation {
+  display: block;
+  position: fixed;
+  top: 140px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+app-root {
+  display: block;
+  padding-top: 210px;
 }
 
 /* Panneaux et bordures */
