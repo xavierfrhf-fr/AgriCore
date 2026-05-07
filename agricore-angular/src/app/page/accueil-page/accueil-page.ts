@@ -12,20 +12,28 @@ import { Router } from '@angular/router';
 })
 export class AccueilPage implements OnInit {
 
-   private formBuilder: FormBuilder = inject(FormBuilder);
-
+  private formBuilder: FormBuilder = inject(FormBuilder);
+  protected afficherInscription: boolean = false;
 
   loginForm!: any;
-
+  registerForm!: any;
   
 
   constructor(private fb: FormBuilder,private authService: Auth, private router: Router) {}
   
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
-     username: ['', Validators.required],
-    password: ['', Validators.required]
+  this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
   });
+
+  this.registerForm = this.fb.group({
+      login: ['', Validators.required],
+      password: ['', Validators.required],
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
+      email: ['', Validators.required]
+    })
 
   }
 
@@ -34,12 +42,57 @@ export class AccueilPage implements OnInit {
 
     const { username, password } = this.loginForm.value;
 
-    this.authService.login(username!,password!).subscribe( (res: any) => { 
-    localStorage.setItem('token', res.token)
-    console.log("RESPONSE BACKEND:", res)});
+    this.authService.login(username!,password!).subscribe({
+      next: (authResponse: any) => {
+        this.authService.saveAuthData(authResponse);
+        console.log("Connexion réussie:", authResponse);
+        console.log(this.authService.getRole());
+        console.log(this.authService.getUsername())
+
+        // Redirection basée sur le rôle
+        if (this.authService.isFermier()) {
+          this.router.navigate(['/gestion-employes']);
+        } else {
+          this.router.navigate(['/animal']);
+        }
+      },
+      error: (error: any) => {
+        console.error("Erreur de connexion:", error);
+        // Ici vous pouvez ajouter une gestion d'erreur (message d'erreur à l'utilisateur)
+      }
+    });
+  }
+
+  openInscription() {
+    this.afficherInscription = true;
     
-   // this.router.navigate(['/matieres']);
     
+  }
+
+  closeInscription() {
+    this.afficherInscription = false;
+  }
+
+
+
+  Inscription() {
+    if(this.registerForm.invalid) {
+      console.error("Formulaire invalide");
+      return;
+    }
+    
+    const {login,password,nom,prenom,email }= this.registerForm.value;
+
+    this.authService.register(login!,password!,nom!,prenom!,email!).subscribe( 
+      (res: any) => {
+        console.log("Inscription réussie", res);
+        this.closeInscription();
+        this.registerForm.reset();
+      },
+      (error: any) => {
+        console.error("Erreur lors de l'inscription:", error);
+      }
+    );
   }
 
 }

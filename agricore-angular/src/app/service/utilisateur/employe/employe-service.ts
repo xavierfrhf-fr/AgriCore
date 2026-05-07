@@ -11,7 +11,7 @@ export class EmployeService {
   constructor(private httpClient: HttpClient) {}
 
   public findAll(): Observable<EmployeResponse[]> {
-    return this.httpClient.get<EmployeResponse[]>('employe');
+    return this.httpClient.get<EmployeResponse[]>(`employe`);
   }
 
   public findById(id: number): Observable<EmployeResponse> {

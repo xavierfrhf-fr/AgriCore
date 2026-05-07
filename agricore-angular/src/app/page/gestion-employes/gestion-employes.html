@@ -1,0 +1,75 @@
+<<div class="gestion-employes-container">
+  <h1>Gestion des Employés</h1>
+
+  <!--
+  <button class="btn-primary" (click)="toggleForm()">
+    {{ showForm ? 'Annuler' : 'Ajouter un employé' }}
+  </button> -->
+
+ <!--  @if (showForm) {-->
+    <div class="panneau">
+      <h2>Créer un nouvel employé</h2>
+      <form [formGroup]="employeForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="nom">Nom :</label>
+          <input type="text" id="nom" formControlName="nom" required>
+          @if (employeForm.get('nom')?.touched && employeForm.get('nom')?.invalid) {
+            <small class="error">Le nom est obligatoire</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="prenom">Prénom :</label>
+          <input type="text" id="prenom" formControlName="prenom" required>
+          @if (employeForm.get('prenom')?.touched && employeForm.get('prenom')?.invalid) {
+            <small class="error">Le prénom est obligatoire</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="login">Login :</label>
+          <input type="text" id="login" formControlName="login" required>
+          @if (employeForm.get('login')?.touched && employeForm.get('login')?.invalid) {
+            <small class="error">Le login est obligatoire</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe :</label>
+          <input type="password" id="password" formControlName="password" required>
+          @if (employeForm.get('password')?.touched && employeForm.get('password')?.invalid) {
+            <small class="error">Le mot de passe est obligatoire</small>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="bouton bouton-creer" [disabled]="employeForm.invalid">
+            Créer l'employé
+          </button>
+          <button type="button" class="bouton bouton-supprimer" (click)="toggleForm()">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+ <!-- }-->
+
+  <div class="employes-list">
+    <h2>Liste des employés</h2>
+    @if ( ((employes$ | async)?.length === 0) ) {
+      <p>Aucun employé trouvé.</p>
+    } @else {
+      <div class="employes-grid">
+        @for (employe of (employes$ | async); track employe.id) {
+          <div class="panneau">
+            <h3>Prénom : {{ employe.prenom }} Nom : {{ employe.nom }}</h3>
+            <p><strong>Login:</strong> {{ employe.login }}</p>
+            <button class="bouton bouton-supprimer" (click)="deleteEmploye(employe.id)">
+              Supprimer
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
