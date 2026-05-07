@@ -100,7 +100,7 @@
                         <small>Le prenom est obligatoire</small>
                     </div>
 
-                    <input class="identifiant"  type="text" formControlName="email" placeholder="email">
+                    <input class="identifiant"  type="email" formControlName="email" placeholder="email">
 
                     <div class="text-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
                         <small>Le mail est obligatoire</small>

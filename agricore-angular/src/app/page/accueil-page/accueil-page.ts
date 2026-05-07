@@ -32,7 +32,7 @@ export class AccueilPage implements OnInit {
       password: ['', Validators.required],
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
-      email: ['', Validators.required]
+      email: ['', Validators.required,Validators.email]
     })
 
   }

@@ -27,7 +27,7 @@ export class GestionEmployes implements OnInit {
 
     this.employes$ = this.refresh$.pipe(
           startWith(null),
-          switchMap(() => this.employeService.findAll()) //appel api vers le findAll vehicule
+          switchMap(() => this.employeService.findAll()) //appel api vers le findAll employe
         );
     this.employeForm = this.formBuilder.group({
       nom: ['', Validators.required],
@@ -36,16 +36,6 @@ export class GestionEmployes implements OnInit {
       password: ['', Validators.required]
     });
 
-    this.loadEmployes();
-
-  }
-
-  loadEmployes(): void {
-    
-    this.employeService.findAll().subscribe({
-      next: (data) => this.employe = data,
-      error: (error) => console.error('Erreur lors du chargement des employés:', error)
-    });
   }
 
   toggleForm(): void {
@@ -68,8 +58,7 @@ export class GestionEmployes implements OnInit {
         console.log('Employé créé avec succès');
         this.employeForm.reset();
         this.reload();
-        
-
+      
     });
   }
 
@@ -77,7 +66,7 @@ export class GestionEmployes implements OnInit {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet employé ?')) {
       this.employeService.deleteById(id).subscribe({
         next: () => {
-          console.log('Employé supprimé avec succès');
+          //console.log('Employé supprimé avec succès');
           this.reload();
         },
         error: (error) => {
