@@ -8,6 +8,7 @@ import {AgriSelect} from '../../component/form/agri-select/agri-select';
 import {AgriSubmit} from '../../component/form/agri-submit/agri-submit';
 import {PrixRequestDto} from '../../dto/ressource/request/prix-request-dto';
 import {RessourceRequestDto} from '../../dto/ressource/request/ressource-request-dto';
+import {TransformationRequestDto} from '../../dto/ressource/request/transformation-request-dto';
 import {PrixResponseDto} from '../../dto/ressource/response/prix-response-dto';
 import {RessourceResponseDto} from '../../dto/ressource/response/ressource-response-dto';
 import {RessourceDataDto} from '../../dto/ressource/ressource-data-dto';
@@ -48,16 +49,20 @@ export class RessourcePage implements OnInit, AfterViewInit {
 
   protected transformations$!: Observable<TransformationDataDto[]>;
   protected transformationsList: TransformationDataDto[] = [];
+  protected ressourcesList: RessourceResponseDto[] = [];
 
   protected afficheRessourceForm = false;
   protected affichePrixForm = false;
   protected afficheTransformationForm = false;
   protected afficheTransformationList = false;
+  protected creationDepuisTransformation = false;
+
+  protected ressourceEnTransformation: RessourceResponseDto|null = null;
+  protected transformationsDuForm: TransformationDataDto[] = [];
+  protected transformationSelectionnee: TransformationDataDto|null = null;
 
   // États d'édition
-
   protected ligneEnEdition: RessourceResponseDto|null = null;
-
   protected celluleEnEdition: {id: string; champ: string;}|null = null;
 
   // Formulaire partagé création / édition inline
@@ -67,21 +72,16 @@ export class RessourcePage implements OnInit, AfterViewInit {
   protected stockMinCtrl!: FormControl;
 
   // Formulaire spécifique pour la création de prix
-  // prixPar: number;
-  // quantiteLot: number;
-  // unite: string;
   protected prixCtrl!: FormGroup;
   protected prixParCtrl!: FormControl;
   protected quantiteLotCtrl!: FormControl;
   protected uniteCtrl!: FormControl;
-  // ajouter les controles nécessaires pour le prix
 
-  // TODO: formulaire transformation (à extraire dans son propre composant)
-  // protected transformationForm!: FormGroup;
-  // protected produitTransfoCtrl!: FormControl;
-  // protected quantiteDesireCtrl!: FormControl;
-  // protected partielCtrl!: FormControl;
-  // protected bypassStockMinCtrl!: FormControl;
+  protected transformationForm!: FormGroup;
+  protected produitTransfoCtrl!: FormControl;
+  protected quantiteDesireCtrl!: FormControl;
+  protected partielCtrl!: FormControl;
+  protected bypassStockMinCtrl!: FormControl;
 
   protected colWidths: string[] = [];
 
@@ -89,6 +89,10 @@ export class RessourcePage implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.ressources$ = this.refresh$.pipe(
         startWith(null), switchMap(() => this.ressourceService.findAll()));
+
+    this.ressources$.subscribe(list => {
+      this.ressourcesList = list;
+    });
 
     this.nomRessources$ = this.refresh$.pipe(
         startWith(null), switchMap(() => this.nomRessourceService.findAll()));
@@ -168,10 +172,21 @@ export class RessourcePage implements OnInit, AfterViewInit {
       nom: this.nomCtrl,
       quantite: this.quantiteCtrl,
       stockMin: this.stockMinCtrl,
-      prixLot: this.prixCtrl
+      prixLot: this.prixCtrl,
+    });
+
+    this.produitTransfoCtrl = this.formBuilder.control('', Validators.required);
+    this.quantiteDesireCtrl =
+        this.formBuilder.control(1, [Validators.required, Validators.min(1)]);
+    this.partielCtrl = this.formBuilder.control(false);
+    this.bypassStockMinCtrl = this.formBuilder.control(false);
+    this.transformationForm = this.formBuilder.group({
+      produit: this.produitTransfoCtrl,
+      quantiteDesire: this.quantiteDesireCtrl,
+      partial: this.partielCtrl,
+      bypassStockMin: this.bypassStockMinCtrl,
     });
   }
-
 
 
   getData(nom: string): RessourceDataDto|undefined {
@@ -199,17 +214,95 @@ export class RessourcePage implements OnInit, AfterViewInit {
   }
 
   ouvrirTransformationForm(ressource: RessourceResponseDto): void {
+    this.annulerModifier();
+    this.annulerCreer();
+    this.ressourceEnTransformation = ressource;
+    this.transformationsDuForm = this.transformationsList.filter(
+        t => t.ingredients.some(i => i.nomRessource === ressource.nom));
+    this.selectionnerTransformation(this.transformationsDuForm[0] ?? null);
     this.afficheTransformationForm = true;
   }
 
-  validerTransformationForm(): void {}
+  selectionnerTransformation(transfo: TransformationDataDto|null): void {
+    this.transformationSelectionnee = transfo;
+    this.produitTransfoCtrl.setValue(transfo?.produits[0]?.nomRessource ?? '');
+    this.quantiteDesireCtrl.setValue(1);
+  }
+
+  estTransformationDisponible(transfo: TransformationDataDto): boolean {
+    return transfo.zoneExist && transfo.maxTransfoPossible > 0;
+  }
+
+  aPossibleTransformation(ressource: RessourceResponseDto): boolean {
+    return this.transformationsList.some(
+        t => t.ingredients.some(i => i.nomRessource === ressource.nom));
+  }
+
+  getQuantiteMax(): number {
+    if (!this.transformationSelectionnee) return 1;
+    return this.transformationSelectionnee.produits[0]?.max ?? 1;
+  }
+
+  validerTransformationForm(): void {
+    if (this.transformationForm.invalid || !this.transformationSelectionnee)
+      return;
+    const dto: TransformationRequestDto = {
+      product: this.produitTransfoCtrl.value,
+      desiredQuantity: this.quantiteDesireCtrl.value,
+      partial: this.partielCtrl.value,
+      bypassStockMin: this.bypassStockMinCtrl.value,
+    };
+    this.transformationService.perform(dto).subscribe(() => {
+      this.annulerTransformationForm();
+      this.reload();
+    });
+  }
 
   annulerTransformationForm(): void {
     this.afficheTransformationForm = false;
+    this.ressourceEnTransformation = null;
+    this.transformationSelectionnee = null;
+  }
+
+  // Prix d'un produit de transformation — édition inline dans le formulaire
+
+  getPrixAffichageProduit(nomRessource: string): string {
+    const r = this.ressourcesList.find(res => res.nom === nomRessource);
+    if (!r?.prixLot) return '';
+    return r.prixLot.prixPar > 0 ? r.prixLot.affPrix : '';
+  }
+
+  ouvrirPrixProduitTransfo(nomRessource: string): void {
+    const ressource = this.ressourcesList.find(r => r.nom === nomRessource);
+
+    this.prixCtrl.reset({
+      prixPar: ressource?.prixLot?.prixPar ?? 0,
+      quantiteLot: ressource?.prixLot?.quantiteLot ?? 1,
+      unite: ressource?.prixLot?.unite ?? '',
+    });
+
+    // édition d'une ressource existante
+    this.ligneEnEdition = ressource ?? null;
+
+    // création d'une nouvelle ressource depuis transformation
+    if (!ressource) {
+      this.creationDepuisTransformation = true;
+
+      this.ressourceForm.patchValue({
+        nom: nomRessource,
+        quantite: 0,
+        stockMin: 0,
+      });
+    }
+
+    this.affichePrixForm = true;
   }
 
   private reload(): void {
     this.refresh$.next();
+    this.transformationService.getAll().subscribe(list => {
+      this.transformationsList = list;
+    });
   }
 
   // --- Création ---
@@ -256,6 +349,10 @@ export class RessourcePage implements OnInit, AfterViewInit {
             this.ligneEnEdition = null;
             this.reload();
           });
+    } else if (this.creationDepuisTransformation) {
+      this.affichePrixForm = false;
+      this.afficheRessourceForm = false;
+
     } else {
       // Mode création : le prix est déjà dans prixCtrl, embarqué dans
       // ressourceForm Le bouton "Créer" de la modale principale enverra tout
