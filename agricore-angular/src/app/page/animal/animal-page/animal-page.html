@@ -53,7 +53,7 @@
                     }</p>
                 <p>Date de naissance :
                     {{animal.dateNaissance | date:'dd/MM/yyyy'}}
-                <p>Age : {{animal.age}} ans</p>
+                <p>Age : @if(animal.age<1){moins d'un an} @else if (animal.age<=1) {{{animal.age}} an} @else {{{animal.age}} ans}</p>
             </div>
         </div>
 
