@@ -41,9 +41,15 @@ public class PlanteService {
 	// le controller a besoin de la methode findAll
 	// on veut parcourir la liste
 	public List<PlanteResponseDTO> findAll() {
-		return daoPlante.findAll()// recupere ttes les plantes dans la base
-				.stream()// permet de pouvoir par la suite tranformer les donnees
-				.map(PlanteResponseDTO::convert) // transforme chaque plante en PlanteResponse - meme chose que
+		List<Plante> plantes = daoPlante.findAll();
+		for (Plante plante : plantes){
+			plante.updateHumidite();
+			daoPlante.save(plante);
+		}
+
+		return plantes.stream()			// recupere ttes les plantes dans la base
+							// permet de pouvoir par la suite tranformer les donnees
+				.map(PlanteResponseDTO::convert) 		// transforme chaque plante en PlanteResponse - meme chose que
 													// .map(plante ->PlanteResponseDTO.convert(plante))
 				.toList();// permet de produire une liste
 	}
@@ -64,20 +70,19 @@ public class PlanteService {
 		p.setDernierUpdate(LocalDateTime.now());
 
         Zone zone = daoZone
-                .findById(plante.getZoneId())
-                .orElseThrow(
-                        ()-> new ZoneNotFoundException(plante.getZoneId())
-                );
+				.findByName(p.getEspece().getAllowedZone())
+				.stream()
+				.filter(z -> z.getPlante() == null)
+				.findFirst()
+				.orElseThrow(() -> new ZoneNotFoundException(p.getEspece().getAllowedZone()));
 
-        if (isPlanteAutoriseDansZone(plante.getEspece(), zone.getNomZone())){
-            p.setZone(zone);
-        }
+		p.setZone(zone);
 
         return PlanteResponseDTO.convert(daoPlante.save(p));
     }
-
+/*
 	public PlanteResponseDTO update(Integer id, PlanteRequestDTO plante) {
-
+	//Ne pas utiliser
 		Plante p =daoPlante.findById(id).orElse(null);
 
 		if(p == null) {
@@ -102,6 +107,8 @@ public class PlanteService {
 
         return PlanteResponseDTO.convert(daoPlante.save(p));
 	}
+
+ */
 
 	public void deleteById(Integer id) {
 		daoPlante.deleteById(id);

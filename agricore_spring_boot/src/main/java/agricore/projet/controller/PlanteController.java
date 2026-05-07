@@ -44,11 +44,12 @@ public class PlanteController {
         return planteService.insert(planteRequest);
     }
 
+    /*
     @PutMapping("/{id}")
     public PlanteResponseDTO update(@PathVariable Integer id, @RequestBody PlanteRequestDTO planteRequest) {
         return planteService.update(id, planteRequest);
     }
-
+    */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         planteService.deleteById(id);

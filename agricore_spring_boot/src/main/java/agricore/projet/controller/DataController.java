@@ -125,8 +125,13 @@ public class DataController {
     public List<PlanteDataDTO> getPlanteData() {
         List<PlanteDataDTO> dtos = new ArrayList<>();
         for (EspecePlante especePlante : EspecePlante.values()) {
-
+            boolean isCreatable = daoZone
+                    .findByName(especePlante.getAllowedZone())
+                    .stream()
+                    .anyMatch(z -> z.getPlante() == null);
+            dtos.add(PlanteDataDTO.convert(especePlante, isCreatable));
         }
+        return dtos;
     }
 
 }
