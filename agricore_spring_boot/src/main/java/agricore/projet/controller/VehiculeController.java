@@ -1,6 +1,5 @@
 package agricore.projet.controller;
 
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
-import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.dto.vehicule.response.TypeVehiculeDTO;
+import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.model.TypeVehicule;
+import agricore.projet.model.ressource.Ressource;
 import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.services.VehiculeService;
 import jakarta.validation.Valid;
@@ -33,6 +33,8 @@ public class VehiculeController {
     VehiculeController(IDAOVehicule vehiculeRepository, VehiculeService vehiculeService) {
         this.vehiculeService = vehiculeService;
     }
+
+
 
     @GetMapping("/types")
     public List<TypeVehiculeDTO> getTypesVehicule() {
@@ -61,6 +63,11 @@ public class VehiculeController {
     @PostMapping
     public VehiculeResponseDTO ajouter(@Valid @RequestBody VehiculeRequestDTO vehiculeRequestDTO) {
         return vehiculeService.create(vehiculeRequestDTO);
+    }
+
+    @PutMapping("/fairePlein")
+    public VehiculeResponseDTO fairePlein( @Valid @RequestBody VehiculeRequestDTO vehiculeRequestDTO, @Valid @RequestBody Ressource carburant) {
+        return null; //vehiculeService.fairePlein(vehiculeRequestDTO, carburant);
     }
 
     @DeleteMapping("/{id}")
