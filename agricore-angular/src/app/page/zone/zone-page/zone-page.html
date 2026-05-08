@@ -27,7 +27,7 @@
 </div>
 
 @if (isCreation) {
-  <div>
+  <div >
     <table class="creation-table">
       <tbody>
         @for (zoneData of zoneDatas$ |async; track zoneData.nomZone) {
@@ -58,10 +58,11 @@
     <div class="tables-container">
 
       <!-- plantZone -->
+      <div class="panneau" style="width: fit-content; height: fit-content">
       <table>
         <tbody>
           @for (item of groups.plantZone; track item.zone) {
-            <tr>
+            <tr class="bordure-pixel">
               <td>
                 <img [src]="item.zoneData?.pathSprite" height="80px">
                 <p>{{ item.zone.nomZone }}</p>
@@ -70,13 +71,14 @@
           }
         </tbody>
       </table>
-
+    </div>
 
       <!-- animalZone -->
+      <div class="panneau" style="width: fit-content; height: fit-content">
       <table>
         <tbody>
           @for (item of groups.animalZone; track item.zone) {
-            <tr>
+            <tr class="bordure-pixel">
 
               <td>
                 <img [src]="item.zoneData?.pathSprite" height="80px">
@@ -96,28 +98,37 @@
           }
         </tbody>
       </table>
+      </div>
 
         <!-- utilityZone -->
-      <table>
+      <div class="panneau" style="width: fit-content; height: fit-content">
+      <table >
         <tbody>
           @for (item of groups.utilityZone; track item.zone.id) {
-            <tr>
+            <tr class="bordure-pixel">
               <td>
                 <img [src]="item.zoneData?.pathSprite" height="80px">
                 <p>{{ item.zone.nomZone }}</p>
-              <td>case</td>
+              <td>
+              <ul>
+                @for (tranfo of item.zoneData?.transformations; track tranfo.transformation) {
+                  <app-transformation-display [transformationDataDTO]="tranfo"></app-transformation-display>
+                }
+              </ul>
+            </td>
               <td>case</td>
             </tr>
           }
         </tbody>
       </table>
+      </div>
 
       <!-- storage zone -->
-
+      <div class="panneau" style="width: fit-content; height: fit-content">
       <table>
         <tbody>
           @for (item of groups.storageZone; track item.zone.id) {
-            <tr>
+            <tr class="bordure-pixel">
               <td>
 
                 <img [src]="item.zoneData?.pathSprite" height="80">
@@ -137,6 +148,7 @@
           }
         </tbody>
       </table>
+      </div>
 
   </div>
   }
