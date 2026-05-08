@@ -7,6 +7,8 @@ import { PlanteData } from '../../../dto/plante/PlanteData';
 import { AsyncPipe } from '@angular/common';
 import { TempsPoussePipe } from '../../../pipe/temps-pousse-pipe';
 import { ConsoEauPipe } from '../../../pipe/conso-eau-pipe';
+import { ZoneService } from '../../../service/zone/zone-service';
+import { ZoneRequest } from '../../../dto/zone/request/zone-request';
 
 @Component({
   selector: 'app-ajout-plante-compo',
@@ -22,9 +24,12 @@ export class AjoutPlanteCompo implements OnInit {
   private refresh$: Subject<void> = new Subject<void>();
   protected planteData$!: Observable<PlanteData[]>;
 
+  statusMessage: { text: string; type: 'success' | 'error' } | null = null;
+
   constructor(
     protected planteService: PlanteService,
     protected dataService: DataService,
+    protected zoneService: ZoneService,
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +47,38 @@ export class AjoutPlanteCompo implements OnInit {
     this.closeAjout.emit();
   }
 
-  public createPlant(nomPlante: string) {
+  protected createZone(nomZone: string) {
+    let zoneReq: ZoneRequest = { nomZone: nomZone } as ZoneRequest;
+
+    this.zoneService.createZoneWithRandomPos(zoneReq).subscribe({
+      next: (success) => {
+        if (success) {
+          this.showMessage(`La zone ${nomZone} a été placée avec succès !`, 'success');
+          this.reload();
+        } else {
+          this.showMessage(`Échec du placement de la zone ${nomZone}.`, 'error');
+        }
+      },
+      error: (err) => {
+        this.showMessage('Erreur lors de la communication avec le serveur.', 'error');
+      },
+    });
+  }
+
+  protected createPlant(nomPlante: string) {
     let planteToAdd: PlanteRequest = { espece: nomPlante };
-    this.planteService.add(planteToAdd).subscribe(() => this.reload());
+    this.planteService.add(planteToAdd).subscribe(
+      () => {
+        this.reload();
+        this.showMessage(`La plante ${nomPlante} a été plantée avec succès !`, "success");
+      }
+    );
+  }
+
+  private showMessage(text: string, type: 'success' | 'error') {
+    this.statusMessage = { text, type };
+    setTimeout(() => {
+      this.statusMessage = null;
+    }, 5000);
   }
 }

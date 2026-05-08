@@ -48,6 +48,11 @@ public class ZoneController {
         return zoneService.create(request);
     }
 
+    @PostMapping("/randomPos")
+    public boolean createZoneWithRandomPosition(@RequestBody ZoneRequestDTO request){
+        return zoneService.createWithRandomPos(request.getNomZone());
+    }
+
     @PatchMapping("/{id}")
     public int patchZone(@RequestBody ZoneRequestDTO request, @PathVariable Integer id){
         return zoneService.patch(request, id);

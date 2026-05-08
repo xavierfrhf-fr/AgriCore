@@ -18,22 +18,4 @@ public record PlanteDataDTO(
         int production,
         ZoneDataDTO zone,
         RessourceDataDTO ressource
-        ) {
-    public static PlanteDataDTO convert(EspecePlante especePlante, int numberCreatable, boolean isProductStorable, boolean isVehiculeAvailable) {
-        return new PlanteDataDTO(
-                especePlante.name(),
-                especePlante.getNomAffichage(),
-                especePlante.getTempsPousseMinute(),
-                especePlante.getConsommationEauParMin(),
-                especePlante.getVehiculeRequis().name(),
-                (numberCreatable>0),
-                numberCreatable,
-                isProductStorable,
-                isVehiculeAvailable,
-                especePlante.getPathSprite(),
-                especePlante.getQuantite(),
-                ZoneDataDTO.from(especePlante.getAllowedZone()),
-                RessourceDataDTO.convert(especePlante.getRessourceProduite())
-        );
-    }
-}
+        ) {}

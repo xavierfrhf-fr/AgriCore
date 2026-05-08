@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlanteRequest } from '../../dto/plante/plante-request';
 import { PlanteResponse } from '../../dto/plante/plante-response';
+import { MessageDTO } from '../../dto/message-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +31,9 @@ public add(newPlante: PlanteRequest): Observable<PlanteResponse> {
   public arroser(id: number): Observable<void> {
     return this.http.post<void>(`/plante/arroser/${id}`, null);
   }
-  
+
+  public recolter(id:number):Observable<MessageDTO>{
+    return this.http.post<MessageDTO>(`plante/recolter/${id}`, null);
+  }
+
 }

@@ -12,7 +12,7 @@ import agricore.projet.model.ressource.NomRessource;
 public record PlanteResponseDTO(Integer id,
 								LocalDateTime datePlantation,
 								EspecePlante espece,
-								String nomAfffichage,
+								String nomAffichage,
 								int zoneId,
 								LocalDateTime dernierUpdate,
 								double humidite,
