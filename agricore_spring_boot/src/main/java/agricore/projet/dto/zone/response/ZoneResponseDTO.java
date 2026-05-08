@@ -9,16 +9,15 @@ public class ZoneResponseDTO {
     private Integer id;
     private PositionResponseDTO position;
     private NomZone nomZone;
-    private Integer fermierId;
     private TypeZone typeZone;
 
     public ZoneResponseDTO() {}
 
-    public ZoneResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId) {
+    public ZoneResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone) {
         this.id = id;
         this.position = position;
         this.nomZone = nomZone;
-        this.fermierId = fermierId;
+
         this.typeZone = nomZone.getTypeZone();
     }
 
@@ -45,14 +44,6 @@ public class ZoneResponseDTO {
 
     public PositionResponseDTO getPosition() {
         return position;
-    }
-
-    public Integer getFermierId() {
-        return fermierId;
-    }
-
-    public void setFermierId(Integer fermierId) {
-        this.fermierId = fermierId;
     }
 
     public void setPosition(PositionResponseDTO position) {

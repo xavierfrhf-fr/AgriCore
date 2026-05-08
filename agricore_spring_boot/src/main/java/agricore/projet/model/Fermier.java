@@ -11,10 +11,7 @@ public class Fermier extends Utilisateur {
 	
 	@OneToMany(mappedBy="fermier")
 	private List<Employe> employe;
-	
-	@OneToMany(mappedBy="fermier")
-	private List<Zone> zones;
-	
+
 
 	public Fermier() {}
 
@@ -22,18 +19,10 @@ public class Fermier extends Utilisateur {
 		return employe;
 	}
 
-	public List<Zone> getZone() {
-		return zones;
-	}
-
 	public void setEmploye(List<Employe> employe) {
 		this.employe = employe;
 	}
 
-	public void setZone(List<Zone> zone) {
-		this.zones = zone;
-	}
-	
 	
 	public Fermier(Integer id, String login, String password, String nom, String prenom) {
 		super(id, login, password, nom, prenom);

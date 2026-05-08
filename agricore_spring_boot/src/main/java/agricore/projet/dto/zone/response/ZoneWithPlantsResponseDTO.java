@@ -8,8 +8,8 @@ import agricore.projet.model.zone.Zone;
 public class ZoneWithPlantsResponseDTO extends ZoneResponseDTO{
     private PlanteResponseDTO plante;
 
-    public ZoneWithPlantsResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, PlanteResponseDTO plante) {
-        super(id, position, nomZone, fermierId);
+    public ZoneWithPlantsResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, PlanteResponseDTO plante) {
+        super(id, position, nomZone);
         this.plante = plante;
     }
 
@@ -27,7 +27,6 @@ public class ZoneWithPlantsResponseDTO extends ZoneResponseDTO{
     public static ZoneWithPlantsResponseDTO convert (Zone zone){
         ZoneWithPlantsResponseDTO response = new ZoneWithPlantsResponseDTO();
         response.setId(zone.getId());
-        response.setFermierId(zone.getFermier().getId());
         response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         try{

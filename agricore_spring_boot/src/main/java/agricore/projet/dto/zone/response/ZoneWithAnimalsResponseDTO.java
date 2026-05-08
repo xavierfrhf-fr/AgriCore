@@ -13,8 +13,8 @@ public class ZoneWithAnimalsResponseDTO extends ZoneResponseDTO {
     public ZoneWithAnimalsResponseDTO() {
     }
 
-    public ZoneWithAnimalsResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, List<AnimalResponse> animals) {
-        super(id, position, nomZone, fermierId);
+    public ZoneWithAnimalsResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, List<AnimalResponse> animals) {
+        super(id, position, nomZone);
         this.animals = animals;
     }
 
@@ -29,7 +29,6 @@ public class ZoneWithAnimalsResponseDTO extends ZoneResponseDTO {
     public static ZoneWithAnimalsResponseDTO convert (Zone zone){
         ZoneWithAnimalsResponseDTO response = new ZoneWithAnimalsResponseDTO();
         response.setId(zone.getId());
-        response.setFermierId(zone.getFermier().getId());
         response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         response.setAnimals(zone.getAnimals()

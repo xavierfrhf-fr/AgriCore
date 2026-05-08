@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import agricore.projet.dto.utilisateur.request.FermierRequestDTO;
 import agricore.projet.dto.utilisateur.response.FermierResponseDTO;
 import agricore.projet.dto.utilisateur.response.FermierWithEmployeResponseDTO;
-import agricore.projet.dto.utilisateur.response.FermierWithZoneResponseDTO;
 
 import agricore.projet.services.EmployeService;
 import agricore.projet.services.FermierService;
@@ -50,11 +48,6 @@ public class FermierController {
 	@GetMapping("/employe/{id}")
 	public FermierWithEmployeResponseDTO getFermierWithEmploye(@PathVariable Integer id){
 		return fermierService.getFermierWithEmploye(id);
-	}
-	
-	@GetMapping("/zone/{id}")
-	public FermierWithZoneResponseDTO getFermierWithZoneResponse(@PathVariable Integer id){
-		return fermierService.getFermierWithZone(id);
 	}
 	
 	@PostMapping
