@@ -41,4 +41,16 @@ export class VehiculeService {
   fairePlein(id: number): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${id}/fairePlein`, {})
   }
+
+  acheterAnimal(animalId: number, vehiculeId: number): Observable<void> {
+
+    return this.http.post<void>(`${this.apiUrl}/${animalId}/acheterAnimal?vehiculeId=${vehiculeId}`, {});
+  }
+
+  recolterPlante(planteId: number, vehiculeId: number): Observable<void> {
+
+    return this.http.post<void>(`${this.apiUrl}/${planteId}/recolterPlante?vehiculeId=${vehiculeId}`,{});
+  }
+
+
 }
