@@ -30,7 +30,7 @@ export class App {
 
   private routesWithoutNavbar: string[] = ['/accueil', '/boutique', '/boutique/panier'];
   private routesWithoutHeader: string[] = ['/accueil', '/boutique', '/boutique/panier', '/boutique/vente'];
-  private routesWithoutFooter: string[] = ['/accueil'];
+  private routesWithoutFooter: string[] = ['/accueil', '/boutique', '/boutique/panier', '/boutique/vente'];
   private routesWithoutFond: string[] = ['/accueil', '/boutique', '/boutique/panier', '/boutique/vente'];
 
   constructor(private router: Router) {
