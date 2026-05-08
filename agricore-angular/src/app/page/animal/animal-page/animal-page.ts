@@ -48,6 +48,8 @@ export class AnimalPage {
   protected especeCtrl!: FormControl;
   protected zoneCtrl!: FormControl;
 
+  protected initialDate = new Date("1970-01-01");
+
   ngOnInit(): void {
 
     this.animals$ = this.refresh$.pipe(
@@ -60,9 +62,9 @@ export class AnimalPage {
 
     this.isMaleCtrl = this.formBuilder.control('false', Validators.required);
     this.dateNaissanceCtrl = this.formBuilder.control(new Date(), Validators.required);
-    this.dateVaccinationCtrl = this.formBuilder.control(new Date(), Validators.required);
+    this.dateVaccinationCtrl = this.formBuilder.control('');
     this.especeCtrl = this.formBuilder.control(null, Validators.required);
-    this.zoneCtrl = this.formBuilder.control(-1, Validators.required);
+    this.zoneCtrl = this.formBuilder.control(-1);
 
 
     this.animalForm = this.formBuilder.group({
@@ -128,6 +130,7 @@ export class AnimalPage {
     this.afficheModifForm = false;
     this.afficheCreateForm = false;
     this.animal = null;
+    this.animalForm.reset();
   }
 
   deleteAnimal(id: number) {
@@ -162,14 +165,13 @@ export class AnimalPage {
   }
 
   createAnimal() {
-    if (this.animalForm.invalid || !this.animal) return;
+    if (this.animalForm.invalid) return;
 
     const animalRequest: AnimalRequest = this.animalForm.getRawValue();
 
     this.animalService.add(animalRequest).subscribe(() => {
       this.animal = null;
-      this.afficheDetailedInfos = false;
-      this.afficheModifForm = false;
+      this.afficheCreateForm = false;
       this.animalForm.reset();
       this.refresh$.next();
     })

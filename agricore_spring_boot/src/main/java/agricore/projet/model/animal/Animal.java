@@ -35,7 +35,6 @@ public class Animal {
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
 
-
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
 	private Zone zone;
@@ -113,7 +112,12 @@ public class Animal {
 	}
 
 	public int delaiAvantVaccin() {
-		int delais = (int) LocalDate.now().until(dateVaccination.plusYears(1), ChronoUnit.DAYS);
+		int delais;
+		if (dateVaccination == null) {
+			delais = 182;
+		} else {
+			delais = (int) LocalDate.now().until(dateVaccination.plusYears(1), ChronoUnit.DAYS);
+		}
 		return delais;
 	}
 
@@ -122,10 +126,8 @@ public class Animal {
 	}
 
 	public int getAge() {
-		int age = (int) this.dateNaissance.until(LocalDate.now(),ChronoUnit.YEARS);
+		int age = (int) this.dateNaissance.until(LocalDate.now(), ChronoUnit.YEARS);
 		return age;
 	}
-
-	
 
 }

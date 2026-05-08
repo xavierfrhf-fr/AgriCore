@@ -74,6 +74,13 @@
         0 2px 0 var(--bordure)
 }
 
+.zone-produit {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
 /* Formulaire infos détaillées + modif + création */
 .form {
     position: fixed;
@@ -144,6 +151,12 @@ button[style*="background-color: orange"] {
 .bouton-supprimer,
 .bouton-reinitialiser {
     min-width: 128px;
+}
+
+.bouton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(100%);
 }
 
 input[type="radio"] {

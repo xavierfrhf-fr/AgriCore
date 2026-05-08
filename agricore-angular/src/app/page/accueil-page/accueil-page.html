@@ -47,11 +47,9 @@
 
                 </div>
 
-                <input class="connexion" type="submit" id="btn"  (click)="connexion()" [disabled]="loginForm.invalid">
-                <button class="inscription"  placeholder="Inscription"   (click)="openInscription()" > 
-                    Inscription
-                </button>
+                <button class="connexion"  id="btn"  (click)="connexion()" [disabled]="loginForm.invalid">Connexion</button> 
                 
+                <button class="identifiant" id="btn"  (click)="openInscription()">Inscription</button>                 
             </form>
 
         </section>
@@ -76,6 +74,7 @@
 
             <form [formGroup]="registerForm">
                 <div class="input-wrapper">
+                    <p class="titre_p">Formulaire d'inscription</p>
                     
                     <input class="identifiant" type="text" formControlName="login" placeholder="login">
 
@@ -101,15 +100,13 @@
                         <small>Le prenom est obligatoire</small>
                     </div>
 
-                    <input class="identifiant"  type="text" formControlName="email" placeholder="email">
+                    <input class="identifiant"  type="email" formControlName="email" placeholder="email">
 
                     <div class="text-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
                         <small>Le mail est obligatoire</small>
                     </div>
 
-                    <button class="inscription"  placeholder="Inscription"   (click)="Inscription()" > 
-                    Inscription
-                </button>
+                    <button class="identifiant"   (click)="Inscription()">S'inscrire</button> 
 
                 </div>
 

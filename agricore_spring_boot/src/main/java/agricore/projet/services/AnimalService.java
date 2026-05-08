@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import agricore.projet.dto.animal.request.AnimalRequest;
+import agricore.projet.dto.animal.request.CreateAnimalRequest;
+import agricore.projet.dto.animal.request.UpdateAnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
 import agricore.projet.exception.AnimalNotAllowedInZoneException;
 import agricore.projet.exception.AnimalNotFoundException;
@@ -40,7 +41,7 @@ public class AnimalService {
         return AnimalResponse.convert(daoAnimal.findById(id).orElse(null));
     }
 
-    public AnimalResponse insert(AnimalRequest animal) {
+    public AnimalResponse insert(CreateAnimalRequest animal) {
 
         Animal a = new Animal();
 
@@ -49,21 +50,18 @@ public class AnimalService {
         a.setEspece(animal.getEspece());
 
         Zone zone = daoZone
-                .findById(animal.getZoneId())
-                .orElseThrow(
-                        ()-> new ZoneNotFoundException(animal.getZoneId())
-                );
+                .findByName(a.getEspece().getAllowedZone())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new ZoneNotFoundException(a.getEspece().getAllowedZone()));
 
-        if (isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone())){
-            a.setZone(zone);
-        }
-
+        a.setZone(zone);
         a.setMale(animal.isMale());
 
         return AnimalResponse.convert(daoAnimal.save(a));
     }
 
-    public AnimalResponse update(Integer id, AnimalRequest animal) {
+    public AnimalResponse update(Integer id, UpdateAnimalRequest animal) {
 
         Animal a = daoAnimal.findById(id).orElse(null);
 
@@ -78,10 +76,9 @@ public class AnimalService {
         Zone zone = daoZone
                 .findById(animal.getZoneId())
                 .orElseThrow(
-                        ()-> new ZoneNotFoundException(animal.getZoneId())
-                );
+                        () -> new ZoneNotFoundException(animal.getZoneId()));
 
-        if (isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone())){
+        if (isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone())) {
             a.setZone(zone);
         }
 
@@ -90,23 +87,23 @@ public class AnimalService {
         return AnimalResponse.convert(daoAnimal.save(a));
     }
 
-
     public void deleteById(Integer id) {
 
         daoAnimal.deleteById(id);
     }
 
     public boolean isAnimalAllowedInZone(EspeceAnimal espece, NomZone nomZone) {
-        //Retourne true si l'animal à le droit d'être dans cette Zone
-        if (!espece.getAllowedZone().equals(nomZone)){
+        // Retourne true si l'animal à le droit d'être dans cette Zone
+        if (!espece.getAllowedZone().equals(nomZone)) {
             throw new AnimalNotAllowedInZoneException(nomZone, espece);
-        }else{
+        } else {
             return true;
         }
     }
 
-    public boolean isAnimalAllowedInZone(AnimalRequest animal) {
-        //Surcharge potentiellement plus simple à utiliser (mais fait une 2eme requete SQL de la zone)
+    public boolean isAnimalAllowedInZone(UpdateAnimalRequest animal) {
+        // Surcharge potentiellement plus simple à utiliser (mais fait une 2eme requete
+        // SQL de la zone)
         return daoZone.findById(animal.getZoneId())
                 .map(zone -> isAnimalAllowedInZone(animal.getEspece(), zone.getNomZone()))
                 .orElseThrow(() -> new ZoneNotFoundException(animal.getZoneId()));

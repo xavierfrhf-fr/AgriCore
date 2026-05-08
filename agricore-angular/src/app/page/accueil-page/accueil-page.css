@@ -59,6 +59,10 @@ a {
     color: inherit;
 }
 
+.titre_p {
+    font-size: 40px;
+}
+
 
 body {
     position: absolute;
@@ -89,7 +93,12 @@ main {
     height: 312px;
     bottom:100px;
     width: 480px;
-    animation: fly 5s linear infinite;
+    animation: fly 25s linear infinite;
+}
+.close-window {
+    position: absolute;
+    right: 5px;
+    top: 5px;
 }
 
 
@@ -110,6 +119,24 @@ main {
   }
 }
 
+.form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+
+    /* fond assombri */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.35);
+}
+
 input {
     
     width: 200px;
@@ -127,6 +154,30 @@ input {
     font-size: 18px;
     background-color: transparent;
 }
+
+button {
+    
+    width: 200px;
+    height: 50px;
+
+    background-image: url("/assets/image/accueil/images/textBox.png");
+    background-size: 90%;
+    background-repeat: no-repeat;
+
+    border: none;
+    outline: none;
+
+    padding: 10px 15px;
+    font-family: var(--font-corps);
+    font-size: 18px;
+    background-color: transparent;
+}
+
+button.connexion:hover {
+
+    background-color: beige;
+}
+
 
 input.connexion {
     align-self: center;
