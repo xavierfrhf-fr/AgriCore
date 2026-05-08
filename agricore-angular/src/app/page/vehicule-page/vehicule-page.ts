@@ -136,11 +136,13 @@ export class VehiculePage implements OnInit {
   }
 
   fairePlein(vehicule: VehiculeResponseDTO): void {
-    this.vehiculeService.fairePlein(vehicule.id).subscribe( {next: () => {
-
-          this.reload();
-
-        }} );
+    this.vehiculeService.fairePlein(vehicule.id).subscribe( {
+      
+      next: () => { this.reload(); },
+      
+      error: (err) => {alert(err.error.message);}
+      
+    } );
   }
 
 
