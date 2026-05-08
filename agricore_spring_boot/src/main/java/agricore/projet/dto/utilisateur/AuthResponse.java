@@ -2,14 +2,14 @@ package agricore.projet.dto.utilisateur;
 
 public class AuthResponse {
     private String token;
-    private String role;
+    //private String role;
     private String username;
 
     public AuthResponse() {}
 
-    public AuthResponse(String token, String role, String username) {
+    public AuthResponse(String token, String username) {
         this.token = token;
-        this.role = role;
+        //this.role = role;
         this.username = username;
     }
 
@@ -21,13 +21,7 @@ public class AuthResponse {
         this.token = token;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+    
 
     public String getUsername() {
         return username;

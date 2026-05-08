@@ -14,7 +14,7 @@ export class Auth {
   constructor(private http: HttpClient) {}
 
 
-    login(username: string, password: string) {
+  login(username: string, password: string) {
     return this.http.post<AuthResponse>(`${this.apiUrl}`, {username,password})
   }
   // return this.http.post<string>(`${this.apiUrl}`, {username,password})
