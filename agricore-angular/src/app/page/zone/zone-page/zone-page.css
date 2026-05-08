@@ -1,7 +1,7 @@
 .tables-container {
   display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: 10px;
+  grid-template-columns: repeat(4,auto);
+  gap: 5px;
 }
 
 .tabs {
@@ -32,8 +32,6 @@
 
 .flex-list {
   display: grid;
-
-
 
   gap: 10px;
 
