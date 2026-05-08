@@ -16,7 +16,10 @@ import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.TypeVehiculeDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.model.TypeVehicule;
+import agricore.projet.model.Vehicule;
+import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.Ressource;
+import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.services.VehiculeService;
 import jakarta.validation.Valid;
@@ -29,9 +32,13 @@ public class VehiculeController {
 
   
     private final VehiculeService vehiculeService;
+    public final IDAOVehicule daoVehicule;
+    public final IDAORessource daoRessource;
 
-    VehiculeController(IDAOVehicule vehiculeRepository, VehiculeService vehiculeService) {
+    VehiculeController(IDAOVehicule vehiculeRepository, IDAORessource ressourceRepository, VehiculeService vehiculeService) {
         this.vehiculeService = vehiculeService;
+        this.daoVehicule = vehiculeRepository;
+        this.daoRessource = ressourceRepository;
     }
 
 
@@ -42,6 +49,17 @@ public class VehiculeController {
                 .map(tv -> new TypeVehiculeDTO(tv.name(), tv.getCapaciteReservoir(), tv.getConsoParKm()))
                 .toList();
     }
+
+    @PostMapping("/{id}/fairePlein")
+    public void fairePlein(@PathVariable Integer id) {
+        Vehicule vehicule = daoVehicule.findById(id).orElseThrow(() -> new RuntimeException("Véhicule non trouvé"));
+
+        Ressource carburant = daoRessource.findByNom(NomRessource.ESSENCE).orElseThrow(() -> new RuntimeException("Carburant non trouvé") );
+        
+        vehiculeService.fairePlein(vehicule, carburant);
+    }
+
+//CRUD de base pour les véhicules
 
     @GetMapping
     public List<VehiculeResponseDTO> getAll() {
@@ -65,10 +83,7 @@ public class VehiculeController {
         return vehiculeService.create(vehiculeRequestDTO);
     }
 
-    @PutMapping("/fairePlein")
-    public VehiculeResponseDTO fairePlein( @Valid @RequestBody VehiculeRequestDTO vehiculeRequestDTO, @Valid @RequestBody Ressource carburant) {
-        return null; //vehiculeService.fairePlein(vehiculeRequestDTO, carburant);
-    }
+   
 
     @DeleteMapping("/{id}")
     public void deleteVehicule(@PathVariable Integer id) { 

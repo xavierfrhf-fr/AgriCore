@@ -37,4 +37,8 @@ export class VehiculeService {
   public getTypes(): Observable<TypeVehiculeDTO[]> {
     return this.http.get<TypeVehiculeDTO[]>(`${this.apiUrl}/types`)
   }
+
+  fairePlein(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${id}/fairePlein`, {})
+  }
 }
