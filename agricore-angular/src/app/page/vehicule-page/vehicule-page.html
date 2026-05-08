@@ -34,6 +34,7 @@
           <th>Date contrôle technique</th>
           <th>Délai avant contrôle</th>
           <th>Zone</th>
+          <th>FairePlein</th>
           <th>Modification</th> <!-- Modification / Validation -->
           <th>Suppression</th> <!-- Suppression / Annulation -->
         </tr>
@@ -55,6 +56,16 @@
             </div>
             } @else {
             {{ vehicule.carburantActuel }} L
+
+              <div class="fuel-container">
+
+                <div class="fuel-bar"
+                    [style.width.%]="getFuelPercent(vehicule)"
+                    [style.backgroundColor]="getFuelColor(vehicule)">
+                </div>
+
+              </div>
+
             }
 
             
@@ -80,6 +91,11 @@
           <td style="text-transform: capitalize;">
             {{ vehicule.zoneNom }}
           </td>
+
+          <!-- Faire Plein -->
+          <button class="bouton bouton-creer" (click)="fairePlein(vehicule)" [disabled]="getFuelPercent(vehicule) >= 100">
+            Faire le plein
+          </button>
 
           <!-- Modifier / Valider -->
           <td>

@@ -12,6 +12,8 @@ import { ZoneService } from '../../../service/zone/zone-service';
 import { ZoneDTO } from '../../../dto/zone/response/zone-dto';
 import { AnimalData } from '../../../dto/animal/response/animal-data';
 import { DataService } from '../../../service/data-service';
+import { VehiculeResponseDTO } from '../../../dto/vehicule/response/vehicule-response-dto';
+import { VehiculeService } from '../../../service/vehicule';
 
 @Component({
   selector: 'app-animal-page',
@@ -24,6 +26,7 @@ export class AnimalPage {
   private animalService: AnimalService = inject(AnimalService);
   private dataService: DataService = inject(DataService);
   private zoneService: ZoneService = inject(ZoneService);
+  protected vehiculeService: VehiculeService = inject(VehiculeService);
   private formBuilder = inject(FormBuilder);
 
   protected animals$!: Observable<Animal[]>;
@@ -31,6 +34,8 @@ export class AnimalPage {
   protected zonesDisponibles$!: Observable<ZoneDTO[]>;
   protected refresh$: Subject<void> = new Subject<void>();
   protected refreshEspeces$: Subject<void> = new Subject<void>();
+  protected vehicules$!: Observable<VehiculeResponseDTO[]>;
+  
 
   protected afficheDetailedInfos: boolean = false;
   protected afficheModifForm: boolean = false;
@@ -52,6 +57,11 @@ export class AnimalPage {
 
   ngOnInit(): void {
 
+    this.vehicules$ = this.refresh$.pipe(
+      startWith(null),
+      switchMap(() => this.vehiculeService.findAll()) //appel api vers le findAll vehicule
+    );
+
     this.animals$ = this.refresh$.pipe(
       startWith(0), switchMap(() => this.animalService.findAll())
     );
@@ -72,7 +82,8 @@ export class AnimalPage {
       dateNaissance: this.dateNaissanceCtrl,
       dateVaccination: this.dateVaccinationCtrl,
       espece: this.especeCtrl,
-      zoneId: this.zoneCtrl
+      zoneId: this.zoneCtrl,
+      vehiculeId: [null, Validators.required]
     });
 
     this.isMaleCtrl.valueChanges.subscribe(value => {
@@ -169,11 +180,29 @@ export class AnimalPage {
 
     const animalRequest: AnimalRequest = this.animalForm.getRawValue();
 
-    this.animalService.add(animalRequest).subscribe(() => {
-      this.animal = null;
-      this.afficheCreateForm = false;
-      this.animalForm.reset();
-      this.refresh$.next();
+    this.animalService.add(animalRequest).subscribe( {
+      next: (animalCreated) => {
+        let vehiculeId = this.animalForm.value.vehiculeId;
+        
+        this.vehiculeService.acheterAnimal(
+          animalCreated.id, vehiculeId
+        ).subscribe( {
+
+          next: () => {
+            this.animal = null;
+            this.afficheCreateForm = false;
+            this.animalForm.reset();
+            this.refresh$.next();
+
+          },
+
+           error: (err) => {
+          alert(err?.error?.message || "Erreur achat animal");
+        }
+
+        })
+      }
+      
     })
   }
 }

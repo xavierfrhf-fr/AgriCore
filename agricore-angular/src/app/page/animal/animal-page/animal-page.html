@@ -209,6 +209,17 @@
                 </div>
 
                 <div class="champ">
+                    <label>Choisir un véhicule disponible</label>
+                    <select class="bordure-pixel" formControlName="vehiculeId">
+                        @for (v of (vehicules$ | async); track v.id) {
+                            <option [value]="v.id">
+                            {{ v.typeVehicule }} - {{ v.carburantActuel }}L
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="champ">
                     <p>Sexe :
                         <label><input type="radio" value="true" name="male" formControlName="male" />
                             Mâle</label>
@@ -231,6 +242,10 @@
                     <input type="date" class="bordure-pixel champ-date" [value]="animal?.dateVaccination"
                         formControlName="dateVaccination" />
                 </div>
+
+                
+
+
 
                 <div class="boutons">
 

@@ -65,6 +65,8 @@ export class VehiculePage implements OnInit {
     this.initForm(); //appel de la fonction pour initialiser le formulaire
   }
 
+  
+
 
   private initForm(): void {
     //champs de formulaire obligatoire
@@ -101,6 +103,78 @@ export class VehiculePage implements OnInit {
     this.carburantActuelCtrl.updateValueAndValidity(); // recalcule de la validité du champ
   }
 
+  //helper 
+
+  private getTypeVehicule(typeVehicule: String): TypeVehiculeDTO | undefined {
+    return this.typeVehicules.find(type => type.name === typeVehicule );
+  }
+
+  getFuelPercent(vehicule: VehiculeResponseDTO): number {
+
+    let type = this.getTypeVehicule(vehicule.typeVehicule);
+
+    if (!type) {
+    return 0;
+  }
+
+    return ( vehicule.carburantActuel / type.capaciteReservoir  ) * 100;
+  }
+
+  getFuelColor(vehicule: VehiculeResponseDTO): string {
+
+    const percent = this.getFuelPercent(vehicule);
+
+    if (percent < 20) {
+      return 'red';
+    }
+
+    if (percent < 50) {
+      return 'orange';
+    }
+
+    return 'green';
+  }
+
+  fairePlein(vehicule: VehiculeResponseDTO): void {
+    this.vehiculeService.fairePlein(vehicule.id).subscribe( {
+      
+      next: () => { this.reload(); },
+      
+      error: (err) => {alert(err.error.message);}
+      
+    } );
+  }
+
+
+  acheterAnimal(animalId: number, vehiculeId: number): void {
+
+    this.vehiculeService.acheterAnimal(animalId, vehiculeId)
+      .subscribe({
+        next: () => {
+          console.log("Animal acheté !");
+          this.refresh$.next(); // si tu utilises un refresh stream
+        },
+        error: (err) => {
+          alert(err?.error?.message || "Erreur achat animal");
+        }
+      });
+  }
+
+  recolterPlante(planteId: number, vehiculeId: number): void {
+
+    this.vehiculeService.recolterPlante(planteId, vehiculeId)
+      .subscribe({
+        next: () => {
+          console.log("Récolte effectuée !");
+          this.refresh$.next();
+        },
+        error: (err) => {
+          alert(err?.error?.message || "Erreur récolte");
+        }
+      });
+  }
+
+
   //déclenche un refresh des véhicules
   private reload(): void {
     this.refresh$.next();
@@ -112,6 +186,8 @@ export class VehiculePage implements OnInit {
     this.vehiculeForm.reset(); //reset formulaire
     this.afficheVehiculeForm = true; //affiche le formulaire 
   }
+
+
 
   validerCreer(): void { 
     if (this.vehiculeForm.invalid) return;
@@ -184,4 +260,6 @@ export class VehiculePage implements OnInit {
     const now = new Date();
     return Math.ceil((date.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
   }
+
+  
 }
