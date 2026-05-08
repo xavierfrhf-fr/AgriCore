@@ -28,10 +28,20 @@ export class App {
   affichFooter = true;
   affichFond = true;
 
-  private routesWithoutNavbar: string[] = ['/accueil', '/boutique/panier'];
-  private routesWithoutHeader: string[] = ['/accueil', '/boutique/panier', '/boutique/vente'];
-  private routesWithoutFooter: string[] = ['/accueil'];
-  private routesWithoutFond: string[] = ['/accueil', '/boutique/panier', '/boutique/vente'];
+  private routesWithoutNavbar: string[] = ['/accueil', '/boutique/panier', '/boutique'];
+  private routesWithoutHeader: string[] = [
+    '/accueil',
+    '/boutique/panier',
+    '/boutique/vente',
+    '/boutique',
+  ];
+  private routesWithoutFooter: string[] = ['/accueil', '/boutique'];
+  private routesWithoutFond: string[] = [
+    '/accueil',
+    '/boutique/panier',
+    '/boutique/vente',
+    '/boutique',
+  ];
 
   constructor(private router: Router) {
     this.router.events
