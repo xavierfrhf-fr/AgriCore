@@ -1,4 +1,8 @@
 <h1>Liste des plantes</h1>
+@if (addPlanteOpen){
+  <app-ajout-plante-compo (closeAjout)="closeAddPlante()"></app-ajout-plante-compo>
+}
+<button (click)="addPlanteOpen = true">Ajouter une plante</button>
 
 <div class="plante-list">
 

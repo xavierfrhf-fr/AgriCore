@@ -1,0 +1,60 @@
+
+<div class="form">
+  <div class="panneau" style="width: 500px; position:absolute;">
+    <img class="img-icone close-window click" src="assets/image/croix.png" (click)="closeAddPlante()" />
+
+    <p class="titre-section">
+      <img class="img-icone" src="assets/image/liste.png" />
+      Plantation de nouvelles plantes
+    </p>
+
+
+
+
+    <div class="bordure-pixel">
+      <table>
+        <tbody>
+        @for (planteData of planteData$ | async ; track planteData.nomEnum) {
+          <tr>
+            <td>{{planteData.nomAffichage}}</td>
+            <td><img class="img-icone" [src]="planteData.pathSprite"> > {{planteData.production}} <img class="img-icone" [src]="planteData.pathSpriteRessource"> </td>
+            <td><p> - {{planteData.tempsPousseMinute | tempsPousse}} </p></td>
+            <td>
+              @for (_ of (planteData.consommationEauParMin | consoEau); track $index) {
+                <img class="img-icone" src="assets/image/goutte.png">
+              }
+            </td>
+            <td>
+              @if (planteData.isCreatable){
+                <button class="bouton bouton-creer" (click)="createPlant(planteData.nomEnum)">PLANTER ({{planteData.allowedZone}})</button>
+              } @else {
+                <button class="bouton bouton-supprimer">{{planteData.allowedZone}} manquant</button>
+              }
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+    <table>
+      <tbody>
+      <tr>
+        <td><img height="80px" src="assets/image/zone/CHAMP.png" /></td>
+        <td><img height="80px" src="assets/image/zone/serre.png" /></td>
+        <td><img height="80px" src="assets/image/zone/VERGER.png" /></td>
+      </tr>
+      <tr>
+        <td><p> Champs libre: X</p></td>
+        <td><p> Serre libre: X</p></td>
+        <td><p> Verger libre: X</p></td>
+      </tr>
+      <tr>
+        <td><button class="bouton bouton-reinitialiser">Creer Champs</button></td>
+        <td><button class="bouton bouton-reinitialiser">Creer Serre</button></td>
+        <td><button class="bouton bouton-reinitialiser">Creer Verger</button></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
