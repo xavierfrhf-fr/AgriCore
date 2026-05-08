@@ -1,4 +1,5 @@
 import { CellOffset } from '../../../model/zone/position/cell-offset';
+import { TransformationDataDto } from '../../ressource/transformation-data-dto';
 
 export interface ZoneDataDTO {
   nomZone:string;
@@ -10,4 +11,5 @@ export interface ZoneDataDTO {
   nomAffichage:string;
   description:string;
   pathSprite:string;
+  transformations:TransformationDataDto[];
 }

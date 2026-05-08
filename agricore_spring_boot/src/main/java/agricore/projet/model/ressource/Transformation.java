@@ -3,6 +3,7 @@ package agricore.projet.model.ressource;
 import agricore.projet.model.zone.NomZone;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public enum Transformation {
@@ -57,5 +58,11 @@ public enum Transformation {
         return Arrays.stream(values())
                 .filter(transformation -> transformation.output.containsKey(nomRessource))
                 .count() == 1;
+    }
+
+    public static List<Transformation> transformationFromZone(NomZone nomZone) {
+        return Arrays.stream(values())
+                .filter(transformation -> transformation.requiredZone == nomZone)
+                .toList();
     }
 }

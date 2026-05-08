@@ -5,6 +5,7 @@ import agricore.projet.model.ressource.Unite;
 
 public record TransformationPartDTO(
         NomRessource nomRessource,
+        RessourceDataDTO ressourceDataDTO,
         int quantite,//"stoechiométrie de la transfo"
         Unite unite,
         boolean isProduct,//Pas forcément necessaire, mais indique si c'est un Produit (true) ou ingédient (false)

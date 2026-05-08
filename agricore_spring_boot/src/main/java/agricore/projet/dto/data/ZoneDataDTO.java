@@ -1,9 +1,12 @@
 package agricore.projet.dto.data;
 
 import agricore.projet.model.ressource.NomRessource;
+import agricore.projet.model.ressource.Transformation;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.TypeZone;
 import agricore.projet.model.zone.position.CellOffset;
+import agricore.projet.services.TransformationService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class ZoneDataDTO {
     private boolean zoneUnique;
     private List<NomRessource> nomRessources;
     private boolean zoneCreatable = false;
+    private List<TransformationDataDTO> transformations;
 
     public ZoneDataDTO(String nomZone, List<CellOffset> shape, TypeZone typeZone, boolean zoneUnique,
             List<NomRessource> nomRessources, String pathSprite, String nomAffichage, String description) {
@@ -105,18 +109,11 @@ public class ZoneDataDTO {
         this.description = description;
     }
 
-    public static ZoneDataDTO from(NomZone nomZone) {
-        ZoneDataDTO dto = new ZoneDataDTO();
-        dto.setNomZone(nomZone.name());
-        dto.setTypeZone(nomZone.getTypeZone());
-        dto.setPathSprite(nomZone.getPathSprite());
-        dto.setZoneUnique(nomZone.isZoneUnique());
-        dto.setDescription(nomZone.getDescription());
-        dto.setNomAffichage(nomZone.getNomAffichage());
-        dto.setShape(nomZone.getZoneShape()
-                .getShape()
-                .stream()
-                .toList());
-        return dto;
+    public List<TransformationDataDTO> getTransformations() {
+        return transformations;
+    }
+
+    public void setTransformations(List<TransformationDataDTO> transformations) {
+        this.transformations = transformations;
     }
 }
