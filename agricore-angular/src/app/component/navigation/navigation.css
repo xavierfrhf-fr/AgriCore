@@ -4,6 +4,19 @@ nav {
   width: 100vw;
   box-sizing: border-box;
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  transform: translateY(-15px);
+}
+
+nav.ouvert::before {
+  content: '';
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  background: rgba(205, 163, 114, 0.75);
+  pointer-events: none;
 }
 
 nav.ouvert {
