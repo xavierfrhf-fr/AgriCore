@@ -10,17 +10,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.TypeVehiculeDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
+import agricore.projet.model.Plante;
 import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.Vehicule;
+import agricore.projet.model.animal.Animal;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.Ressource;
+import agricore.projet.repository.IDAOAnimal;
+import agricore.projet.repository.IDAOPlante;
 import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOVehicule;
+import agricore.projet.repository.IDAOZone;
 import agricore.projet.services.VehiculeService;
 import jakarta.validation.Valid;
 
@@ -34,11 +40,17 @@ public class VehiculeController {
     private final VehiculeService vehiculeService;
     public final IDAOVehicule daoVehicule;
     public final IDAORessource daoRessource;
+    public final IDAOAnimal daoAnimal;  
+    public final IDAOZone daoZone;  
+    public final IDAOPlante daoPlante;
 
-    VehiculeController(IDAOVehicule vehiculeRepository, IDAORessource ressourceRepository, VehiculeService vehiculeService) {
+    VehiculeController(IDAOVehicule vehiculeRepository, IDAORessource ressourceRepository, VehiculeService vehiculeService, IDAOAnimal animalRepository, IDAOZone zoneRepository, IDAOPlante planteRepository) {
         this.vehiculeService = vehiculeService;
         this.daoVehicule = vehiculeRepository;
         this.daoRessource = ressourceRepository;
+        this.daoAnimal = animalRepository;
+        this.daoZone = zoneRepository;
+        this.daoPlante = planteRepository;
     }
 
 
@@ -50,6 +62,28 @@ public class VehiculeController {
                 .toList();
     }
 
+// Consommer du carburant pour acheter animal ou résolter ressource : on vérifie que le véhicule a assez de carburant pour faire le trajet, si oui on consomme le carburant nécessaire, sinon on lève une exception
+    @PostMapping("/{animalId}/acheterAnimal")
+    public void acheterAnimal(@PathVariable Integer animalId, @RequestParam Integer vehiculeId) {
+        
+        Vehicule vehicule = daoVehicule.findById(vehiculeId).orElseThrow(() -> new RuntimeException("Véhicule non trouvé"));
+        Animal animal = daoAnimal.findById(animalId).orElseThrow(() -> new RuntimeException("Animal non trouvé"));
+        
+        vehiculeService.acheterAnimal(animal,vehicule);
+    }
+
+    @PostMapping("/{planteId}/recolterPlante")
+    public void recolterPlante(@PathVariable Integer planteId, @RequestParam Integer vehiculeId) {
+        
+        Vehicule vehicule = daoVehicule.findById(vehiculeId).orElseThrow(() -> new RuntimeException("Véhicule non trouvé"));
+        Plante plante = daoPlante.findById(planteId).orElseThrow(() -> new RuntimeException("Plante non trouvée"));
+        
+        vehiculeService.recolterPlante(plante,vehicule);
+    }
+
+
+
+// FAIRE PLEIN : on consomme la ressource de carburant et on met à jour le niveau de carburant du véhicule.
     @PostMapping("/{id}/fairePlein")
     public void fairePlein(@PathVariable Integer id) {
         Vehicule vehicule = daoVehicule.findById(id).orElseThrow(() -> new RuntimeException("Véhicule non trouvé"));

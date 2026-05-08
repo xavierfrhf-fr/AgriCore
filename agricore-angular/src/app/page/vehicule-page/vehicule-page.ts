@@ -146,6 +146,35 @@ export class VehiculePage implements OnInit {
   }
 
 
+  acheterAnimal(animalId: number, vehiculeId: number): void {
+
+    this.vehiculeService.acheterAnimal(animalId, vehiculeId)
+      .subscribe({
+        next: () => {
+          console.log("Animal acheté !");
+          this.refresh$.next(); // si tu utilises un refresh stream
+        },
+        error: (err) => {
+          alert(err?.error?.message || "Erreur achat animal");
+        }
+      });
+  }
+
+  recolterPlante(planteId: number, vehiculeId: number): void {
+
+    this.vehiculeService.recolterPlante(planteId, vehiculeId)
+      .subscribe({
+        next: () => {
+          console.log("Récolte effectuée !");
+          this.refresh$.next();
+        },
+        error: (err) => {
+          alert(err?.error?.message || "Erreur récolte");
+        }
+      });
+  }
+
+
   //déclenche un refresh des véhicules
   private reload(): void {
     this.refresh$.next();
