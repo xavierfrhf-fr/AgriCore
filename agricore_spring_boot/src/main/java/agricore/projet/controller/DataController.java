@@ -9,6 +9,7 @@ import agricore.projet.dto.data.*;
 import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.EspecePlante;
 import agricore.projet.model.ressource.Transformation;
+import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.services.TransformationService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,13 @@ import agricore.projet.model.zone.position.Position;
 public class DataController {
 
     private final IDAOZone daoZone;
+    private final IDAOVehicule daoVehicule;
     private final TransformationService transformationService;
 
-    public DataController(IDAOZone daoZone, TransformationService transformationService) {
+    public DataController(IDAOZone daoZone, IDAOVehicule daoVehicule, TransformationService transformationService) {
         this.daoZone = daoZone;
         this.transformationService = transformationService;
+        this.daoVehicule = daoVehicule;
     }
 
     @GetMapping("/zone")
@@ -133,11 +136,14 @@ public class DataController {
     public List<PlanteDataDTO> getPlanteData() {
         List<PlanteDataDTO> dtos = new ArrayList<>();
         for (EspecePlante especePlante : EspecePlante.values()) {
-            boolean isCreatable = daoZone
+            int numberCreatable = Math.toIntExact(daoZone
                     .findByName(especePlante.getAllowedZone())
                     .stream()
-                    .anyMatch(z -> z.getPlante() == null);
-            dtos.add(PlanteDataDTO.convert(especePlante, isCreatable));
+                    .filter(z -> z.getPlante() == null)
+                    .count());
+            boolean isProductStorable = daoZone.existsByNomZone(especePlante.getAllowedZone());
+            boolean isVehiculeAvailable = daoVehicule.existsByTypeVehicule(especePlante.getVehiculeRequis());
+            dtos.add(PlanteDataDTO.convert(especePlante, numberCreatable, isProductStorable, isVehiculeAvailable));
         }
         return dtos;
     }

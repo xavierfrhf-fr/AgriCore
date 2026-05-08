@@ -3,84 +3,43 @@ package agricore.projet.dto.plante.response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import agricore.projet.dto.data.RessourceDataDTO;
 import agricore.projet.model.EspecePlante;
 import agricore.projet.model.Plante;
+import agricore.projet.model.ressource.NomRessource;
 
 //apres creation de la plante, cette classe permet de renvoyer proprement les donnees a l'utilisateur quand celui-ci cherche la plante
-public class PlanteResponseDTO {
-	private Integer id;
-	private LocalDate datePlantation;
-	private LocalDate dateRecolte;
-	private EspecePlante espece;
-	private Integer zoneId;
-	private LocalDateTime dernierUpdate;
-	private double humidite;
+public record PlanteResponseDTO(Integer id,
+								LocalDateTime datePlantation,
+								EspecePlante espece,
+								String nomAfffichage,
+								int zoneId,
+								LocalDateTime dernierUpdate,
+								double humidite,
+								double croissance,
+								boolean mature,
+								String pathSprite,
+								int production,
+								double croissanceParSec,
+								double consoEauParMin,
+								RessourceDataDTO ressource) {
 
-	public PlanteResponseDTO(Integer id, LocalDate datePlantation, LocalDate dateRecolte, EspecePlante espece, Integer zoneId, LocalDateTime dernierUpdate, double humidite) {
-		this.id = id;
-		this.datePlantation = datePlantation;
-		this.dateRecolte = dateRecolte;
-		this.espece = espece;
-		this.zoneId = zoneId;
-		this.dernierUpdate = dernierUpdate;
-		this.humidite = humidite;
-	}
-
-	public PlanteResponseDTO() {}
-
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public LocalDate getDatePlantation() {
-		return datePlantation;
-	}
-	public void setDatePlantation(LocalDate datePlantation) {
-		this.datePlantation = datePlantation;
-	}
-	public LocalDate getDateRecolte() {
-		return dateRecolte;
-	}
-	public void setDateRecolte(LocalDate dateRecolte) {
-		this.dateRecolte = dateRecolte;
-	}
-	public EspecePlante getEspece() {
-		return espece;
-	}
-	public void setEspece(EspecePlante espece) {
-		this.espece = espece;
-	}
-	public Integer getZoneId() {
-		return zoneId;
-	}
-	public void setZoneId(Integer zoneId) {
-		this.zoneId = zoneId;
-	}
-	public LocalDateTime getDernierUpdate() {
-		return dernierUpdate;
-	}
-	public void setDernierUpdate(LocalDateTime dernierUpdate) {
-		this.dernierUpdate = dernierUpdate;
-	}
-	public double getHumidite() {
-		return humidite;
-	}
-	public void setHumidite(double humidite) {
-		this.humidite = humidite;
-	} 
-	
 	public static PlanteResponseDTO convert (Plante plante) {
-		PlanteResponseDTO response = new PlanteResponseDTO();
-		response.setId(plante.getId());
-		response.setDatePlantation(plante.getDatePlantation());
-		response.setDateRecolte(plante.getDateRecolte());
-		response.setEspece(plante.getEspece());
-		response.setZoneId(plante.getZone().getId());
-		response.setDernierUpdate(plante.getDernierUpdate());
-		response.setHumidite(plante.getHumidite());
-		return response;
+		return new PlanteResponseDTO(
+				plante.getId(),
+				plante.getDatePlantation(),
+				plante.getEspece(),
+				plante.getEspece().getNomAffichage(),
+				plante.getZone().getId(),
+				plante.getDernierUpdate(),
+				plante.getHumidite(),
+				plante.getCroissance(),
+				plante.isMature(),
+				plante.getEspece().getPathSprite(),
+				plante.getEspece().getQuantite(),
+				plante.getCroissanceParSecond(),
+				plante.getEspece().getConsommationEauParMin(),
+				RessourceDataDTO.convert(plante.getEspece().getRessourceProduite())
+		);
 	}
-	
 }

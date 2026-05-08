@@ -43,7 +43,7 @@ public class PlanteService {
 	public List<PlanteResponseDTO> findAll() {
 		List<Plante> plantes = daoPlante.findAll();
 		for (Plante plante : plantes){
-			plante.updateHumidite();
+			plante.updateHumidite(false);
 			daoPlante.save(plante);
 		}
 
@@ -55,18 +55,19 @@ public class PlanteService {
 	}
 
 	public PlanteResponseDTO findById(Integer id) {
-
-		return PlanteResponseDTO.convert(daoPlante.findById(id).orElse(null));
+		return PlanteResponseDTO.convert(daoPlante.findById(id).orElseThrow(() -> new PlanteNotFoundException(id)));
 	}
 
 	public PlanteResponseDTO insert(PlanteRequestDTO plante) {
 
         Plante p = new Plante();
 
-        p.setDatePlantation(LocalDate.now());
-        p.setDateRecolte(p.getDatePlantation().plusMonths(plante.getEspece().getTempsPousseMois()));
+        p.setDatePlantation(LocalDateTime.now());
+
         p.setEspece(plante.getEspece());
+		p.setCroissance(0.);
 		p.setHumidite(100);
+		p.setMature(false);
 		p.setDernierUpdate(LocalDateTime.now());
 
         Zone zone = daoZone
