@@ -1,0 +1,9 @@
+<p>
+  @for (ingredient of transformationDataDTO.ingredients; track ingredient.nomRessource) {
+    {{ingredient.quantite}}<img [src]="ingredient.ressourceDataDTO.pathSprite" class="img-icone">
+  }
+>
+  @for (produit of transformationDataDTO.produits; track produit.nomRessource){
+    {{produit.quantite}}<img [src]="produit.ressourceDataDTO.pathSprite" class="img-icone">
+  }
+</p>

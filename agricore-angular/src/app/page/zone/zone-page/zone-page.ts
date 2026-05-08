@@ -8,6 +8,7 @@ import {
   filter,
   map,
   Observable,
+  of,
   shareReplay,
   startWith,
   Subject,
@@ -27,10 +28,11 @@ import { ZoneInfoPipe } from '../../../pipe/zone-info-pipe';
 import { ZoneGroups } from './ZoneGroups';
 import { TransformationDataDto } from '../../../dto/ressource/transformation-data-dto';
 import { TransformationService } from '../../../service/ressource/transformation-service';
+import { TransformationDisplay } from '../../../component/transformation-display/transformation-display';
 
 @Component({
   selector: 'app-zone-page',
-  imports: [MapComponent, AsyncPipe, TitleCasePipe, ZoneInfoPipe],
+  imports: [MapComponent, AsyncPipe, TitleCasePipe, ZoneInfoPipe, TransformationDisplay],
   templateUrl: './zone-page.html',
   styleUrl: './zone-page.css',
 })
@@ -107,11 +109,10 @@ export class ZonePage implements OnInit {
 
   protected getTransformationsFromNomZone(nomZone: string): Observable<TransformationDataDto[]> {
     return this.transformationData$.pipe(
-      map(transformations =>
+      map((transformations) =>
         transformations.filter(
-          transformation =>
-            transformation.requiredZone.trim().toLowerCase() ===
-            nomZone.trim().toLowerCase(),
+          (transformation) =>
+            transformation.requiredZone.trim().toLowerCase() === nomZone.trim().toLowerCase(),
         ),
       ),
     );
@@ -203,4 +204,5 @@ export class ZonePage implements OnInit {
 
   protected readonly ZoneShape = ZoneShape;
   protected readonly console = console;
+  protected readonly of = of;
 }
