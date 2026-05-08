@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,6 +26,9 @@ import agricore.projet.dto.vehicule.request.VehiculeRequestDTO;
 import agricore.projet.dto.vehicule.response.VehiculeResponseDTO;
 import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.model.TypeVehicule;
+import agricore.projet.repository.IDAOAnimal;
+import agricore.projet.repository.IDAOPlante;
+import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.services.JpaUserDetailsService;
@@ -59,6 +63,16 @@ public class VehiculeControllerTest {
 
     @MockitoBean
     private JwtUtils jwtUtils;
+
+    @MockitoBean
+    private IDAORessource daoRessource;
+    @MockitoBean
+    private IDAOAnimal daoAnimal;
+
+
+    @MockitoBean
+private IDAOPlante daoPlante;
+
 
 
     @MockitoBean

@@ -47,12 +47,12 @@ public class UtilisateurController {
         String token = JwtUtils.generate(authenticated);
 
         // Récupérer le rôle depuis l'authentification
-        String role = authenticated.getAuthorities().stream()
-            .findFirst()
-            .map(auth -> auth.getAuthority())
-            .orElse("CLIENT");
+        //String role = authenticated.getAuthorities().stream()
+        //    .findFirst()
+        //    .map(auth -> auth.getAuthority())
+        //    .orElse("CLIENT");
 
-        return new AuthResponse(token, role, request.getUsername());
+        return new AuthResponse(token,  request.getUsername());
     }
 
     @PostMapping("/auth/register")
