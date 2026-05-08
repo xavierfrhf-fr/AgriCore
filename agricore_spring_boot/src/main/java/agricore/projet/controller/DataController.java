@@ -1,6 +1,7 @@
 package agricore.projet.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -40,14 +41,29 @@ public class DataController {
     @GetMapping("/zone")
     public List<ZoneDataDTO> getZoneData() {
         List<ZoneDataDTO> dtos = new ArrayList<>();
-        for (NomZone zone : NomZone.values()) {
-            ZoneDataDTO zoneData = ZoneDataDTO.from(zone);
-            if (zone.isZoneUnique()) {
-                zoneData.setZoneCreatable(!this.daoZone.existsByNomZone(zone));
+        for (NomZone nomZone : NomZone.values()) {
+            ZoneDataDTO dto = new ZoneDataDTO();
+            dto.setNomZone(nomZone.name());
+            dto.setTypeZone(nomZone.getTypeZone());
+            dto.setPathSprite(nomZone.getPathSprite());
+            dto.setZoneUnique(nomZone.isZoneUnique());
+            dto.setDescription(nomZone.getDescription());
+            dto.setNomAffichage(nomZone.getNomAffichage());
+            dto.setShape(nomZone.getZoneShape()
+                    .getShape()
+                    .stream()
+                    .toList());
+            if (nomZone.isZoneUnique()) {
+                dto.setZoneCreatable(!this.daoZone.existsByNomZone(nomZone));
             } else {
-                zoneData.setZoneCreatable(true);
+                dto.setZoneCreatable(true);
             }
-            dtos.add(zoneData);
+            dto.setTransformations(Transformation
+                    .transformationFromZone(nomZone)
+                    .stream()
+                    .map(this::convertTransfo)
+                    .toList());
+            dtos.add(dto);
         }
         return dtos;
     }
@@ -73,47 +89,50 @@ public class DataController {
 
     @GetMapping("/transfo")
     public List<TransformationDataDTO> getTransformationData() {
-        List<TransformationDataDTO> dtos = new ArrayList<>();
+        return Arrays
+                .stream(Transformation.values())
+                .map(this::convertTransfo)
+                .toList();
+    }
 
-        for (Transformation transformation : Transformation.values()) {
-            Integer maxTransfo;
-            try {
-                maxTransfo = getMaxTransfo(transformation);
-            } catch (RessourceNotFoundException e) {
-                System.out.println(e.getMessage());
-                maxTransfo = 0;
-            }
-
-            List<TransformationPartDTO> produits = new ArrayList<>();
-            for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
-                produits.add(new TransformationPartDTO(
-                        output.getKey(),
-                        output.getValue(),
-                        output.getKey().getUniteStockage(),
-                        true,
-                        output.getValue() * maxTransfo));
-            }
-
-            List<TransformationPartDTO> ingredients = new ArrayList<>();
-            for (Map.Entry<NomRessource, Integer> input : transformation.getInput().entrySet()) {
-                ingredients.add(new TransformationPartDTO(
-                        input.getKey(),
-                        input.getValue(),
-                        input.getKey().getUniteStockage(),
-                        false,
-                        input.getValue() * maxTransfo));
-            }
-
-            dtos.add(new TransformationDataDTO(
-                    transformation,
-                    transformation.getRequiredZone(),
-                    daoZone.existsByNomZone(transformation.getRequiredZone()),
-                    maxTransfo,
-                    ingredients,
-                    produits));
-
+    public TransformationDataDTO convertTransfo(Transformation transformation) {
+        Integer maxTransfo;
+        try {
+            maxTransfo = getMaxTransfo(transformation);
+        } catch (RessourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            maxTransfo = 0;
         }
-        return dtos;
+
+        List<TransformationPartDTO> produits = new ArrayList<>();
+        for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
+            produits.add(new TransformationPartDTO(
+                    output.getKey(),
+                    RessourceDataDTO.convert(output.getKey()),
+                    output.getValue(),
+                    output.getKey().getUniteStockage(),
+                    true,
+                    output.getValue() * maxTransfo));
+        }
+
+        List<TransformationPartDTO> ingredients = new ArrayList<>();
+        for (Map.Entry<NomRessource, Integer> input : transformation.getInput().entrySet()) {
+            ingredients.add(new TransformationPartDTO(
+                    input.getKey(),
+                    RessourceDataDTO.convert(input.getKey()),
+                    input.getValue(),
+                    input.getKey().getUniteStockage(),
+                    false,
+                    input.getValue() * maxTransfo));
+        }
+        return new TransformationDataDTO(
+                transformation,
+                transformation.getRequiredZone(),
+                daoZone.existsByNomZone(transformation.getRequiredZone()),
+                maxTransfo,
+                ingredients,
+                produits
+        );
     }
 
     private int getMaxTransfo(Transformation transformation) {

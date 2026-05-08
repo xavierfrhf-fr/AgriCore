@@ -4,67 +4,12 @@ body {
   padding-bottom: 80px;
 }
 
-header {
-  background-color: #cda372;
-  min-height: 120px;
-  border-bottom-right-radius: 50px;
-  border-bottom-left-radius: 50px;
-  text-align: center;
-  font-weight: bold;
-  font-family: Stardew Valley;
+.header-fixe {
   position: fixed;
   top: 0;
   left: 0;
+  width: 100%;
   z-index: 1000;
-}
-
-.haut {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-}
-
-.logo p {
-  font-size: 20px;
-  color: #7a4707;
-}
-
-.logo img {
-  height: 70px;
-  display: flex;
-  justify-content: center;
-}
-
-.paysage img {
-  height: 100px;
-}
-
-.logo,
-.paysage,
-.boutique {
-  display: grid;
-  justify-items: center;
-  text-align: center;
-}
-
-.boutique span {
-  margin: 2px 0;
-  font-size: 25px;
-  display: flex;
-  align-content: center;
-  font-weight: bold;
-  font-family: Stardew Valley;
-
-  color: #7a4707;
-}
-
-.boutique img {
-  width: 50px;
-  height: 50px;
-}
-
-.logo img {
-  height: 70px;
 }
 
 .tableau {
@@ -79,6 +24,13 @@ header {
   font-weight: bold;
   margin-bottom: 10px;
   font-size: 25px;
+}
+
+.legende div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 /* lignes */
@@ -97,7 +49,9 @@ header {
 .produit {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  text-align: center;
 }
 
 .produit img {
@@ -160,12 +114,15 @@ footer {
 
 .btn-img {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .btn-img img {
   display: block;
-  height: 30px;
+  height: 36px;
 }
 .btn-img span {
   position: absolute;
@@ -175,6 +132,27 @@ footer {
   color: black;
   font-weight: bold;
   pointer-events: none;
-  font-family: Stardew Valley;
-  font-size: 20px;
+  font-family: 'Stardew Valley';
+  font-size: 25px;
+  white-space: nowrap;
+}
+
+footer {
+  background-color: #b27a37;
+  height: 60px;
+  border-top-right-radius: 50px;
+  border-top-left-radius: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  /* centre verticalement */
+  justify-content: space-evenly;
+  /* aligne à gauche */
+  padding-left: 10px;
+
+  z-index: 10;
 }

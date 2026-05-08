@@ -1,32 +1,11 @@
-<!--<header>
-    <meta charset="utf-8" />
-    <title>Agricore</title>
-    <link class="page" rel="icon" type="image" href="assets/image/boutique/logo-titre-onglet.PNG" />
+<div class="header-fixe">
+    <app-header
+        logoTexte="La ferme chez nous !"
+        [sloganItems]="sloganItems">
+    </app-header>
+</div>
 
-</header>-->
-<!-- Banniere du haut -->
-
-<div class="contenu">
-    <header>
-        <div class="haut">
-            <div class="logo">
-                <img src="assets/image/boutique/logo-titre.png" />
-                <p>La ferme chez vous !</p>
-            </div>
-
-            <div class="paysage">
-                <img src="assets/image/boutique/banniere.png" />
-            </div>
-            <div class="images">
-                <p><img class="maison" src="assets/image/boutique/maison.png" />Production locale</p>
-                <p><img class="vache" src="assets/image/boutique/vache.png" />Bien-être animal</p>
-                <p><img class="feuille" src="assets/image/boutique/feuille.png" />Zero produit chimique</p>
-            </div>
-        </div>
-    </header>
-
-    <!-- Contenu scrollable -->
-    <div class="content">
+<div class="content" >
         <div class="titre">
 
             <p>NOS PRODUITS FRAIS</p>
@@ -118,77 +97,24 @@
                     <button class="btn" (click)="augmente('oeufs')">+</button>
                 </div>
             </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fraise')">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente('fraise')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fraise')">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente('fraise')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fraise')">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente('fraise')">+</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fraise')">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente('fraise')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay" src="assets/image/boutique/fraise.png" alt="">
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fraise')">-</button>
-                    <span class="quantite">0</span>
-                    <button class="btn" (click)="augmente('fraise')">+</button>
-                </div>
-            </div>
-
 
         </div>
 
     </div>
-</div>
-<!-- Banniere du haut -->
+
 <footer>
     <nav>
-        <a href="" class="btn-img">
+        <a routerLink="/accueil" class="btn-img">
             <img src="assets/image/boutique/textBox.png" />
             <span>Accueil</span>
         </a>
-        <a href="" class="btn-img">
+        <a routerLink="/accueil" class="btn-img" (click)="logout()">
+            <img src="assets/image/boutique/textBox.png" />
             <span>Déconnexion</span>
-            <img src="assets/image/boutique/textBox.png" />
         </a>
-        <a href="" class="btn-img">
-            <span>Stock</span>
+        <a routerLink="/boutique/panier" class="btn-img">
             <img src="assets/image/boutique/textBox.png" />
+            <span>Panier</span>
         </a>
     </nav>
 </footer>

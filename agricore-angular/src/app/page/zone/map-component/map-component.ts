@@ -26,7 +26,8 @@ import { PositionDTO } from '../../../dto/zone/response/position-dto';
 })
 export class MapComponent {
   protected mapSize$!: Observable<MapSize>;
-  protected cellSize: number = 32;
+  protected cellSize: number = window.innerWidth/80;
+  largeurFenetre!: number;
   protected fakeZoneShapes: ZoneShape[] = [
     new ZoneShape(
       [
@@ -221,10 +222,9 @@ export class MapComponent {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
     [...shapes]
       .sort((a, b) => a.anchorY - b.anchorY)
-      .forEach(shape => {
+      .forEach((shape) => {
         this.drawShape(ctx, shape);
         this.placeSprite(shape, ctx);
       });

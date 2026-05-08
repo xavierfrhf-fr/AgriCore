@@ -1,31 +1,9 @@
-<!--<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Agricore</title>
-  </head>
-
-  <body> -->
-<header>
-  <div class="haut">
-    <div class="logo">
-      <img src="assets/image/boutique/logo-titre.png" />
-      <p>La ferme chez nous !</p>
-    </div>
-
-    <div class="paysage">
-      <img src="assets/image/boutique/banniere.png" />
-    </div>
-    <div class="slogan">
-      <p><img class="maison" src="assets/image/boutique/maison.png" />Production locale</p>
-      <p><img class="vache" src="assets/image/boutique/vache.png" />Bien-être locale</p>
-      <p><img class="feuille" src="assets/image/boutique/feuille.png" />Zero produit chimique</p>
-    </div>
-  </div>
-</header>
+<div class="header-fixe">
+  <app-header logoTexte="La ferme chez vous !" [sloganItems]="sloganItems"> </app-header>
+</div>
 
 <div class="content" style="padding-bottom: 20vh; padding-top: 20vh; background-color: #eadac7">
-  <div class="panier">
+  <div class="panier" style="height: 70%; align-items: center">
     <img src="assets/image/boutique/panierRempli.png" />
   </div>
 
@@ -36,14 +14,14 @@
 
     <table>
       <!--Deja pres rempli si la personne est deja connecte -->
-      <tr>
-        <td>Nom</td>
-        <td><input class="form-input" type="text" name="" value="" /></td>
-      </tr>
-      <tr>
-        <td>Prénom</td>
-        <td><input class="form-input" type="text" name="" value="" /></td>
-      </tr>
+      <div class="form-row">
+        <label for="nom">Nom</label>
+        <input class="form-input" type="text" name="" value="" />
+      </div>
+      <div class="form-row">
+        <label for="prenom">Prénom</label>
+        <input class="form-input" type="text" name="" value="" />
+      </div>
     </table>
 
     <div class="separator"></div>
@@ -66,7 +44,7 @@
         <tr>
           <td><img src="assets/image/boutique/fraise.png" /> Fraise</td>
           <td><span class="badge quantity-badge"> 1 Kg</span></td>
-          <td>5 €</td>
+          <td>4 €</td>
         </tr>
       </tbody>
     </table>
@@ -85,7 +63,7 @@
 
     <div class="separator"></div>
     <h2>Total</h2>
-    <div class="prix">8 €</div>
+    <div class="prix">7 €</div>
     <br /><br />
     <div class="buttons">
       <button class="button-telecharger">
@@ -94,7 +72,7 @@
       <br /><br />
       <div class="separator"></div>
       <h3>Note</h3>
-      <p class="payement">Le payement s'effectue sur place.</p>
+      <p class="payement">Le paiement s'effectue sur place.</p>
 
       <div class="buttons">
         <button class="button-modifier">
@@ -110,20 +88,20 @@
     </div>
   </div>
 </div>
-<!--
-    <footer>
-      <nav>
-        <a href="" class="btn-img">
-          <img src="assets/image/boutique/textBox.png" />
-          <span>Accueil</span>
-        </a>
-        <a href="" class="btn-img">
-          <span>Déconnexion</span>
-          <img src="assets/image/boutique/textBox.png" />
-        </a>
-      </nav>
-    </footer>
-    
-  </body>
-</html>
--->
+
+<footer>
+  <nav>
+    <a routerLink="/accueil" class="btn-img">
+      <img src="assets/image/boutique/textBox.png" />
+      <span>Accueil</span>
+    </a>
+    <a routerLink="/accueil" class="btn-img" (click)="logout()">
+      <img src="assets/image/boutique/textBox.png" />
+      <span>Déconnexion</span>
+    </a>
+    <a routerLink="/boutique" class="btn-img">
+      <img src="assets/image/boutique/textBox.png" />
+      <span>Boutique</span>
+    </a>
+  </nav>
+</footer>
