@@ -29,5 +29,4 @@ export const routes: Routes = [
   { path: 'animal', component: AnimalPage, title: 'Gestion des animaux' },
   { path: 'boutique', component: ProduitsPage, title: 'Boutique' },
   { path: 'plante', component: PlantePage, title: 'Gestion des plantes' },
-  { path: 'boutique', component: ProduitsPage, title: 'Boutique' },
 ];

@@ -1,83 +1,9 @@
-
-header {
-    background-color: #cda372;
-    min-height: 120px;
-    border-bottom-right-radius: 50px;
-    border-bottom-left-radius: 50px;
-
+.header-fixe {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-
     z-index: 1000;
-    display: flex;
-    align-items: center;
-}
-
-.haut {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    margin-left: 20px; 
-}
-
-.logo p {
-    font-size: 20px;
-    color: #7a4707;
-    margin-left: 40px;
-}
-
-.logo img {
-    height: 70px;
-    display: flex;    
-}
-
-.paysage img {
-    display: flex;
-    justify-content: center;
-    height: 100px;
-}
-
-/*images en haut a droite*/
-.images {
-
-    padding-right: 20px;
-
-}
-
-.images p {
-    display: flex;
-    align-items: center;
-    /* aligne verticalement */
-    gap: 10px;
-    /* espace entre image et texte */
-    margin: 0px 0;
-    font-family: Stardew Valley;
-    color: #7a4707;
-}
-
-.images img {
-    height: 40px;
-    width: 40px;
-}
-
-.maison,
-.vache,
-.feuille {
-    height: 25px;
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 70px;
-    display: flex;
-    justify-content: center;
 }
 
 /*CONTENU SCROLLABLE*/
@@ -110,7 +36,9 @@ header {
 .card {
     position: relative;
     overflow: hidden;
+    width: 80%;
 }
+
 
 /* image principale */
 .card .base {
@@ -125,6 +53,7 @@ header {
     z-index: 2;
     transform: translateX(-50%);
     /* ajuste pour vrai centrage */
+    height: auto;
 }
 
 .fraise {
@@ -132,50 +61,43 @@ header {
     /* distance du haut */
     left: 50%;
     /* centre horizontal */
-    width: 110px;
-    height: auto;
+    width: 55%;
 }
 
 .lait {
     top: 5%;
     left: 50%;
-    width: 120px;
-    height: auto;
+    width: 60%;
 }
 
 .fromage {
     top: 10%;
     left: 50%;
-    width: 160px;
-    height: auto;
+    width: 80%;
 }
 
 .poire {
     top: 7%;
     left: 50%;
-    width: 110px;
-    height: auto;
+    width: 55%;
 }
 
 .pomme {
     top: 10%;
     left: 50%;
-    width: 110px;
-    height: auto;
+    width: 55%;
 }
 
 .mais {
     top: 0%;
     left: 50%;
-    width: 140px;
-    height: auto;
+    width: 70%;
 }
 
 .oeuf {
     top: 13%;
     left: 50%;
-    width: 60px;
-    height: auto;
+    width: 30%;
 }
 
 /*nom prduit*/
@@ -185,9 +107,11 @@ header {
     transform: translate(-50%, -50%);
 
     color: #47280C;
-    font-size: 25px;
+    font-size: clamp(11px, 1.4vw, 25px);
     z-index: 2;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    padding-bottom: 10px;
 }
 
 .nom {
@@ -203,11 +127,12 @@ header {
 /* boutons par-dessus */
 .buttons {
     position: absolute;
-    bottom: 20px;
+    bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .btn {
@@ -264,12 +189,15 @@ footer {
 
 .btn-img {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .btn-img img {
     display: block;
-    height: 30px;
+    height: 36px;
 }
 
 .btn-img span {
@@ -280,6 +208,7 @@ footer {
     color: black;
     font-weight: bold;
     pointer-events: none;
-    font-family: Stardew Valley;
-    font-size: 20px;
+    font-family: 'Stardew Valley';
+    font-size: 25px;
+    white-space: nowrap;
 }

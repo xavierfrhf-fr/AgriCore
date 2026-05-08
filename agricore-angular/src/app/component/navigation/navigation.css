@@ -3,6 +3,26 @@ nav {
   padding: 8px 16px;
   width: 100vw;
   box-sizing: border-box;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  transform: translateY(-15px);
+}
+
+nav.ouvert::before {
+  content: '';
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  background: rgba(205, 163, 114, 0.75);
+  pointer-events: none;
+}
+
+nav.ouvert {
+  background: rgba(205, 163, 114, 0.75);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
 }
 
 .nav-container {
@@ -60,7 +80,6 @@ nav {
     inset 0 -1px 0 #c4a97d,
     inset 0 1px 0 #c4a97d;
   border-radius: 2px;
-  padding: 10px 2px;
   cursor: pointer;
   transition: background-color 0.1s;
 }
@@ -76,6 +95,7 @@ nav {
   text-decoration: none;
   letter-spacing: 0.5px;
   display: block;
+  padding: 10px 2px;
 }
 
 .nav-link.active {
