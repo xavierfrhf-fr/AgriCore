@@ -83,7 +83,7 @@ input[type='week']::-webkit-calendar-picker-indicator {
 .form-row label {
   color: var(--brown-soft);
   font-weight: 700;
-  text-align: right;
+  justify-self: center;
 }
 
 .header-fixe {
@@ -276,21 +276,21 @@ nav {
 }
 
 footer {
-    background-color: #b27a37;
-    height: 60px;
-    border-top-right-radius: 50px;
-    border-top-left-radius: 50px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+  background-color: #b27a37;
+  height: 60px;
+  border-top-right-radius: 50px;
+  border-top-left-radius: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 
-    display: flex;
-    align-items: center;
-    /* centre verticalement */
-    justify-content: space-evenly;
-    /* aligne à gauche */
-    padding-left: 10px;
+  display: flex;
+  align-items: center;
+  /* centre verticalement */
+  justify-content: space-evenly;
+  /* aligne à gauche */
+  padding-left: 10px;
 
-    z-index: 10;
+  z-index: 10;
 }
