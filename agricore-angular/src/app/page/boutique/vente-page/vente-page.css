@@ -105,12 +105,14 @@ footer {
   bottom: 0;
   left: 0;
   width: 100%;
-
   display: flex;
-  align-items: center; /* centre verticalement */
-  justify-content: space-evenly; /* aligne à gauche */
-  padding-left: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  z-index: 998;
 }
+
+footer nav { display: flex; gap: 12px; }
 
 .btn-img {
   position: relative;
@@ -120,39 +122,33 @@ footer {
   text-decoration: none;
 }
 
-.btn-img img {
-  display: block;
-  height: 36px;
-}
+.btn-img img { display: block; height: min(36px, 2.25vw); }
+
 .btn-img span {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: black;
+  color: #3a2510;
   font-weight: bold;
   pointer-events: none;
   font-family: 'Stardew Valley';
-  font-size: 25px;
+  font-size: min(25px, 1.5vw);
   white-space: nowrap;
 }
 
-footer {
-  background-color: #b27a37;
-  height: 60px;
-  border-top-right-radius: 50px;
-  border-top-left-radius: 50px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-
+.copyright {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  /* centre verticalement */
-  justify-content: space-evenly;
-  /* aligne à gauche */
-  padding-left: 10px;
-
-  z-index: 10;
+  gap: 6px;
+  color: #3a2510;
+  font-family: 'Stardew Valley';
+  font-size: min(24px, 1.45vw);
+  pointer-events: none;
+  white-space: nowrap;
 }
+
+.copyright img { height: min(16px, 1vw); width: min(16px, 1vw); object-fit: contain; }

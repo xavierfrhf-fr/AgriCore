@@ -29,7 +29,7 @@ nav {
 
 .btn-img img {
   display: block;
-  height: 36px;
+  height: min(36px, 2.25vw);
 }
 
 .btn-img span {
@@ -41,7 +41,7 @@ nav {
   font-weight: bold;
   pointer-events: none;
   font-family: 'Stardew Valley';
-  font-size: 25px;
+  font-size: min(25px, 1.5vw);
   white-space: nowrap;
 }
 
@@ -54,12 +54,13 @@ nav {
   gap: 6px;
   color: #3a2510;
   font-family: 'Stardew Valley';
-  font-size: 24px;
+  font-size: min(24px, 1.45vw);
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .copyright img {
-  height: 16px;
-  width: 16px;
+  height: min(16px, 1vw);
+  width: min(16px, 1vw);
   object-fit: contain;
 }
