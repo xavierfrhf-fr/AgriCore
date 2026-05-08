@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import agricore.projet.dto.animal.request.AnimalRequest;
+import agricore.projet.dto.animal.request.CreateAnimalRequest;
+import agricore.projet.dto.animal.request.UpdateAnimalRequest;
 import agricore.projet.dto.animal.response.AnimalResponse;
 import agricore.projet.services.AnimalService;
 
@@ -37,12 +38,12 @@ public class AnimalController {
     }
 
     @PostMapping
-    public AnimalResponse insert(@RequestBody AnimalRequest animalRequest) {
+    public AnimalResponse insert(@RequestBody CreateAnimalRequest animalRequest) {
         return animalService.insert(animalRequest);
     }
 
     @PutMapping("/{id}")
-    public AnimalResponse update(@PathVariable Integer id, @RequestBody AnimalRequest animalRequest) {
+    public AnimalResponse update(@PathVariable Integer id, @RequestBody UpdateAnimalRequest animalRequest) {
         return animalService.update(id, animalRequest);
     }
 

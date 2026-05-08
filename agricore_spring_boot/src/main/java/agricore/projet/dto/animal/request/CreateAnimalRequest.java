@@ -4,23 +4,21 @@ import java.time.LocalDate;
 
 import agricore.projet.model.animal.EspeceAnimal;
 
-public class AnimalRequest {
+public class CreateAnimalRequest {
 	
 	private boolean male;
 	private LocalDate dateNaissance;
 	private LocalDate dateVaccination;
 	private EspeceAnimal espece;
-    private Integer zoneId;
 
-	public AnimalRequest(boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece, Integer zoneId) {
+	public CreateAnimalRequest(boolean male, LocalDate dateNaissance, LocalDate dateVaccination, EspeceAnimal espece) {
 		this.male = male;
 		this.dateNaissance = dateNaissance;
 		this.dateVaccination = dateVaccination;
 		this.espece = espece;
-		this.zoneId = zoneId;
 	}
 
-	public AnimalRequest() {}
+	public CreateAnimalRequest() {}
 
 	public boolean isMale() {
 		return male;
@@ -46,14 +44,5 @@ public class AnimalRequest {
 	public void setEspece(EspeceAnimal espece) {
 		this.espece = espece;
 	}
-	public Integer getZoneId() {
-		return zoneId;
-	}
-	public void setZoneId(Integer zoneId) {
-		this.zoneId = zoneId;
-	}
 	
-	
-
-
 }
