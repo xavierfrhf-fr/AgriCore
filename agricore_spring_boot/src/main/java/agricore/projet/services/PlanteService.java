@@ -139,12 +139,12 @@ public class PlanteService {
 			System.out.println(p.getCroissance());
 			this.transformationService.createRessourceIfNotExist(p.getEspece().getRessourceProduite());
 			System.out.println("OK");
-			p.setCroissance(0);
-			p.setMature(false);
 		}catch (ZoneNotFoundException e) {
 			return new MessageDTO("Zone "+p.getEspece().getRessourceProduite().getZoneStockage().getNomAffichage()+", manquante pour le stockage de "+p.getEspece().getRessourceProduite().getNomAffichage(), false);
 		}
 
+		p.setCroissance(0);
+		p.setMature(false);
 		this.transformationService.changeQuantity(p.getEspece().getRessourceProduite(), p.getEspece().getQuantite());
 		this.daoPlante.save(p);
 		return new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
