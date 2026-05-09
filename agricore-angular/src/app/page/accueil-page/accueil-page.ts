@@ -32,7 +32,7 @@ export class AccueilPage implements OnInit {
       password: ['', Validators.required],
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
-      email: ['', Validators.required,Validators.email]
+      email: ['', [Validators.required,Validators.email] ]
     })
 
   }
@@ -52,8 +52,10 @@ export class AccueilPage implements OnInit {
         // Redirection basée sur le rôle
         if (this.authService.isFermier()) {
           this.router.navigate(['/gestion-employes']);
+        } else if (this.authService.isClient()) {
+          this.router.navigate(['/boutique']);
         } else {
-          this.router.navigate(['/animal']);
+          this.router.navigate(['/animal'])
         }
       },
       error: (error: any) => {

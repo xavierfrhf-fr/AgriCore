@@ -10,6 +10,8 @@ import { ProduitsPage } from './page/produits-page/produits-page';
 import { PlantePage } from './page/plante-page/plante-page';
 import { GestionEmployes } from './page/gestion-employes/gestion-employes';
 import { fermierGuard } from './guards/auth-guard';
+import { employeGuard } from './guards/auth-guard';
+import { clientGuard } from './guards/auth-guard';
 import { VentePage } from './page/boutique/vente-page/vente-page';
 
 export const routes: Routes = [
