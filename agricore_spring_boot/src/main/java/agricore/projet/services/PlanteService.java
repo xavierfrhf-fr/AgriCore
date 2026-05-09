@@ -1,25 +1,29 @@
 package agricore.projet.services;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 //permet de decider comment on cree une plante
 import java.util.List;
 
-import agricore.projet.dto.MessageDTO;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import agricore.projet.dto.MessageDTO;
 import agricore.projet.dto.plante.request.PlanteRequestDTO;
 import agricore.projet.dto.plante.response.PlanteResponseDTO;
 import agricore.projet.exception.PlanteNonAutoriseDansZoneException;
 import agricore.projet.exception.PlanteNotFoundException;
+import agricore.projet.exception.VehiculeNotFound;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.EspecePlante;
 import agricore.projet.model.Plante;
+import agricore.projet.model.TypeVehicule;
+import agricore.projet.model.Vehicule;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOPlante;
+import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.repository.IDAOZone;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PlanteService {
@@ -27,11 +31,15 @@ public class PlanteService {
 	private final IDAOPlante daoPlante;
 	private final IDAOZone daoZone;
 	private final TransformationService transformationService;
+	private final IDAOVehicule daoVehicule;
+	private final VehiculeService vehiculeService;
 
-	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone, TransformationService transformationService) {
+	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone, TransformationService transformationService, IDAOVehicule daoVehicule, VehiculeService vehiculeService) {
 		this.daoPlante = daoPlante;
 		this.daoZone = daoZone;
 		this.transformationService = transformationService;
+		this.daoVehicule = daoVehicule;
+		this.vehiculeService = vehiculeService;
 	}
 
 	public boolean isPlanteAutoriseDansZone(EspecePlante espece, NomZone nomZone){
@@ -129,6 +137,7 @@ public class PlanteService {
 
 	@Transactional
     public MessageDTO recolter(Integer id) {
+		
 		Plante p = daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
 		p.updateHumidite();
 
@@ -146,6 +155,19 @@ public class PlanteService {
 		}
 
 		//ICI VERIF VEHICULE (stp essaye de récupérer automatiquement le vehicule (et si plusieurs vehicules identiques prendre celui qui a le + de carburant))
+		try {
+		TypeVehicule vehiculeRequis = p.getEspece().getVehiculeRequis();
+
+		List<Vehicule> vehiculesDisponibles = daoVehicule.findByTypeVehicule(vehiculeRequis);
+
+		Vehicule vehiculeAvecPlusCarburant = vehiculesDisponibles.stream()
+				.max(Comparator.comparingInt(Vehicule::getCarburantActuel))
+				.orElseThrow(() -> new VehiculeNotFound("Aucun véhicule disponible pour la récolte"));
+		
+		vehiculeService.recolterPlante(p,vehiculeAvecPlusCarburant);
+		}catch (VehiculeNotFound e){
+			return new MessageDTO("Aucun véhicule disponible pour la récolte (véhicule requis : "+p.getEspece().getVehiculeRequis().name()+")", false);
+		}
 		/*
 		if (false){
 			return new MessageDTO(p.getEspece().getVehiculeRequis() + " manquant pour la récolte", false);
