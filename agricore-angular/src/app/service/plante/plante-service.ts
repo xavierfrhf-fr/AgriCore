@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { PlanteRequest } from '../../dto/plante/plante-request';
 import { PlanteResponse } from '../../dto/plante/plante-response';
 import { MessageDTO } from '../../dto/message-dto';
+import { PlanteZoneInfoDTO } from '../../dto/plante/plante-zone-info-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -36,4 +37,7 @@ public add(newPlante: PlanteRequest): Observable<PlanteResponse> {
     return this.http.post<MessageDTO>(`plante/recolter/${id}`, null);
   }
 
+  getPlanteZoneInfo():Observable<PlanteZoneInfoDTO[]> {
+    return this.http.get<PlanteZoneInfoDTO[]>("data/planteInfo");
+  }
 }

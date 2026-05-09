@@ -46,7 +46,7 @@ public enum EspecePlante {
 			false
 	),
 	POMMIER("Pommier",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"pommier.png",
 			10,
 			5,
 			NomZone.CHAMPS,
@@ -56,7 +56,7 @@ public enum EspecePlante {
 			true
 	),
 	FRAISIER("Faisier",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"fraisier.png",
 			10,
 			10,
 			NomZone.CHAMPS,
@@ -66,7 +66,7 @@ public enum EspecePlante {
 			true
 	),
 	POIRIER("Poirier",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"poirier.png",
 			10,
 			5,
 			NomZone.CHAMPS,
