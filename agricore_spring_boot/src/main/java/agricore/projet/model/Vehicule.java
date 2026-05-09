@@ -25,6 +25,7 @@ public class Vehicule {
 	private Integer id;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "varchar(100)")
 	private TypeVehicule typeVehicule;
 	
 	private LocalDate dateControleTech;

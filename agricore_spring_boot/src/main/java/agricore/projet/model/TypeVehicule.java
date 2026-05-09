@@ -1,11 +1,39 @@
 package agricore.projet.model;
 
+import agricore.projet.util.CheminAsset;
+
 public enum TypeVehicule {
 
-	UTILITAIRE("utilitaire",null,100,14),
-	TRACTEUR("tracteur",null,400,30),
-	MOISSONNEUSE("moissonneuse",null,400,40),
-	PICKUP("Pick-Up",null,80,13);
+	UTILITAIRE("utilitaire",
+			CheminAsset.VEHICULE+"utilitaire.png",
+			100,
+			14
+	),
+	TRACTEUR("tracteur",
+			CheminAsset.VEHICULE+"tracteur.png",
+			400,
+			30
+	),
+	MOISSONNEUSE("moissonneuse",
+			CheminAsset.VEHICULE+"moissonneuse.png",
+			400,
+			40
+	),
+	PETIT_TRACTEUR("tracteur pour vignes",
+			CheminAsset.VEHICULE+"petit_tracteur.png",
+			400,
+			40
+	),
+	BETAILLERE("bétaillère",
+			CheminAsset.VEHICULE+"betaillere.png",
+			400,
+			40
+	),
+	PICKUP("Pick-Up",
+			CheminAsset.VEHICULE+"pickup.png",
+			80,
+			13
+	);
 	
 	private String nomAffichage;
 	private String pathSprite;
