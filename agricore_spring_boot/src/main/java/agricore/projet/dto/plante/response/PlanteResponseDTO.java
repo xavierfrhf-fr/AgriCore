@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import agricore.projet.dto.data.RessourceDataDTO;
 import agricore.projet.model.EspecePlante;
 import agricore.projet.model.Plante;
+import agricore.projet.model.TypeVehicule;
 import agricore.projet.model.ressource.NomRessource;
 
 //apres creation de la plante, cette classe permet de renvoyer proprement les donnees a l'utilisateur quand celui-ci cherche la plante
@@ -13,6 +14,7 @@ public record PlanteResponseDTO(Integer id,
 								LocalDateTime datePlantation,
 								EspecePlante espece,
 								String nomAffichage,
+								TypeVehicule typeVehicule,
 								int zoneId,
 								LocalDateTime dernierUpdate,
 								double humidite,
@@ -31,6 +33,7 @@ public record PlanteResponseDTO(Integer id,
 				plante.getDatePlantation(),
 				plante.getEspece(),
 				plante.getEspece().getNomAffichage(),
+				plante.getEspece().getVehiculeRequis(),
 				plante.getZone().getId(),
 				plante.getDernierUpdate(),
 				plante.getHumidite(),

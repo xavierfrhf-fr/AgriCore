@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import agricore.projet.dto.data.*;
 import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.EspecePlante;
 import agricore.projet.model.ressource.Transformation;
+import agricore.projet.model.zone.TypeZone;
+import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.services.TransformationService;
@@ -72,17 +75,6 @@ public class DataController {
                 .toList();
     }
 
-
-
-    private int getMaxTransfo(Transformation transformation) {
-        for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
-            if (Transformation.isProductUnique(output.getKey())) {
-                return transformationService.getMaxTransformation(output.getKey(), false, null, true);
-            }
-        }
-        throw new RuntimeException("Error during max transformation computation (DataController -> getMaxTransfo)");
-    }
-
     @GetMapping("/animal")
     public List<AnimalDataDTO> getAnimalData() {
         return Stream.of(EspeceAnimal.values())
@@ -95,6 +87,22 @@ public class DataController {
         return Arrays.stream(EspecePlante.values())
                 .map(this::convertPlante)
                 .toList();
+    }
+
+    @GetMapping("/planteInfo")
+    public List<PlanteZoneInfoDTO> getPlanteInfoData() {
+        return NomZone.getNomZonesByTypeZone(TypeZone.PLANTS).stream()
+                .map(this::convertPlanteZoneInfo)
+                .toList();
+    }
+
+    private int getMaxTransfo(Transformation transformation) {
+        for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
+            if (Transformation.isProductUnique(output.getKey())) {
+                return transformationService.getMaxTransformation(output.getKey(), false, null, true);
+            }
+        }
+        throw new RuntimeException("Error during max transformation computation (DataController -> getMaxTransfo)");
     }
 
     //=============GENERATION DES DATAS DTOS NECESSITANT INFOS DE BDD=============================
@@ -185,6 +193,22 @@ public class DataController {
                     especePlante.isTree(),
                     this.convertZone(especePlante.getAllowedZone()),
                     RessourceDataDTO.convert(especePlante.getRessourceProduite())
+        );
+    }
+
+    public PlanteZoneInfoDTO convertPlanteZoneInfo(NomZone nomZone){
+        List<Zone> zones = daoZone.findByName(nomZone);
+        return new PlanteZoneInfoDTO(
+                nomZone,
+                nomZone.getNomAffichage(),
+                nomZone.getPathSprite(),
+                zones.size(),
+                (int) zones.stream().filter(zone -> (zone.getPlante()==null)).count(),
+                (int) zones.stream().filter(zone -> (zone.getPlante().isMature())).count(),
+                (int) zones.stream().filter(zone -> (zone.getPlante().getHumidite() < 0.1)).count(),
+                zones.stream().filter(zone -> (zone.getPlante().isMature())).map(zone -> zone.getPlante().getId()).toList(),
+                zones.stream().map(zone -> zone.getPlante().getId()).toList(),
+                zones.stream().map(zone -> zone.getPlante().getEspece().getPathSprite()).distinct().toList()
         );
     }
 
