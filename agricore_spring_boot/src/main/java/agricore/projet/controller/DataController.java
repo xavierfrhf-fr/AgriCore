@@ -8,8 +8,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import agricore.projet.dto.data.*;
+import agricore.projet.dto.vehicule.response.TypeVehiculeDTO;
 import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.EspecePlante;
+import agricore.projet.model.TypeVehicule;
+import agricore.projet.model.Vehicule;
 import agricore.projet.model.ressource.Transformation;
 import agricore.projet.model.zone.TypeZone;
 import agricore.projet.model.zone.Zone;
@@ -179,20 +182,21 @@ public class DataController {
                 .filter(z -> z.getPlante() == null)
                 .count());
         return new PlanteDataDTO(
-                    especePlante.name(),
-                    especePlante.getNomAffichage(),
-                    especePlante.getTempsPousseMinute(),
-                    especePlante.getConsommationEauParMin(),
-                    especePlante.getVehiculeRequis().name(),
-                    (numberCreatable>0),
-                    numberCreatable,
-                    daoZone.existsByNomZone(especePlante.getAllowedZone()),
-                    daoVehicule.existsByTypeVehicule(especePlante.getVehiculeRequis()),
-                    especePlante.getPathSprite(),
-                    especePlante.getQuantite(),
-                    especePlante.isTree(),
-                    this.convertZone(especePlante.getAllowedZone()),
-                    RessourceDataDTO.convert(especePlante.getRessourceProduite())
+                especePlante.name(),
+                especePlante.getNomAffichage(),
+                especePlante.getTempsPousseMinute(),
+                especePlante.getConsommationEauParMin(),
+                especePlante.getVehiculeRequis().name(),
+                (numberCreatable>0),
+                numberCreatable,
+                daoZone.existsByNomZone(especePlante.getAllowedZone()),
+                daoVehicule.existsByTypeVehicule(especePlante.getVehiculeRequis()),
+                especePlante.getPathSprite(),
+                especePlante.getQuantite(),
+                especePlante.isTree(),
+                this.convertZone(especePlante.getAllowedZone()),
+                RessourceDataDTO.convert(especePlante.getRessourceProduite()),
+                convertTypeVehicule(especePlante.getVehiculeRequis())
         );
     }
 
@@ -210,6 +214,15 @@ public class DataController {
                 zones.stream().map(zone -> zone.getPlante().getId()).toList(),
                 zones.stream().map(zone -> zone.getPlante().getEspece().getPathSprite()).distinct().toList()
         );
+    }
+
+    public TypeVehiculeDTO convertTypeVehicule(TypeVehicule typeVehicule) {
+        TypeVehiculeDTO dto = new TypeVehiculeDTO();
+        dto.setName(typeVehicule.name());
+        dto.setCapaciteReservoir(typeVehicule.getCapaciteReservoir());
+        dto.setConsoParKm(typeVehicule.getConsoParKm());
+        dto.setPathSprite(typeVehicule.getPathSprite());
+        return dto;
     }
 
 

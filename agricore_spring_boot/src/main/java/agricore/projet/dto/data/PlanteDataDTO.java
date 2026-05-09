@@ -1,5 +1,6 @@
 package agricore.projet.dto.data;
 
+import agricore.projet.dto.vehicule.response.TypeVehiculeDTO;
 import agricore.projet.model.EspecePlante;
 
 import java.util.List;
@@ -18,5 +19,6 @@ public record PlanteDataDTO(
         int production,
         boolean tree,
         ZoneDataDTO zone,
-        RessourceDataDTO ressource
+        RessourceDataDTO ressource,
+        TypeVehiculeDTO vehicule
         ) {}
