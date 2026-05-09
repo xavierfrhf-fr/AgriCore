@@ -49,8 +49,12 @@ export class VehiculePage implements OnInit {
   protected typeVehicules$!: Observable<TypeVehiculeDTO[]>
   protected typeVehicules: TypeVehiculeDTO[] = [];
 
+  
+
   //executé au chargement du composant
   ngOnInit(): void {
+    
+
     this.vehicules$ = this.refresh$.pipe(
       startWith(null),
       switchMap(() => this.vehiculeService.findAll()) //appel api vers le findAll vehicule
@@ -105,7 +109,11 @@ export class VehiculePage implements OnInit {
 
   //helper 
 
-  private getTypeVehicule(typeVehicule: String): TypeVehiculeDTO | undefined {
+  getType(v: VehiculeResponseDTO): TypeVehiculeDTO | undefined {
+  return this.getTypeVehicule(v.typeVehicule);
+  }
+
+  getTypeVehicule(typeVehicule: string): TypeVehiculeDTO | undefined {
     return this.typeVehicules.find(type => type.name === typeVehicule );
   }
 

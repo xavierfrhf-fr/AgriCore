@@ -15,6 +15,13 @@ public class TypeVehiculeDTO {
         this.consoParKm = consoParKm;
     }
 
+    public TypeVehiculeDTO(String name, int capaciteReservoir, int consoParKm, String pathSprite) {
+        this.name = name;
+        this.capaciteReservoir = capaciteReservoir;
+        this.consoParKm = consoParKm;
+        this.pathSprite = pathSprite;
+    }
+
     // Getters
     public String getName() {
         return name;

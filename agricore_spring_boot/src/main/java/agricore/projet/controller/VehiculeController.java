@@ -58,7 +58,7 @@ public class VehiculeController {
     @GetMapping("/types")
     public List<TypeVehiculeDTO> getTypesVehicule() {
         return Arrays.stream(TypeVehicule.values())
-                .map(tv -> new TypeVehiculeDTO(tv.name(), tv.getCapaciteReservoir(), tv.getConsoParKm()))
+                .map(tv -> new TypeVehiculeDTO(tv.name(), tv.getCapaciteReservoir(), tv.getConsoParKm(), tv.getPathSprite()))
                 .toList();
     }
 

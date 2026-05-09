@@ -29,6 +29,7 @@
     <table>
       <thead>
         <tr>
+          <th></th>
           <th>Type de véhicule</th>
           <th>Carburant actuel</th>
           <th>Date contrôle technique</th>
@@ -41,8 +42,14 @@
       </thead>
 
       <tbody>
-        @for (vehicule of (vehicules$ | async); track vehicule.id) {
+
+        
+        @for (vehicule of (vehicules$ | async) ; track vehicule.id) {
+        
+
         <tr [class.ligne-en-edition]="isLigneEnEdition(vehicule)">
+
+          <td><img [src]="getTypeVehicule(vehicule.typeVehicule)?.pathSprite" style="height: 80px">  </td>
 
           <td style="text-transform: capitalize;">
             {{ vehicule.typeVehicule }}
