@@ -16,6 +16,7 @@ public record PlanteDataDTO(
         boolean isVehiculeAvailable,
         String pathSprite,
         int production,
+        boolean tree,
         ZoneDataDTO zone,
         RessourceDataDTO ressource
         ) {}

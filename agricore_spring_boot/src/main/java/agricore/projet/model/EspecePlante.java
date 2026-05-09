@@ -6,67 +6,74 @@ import agricore.projet.util.CheminAsset;
 
 public enum EspecePlante {
 	MAIS("Maïs",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"mais.png",
 			5,
-			0.05,
+			25,
 			NomZone.CHAMPS,
 			TypeVehicule.TRACTEUR,
 			NomRessource.MAIS,
-			25
+			25,
+			false
 	),
 	TOURNESOL("Tournesol",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"tournesol.png",
 			5,
-			0.02,
+			15,
 			NomZone.CHAMPS,
 			TypeVehicule.TRACTEUR,
 			NomRessource.TOURNESOL,
-			25
+			25,
+			false
 	),
 	BLE("Blé",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"ble.png",
 			8,
-			0.01,
+			20,
 			NomZone.CHAMPS,
 			TypeVehicule.MOISSONNEUSE,
 			NomRessource.BLE,
-			50
+			50,
+			false
 	),
 	COLZA("Colza",
-			CheminAsset.PLANTE+".png",
+			CheminAsset.PLANTE+"colza.png",
 			10,
-			0.01,
+			20,
 			NomZone.CHAMPS,
 			TypeVehicule.MOISSONNEUSE,
 			NomRessource.COLZA,
-			10
+			10,
+			false
 	),
 	POMMIER("Pommier",
 			CheminAsset.PLANTE+".png",
 			10,
-			0.01,
+			5,
 			NomZone.CHAMPS,
 			TypeVehicule.TRACTEUR,
 			NomRessource.POMME,
-			50
+			50,
+			true
 	),
 	FRAISIER("Faisier",
 			CheminAsset.PLANTE+".png",
 			10,
-			0.01,
+			10,
 			NomZone.CHAMPS,
 			TypeVehicule.PICKUP,
 			NomRessource.FRAISE,
-			75
+			75,
+			true
 	),
 	POIRIER("Poirier",
 			CheminAsset.PLANTE+".png",
 			10,
-			0.01,
+			5,
 			NomZone.CHAMPS,
 			TypeVehicule.UTILITAIRE,
 			NomRessource.POIRE,
-			50
+			50,
+			true
 	);
 	
 
@@ -75,6 +82,7 @@ public enum EspecePlante {
 	private NomZone allowedZone;
 	private String nomAffichage;
 	private String pathSprite;
+	private boolean tree;
 
 	public TypeVehicule vehiculeRequis;
 	private NomRessource ressourceProduite;
@@ -87,7 +95,8 @@ public enum EspecePlante {
 						 NomZone allowedZone,
 						 TypeVehicule vehiculeRequis,
 						 NomRessource ressourceProduite,
-						 int quantite) {
+						 int quantite,
+						 boolean tree) {
 		this.nomAffichage = nomAffichage;
 		this.pathSprite = pathSprite;
 		this.tempsPousseMinute = tempsPousseMinute;
@@ -96,6 +105,7 @@ public enum EspecePlante {
 		this.allowedZone = allowedZone;
 		this.ressourceProduite = ressourceProduite;
 		this.quantite = quantite;
+		this.tree=tree;
 
 	}
 
@@ -125,6 +135,10 @@ public enum EspecePlante {
 
 	public NomRessource getRessourceProduite() {
 		return ressourceProduite;
+	}
+
+	public boolean isTree() {
+		return tree;
 	}
 
 	public int getQuantite() {

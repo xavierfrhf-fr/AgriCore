@@ -143,10 +143,27 @@ public class PlanteService {
 			return new MessageDTO("Zone "+p.getEspece().getRessourceProduite().getZoneStockage().getNomAffichage()+", manquante pour le stockage de "+p.getEspece().getRessourceProduite().getNomAffichage(), false);
 		}
 
-		p.setCroissance(0);
-		p.setMature(false);
 		this.transformationService.changeQuantity(p.getEspece().getRessourceProduite(), p.getEspece().getQuantite());
-		this.daoPlante.save(p);
-		return new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
+
+		if (p.getEspece().isTree()){
+			p.setCroissance(80);
+			if (p.getHumidite() <= 0){
+				p.setHumidite(10);
+			}
+			p.setDernierUpdate(LocalDateTime.now());
+			p.setDatePlantation(LocalDateTime.now());
+			p.setMature(false);
+			this.daoPlante.save(p);
+		}else{
+			p.setCroissance(0);
+			if (p.getHumidite() <= 0){
+				p.setHumidite(10);
+			}
+			p.setDernierUpdate(LocalDateTime.now());
+			p.setDatePlantation(LocalDateTime.now());
+			p.setMature(false);
+			this.daoPlante.save(p);
+		}
+		return null;//new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
     }
 }

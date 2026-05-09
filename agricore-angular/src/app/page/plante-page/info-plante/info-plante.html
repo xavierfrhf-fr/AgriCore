@@ -1,15 +1,36 @@
-<td [class.low-humidity]="humiditeActuelle < 20">
-  <p>Humidite : {{ humiditeActuelle | number:'1.0-1' }} %</p>
-</td>
+
+<td><img [src]="plante.pathSprite" style="height: 80px">  </td>
+
 <td>
   <p>
-    Etat :
-  @if (croissanceActuelle >= 100) {
-    Mature
-  } @else if (deadEventDone) {
-    Morte
-  } @else {
-    {{ croissanceActuelle | number:'1.0-1' }} %
-  }
+    >
+    {{plante.production}}
+    <img class="img-icone" [src]="plante.ressource.pathSprite">
   </p>
 </td>
+
+<td>
+  @for (_ of (plante.consoEauParMin | consoEau); track $index) {
+    <img class="img-icone" src="assets/image/goutte.png">
+  }
+</td>
+
+
+
+@if(matureEventDone){
+  <td colspan="2"> MATURE </td>
+} @else if (deadEventDone){
+  <td colspan="2"> DESECHE</td>
+} @else {
+  <td [class.low-humidity]="humiditeActuelle < 20">{{ humiditeActuelle | number:'1.0-0' }} %</td>
+  <td>{{ croissanceActuelle | number:'1.0-0' }} %</td>
+}
+<td>
+  @if(matureEventDone){
+    <button (click)="recolter(plante.id)">RECOLTER</button>
+  } @else {
+    <button (click)="arroser(plante.id)">ARROSER</button>
+  }
+</td>
+
+

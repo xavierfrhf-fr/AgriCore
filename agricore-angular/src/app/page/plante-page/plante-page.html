@@ -2,33 +2,31 @@
 @if (addPlanteOpen){
   <app-ajout-plante-compo (closeAjout)="closeAddPlante()"></app-ajout-plante-compo>
 }
-<button (click)="addPlanteOpen = true">Ajouter une plante</button>
+<button (click)="addPlanteOpen = true" class="bouton bouton-creer">Ajouter une plante</button>
 
-<div class="plante-list">
+
+<div class="plante-list panneau" style="width: 700px; margin-top: 10px">
   <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Production</th>
+        <th>Consommation d'eau</th>
+        <th>Humidite</th>
+        <th>Croissance</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
     <tbody>
       @for (plante of plante$ |async; track plante.id) {
-        <tr>
-          <td><img [src]="plante.pathSprite" class="img-icone">  </td>
-          <app-info-plante
+        <tr app-info-plante
             [plante]="plante"
-            (planteMature)="onPlanteMature($event.valueOf())"
-            (deadEvent)="onDeadEvent($event.valueOf())"
-            ></app-info-plante>
-          <td>Besoin en eau :
-          @for (_ of (plante.consoEauParMin | consoEau); track $index) {
-            <img class="img-icone" src="assets/image/goutte.png">
-          }
-        </td>
-          <td>
-            @if(plante.mature){
-              <button (click)="recolter(plante.id)">RECOLTER</button>
-            } @else {
-              <button (click)="arroser(plante.id)">ARROSER</button>
-            }
+            (reloadEvent)="reload()"
+            (infoPlanteMessage)="showInfoPlanteMessage($event)"
+          >
 
-          </td>
         </tr>
+
       }
     </tbody>
   </table>

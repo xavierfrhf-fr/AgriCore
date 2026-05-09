@@ -131,7 +131,12 @@ public class Plante {
 				croissance += this.getCroissanceParMin() * deltaSeconde / 60;
 
 			}else if(!arrosage){
-				croissance = 0;
+				if(this.getEspece().isTree()){
+					croissance = 70;
+				} else {
+					croissance = 0;
+				}
+
 			}
 			if (croissance >= 100){
 				mature = true;
