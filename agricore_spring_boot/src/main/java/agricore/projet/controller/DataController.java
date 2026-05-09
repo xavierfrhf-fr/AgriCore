@@ -182,6 +182,7 @@ public class DataController {
                     daoVehicule.existsByTypeVehicule(especePlante.getVehiculeRequis()),
                     especePlante.getPathSprite(),
                     especePlante.getQuantite(),
+                    especePlante.isTree(),
                     this.convertZone(especePlante.getAllowedZone()),
                     RessourceDataDTO.convert(especePlante.getRessourceProduite())
         );

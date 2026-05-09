@@ -37,13 +37,10 @@ export class PlantePage implements OnInit {
     );
   }
 
-  private reload() {
+  protected reload() {
     this.refresh$.next();
   }
 
-  public arroser(id: number) {
-    this.planteService.arroser(id).subscribe(() => this.reload());
-  }
 
   //ETAT DE LA PAGE
   public closeAddPlante() {
@@ -51,25 +48,12 @@ export class PlantePage implements OnInit {
     this.addPlanteOpen = false;
   }
 
-  onPlanteMature(id: number): void {
-    console.log('Plante mature', id);
-  }
-
-  onDeadEvent(id: number): void {
-    console.log('Plante morte', id);
-  }
-
-  recolter(id: number): void {
-    this.planteService.recolter(id).subscribe((msg:MessageDTO) => {
-      this.reload();
-      this.showRecolteMessage(msg.message, msg.success ? 'success' : 'error');
-    }
-
-  );
-  }
-
   private showRecolteMessage(text: string, type: 'success' | 'error') {
-    this.recolteMessage = { text, type };
+
+  }
+
+  protected showInfoPlanteMessage($event: { text: string; type: 'success' | 'error' }) {
+    this.recolteMessage = {text:$event.text , type:$event.type };
     setTimeout(() => {
       this.recolteMessage = null;
     }, 5000);

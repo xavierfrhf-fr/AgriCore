@@ -3,6 +3,7 @@ package agricore.projet.repository;
 import java.util.List;
 import java.util.Optional;
 
+import agricore.projet.model.Plante;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,5 +43,7 @@ public interface IDAOZone extends JpaRepository<Zone, Integer> {
 
     @Query("SELECT DISTINCT z FROM Zone z LEFT JOIN FETCH z.plante WHERE z.nomZone IN :nomZones")
     ArrayList<Zone> findByNomZonesWithPlant(@Param("nomZones") Set<NomZone> nomZones);
+
+    Optional<Zone> findByPlante(Plante plante);
 
 }

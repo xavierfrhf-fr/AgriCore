@@ -22,6 +22,7 @@ public record PlanteResponseDTO(Integer id,
 								int production,
 								double croissanceParSec,
 								double consoEauParMin,
+								boolean tree,
 								RessourceDataDTO ressource) {
 
 	public static PlanteResponseDTO convert (Plante plante) {
@@ -39,6 +40,7 @@ public record PlanteResponseDTO(Integer id,
 				plante.getEspece().getQuantite(),
 				plante.getCroissanceParSecond(),
 				plante.getEspece().getConsommationEauParMin(),
+				plante.getEspece().isTree(),
 				RessourceDataDTO.convert(plante.getEspece().getRessourceProduite())
 		);
 	}
