@@ -11,8 +11,8 @@ public class ZoneWithRessourcesResponseDTO extends ZoneResponseDTO {
 
     public ZoneWithRessourcesResponseDTO() {}
 
-    public ZoneWithRessourcesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, List<RessourceResponseDTO> ressources) {
-        super(id, position, nomZone, fermierId);
+    public ZoneWithRessourcesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, List<RessourceResponseDTO> ressources) {
+        super(id, position, nomZone);
         this.ressources = ressources;
     }
 
@@ -27,7 +27,6 @@ public class ZoneWithRessourcesResponseDTO extends ZoneResponseDTO {
     public static ZoneWithRessourcesResponseDTO convert (Zone zone){
         ZoneWithRessourcesResponseDTO response = new ZoneWithRessourcesResponseDTO();
         response.setId(zone.getId());
-        response.setFermierId(zone.getFermier().getId());
         response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
         response.setRessources(zone.getRessources()

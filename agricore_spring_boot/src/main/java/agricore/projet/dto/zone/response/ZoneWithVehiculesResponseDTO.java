@@ -12,8 +12,8 @@ public class ZoneWithVehiculesResponseDTO extends ZoneResponseDTO {
 
     public ZoneWithVehiculesResponseDTO() {}
 
-    public ZoneWithVehiculesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, Integer fermierId, List<VehiculeResponseDTO> vehicules) {
-        super(id, position, nomZone, fermierId);
+    public ZoneWithVehiculesResponseDTO(Integer id, PositionResponseDTO position, NomZone nomZone, List<VehiculeResponseDTO> vehicules) {
+        super(id, position, nomZone);
         this.vehicules = vehicules;
     }
 
@@ -30,7 +30,6 @@ public class ZoneWithVehiculesResponseDTO extends ZoneResponseDTO {
         response.setId(zone.getId());
         response.setPosition(PositionResponseDTO.convert(zone));
         response.setNomZone(zone.getNomZone());
-        response.setFermierId(zone.getFermier().getId());
         response.setVehicules(zone.getVehicules()
                         .stream()
                         .map(VehiculeResponseDTO::convert)

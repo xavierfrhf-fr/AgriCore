@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 //permet de decider comment on cree une plante
 import java.util.List;
 
+import agricore.projet.dto.MessageDTO;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.plante.request.PlanteRequestDTO;
@@ -24,10 +25,12 @@ public class PlanteService {
 
 	private final IDAOPlante daoPlante;
 	private final IDAOZone daoZone;
+	private final TransformationService transformationService;
 
-	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone) {
+	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone, TransformationService transformationService) {
 		this.daoPlante = daoPlante;
 		this.daoZone = daoZone;
+		this.transformationService = transformationService;
 	}
 
 	public boolean isPlanteAutoriseDansZone(EspecePlante espece, NomZone nomZone){
@@ -43,7 +46,7 @@ public class PlanteService {
 	public List<PlanteResponseDTO> findAll() {
 		List<Plante> plantes = daoPlante.findAll();
 		for (Plante plante : plantes){
-			plante.updateHumidite();
+			plante.updateHumidite(false);
 			daoPlante.save(plante);
 		}
 
@@ -55,18 +58,19 @@ public class PlanteService {
 	}
 
 	public PlanteResponseDTO findById(Integer id) {
-
-		return PlanteResponseDTO.convert(daoPlante.findById(id).orElse(null));
+		return PlanteResponseDTO.convert(daoPlante.findById(id).orElseThrow(() -> new PlanteNotFoundException(id)));
 	}
 
 	public PlanteResponseDTO insert(PlanteRequestDTO plante) {
 
         Plante p = new Plante();
 
-        p.setDatePlantation(LocalDate.now());
-        p.setDateRecolte(p.getDatePlantation().plusMonths(plante.getEspece().getTempsPousseMois()));
+        p.setDatePlantation(LocalDateTime.now());
+
         p.setEspece(plante.getEspece());
+		p.setCroissance(0.);
 		p.setHumidite(100);
+		p.setMature(false);
 		p.setDernierUpdate(LocalDateTime.now());
 
         Zone zone = daoZone
@@ -122,4 +126,27 @@ public class PlanteService {
 		this.daoPlante.save(p);
 
 	}
+
+    public MessageDTO recolter(Integer id) {
+		Plante p = daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
+
+		if (p.getCroissance() < 99.9){
+			System.out.println("Plante pas mature " + p.getCroissance());
+			return new MessageDTO("Plante pas encore mature",false);
+		}
+
+		try {
+			System.out.println(p.getCroissance());
+			this.transformationService.createRessourceIfNotExist(p.getEspece().getRessourceProduite());
+			System.out.println("OK");
+			p.setCroissance(0);
+			p.setMature(false);
+		}catch (ZoneNotFoundException e) {
+			return new MessageDTO("Zone "+p.getEspece().getRessourceProduite().getZoneStockage().getNomAffichage()+", manquante pour le stockage de "+p.getEspece().getRessourceProduite().getNomAffichage(), false);
+		}
+
+		this.transformationService.changeQuantity(p.getEspece().getRessourceProduite(), p.getEspece().getQuantite());
+		this.daoPlante.save(p);
+		return new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
+    }
 }

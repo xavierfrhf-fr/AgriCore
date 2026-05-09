@@ -110,7 +110,7 @@ public class TransformationService {
                 .forEach(this::createRessourceIfNotExist);
     }
 
-    private void createRessourceIfNotExist(NomRessource r) {
+    public void createRessourceIfNotExist(NomRessource r) {
         if (ressourceService.ressourceAlreadyExists(r)) {
             return;
         }

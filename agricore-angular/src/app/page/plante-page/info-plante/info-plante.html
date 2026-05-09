@@ -1,0 +1,15 @@
+<td [class.low-humidity]="humiditeActuelle < 20">
+  <p>Humidite : {{ humiditeActuelle | number:'1.0-1' }} %</p>
+</td>
+<td>
+  <p>
+    Etat :
+  @if (croissanceActuelle >= 100) {
+    Mature
+  } @else if (deadEventDone) {
+    Morte
+  } @else {
+    {{ croissanceActuelle | number:'1.0-1' }} %
+  }
+  </p>
+</td>

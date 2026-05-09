@@ -1,0 +1,43 @@
+.form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+
+  /* fond assombri */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.detailed-infos-up {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.close-window {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+.click:hover {
+  transform: scale(1.2);
+  transition-duration: 0.1s;
+}
+
+.success {
+  background-color: #d2eabf;
+  color: #15d33c;
+}
+
+.error {
+  background-color: #f4dedf;
+  color: #ff0620;
+}

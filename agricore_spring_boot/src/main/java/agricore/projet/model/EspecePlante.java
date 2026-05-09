@@ -1,43 +1,118 @@
 package agricore.projet.model;
 
+import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.zone.NomZone;
+import agricore.projet.util.CheminAsset;
 
 public enum EspecePlante {
-	MAIS("Maïs",5, 0.05, NomZone.CHAMPS, TypeVehicule.TRACTEUR), // le champ pousse en 5 mois, il consomme 50 000L/jour et sa fréquence
-					// d'arrosage de base(sans pluie) est tous les 7 jours
-	TOURNESOL("Tournesol",5, 0.02, NomZone.CHAMPS,TypeVehicule.TRACTEUR),
-	BLE("Blé",8, 0.01, NomZone.CHAMPS, TypeVehicule.MOISSONNEUSE),
-	COLZA("Colza",10, 0.01, NomZone.CHAMPS, TypeVehicule.MOISSONNEUSE),
-	POMMIER("Pommier",10, 0.01, NomZone.CHAMPS, TypeVehicule.TRACTEUR),
-	FRAISIER("Faisier",10, 0.01, NomZone.CHAMPS, TypeVehicule.PICKUP),
-	POIRIER("Poirier",10, 0.01, NomZone.CHAMPS, TypeVehicule.UTILITAIRE);
+	MAIS("Maïs",
+			CheminAsset.PLANTE+".png",
+			5,
+			0.05,
+			NomZone.CHAMPS,
+			TypeVehicule.TRACTEUR,
+			NomRessource.MAIS,
+			25
+	),
+	TOURNESOL("Tournesol",
+			CheminAsset.PLANTE+".png",
+			5,
+			0.02,
+			NomZone.CHAMPS,
+			TypeVehicule.TRACTEUR,
+			NomRessource.TOURNESOL,
+			25
+	),
+	BLE("Blé",
+			CheminAsset.PLANTE+".png",
+			8,
+			0.01,
+			NomZone.CHAMPS,
+			TypeVehicule.MOISSONNEUSE,
+			NomRessource.BLE,
+			50
+	),
+	COLZA("Colza",
+			CheminAsset.PLANTE+".png",
+			10,
+			0.01,
+			NomZone.CHAMPS,
+			TypeVehicule.MOISSONNEUSE,
+			NomRessource.COLZA,
+			10
+	),
+	POMMIER("Pommier",
+			CheminAsset.PLANTE+".png",
+			10,
+			0.01,
+			NomZone.CHAMPS,
+			TypeVehicule.TRACTEUR,
+			NomRessource.POMME,
+			50
+	),
+	FRAISIER("Faisier",
+			CheminAsset.PLANTE+".png",
+			10,
+			0.01,
+			NomZone.CHAMPS,
+			TypeVehicule.PICKUP,
+			NomRessource.FRAISE,
+			75
+	),
+	POIRIER("Poirier",
+			CheminAsset.PLANTE+".png",
+			10,
+			0.01,
+			NomZone.CHAMPS,
+			TypeVehicule.UTILITAIRE,
+			NomRessource.POIRE,
+			50
+	);
 	
 
-	private int tempsPousseMois;
+	private int tempsPousseMinute;
 	private double consommationEauParMin; // en litres
 	private NomZone allowedZone;
 	private String nomAffichage;
+	private String pathSprite;
 
 	public TypeVehicule vehiculeRequis;
+	private NomRessource ressourceProduite;
+	private int quantite;
 
-	private EspecePlante(String nomAffichage, int tempsPousseMois, double consommationEauParMin, NomZone allowedZone, TypeVehicule vehiculeRequis) {
+	private EspecePlante(String nomAffichage,
+						 String pathSprite,
+						 int tempsPousseMinute,
+						 double consommationEauParMin,
+						 NomZone allowedZone,
+						 TypeVehicule vehiculeRequis,
+						 NomRessource ressourceProduite,
+						 int quantite) {
 		this.nomAffichage = nomAffichage;
-		this.tempsPousseMois = tempsPousseMois;
+		this.pathSprite = pathSprite;
+		this.tempsPousseMinute = tempsPousseMinute;
 		this.consommationEauParMin = consommationEauParMin;
 		this.vehiculeRequis = vehiculeRequis;
 		this.allowedZone = allowedZone;
+		this.ressourceProduite = ressourceProduite;
+		this.quantite = quantite;
+
 	}
 
 	public String getNomAffichage() {
 		return nomAffichage;
 	}
 
-	public int getTempsPousseMois() {
-		return tempsPousseMois;
+	public int getTempsPousseMinute() {
+		return tempsPousseMinute;
 	}
 
 	public double getConsommationEauParMin() {
 		return consommationEauParMin;
+	}
+
+	public String getPathSprite() {
+		return pathSprite;
 	}
 
 	public TypeVehicule getVehiculeRequis() {
@@ -48,4 +123,11 @@ public enum EspecePlante {
 		return allowedZone;
 	}
 
+	public NomRessource getRessourceProduite() {
+		return ressourceProduite;
+	}
+
+	public int getQuantite() {
+		return quantite;
+	}
 }

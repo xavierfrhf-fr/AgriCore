@@ -29,9 +29,6 @@ public class Zone {
 	private NomZone nomZone;
 
 	//---- Mapping avec les autres classes
-	@ManyToOne
-	@JoinColumn(name = "utilisateur_id")
-	private Fermier fermier;
 	
 	@OneToMany(mappedBy = "zone")
 	private List<Animal> animals = new ArrayList<>();
@@ -48,18 +45,17 @@ public class Zone {
 	public Zone() {
 	}
 
-	public Zone(Position position, NomZone nomZone, Fermier fermier) {
+	public Zone(Position position, NomZone nomZone) {
 		super();
 		this.position = position;
 		this.nomZone = nomZone;
-		this.fermier = fermier;
+
 	}
-	public Zone(Integer id, Position position, NomZone nomZone, Fermier fermier) {
+	public Zone(Integer id, Position position, NomZone nomZone) {
 		super();
 		this.id = id;
 		this.position = position;
 		this.nomZone = nomZone;
-		this.fermier = fermier;
 	}
 	
 	public Integer getId() {
@@ -84,14 +80,6 @@ public class Zone {
 
 	public void setNomZone(NomZone nomZone) {
 		this.nomZone = nomZone;
-	}
-
-	public Fermier getFermier() {
-		return fermier;
-	}
-
-	public void setFermier(Fermier fermier) {
-		this.fermier = fermier;
 	}
 
 	public List<Animal> getAnimals() {

@@ -2,6 +2,7 @@ package agricore.projet.controller;
 
 import java.util.List;
 
+import agricore.projet.dto.MessageDTO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +60,11 @@ public class PlanteController {
     @PostMapping("/arroser/{id}")
     public void arroser(@PathVariable Integer id) {
         planteService.arroser(id);
+    }
+
+    @PostMapping("/recolter/{id}")
+    public MessageDTO recolter(@PathVariable Integer id) {
+        return this.planteService.recolter(id);
     }
 
 }

@@ -56,7 +56,7 @@ public class VehiculeServiceCarburantTest {
     void setUp() {
         // Zone
         Position pos = new Position();
-        zone = new Zone(pos, NomZone.CHAMPS, null);
+        zone = new Zone(pos, NomZone.CHAMPS);
  
         // Setup Vehicule
         LocalDate date = LocalDate.parse("2026-05-05");
@@ -195,7 +195,7 @@ public class VehiculeServiceCarburantTest {
     @Test
     @DisplayName("recolterPlante - Récolte avec le bon véhicule et réduit le carburant")
     void testRecolterPlanteAvecBonVehicule() {
-        Zone petitZone = new Zone(new Position(), NomZone.POULAILLER, null); // 4x2 = 8 cellules
+        Zone petitZone = new Zone(new Position(), NomZone.POULAILLER); // 4x2 = 8 cellules
         plante.setZone(petitZone);
         plante.setEspece(EspecePlante.FRAISIER); // nécessite PICKUP
 

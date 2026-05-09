@@ -10,6 +10,7 @@ import agricore.projet.dto.data.*;
 import agricore.projet.exception.RessourceNotFoundException;
 import agricore.projet.model.EspecePlante;
 import agricore.projet.model.ressource.Transformation;
+import agricore.projet.repository.IDAOVehicule;
 import agricore.projet.repository.IDAOZone;
 import agricore.projet.services.TransformationService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,41 +29,20 @@ import agricore.projet.model.zone.position.Position;
 public class DataController {
 
     private final IDAOZone daoZone;
+    private final IDAOVehicule daoVehicule;
     private final TransformationService transformationService;
 
-    public DataController(IDAOZone daoZone, TransformationService transformationService) {
+    public DataController(IDAOZone daoZone, IDAOVehicule daoVehicule, TransformationService transformationService) {
         this.daoZone = daoZone;
         this.transformationService = transformationService;
+        this.daoVehicule = daoVehicule;
     }
 
     @GetMapping("/zone")
     public List<ZoneDataDTO> getZoneData() {
-        List<ZoneDataDTO> dtos = new ArrayList<>();
-        for (NomZone nomZone : NomZone.values()) {
-            ZoneDataDTO dto = new ZoneDataDTO();
-            dto.setNomZone(nomZone.name());
-            dto.setTypeZone(nomZone.getTypeZone());
-            dto.setPathSprite(nomZone.getPathSprite());
-            dto.setZoneUnique(nomZone.isZoneUnique());
-            dto.setDescription(nomZone.getDescription());
-            dto.setNomAffichage(nomZone.getNomAffichage());
-            dto.setShape(nomZone.getZoneShape()
-                    .getShape()
-                    .stream()
-                    .toList());
-            if (nomZone.isZoneUnique()) {
-                dto.setZoneCreatable(!this.daoZone.existsByNomZone(nomZone));
-            } else {
-                dto.setZoneCreatable(true);
-            }
-            dto.setTransformations(Transformation
-                    .transformationFromZone(nomZone)
-                    .stream()
-                    .map(this::convertTransfo)
-                    .toList());
-            dtos.add(dto);
-        }
-        return dtos;
+        return Arrays.stream(NomZone.values())
+                .map(this::convertZone)
+                .toList();
     }
 
     @GetMapping("/zone/mapSize")
@@ -91,6 +71,33 @@ public class DataController {
                 .map(this::convertTransfo)
                 .toList();
     }
+
+
+
+    private int getMaxTransfo(Transformation transformation) {
+        for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
+            if (Transformation.isProductUnique(output.getKey())) {
+                return transformationService.getMaxTransformation(output.getKey(), false, null, true);
+            }
+        }
+        throw new RuntimeException("Error during max transformation computation (DataController -> getMaxTransfo)");
+    }
+
+    @GetMapping("/animal")
+    public List<AnimalDataDTO> getAnimalData() {
+        return Stream.of(EspeceAnimal.values())
+                .map(AnimalDataDTO::convert)
+                .toList();
+    }
+
+    @GetMapping("/plante")
+    public List<PlanteDataDTO> getPlanteData() {
+        return Arrays.stream(EspecePlante.values())
+                .map(this::convertPlante)
+                .toList();
+    }
+
+    //=============GENERATION DES DATAS DTOS NECESSITANT INFOS DE BDD=============================
 
     public TransformationDataDTO convertTransfo(Transformation transformation) {
         Integer maxTransfo;
@@ -132,33 +139,54 @@ public class DataController {
         );
     }
 
-    private int getMaxTransfo(Transformation transformation) {
-        for (Map.Entry<NomRessource, Integer> output : transformation.getOutput().entrySet()) {
-            if (Transformation.isProductUnique(output.getKey())) {
-                return transformationService.getMaxTransformation(output.getKey(), false, null, true);
-            }
+    public ZoneDataDTO convertZone(NomZone nomZone) {
+        ZoneDataDTO dto = new ZoneDataDTO();
+        dto.setNomZone(nomZone.name());
+        dto.setTypeZone(nomZone.getTypeZone());
+        dto.setPathSprite(nomZone.getPathSprite());
+        dto.setZoneUnique(nomZone.isZoneUnique());
+        dto.setDescription(nomZone.getDescription());
+        dto.setNomAffichage(nomZone.getNomAffichage());
+        dto.setShape(nomZone.getZoneShape()
+                .getShape()
+                .stream()
+                .toList());
+        if (nomZone.isZoneUnique()) {
+            dto.setZoneCreatable(!this.daoZone.existsByNomZone(nomZone));
+        } else {
+            dto.setZoneCreatable(true);
         }
-        throw new RuntimeException("Error during max transformation computation (DataController -> getMaxTransfo)");
+        dto.setTransformations(Transformation
+                .transformationFromZone(nomZone)
+                .stream()
+                .map(this::convertTransfo)
+                .toList());
+        return dto;
     }
 
-    @GetMapping("/animal")
-    public List<AnimalDataDTO> getAnimalData() {
-        return Stream.of(EspeceAnimal.values())
-                .map(AnimalDataDTO::convert)
-                .toList();
+    public PlanteDataDTO convertPlante(EspecePlante especePlante) {
+        int numberCreatable = Math.toIntExact(daoZone
+                .findByName(especePlante.getAllowedZone())
+                .stream()
+                .filter(z -> z.getPlante() == null)
+                .count());
+        return new PlanteDataDTO(
+                    especePlante.name(),
+                    especePlante.getNomAffichage(),
+                    especePlante.getTempsPousseMinute(),
+                    especePlante.getConsommationEauParMin(),
+                    especePlante.getVehiculeRequis().name(),
+                    (numberCreatable>0),
+                    numberCreatable,
+                    daoZone.existsByNomZone(especePlante.getAllowedZone()),
+                    daoVehicule.existsByTypeVehicule(especePlante.getVehiculeRequis()),
+                    especePlante.getPathSprite(),
+                    especePlante.getQuantite(),
+                    this.convertZone(especePlante.getAllowedZone()),
+                    RessourceDataDTO.convert(especePlante.getRessourceProduite())
+        );
     }
 
-    @GetMapping("/plante")
-    public List<PlanteDataDTO> getPlanteData() {
-        List<PlanteDataDTO> dtos = new ArrayList<>();
-        for (EspecePlante especePlante : EspecePlante.values()) {
-            boolean isCreatable = daoZone
-                    .findByName(especePlante.getAllowedZone())
-                    .stream()
-                    .anyMatch(z -> z.getPlante() == null);
-            dtos.add(PlanteDataDTO.convert(especePlante, isCreatable));
-        }
-        return dtos;
-    }
+
 
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import agricore.projet.dto.utilisateur.request.FermierRequestDTO;
 import agricore.projet.dto.utilisateur.response.FermierResponseDTO;
 import agricore.projet.dto.utilisateur.response.FermierWithEmployeResponseDTO;
-import agricore.projet.dto.utilisateur.response.FermierWithZoneResponseDTO;
 import agricore.projet.exception.UtilisateurNotFoundException;
 import agricore.projet.model.Fermier;
 import agricore.projet.repository.IDAOUtilisateur;
@@ -74,14 +73,4 @@ daoUtilisateur.deleteById(id);
 				.orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
 		
 	} 
-	
-	public FermierWithZoneResponseDTO getFermierWithZone(int id) {
-		return daoUtilisateur
-				.findFermierByIdWithZone(id)
-				.map(FermierWithZoneResponseDTO::convert)
-				.orElseThrow(() -> new RuntimeException("Zone introuvable pour l'id " + id));
-		
-	}
-	
-
 }

@@ -73,8 +73,8 @@ public class ZoneControllerTest {
     private final int ZONE_ID = 1;
     private final NomZone NOM_ZONE = NomZone.POULAILLER;
     private final int FERMIER_ID = 5;
-    private final ZoneResponseDTO ZONE_RESP_DTO = new ZoneResponseDTO(ZONE_ID, POSITION_RESP_DTO, NOM_ZONE, FERMIER_ID);
-    private final ZoneRequestDTO ZONE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, NOM_ZONE, FERMIER_ID);
+    private final ZoneResponseDTO ZONE_RESP_DTO = new ZoneResponseDTO(ZONE_ID, POSITION_RESP_DTO, NOM_ZONE);
+    private final ZoneRequestDTO ZONE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, NOM_ZONE);
     private final String URL = "/api/zone";
     private final String URL_ID = URL + "/" + ZONE_ID;
 
@@ -104,7 +104,7 @@ public class ZoneControllerTest {
         ZoneResponseDTO[] responseDTOS = objectMapper.readValue(result.andReturn().getResponse().getContentAsString(),
                 ZoneResponseDTO[].class);
         assertThat(responseDTOS).hasSize(1);
-        assertThat(responseDTOS[0]).hasOnlyFields("id", "position", "nomZone", "fermierId");
+        assertThat(responseDTOS[0]).hasOnlyFields("id", "position", "nomZone","typeZone");
     }
 
     @Test
@@ -159,12 +159,11 @@ public class ZoneControllerTest {
 
         // Zone
         NomZone nomZone = NomZone.POULAILLER;
-        int fermierId = 1;
+
         return Stream.of(
-                Arguments.of(new ZoneRequestDTO(null, nomZone, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), null, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, null)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, -1)));
+                Arguments.of(new ZoneRequestDTO(null, nomZone)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), null))
+        );
     }
 
     @ParameterizedTest
@@ -221,12 +220,12 @@ public class ZoneControllerTest {
         NomZone nomZone = NomZone.POULAILLER;
         int fermierId = 1;
         return Stream.of(
-                Arguments.of(new ZoneRequestDTO(null, null, null)),
-                Arguments.of(new ZoneRequestDTO(null, nomZone, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), null, fermierId)),
-                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, null)),
+                Arguments.of(new ZoneRequestDTO(null, null)),
+                Arguments.of(new ZoneRequestDTO(null, nomZone)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), null)),
+                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone)),
                 Arguments.of(
-                        new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone, fermierId)));
+                        new ZoneRequestDTO(new PositionRequestDTO(anchorX, anchorY, rotation), nomZone)));
     }
 
     @ParameterizedTest
@@ -267,7 +266,7 @@ public class ZoneControllerTest {
                 ZONE_ID,
                 POSITION_RESP_DTO,
                 NOM_ZONE,
-                FERMIER_ID,
+
                 List.of(new RessourceResponseDTO(1, NomRessource.FRAISE,
                         NomRessource.FRAISE.getUniteStockage().getAffichage(),
                         1,
@@ -285,7 +284,7 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$.position.rotation").value(POSITION_RESP_DTO.getRotation().name()));
         // tailles
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
+
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].id").value(1));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].nom").value(NomRessource.FRAISE.name()));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.ressources.[*].quantite").value(1));
@@ -319,7 +318,6 @@ public class ZoneControllerTest {
                 ZONE_ID,
                 POSITION_RESP_DTO,
                 NOM_ZONE,
-                FERMIER_ID,
                 List.of(new VehiculeResponseDTO(1, TypeVehicule.UTILITAIRE, date, 0,0, ZONE_ID,NOM_ZONE.name())));
         Mockito.when(zoneService.getZoneWithVehicules(ZONE_ID)).thenReturn(zoneWithVehiculesResponseDTO);
         // WHEN
@@ -333,7 +331,6 @@ public class ZoneControllerTest {
         result.andExpect(MockMvcResultMatchers.jsonPath("$.position.rotation").value(POSITION_RESP_DTO.getRotation().name()));
         // tailles
         result.andExpect(MockMvcResultMatchers.jsonPath("$.nomZone").value(NOM_ZONE.name()));
-        result.andExpect(MockMvcResultMatchers.jsonPath("$.fermierId").value(FERMIER_ID));
         result.andExpect(MockMvcResultMatchers.jsonPath("$.vehicules.[*].id").value(1));
         result.andExpect(
                 MockMvcResultMatchers.jsonPath("$.vehicules.[*].typeVehicule").value(TypeVehicule.UTILITAIRE.name()));

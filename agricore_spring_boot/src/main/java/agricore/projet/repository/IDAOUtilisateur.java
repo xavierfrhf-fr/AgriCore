@@ -18,8 +18,5 @@ public interface IDAOUtilisateur extends JpaRepository<Utilisateur, Integer> {
     
     @Query("SELECT f FROM Fermier f LEFT JOIN FETCH f.employe where f.id=:id")
     public Optional<Fermier> findFermierByIdWithEmploye(@Param ("id") Integer id);
-    
-    @Query("SELECT f FROM Fermier f LEFT JOIN FETCH f.zones where f.id=:id")
-    public Optional<Fermier> findFermierByIdWithZone(@Param ("id") Integer id);
 
 }

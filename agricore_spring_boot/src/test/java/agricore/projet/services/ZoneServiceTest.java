@@ -67,19 +67,16 @@ public class ZoneServiceTest {
         private static final int ZONE2_ID = 1;
         private static final NomZone ZONE1_NOMZONE = NomZone.CHAMPS;
         private static final NomZone ZONE2_NOMZONE = NomZone.CUVE;
-        private static final Zone ZONE1 = new Zone(ZONE1_ID, POSITION, ZONE1_NOMZONE, FERMIER);
-        private static final ZoneRequestDTO ZONE1_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, ZONE1_NOMZONE,
-                        FERMIER_ID);
-        private static final Zone ZONE2 = new Zone(ZONE2_ID, POSITION, ZONE2_NOMZONE, FERMIER);
+        private static final Zone ZONE1 = new Zone(ZONE1_ID, POSITION, ZONE1_NOMZONE);
+        private static final ZoneRequestDTO ZONE1_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, ZONE1_NOMZONE);
+        private static final Zone ZONE2 = new Zone(ZONE2_ID, POSITION, ZONE2_NOMZONE);
         private static final List<Zone> ZONE_LIST = new ArrayList<>(List.of(ZONE1, ZONE2));
 
         private static final NomZone ZONE_UNIQUE = NomZone.SILO;
         private static final NomZone ZONE_NON_UNIQUE = NomZone.CHAMPS;
-        private static final ZoneRequestDTO ZONE_UNIQUE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, ZONE_UNIQUE,
-                        FERMIER_ID);
-        private static final ZoneRequestDTO ZONE_NON_UNIQUE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO,
-                        ZONE_NON_UNIQUE, FERMIER_ID);
-        private static final Zone ZONE_UNIQUE_INSTANCE = new Zone(ZONE2_ID, POSITION, ZONE_UNIQUE, FERMIER);
+        private static final ZoneRequestDTO ZONE_UNIQUE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, ZONE_UNIQUE);
+        private static final ZoneRequestDTO ZONE_NON_UNIQUE_REQ_DTO = new ZoneRequestDTO(POSITION_REQ_DTO, ZONE_NON_UNIQUE);
+        private static final Zone ZONE_UNIQUE_INSTANCE = new Zone(ZONE2_ID, POSITION, ZONE_UNIQUE);
 
         @Test
         public void getAllZonesShouldReturnAllZones() {
@@ -93,10 +90,6 @@ public class ZoneServiceTest {
                 assertThat(result)
                                 .extracting(ZoneResponseDTO::getNomZone)
                                 .containsExactly(ZONE1_NOMZONE, ZONE2_NOMZONE);
-
-                assertThat(result)
-                                .extracting(ZoneResponseDTO::getFermierId)
-                                .containsOnly(FERMIER_ID);
 
                 assertThat(result)
                                 .extracting(ZoneResponseDTO::getPosition)
@@ -123,9 +116,8 @@ public class ZoneServiceTest {
                                 .isInstanceOf(ZoneResponseDTO.class);
                 assertThat(result)
                                 .extracting(ZoneResponseDTO::getNomZone,
-                                                ZoneResponseDTO::getFermierId,
                                                 ZoneResponseDTO::getId)
-                                .containsExactly(ZONE1_NOMZONE, FERMIER_ID, ZONE1_ID);
+                                .containsExactly(ZONE1_NOMZONE, ZONE1_ID);
 
         }
 
@@ -143,7 +135,7 @@ public class ZoneServiceTest {
         @WithMockUser // TODO ajouter autorities
         public void createZoneShouldReturnId() {
                 // given
-                Mockito.when(daoUtilisateur.findById(FERMIER_ID)).thenReturn(Optional.of(FERMIER));
+
                 Mockito.when(daoZone.save(any(Zone.class))).thenReturn(ZONE1);
                 Mockito.when(positionService.zoneCanBeAdded(any(Zone.class))).thenReturn(true);
 
@@ -167,10 +159,8 @@ public class ZoneServiceTest {
                                                 POSITION.getAnchorX(),
                                                 POSITION.getAnchorY(),
                                                 POSITION.getRotation());
-                assertThat(zoneCapture.getFermier()).isNotNull();
-                assertThat(zoneCapture.getFermier().getId()).isEqualTo(FERMIER_ID);
-                assertThat(zoneCapture.getFermier()).isInstanceOf(Fermier.class);
-                Mockito.verify(daoUtilisateur).findById(FERMIER_ID);
+
+
         }
 
         @Test
@@ -178,7 +168,6 @@ public class ZoneServiceTest {
         public void updateZoneShouldReturnId() {
 
                 Mockito.when(daoZone.save(any(Zone.class))).thenReturn(ZONE1);
-                Mockito.when(daoUtilisateur.findById(FERMIER_ID)).thenReturn(Optional.of(FERMIER));
                 Mockito.when(positionService.zoneCanBeMoved(any(Zone.class))).thenReturn(true);
                 // When
                 int id = zoneService.put(ZONE1_REQ_DTO, ZONE1_ID);
@@ -189,17 +178,12 @@ public class ZoneServiceTest {
                 ArgumentCaptor<Zone> zoneCaptor = ArgumentCaptor.forClass(Zone.class);
                 Mockito.verify(daoZone).save(zoneCaptor.capture());
                 Zone zoneCapture = zoneCaptor.getValue();
-                assertThat(zoneCapture.getFermier()).isNotNull();
-                assertThat(zoneCapture.getFermier().getId()).isEqualTo(FERMIER_ID);
-                assertThat(zoneCapture.getFermier()).isInstanceOf(Fermier.class);
-                Mockito.verify(daoUtilisateur).findById(FERMIER_ID);
         }
 
         @Test
         @WithMockUser
         public void partialUpdateZoneShouldReturnId() {
                 Mockito.when(daoZone.save(any(Zone.class))).thenReturn(ZONE1);
-                Mockito.when(daoUtilisateur.findById(FERMIER_ID)).thenReturn(Optional.of(FERMIER));
                 Mockito.when(daoZone.findById(ZONE1_ID)).thenReturn(Optional.of(ZONE1));
                 Mockito.when(positionService.zoneCanBeMoved(any(Zone.class))).thenReturn(true);
 
@@ -210,9 +194,7 @@ public class ZoneServiceTest {
                 assertThat(id).isEqualTo(ZONE1_ID);
                 ArgumentCaptor<Zone> zoneCaptor = ArgumentCaptor.forClass(Zone.class);
                 Mockito.verify(daoZone).save(zoneCaptor.capture());
-                Zone zoneCapture = zoneCaptor.getValue();
-                assertThat(zoneCapture.getFermier()).isNotNull();
-                assertThat(zoneCapture.getFermier().getId()).isEqualTo(FERMIER_ID);
+                Zone zoneCapture = zoneCaptor.getValue();;
                 assertThat(zoneCapture.getNomZone()).isEqualTo(ZONE1_NOMZONE);
                 assertThat(zoneCapture.getPosition())
                                 .extracting(
@@ -224,7 +206,7 @@ public class ZoneServiceTest {
                                                 POSITION.getAnchorY(),
                                                 POSITION.getRotation());
 
-                Mockito.verify(daoUtilisateur).findById(FERMIER_ID);
+
         }
 
         private static Stream<Arguments> partielUpdateStream() {
@@ -234,38 +216,29 @@ public class ZoneServiceTest {
                 return Stream.of(
 
                                 // Cas 1 : On ne change que le nom (la position doit rester l'initiale)
-                                Arguments.of(new ZoneRequestDTO(null, NomZone.CUVE, null), NomZone.CUVE, posInitiale),
+                                Arguments.of(new ZoneRequestDTO(null, NomZone.CUVE), NomZone.CUVE, posInitiale),
 
                                 // Cas 2 : On ne change que la position (le nom doit rester l'initial)
-                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0), null,
-                                                null), NomZone.CHAMPS, posModifiee),
+                                Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0), null), NomZone.CHAMPS, posModifiee),
 
                                 // Cas 3 : On change tout
                                 Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0),
-                                                NomZone.CUVE, 5), NomZone.CUVE, posModifiee),
+                                                NomZone.CUVE), NomZone.CUVE, posModifiee),
                                 Arguments.of(new ZoneRequestDTO(new PositionRequestDTO(2, 2, Rotation.DEG_0),
-                                                NomZone.CUVE, 6), NomZone.CUVE, posModifiee),
+                                                NomZone.CUVE), NomZone.CUVE, posModifiee),
                                 // Cas 4 : On envoie tout à null (rien ne doit changer)
-                                Arguments.of(new ZoneRequestDTO(null, null, null), NomZone.CHAMPS, posInitiale));
+                                Arguments.of(new ZoneRequestDTO(null, null), NomZone.CHAMPS, posInitiale));
         }
 
         @ParameterizedTest
         @MethodSource("partielUpdateStream")
         public void parameterizedPartialUpdateZone(ZoneRequestDTO request, NomZone expectedNom, Position expectedPos) {
                 // GIVEN
-                Zone zoneInitial = new Zone(ZONE1_ID, POSITION, NomZone.CHAMPS, FERMIER);
+                Zone zoneInitial = new Zone(ZONE1_ID, POSITION, NomZone.CHAMPS);
 
                 Mockito.when(daoZone.findById(ZONE1_ID)).thenReturn(Optional.of(zoneInitial));
                 Mockito.when(daoZone.save(any(Zone.class))).thenAnswer(i -> i.getArguments()[0]);
                 Mockito.lenient().when(positionService.zoneCanBeMoved(any(Zone.class))).thenReturn(true);
-                Mockito.lenient().when(daoUtilisateur.findById(anyInt())).thenReturn(Optional.of(FERMIER));// lenient
-                                                                                                           // permet que
-                                                                                                           // mockito ne
-                                                                                                           // râle pas
-                                                                                                           // si
-                                                                                                           // daoUtilisateur
-                                                                                                           // n'est pas
-                                                                                                           // utilisé
 
                 // WHEN
                 zoneService.patch(request, ZONE1_ID);
@@ -286,8 +259,7 @@ public class ZoneServiceTest {
                                                 expectedPos.getAnchorY(),
                                                 expectedPos.getRotation());
                 // Fermier ne doit pas changer
-                assertThat(zoneCapture.getFermier()).isNotNull();
-                assertThat(zoneCapture.getFermier().getId()).isEqualTo(FERMIER_ID);
+
         }
 
         @Test
@@ -329,9 +301,8 @@ public class ZoneServiceTest {
 
                 assertThat(response)
                                 .extracting(ZoneWithVehiculesResponseDTO::getNomZone,
-                                                ZoneWithVehiculesResponseDTO::getFermierId,
                                                 ZoneWithVehiculesResponseDTO::getId)
-                                .containsExactly(ZONE1_NOMZONE, FERMIER_ID, ZONE1_ID);
+                                .containsExactly(ZONE1_NOMZONE, ZONE1_ID);
         }
 
         @Test
@@ -375,9 +346,8 @@ public class ZoneServiceTest {
 
                 assertThat(response)
                                 .extracting(ZoneWithRessourcesResponseDTO::getNomZone,
-                                                ZoneWithRessourcesResponseDTO::getFermierId,
                                                 ZoneWithRessourcesResponseDTO::getId)
-                                .containsExactly(ZONE1_NOMZONE, FERMIER_ID, ZONE1_ID);
+                                .containsExactly(ZONE1_NOMZONE, ZONE1_ID);
         }
 
         @Test
@@ -406,16 +376,15 @@ public class ZoneServiceTest {
 
                 assertThat(response.getAnimals().size()).isEqualTo(1);
                 assertThat(response.getAnimals())
-                                .extracting("id", "male", "dateNaissance", "dateVaccination", "espece", "zoneId",
-                                                "zoneName")
-                                .containsExactly(tuple(1, true, now, now, EspeceAnimal.VACHE, ZONE1_ID,
-                                                ZONE1_NOMZONE.name()));
+                                .extracting("id", "male", "dateNaissance", "dateVaccination", "espece", "zoneId"
+                                               )
+                                .containsExactly(tuple(1, true, now, now, EspeceAnimal.VACHE, ZONE1_ID
+                                                ));
 
                 assertThat(response)
                                 .extracting(ZoneWithAnimalsResponseDTO::getNomZone,
-                                                ZoneWithAnimalsResponseDTO::getFermierId,
                                                 ZoneWithAnimalsResponseDTO::getId)
-                                .containsExactly(ZONE1_NOMZONE, FERMIER_ID, ZONE1_ID);
+                                .containsExactly(ZONE1_NOMZONE, ZONE1_ID);
         }
 
         @Test
@@ -447,7 +416,7 @@ public class ZoneServiceTest {
                 // Given : aucun SILO en BDD
                 Mockito.when(daoZone.existsByNomZone(ZONE_UNIQUE)).thenReturn(false);
                 Mockito.when(positionService.zoneCanBeAdded(any(Zone.class))).thenReturn(true);
-                Mockito.when(daoUtilisateur.findById(FERMIER_ID)).thenReturn(Optional.of(FERMIER));
+
                 Mockito.when(daoZone.save(any(Zone.class))).thenReturn(ZONE_UNIQUE_INSTANCE);
 
                 // When
@@ -463,7 +432,7 @@ public class ZoneServiceTest {
                 // Given : CHAMPS n'est pas une zone de stockage, pas de vérification d'unicité
                 // attendue
                 Mockito.when(positionService.zoneCanBeAdded(any(Zone.class))).thenReturn(true);
-                Mockito.when(daoUtilisateur.findById(FERMIER_ID)).thenReturn(Optional.of(FERMIER));
+
                 Mockito.when(daoZone.save(any(Zone.class))).thenReturn(ZONE1); // ZONE1 = CHAMPS
 
                 // When

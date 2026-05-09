@@ -34,4 +34,8 @@ export class ZoneService {
     console.log("Delete de la zone "+id)
     return this.httpClient.delete<boolean>(`zone/${id}`)
   }
+
+  public createZoneWithRandomPos(req:ZoneRequest):Observable<boolean> {
+    return this.httpClient.post<boolean>("zone/randomPos",req);
+  }
 }

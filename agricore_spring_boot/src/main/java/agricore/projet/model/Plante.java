@@ -15,16 +15,16 @@ public class Plante {
 	@Column(name="plante_id")
 	private Integer id;
 	@Column(name="date_plantation")
-	private LocalDate datePlantation;
-	@Column(name="date_recolte")
-	private LocalDate dateRecolte;
+	private LocalDateTime datePlantation;
+
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "varchar(100)")
 	private EspecePlante espece;
 	@OneToOne
     @JoinColumn(name="zone_id")
     private Zone zone;
-	
+
+
 
 	//Gestion de l'humidité des plantes
 	//L'idée est d'avoir une valeur (attribut "humidite") qui représente le % d'eau de la plante (entre 0-100)
@@ -36,7 +36,8 @@ public class Plante {
 
 	@Column(name="humidite")
 	private double humidite; //Humidite de la plante (entre 0 et 100)
-
+	private double croissance; //Croissance (entre 0 et 100)
+	private boolean mature;
 	//Valeurs seuil avant arrosage urgent
 	//L'idée de cet attribut est de determiner un seuil (constant chez toutes les plantes donc static)
 	//Permettant de calculer un temps avant arrosage (gardant une marge pour pas que la plante meurt)
@@ -44,18 +45,15 @@ public class Plante {
 
 	public Plante() {}
 
-	public Plante(Integer id, LocalDate datePlantation, LocalDate dateRecolte, EspecePlante espece, Zone zone,
+	public Plante(Integer id, LocalDateTime datePlantation, EspecePlante espece, Zone zone,
 			LocalDateTime dernierUpdate) {
 		super();
 		this.id = id;
 		this.datePlantation = datePlantation;
-		this.dateRecolte = dateRecolte;
 		this.espece = espece;
 		this.zone = zone;
 		this.dernierUpdate = dernierUpdate;
 	}
-
-	
 
 	public Integer getId() {
 		return id;
@@ -63,22 +61,6 @@ public class Plante {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public LocalDate getDatePlantation() {
-		return datePlantation;
-	}
-
-	public void setDatePlantation(LocalDate datePlantation) {
-		this.datePlantation = datePlantation;
-	}
-
-	public LocalDate getDateRecolte() {
-		return dateRecolte;
-	}
-
-	public void setDateRecolte(LocalDate dateRecolte) {
-		this.dateRecolte = dateRecolte;
 	}
 
 	public EspecePlante getEspece() {
@@ -113,49 +95,63 @@ public class Plante {
 		this.humidite = humidite;
 	}
 
-	public void updateHumidite() {
-		long deltaMinute = ChronoUnit.MINUTES.between(dernierUpdate, LocalDateTime.now());
-		if (deltaMinute >= 1) {
-			humidite = humidite - espece.getConsommationEauParMin() * deltaMinute; //On soustrait à l'humidité actuel, la conso par minute * le temps en min depuis dernier update
+	public void setDatePlantation(LocalDateTime datePlantation) {
+		this.datePlantation = datePlantation;
+	}
+
+	public double getCroissance() {
+		return croissance;
+	}
+
+	public void setCroissance(double croissance) {
+		this.croissance = croissance;
+	}
+
+	public LocalDateTime getDatePlantation() {
+		return datePlantation;
+	}
+
+	public boolean isMature() {
+		return mature;
+	}
+
+	public void setMature(boolean mature) {
+		this.mature = mature;
+	}
+
+	public void updateHumidite(boolean arrosage) {
+		if (mature){
+			return;
+		}
+		long deltaSeconde = ChronoUnit.SECONDS.between(dernierUpdate, LocalDateTime.now());
+		if (deltaSeconde >= 1) {
+			humidite -= espece.getConsommationEauParMin() * deltaSeconde / 60; //On soustrait à l'humidité actuel, la conso par minute * le temps en min depuis dernier update
 			humidite = Math.max(humidite, 0.); //On borne, pour ne pas avoir humidite < 0
+			if (humidite >= 0.){
+				croissance += this.getCroissanceParMin() * deltaSeconde / 60;
+
+			}else if(!arrosage){
+				croissance = 0;
+			}
+			if (croissance >= 100){
+				mature = true;
+				croissance = 100;
+			}
+
 			this.dernierUpdate = LocalDateTime.now();
 		}
 	}
 
+	private double getCroissanceParMin() {
+		return 100./this.espece.getTempsPousseMinute();
+	}
+
+	public double getCroissanceParSecond() {
+		return this.getCroissanceParMin()/60;
+	}
+
 	public void arroser(){
-		this.dernierUpdate = LocalDateTime.now();
+		this.updateHumidite(true);
 		humidite = 100.;
 	}
-
-	public void arroser(long pourcentage){
-		//Surcharge pour prendre en compte un arrosage incomplet (pour implémentation ulterieure de faible pluie par ex)
-		this.dernierUpdate = LocalDateTime.now();
-		humidite += pourcentage;
-		humidite = Math.min(humidite, 100.);//On borne, pour ne pas avoir humidite > 100
-	}
-
-	public int tempsAvantMortEnJour(){
-		updateHumidite();
-		double deltaMinute = (humidite) / espece.getConsommationEauParMin();
-		return (int) deltaMinute / 1440;
-	}
-
-	public int tempsAvantArrosageEnJour(){
-		updateHumidite();
-		if (humidite < SEUIL_HUMIDITE_CRITIQUE) {
-			return 0;
-		}
-		double deltaMinute = (humidite - SEUIL_HUMIDITE_CRITIQUE) / espece.getConsommationEauParMin();
-		return (int) deltaMinute / 1440;
-	}
-
-	public int tempsAvantRecolteEnJour(){
-		return (int) LocalDate.now().until(datePlantation.plusMonths(espece.getTempsPousseMois()), ChronoUnit.DAYS);
-	}
-
-	
-
-	
-
-	
 }

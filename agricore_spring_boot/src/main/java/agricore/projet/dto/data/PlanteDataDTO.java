@@ -7,21 +7,15 @@ import java.util.List;
 public record PlanteDataDTO(
         String nomEnum,
         String nomAffichage,
-        int tempsPousseMois,
-        double consommationEauParMin,
-        String allowedZone,
+        int tempsPousseMinute,//tempsPousseMinute
+        double consommationEauParMin,//Conso eau par sec
         String vehiculeRequis,
-        boolean isCreatable
-        ) {
-    public static PlanteDataDTO convert(EspecePlante especePlante, boolean isCreatable) {
-        return new PlanteDataDTO(
-                especePlante.name(),
-                especePlante.getNomAffichage(),
-                especePlante.getTempsPousseMois(),
-                especePlante.getConsommationEauParMin(),
-                especePlante.getAllowedZone().name(),
-                especePlante.getVehiculeRequis().name(),
-                isCreatable
-        );
-    }
-}
+        boolean isCreatable,
+        int numberCreatable,
+        boolean isProductStorable,
+        boolean isVehiculeAvailable,
+        String pathSprite,
+        int production,
+        ZoneDataDTO zone,
+        RessourceDataDTO ressource
+        ) {}

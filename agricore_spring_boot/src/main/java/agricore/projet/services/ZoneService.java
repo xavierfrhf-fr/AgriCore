@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.random.RandomGenerator;
 import java.util.stream.Stream;
 
 import agricore.projet.dto.zone.response.*;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.TypeZone;
+import agricore.projet.model.zone.position.Position;
+import agricore.projet.model.zone.position.Rotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -70,10 +73,6 @@ public class ZoneService {
             throw new InvalidZonePositionException(
                     "Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
         }
-        // TODO a revoir (cast en fermier, exception custom)
-        zone.setFermier((Fermier) daoUtilisateur
-                .findById(request.getFermierId())
-                .orElseThrow(NullPointerException::new));// TODO utiliser exception custom
 
         zone = daoZone.save(zone);
         logger.trace("Creation de {} a {}", zone.toString(), zone.getPosition().toString());
@@ -97,16 +96,6 @@ public class ZoneService {
             }
 
         }
-        if (request.getFermierId() != null) {
-            if (request.getFermierId() != zone.getFermier().getId()) {
-                logger.warn(
-                        "Changement de fermier dans la zone avec l'id {} cela peut amener a des comportements incohérents",
-                        id);
-            }
-            zone.setFermier((Fermier) daoUtilisateur
-                    .findById(request.getFermierId())
-                    .orElseThrow(NullPointerException::new));// TODO utiliser exception custom
-        }
         logger.trace("Update partiel de zone ({}, {})", request.toString(), id);
         return daoZone.save(zone).getId();
     }
@@ -119,10 +108,6 @@ public class ZoneService {
             throw new InvalidZonePositionException(
                     "Zone cannot be added due to invalid position (out of map or overlapping with other zones)");
         }
-        // TODO a revoir (cast en fermier, exception custom)
-        zone.setFermier((Fermier) daoUtilisateur
-                .findById(request.getFermierId())
-                .orElseThrow(NullPointerException::new));
 
         return daoZone.save(zone).getId();
     }
@@ -219,5 +204,29 @@ public class ZoneService {
                 .stream()
                 .map(ZoneWithPlantsResponseDTO::convert)
                 .toList();
+    }
+
+    public boolean createWithRandomPos(NomZone nomZone) {
+        ZoneRequestDTO request = new ZoneRequestDTO();
+        request.setNomZone(nomZone);
+        int numberOfTrials = 20;
+        for (int i = 0; i < numberOfTrials; i++) {
+            request.setPosition(this.generateRandomPosition());
+            try{
+                this.create(request);
+                return true;
+            }catch(InvalidZonePositionException e){
+                System.out.println("Echec du placement de la zone avec des positions aléatoire (tentative n°"+i+"/"+numberOfTrials+")");
+            }
+        }
+        return false;
+    }
+
+    public PositionRequestDTO generateRandomPosition() {
+        return new PositionRequestDTO(
+                RandomGenerator.getDefault().nextInt(0, Position.mapSize.x()),
+                RandomGenerator.getDefault().nextInt(0, Position.mapSize.y()),
+                Rotation.DEG_0
+        );
     }
 }

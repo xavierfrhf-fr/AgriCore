@@ -152,7 +152,7 @@ export class ZonePage implements OnInit {
     positionRequest.rotation = 'DEG_0';
     zoneRequest.position = positionRequest;
     zoneRequest.nomZone = this.zoneCreationType;
-    zoneRequest.fermierId = 3;
+    zoneRequest.fermierId = 4;
     this.zoneService.insert(zoneRequest).subscribe(() => this.reloadAll());
 
     delete this.zoneCreationType;
