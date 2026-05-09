@@ -105,12 +105,19 @@ export class InfoPlante implements OnDestroy, OnChanges {
   }
 
   recolter(id: number): void {
-    this.planteService.recolter(id).subscribe((msg: MessageDTO) => {
+    this.planteService.recolter(id).subscribe( {
+      next: (msg: MessageDTO) => {
       this.matureEventDone = false;
       this.croissanceActuelle = 0;
       this.humiditeActuelle = Math.min(this.humiditeActuelle,10)
       this.reloadEvent.emit();
       this.infoPlanteMessage.emit({ text: msg.message, type: msg.success ? 'success' : 'error' });
-    });
+    },
+      error: (err) => {
+      alert(err?.error?.message || "Erreur récolte")
+    }
+    })
+
+    }
   }
-}
+

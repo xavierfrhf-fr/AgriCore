@@ -6,33 +6,33 @@ public enum TypeVehicule {
 
 	UTILITAIRE("utilitaire",
 			CheminAsset.VEHICULE+"utilitaire.png",
-			100,
+			1000,
 			14
 	),
 	TRACTEUR("tracteur",
 			CheminAsset.VEHICULE+"tracteur.png",
-			400,
+			4000,
 			13
 	),
 	MOISSONNEUSE("moissonneuse",
 			CheminAsset.VEHICULE+"moissonneuse.png",
-			400,
+			4000,
 			14
 	),
 	PETIT_TRACTEUR("tracteur pour vignes",
 			CheminAsset.VEHICULE+"petit_tracteur.png",
-			400,
+			4000,
 			12
 	),
 	BETAILLERE("bétaillère",
 			CheminAsset.VEHICULE+"betaillere.png",
-			400,
+			4000,
 			11
 	),
 	PICKUP("Pick-Up",
 			CheminAsset.VEHICULE+"pickup.png",
-			80,
-			13
+			800,
+			5
 	);
 	
 	private String nomAffichage;
