@@ -12,22 +12,22 @@ public enum TypeVehicule {
 	TRACTEUR("tracteur",
 			CheminAsset.VEHICULE+"tracteur.png",
 			400,
-			30
+			13
 	),
 	MOISSONNEUSE("moissonneuse",
 			CheminAsset.VEHICULE+"moissonneuse.png",
 			400,
-			40
+			14
 	),
 	PETIT_TRACTEUR("tracteur pour vignes",
 			CheminAsset.VEHICULE+"petit_tracteur.png",
 			400,
-			40
+			12
 	),
 	BETAILLERE("bétaillère",
 			CheminAsset.VEHICULE+"betaillere.png",
 			400,
-			40
+			11
 	),
 	PICKUP("Pick-Up",
 			CheminAsset.VEHICULE+"pickup.png",
