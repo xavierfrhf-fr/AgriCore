@@ -4,6 +4,10 @@ public class TypeVehiculeDTO {
     private String name;
     private int capaciteReservoir;
     private int consoParKm;
+    private String pathSprite;
+
+    public TypeVehiculeDTO() {
+    }
 
     public TypeVehiculeDTO(String name, int capaciteReservoir, int consoParKm) {
         this.name = name;
@@ -22,5 +26,25 @@ public class TypeVehiculeDTO {
 
     public int getConsoParKm() {
         return consoParKm;
+    }
+
+    public void setPathSprite(String pathSprite) {
+        this.pathSprite = pathSprite;
+    }
+
+    public void setConsoParKm(int consoParKm) {
+        this.consoParKm = consoParKm;
+    }
+
+    public void setCapaciteReservoir(int capaciteReservoir) {
+        this.capaciteReservoir = capaciteReservoir;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPathSprite() {
+        return pathSprite;
     }
 }

@@ -10,6 +10,7 @@ import { AsyncPipe } from '@angular/common';
 import { InfoPlante } from './info-plante/info-plante';
 import { ConsoEauPipe } from '../../pipe/conso-eau-pipe';
 import { MessageDTO } from '../../dto/message-dto';
+import { PlanteZoneInfoDTO } from '../../dto/plante/plante-zone-info-dto';
 
 @Component({
   selector: 'app-plante-page',
@@ -24,6 +25,7 @@ export class PlantePage implements OnInit {
   //DATA FROM BACK
   private refresh$: Subject<void> = new Subject<void>();
   protected plante$!: Observable<PlanteResponse[]>;
+  protected planteZoneInfo$!: Observable<PlanteZoneInfoDTO[]>;
 
   recolteMessage: { text: string; type: 'success' | 'error' } | null = null;
 
@@ -34,6 +36,12 @@ export class PlantePage implements OnInit {
     this.plante$ = this.refresh$.pipe(
       startWith(0),
       switchMap(() => this.planteService.findAll()),
+    );
+
+    this.planteZoneInfo$ = this.refresh$.pipe(
+      startWith(0),
+      switchMap(()=>this.planteService.getPlanteZoneInfo()),
+
     );
   }
 

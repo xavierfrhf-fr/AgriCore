@@ -17,18 +17,18 @@
         @for (planteData of planteData$ | async ; track planteData.nomEnum) {
           <tr>
             <td>{{planteData.nomAffichage}}</td>
-            <td><img class="img-icone" [src]="planteData.pathSprite"> > {{planteData.production}} <img class="img-icone" [src]="planteData.pathSpriteRessource"> </td>
+            <td><img class="img-icone" [src]="planteData.pathSprite">  > {{planteData.production}} <img class="img-icone" [src]="planteData.ressource.pathSprite"> </td>
             <td><p> - {{planteData.tempsPousseMinute | tempsPousse}} </p></td>
-            <td>
+            <td style="width: 80px">
               @for (_ of (planteData.consommationEauParMin | consoEau); track $index) {
                 <img class="img-icone" src="assets/image/goutte.png">
               }
             </td>
             <td>
               @if (planteData.isCreatable){
-                <button class="bouton bouton-creer" (click)="createPlant(planteData.nomEnum)">PLANTER ({{planteData.allowedZone}})</button>
+                <button class="bouton bouton-creer" (click)="createPlant(planteData.nomEnum)">PLANTER ({{planteData.zone.nomAffichage}})</button>
               } @else {
-                <button class="bouton bouton-supprimer">{{planteData.allowedZone}} manquant</button>
+                <button class="bouton bouton-supprimer">{{planteData.zone.nomAffichage}} manquant</button>
               }
             </td>
           </tr>
