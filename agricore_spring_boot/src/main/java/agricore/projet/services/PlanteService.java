@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import agricore.projet.dto.MessageDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.plante.request.PlanteRequestDTO;
@@ -46,7 +47,7 @@ public class PlanteService {
 	public List<PlanteResponseDTO> findAll() {
 		List<Plante> plantes = daoPlante.findAll();
 		for (Plante plante : plantes){
-			plante.updateHumidite(false);
+			plante.updateHumidite();
 			daoPlante.save(plante);
 		}
 
@@ -118,19 +119,20 @@ public class PlanteService {
 		daoPlante.deleteById(id);
 	}
 
+	@Transactional
 	public void arroser(Integer id) {
-		
 		Plante p =daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
-
+		p.updateHumidite();
 		p.arroser();
-		this.daoPlante.save(p);
-
+		//this.daoPlante.save(p);
 	}
 
+	@Transactional
     public MessageDTO recolter(Integer id) {
 		Plante p = daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
+		p.updateHumidite();
 
-		if (p.getCroissance() < 99.9){
+		if (!p.isMature()){
 			System.out.println("Plante pas mature " + p.getCroissance());
 			return new MessageDTO("Plante pas encore mature",false);
 		}
@@ -143,27 +145,22 @@ public class PlanteService {
 			return new MessageDTO("Zone "+p.getEspece().getRessourceProduite().getZoneStockage().getNomAffichage()+", manquante pour le stockage de "+p.getEspece().getRessourceProduite().getNomAffichage(), false);
 		}
 
+		//ICI VERIF VEHICULE (stp essaye de récupérer automatiquement le vehicule (et si plusieurs vehicules identiques prendre celui qui a le + de carburant))
+		/*
+		if (false){
+			return new MessageDTO(p.getEspece().getVehiculeRequis() + " manquant pour la récolte", false);
+			if (false){
+				return new MessageDTO(p.getEspece().getVehiculeRequis() + " n'a pas assez de carburant pour la récolte", false);
+			}
+		}
+		 */
+		p.recolter();
 		this.transformationService.changeQuantity(p.getEspece().getRessourceProduite(), p.getEspece().getQuantite());
 
-		if (p.getEspece().isTree()){
-			p.setCroissance(80);
-			if (p.getHumidite() <= 0){
-				p.setHumidite(10);
-			}
-			p.setDernierUpdate(LocalDateTime.now());
-			p.setDatePlantation(LocalDateTime.now());
-			p.setMature(false);
-			this.daoPlante.save(p);
-		}else{
-			p.setCroissance(0);
-			if (p.getHumidite() <= 0){
-				p.setHumidite(10);
-			}
-			p.setDernierUpdate(LocalDateTime.now());
-			p.setDatePlantation(LocalDateTime.now());
-			p.setMature(false);
-			this.daoPlante.save(p);
+		if (!p.getEspece().isTree()){
+			daoZone.findByPlante(p).ifPresent(zone -> zone.setPlante(null));
+			daoPlante.delete(p);
 		}
-		return null;//new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
+		return new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
     }
 }

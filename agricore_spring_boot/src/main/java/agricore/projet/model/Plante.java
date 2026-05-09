@@ -1,15 +1,21 @@
 package agricore.projet.model;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import agricore.projet.model.zone.Zone;
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 @Entity
 @Table(name="plante")
 public class Plante {
+
+	private static final double TIME_STEP_MINUTE = 1.0;
+	private static final double CROISSANCE_ARBRE_APRES_RECOLTE = 80.;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="plante_id")
@@ -38,10 +44,6 @@ public class Plante {
 	private double humidite; //Humidite de la plante (entre 0 et 100)
 	private double croissance; //Croissance (entre 0 et 100)
 	private boolean mature;
-	//Valeurs seuil avant arrosage urgent
-	//L'idée de cet attribut est de determiner un seuil (constant chez toutes les plantes donc static)
-	//Permettant de calculer un temps avant arrosage (gardant une marge pour pas que la plante meurt)
-	private static double SEUIL_HUMIDITE_CRITIQUE = 20.;
 
 	public Plante() {}
 
@@ -119,33 +121,65 @@ public class Plante {
 		this.mature = mature;
 	}
 
-	public void updateHumidite(boolean arrosage) {
-		if (mature){
+	public void updateHumidite() {
+		LocalDateTime now = LocalDateTime.now();
+		if (dernierUpdate == null) {
+			dernierUpdate = now;
 			return;
 		}
-		long deltaSeconde = ChronoUnit.SECONDS.between(dernierUpdate, LocalDateTime.now());
-		if (deltaSeconde >= 1) {
-			humidite -= espece.getConsommationEauParMin() * deltaSeconde / 60; //On soustrait à l'humidité actuel, la conso par minute * le temps en min depuis dernier update
-			humidite = Math.max(humidite, 0.); //On borne, pour ne pas avoir humidite < 0
-			if (humidite >= 0.){
-				croissance += this.getCroissanceParMin() * deltaSeconde / 60;
 
-			}else if(!arrosage){
-				if(this.getEspece().isTree()){
-					croissance = 70;
-				} else {
-					croissance = 0;
-				}
+		double deltaMinute = Duration.between(dernierUpdate, now).toMillis() / 60000.0;
 
-			}
-			if (croissance >= 100){
-				mature = true;
-				croissance = 100;
-			}
+		while (deltaMinute > 0) {
+			double step = Math.min(TIME_STEP_MINUTE, deltaMinute);
+			applyTimeStep(step);
+			deltaMinute -= step;
+		}
 
-			this.dernierUpdate = LocalDateTime.now();
+		dernierUpdate = now;
+	}
+
+	private void applyTimeStep(double stepMinute) {
+		boolean avaitDeLEau = (this.humidite > 0);
+
+		consommerEau(stepMinute);
+
+		if (avaitDeLEau && !this.mature) {
+			augmenterCroissance(stepMinute);
+		}
+
+		if (this.croissance >= 100) {
+			this.croissance = 100;
+			this.mature = true;
 		}
 	}
+
+	private void consommerEau(double stepMinute) {
+		double consommation = this.espece.getConsommationEauParMin() * stepMinute;
+		this.humidite = Math.max(0., this.humidite - consommation);
+	}
+
+	private void augmenterCroissance(double stepMinute) {
+		double deltaCroissance = getCroissanceParMin() * stepMinute;
+		this.croissance = Math.min(100., this.croissance + deltaCroissance);
+	}
+
+	public void arroser(){
+		this.humidite = 100;
+	}
+
+	public void recolter(){
+		if (this.espece.isTree()){
+			this.croissance = CROISSANCE_ARBRE_APRES_RECOLTE;
+		}else{
+			this.croissance = 0.;
+		}
+		this.mature = false;
+		this.dernierUpdate = LocalDateTime.now();
+	}
+
+
+
 
 	private double getCroissanceParMin() {
 		return 100./this.espece.getTempsPousseMinute();
@@ -153,10 +187,5 @@ public class Plante {
 
 	public double getCroissanceParSecond() {
 		return this.getCroissanceParMin()/60;
-	}
-
-	public void arroser(){
-		this.updateHumidite(true);
-		humidite = 100.;
 	}
 }
