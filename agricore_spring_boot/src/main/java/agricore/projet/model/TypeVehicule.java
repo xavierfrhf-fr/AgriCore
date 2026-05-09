@@ -3,8 +3,8 @@ package agricore.projet.model;
 public enum TypeVehicule {
 
 	UTILITAIRE("utilitaire",null,100,14),
-	TRACTEUR("tracteur",null,400,30),
-	MOISSONNEUSE("moissonneuse",null,400,40),
+	TRACTEUR("tracteur",null,400,12),
+	MOISSONNEUSE("moissonneuse",null,400,15),
 	PICKUP("Pick-Up",null,80,13);
 	
 	private String nomAffichage;

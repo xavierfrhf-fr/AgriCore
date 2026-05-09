@@ -13,4 +13,8 @@ public class VehiculeNotFound extends RuntimeException {
     public VehiculeNotFound() {
         super("Aucun véhicule trouvé" );
     }
+
+    public VehiculeNotFound(String message) {
+        super(message);
+    }
 }
