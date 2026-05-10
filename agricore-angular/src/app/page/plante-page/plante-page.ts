@@ -11,10 +11,13 @@ import { InfoPlante } from './info-plante/info-plante';
 import { ConsoEauPipe } from '../../pipe/conso-eau-pipe';
 import { MessageDTO } from '../../dto/message-dto';
 import { PlanteZoneInfoDTO } from '../../dto/plante/plante-zone-info-dto';
+import { AgriModal } from '../../component/agri-modal/agri-modal';
+import { Message } from '../../model/message';
+import { MessageModal } from '../../component/message-modal/message-modal';
 
 @Component({
   selector: 'app-plante-page',
-  imports: [AjoutPlanteCompo, AsyncPipe, InfoPlante, ConsoEauPipe],
+  imports: [AjoutPlanteCompo, AsyncPipe, InfoPlante, ConsoEauPipe, AgriModal, MessageModal],
   templateUrl: './plante-page.html',
   styleUrl: './plante-page.css',
 })
@@ -27,7 +30,7 @@ export class PlantePage implements OnInit {
   protected plante$!: Observable<PlanteResponse[]>;
   protected planteZoneInfo$!: Observable<PlanteZoneInfoDTO[]>;
 
-  recolteMessage: { text: string; type: 'success' | 'error' } | null = null;
+  protected message?: Message;
 
   //ETAT DE LA PAGE
   protected addPlanteOpen: boolean = false;
@@ -40,8 +43,7 @@ export class PlantePage implements OnInit {
 
     this.planteZoneInfo$ = this.refresh$.pipe(
       startWith(0),
-      switchMap(()=>this.planteService.getPlanteZoneInfo()),
-
+      switchMap(() => this.planteService.getPlanteZoneInfo()),
     );
   }
 
@@ -49,21 +51,17 @@ export class PlantePage implements OnInit {
     this.refresh$.next();
   }
 
-
   //ETAT DE LA PAGE
   public closeAddPlante() {
     this.reload();
     this.addPlanteOpen = false;
   }
 
-  private showRecolteMessage(text: string, type: 'success' | 'error') {
-
+  showErrorMessage($event: Message): void {
+    this.message = $event;
   }
 
-  protected showInfoPlanteMessage($event: { text: string; type: 'success' | 'error' }) {
-    this.recolteMessage = {text:$event.text , type:$event.type };
-    setTimeout(() => {
-      this.recolteMessage = null;
-    }, 5000);
+  clearMessage(): void {
+    this.message = undefined;
   }
 }

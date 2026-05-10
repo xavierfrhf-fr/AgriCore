@@ -15,6 +15,7 @@ import { DecimalPipe } from '@angular/common';
 import { PlanteService } from '../../../service/plante/plante-service';
 import { MessageDTO } from '../../../dto/message-dto';
 import { ConsoEauPipe } from '../../../pipe/conso-eau-pipe';
+import { Message } from '../../../model/message';
 
 @Component({
   selector: 'tr[app-info-plante]',
@@ -25,8 +26,7 @@ import { ConsoEauPipe } from '../../../pipe/conso-eau-pipe';
 export class InfoPlante implements OnDestroy, OnChanges {
   @Input() plante!: PlanteResponse;
   @Output() reloadEvent: EventEmitter<void> = new EventEmitter<void>();
-  @Output() infoPlanteMessage: EventEmitter<{ text: string; type: 'success' | 'error' }> =
-    new EventEmitter<{ text: string; type: 'success' | 'error' }>();
+  @Output() errorMessage: EventEmitter<Message> = new EventEmitter<Message>();
   protected matureEventDone: boolean = false;
   protected deadEventDone: boolean = false;
 
@@ -105,19 +105,21 @@ export class InfoPlante implements OnDestroy, OnChanges {
   }
 
   recolter(id: number): void {
-    this.planteService.recolter(id).subscribe( {
+    this.planteService.recolter(id).subscribe({
       next: (msg: MessageDTO) => {
-      this.matureEventDone = false;
-      this.croissanceActuelle = 0;
-      this.humiditeActuelle = Math.min(this.humiditeActuelle,10)
-      this.reloadEvent.emit();
-      this.infoPlanteMessage.emit({ text: msg.message, type: msg.success ? 'success' : 'error' });
-    },
+        this.matureEventDone = false;
+        this.croissanceActuelle = 0;
+        this.humiditeActuelle = Math.min(this.humiditeActuelle, 10);
+        this.reloadEvent.emit();
+      },
       error: (err) => {
-      alert(err?.error?.message || "Erreur récolte")
-    }
-    })
-
-    }
+        this.errorMessage.emit({
+          message: err?.error?.message || 'Erreur récolte',
+          type: 'error',
+          timeout: 5000,
+        });
+      },
+    });
   }
+}
 

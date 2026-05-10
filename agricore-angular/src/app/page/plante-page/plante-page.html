@@ -22,7 +22,7 @@
         <tr app-info-plante
             [plante]="plante"
             (reloadEvent)="reload()"
-            (infoPlanteMessage)="showInfoPlanteMessage($event)"
+            (errorMessage)="showErrorMessage($event)"
           >
 
         </tr>
@@ -35,7 +35,51 @@
 <div>
   <table>
     <thead>
-      
+      <tr>
+        <th></th>
+        <th>Zone libre / total</th>
+        <th>Liste des plantes</th>
+        <th>Plantes recoltables</th>
+        <th>Plante deseche</th>
+      </tr>
     </thead>
+    <tbody>
+      @for (planteZoneInfo of planteZoneInfo$|async; track planteZoneInfo.nomZone) {
+        <tr>
+          <td><img [src]="planteZoneInfo.pathSpriteZone" style="width: 50px"></td>
+
+          <td>
+            {{planteZoneInfo.freeZone}} / {{planteZoneInfo.totalZone}}
+          </td>
+          <td>
+            <ul>
+              @for (plantSprite of planteZoneInfo.pathSpritePlants ; track $index) {
+                <li>
+                  <img [src]="plantSprite" class="img-icone">
+                </li>
+              }
+            </ul>
+          </td>
+          <td>
+            {{planteZoneInfo.harvestableZone}}
+          </td>
+          <td>
+            {{planteZoneInfo.dryZone}}
+          </td>
+
+
+        </tr>
+      }
+
+
+    </tbody>
   </table>
 </div>
+
+@if (message) {
+  <app-message-modal
+    [message]="message"
+    (closeEvent)="clearMessage()"
+  />
+}
+
