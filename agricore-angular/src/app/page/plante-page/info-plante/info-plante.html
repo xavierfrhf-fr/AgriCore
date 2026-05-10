@@ -27,9 +27,9 @@
 }
 <td>
   @if(matureEventDone){
-    <button (click)="recolter(plante.id)">RECOLTER</button>
+    <button class="bouton bouton-creer" (click)="recolter(plante.id)">RECOLTER</button>
   } @else {
-    <button (click)="arroser(plante.id)">ARROSER</button>
+    <button class="bouton bouton-modifier"(click)="arroser(plante.id)">ARROSER</button>
   }
 </td>
 

@@ -40,9 +40,9 @@
               </td>
               <td>
                 @if (zoneData.zoneCreatable){
-                <button (click)="startZoneCreation(zoneData)">CREER ZONE</button>
+                <button class="bouton bouton-creer" (click)="startZoneCreation(zoneData)">CREER ZONE</button>
                 } @else {
-                  <button disabled>CREER ZONE</button>
+                  <button class="bouton bouton-creer" disabled>CREER ZONE</button>
                 }
               </td>
             </tr>
