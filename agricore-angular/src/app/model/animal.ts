@@ -10,7 +10,13 @@ export interface Animal {
     delaisVaccination: number;
     zoneId: number;
     zone: string;
-    zonePathSprite: string; 
+    zonePathSprite: string;
     produit: string;
     produitPathSprite: string;
+    qtyProduced?:number;
+    producer:boolean;
+    nextProduction?:string;
+    delayProd?:number;
+    nomZoneStock?:string;
+
 }

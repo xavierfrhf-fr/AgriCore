@@ -114,6 +114,7 @@ public class TransformationService {
         if (ressourceService.ressourceAlreadyExists(r)) {
             return;
         }
+
         RessourceRequestDTO  request = new RessourceRequestDTO();
         request.setNom(r);
         request.setStockMin(0);

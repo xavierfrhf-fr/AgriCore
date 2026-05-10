@@ -1,8 +1,10 @@
 package agricore.projet.model.animal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.zone.Zone;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +36,10 @@ public class Animal {
 
 	@Enumerated(EnumType.STRING)
 	private EspeceAnimal espece;
+
+	private LocalDateTime prochaineProduction;
+
+	private int totalProduit;
 
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
@@ -101,6 +107,22 @@ public class Animal {
 		this.zone = zone;
 	}
 
+	public int getTotalProduit() {
+		return totalProduit;
+	}
+
+	public void setTotalProduit(int totalProduit) {
+		this.totalProduit = totalProduit;
+	}
+
+	public LocalDateTime getProchaineProduction() {
+		return prochaineProduction;
+	}
+
+	public void setProchaineProduction(LocalDateTime prochaineProduction) {
+		this.prochaineProduction = prochaineProduction;
+	}
+
 	@Override
 	public String toString() {
 		return "Animal [id=" + id + ", dateNaissance=" + dateNaissance + ", dateVaccination="
@@ -128,6 +150,43 @@ public class Animal {
 	public int getAge() {
 		int age = (int) this.dateNaissance.until(LocalDate.now(), ChronoUnit.YEARS);
 		return age;
+	}
+
+	public boolean isProducer(){
+		return espece.getDimorphisme().getProductionTime(male) != null;
+	}
+
+	public NomRessource getNomRessource(){
+		return espece.getDimorphisme().getNomRessource(male);
+	}
+
+	public int produceRessource(){
+		if (!isProducer()){
+			return 0;
+		}
+		LocalDateTime now = LocalDateTime.now();
+		if (prochaineProduction == null) {
+			prochaineProduction = now.plusMinutes(espece.getDimorphisme().getProductionTime(male));
+			return 0;
+		}
+
+		int qtyProduce = 0;
+
+		while (!prochaineProduction.isAfter(now)) {
+			qtyProduce++;
+			prochaineProduction = prochaineProduction.plusMinutes(espece.getDimorphisme().getProductionTime(male));
+		}
+		totalProduit +=  qtyProduce;
+		return qtyProduce;
+	}
+
+	public void initializeProduction(){
+		if (!isProducer()){
+			return;
+		}
+		if (prochaineProduction == null) {
+			prochaineProduction = LocalDateTime.now().plusMinutes(espece.getDimorphisme().getProductionTime(male));
+		}
 	}
 
 }
