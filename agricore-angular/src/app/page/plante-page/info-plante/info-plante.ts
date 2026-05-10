@@ -99,22 +99,61 @@ export class InfoPlante implements OnDestroy, OnChanges {
   }
 
   public arroser(id: number) {
-    this.planteService.arroser(id).subscribe(() => {
-      this.reloadEvent.emit();
+    this.planteService.arroser(id).subscribe({
+      next: (msg: MessageDTO) => {
+        this.reloadEvent.emit();
+
+        if (msg.message.length > 2) {
+          this.MessageEvent.emit({
+            message: msg.message,
+            type: 'message',
+            timeout: 5000,
+          });
+        }
+      },
     });
   }
 
   recolter(id: number): void {
     this.planteService.recolter(id).subscribe({
       next: (msg: MessageDTO) => {
-        this.matureEventDone = false;
-        this.croissanceActuelle = 0;
-        this.humiditeActuelle = Math.min(this.humiditeActuelle, 10);
+        //this.matureEventDone = false;
+        //this.croissanceActuelle = 0;
+        //this.humiditeActuelle = Math.min(this.humiditeActuelle, 10);
         this.reloadEvent.emit();
+        if (msg.message.length > 2) {
+          this.MessageEvent.emit({
+            message: msg.message,
+            type: 'success',
+            timeout: 5000,
+          });
+        }
       },
       error: (err) => {
         this.MessageEvent.emit({
           message: err?.error?.message || 'Erreur récolte',
+          type: 'error',
+          timeout: 5000,
+        });
+      },
+    });
+  }
+
+  protected supprimer(id: number) {
+    this.planteService.delete(id).subscribe({
+      next: () => {
+        this.reloadEvent.emit();
+
+        this.MessageEvent.emit({
+          message: 'Suppression réussie',
+          type: 'message',
+          timeout: 5000,
+        });
+      },
+
+      error: (err) => {
+        this.MessageEvent.emit({
+          message: err?.error?.message || 'Erreur lors de la suppression',
           type: 'error',
           timeout: 5000,
         });

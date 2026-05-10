@@ -58,8 +58,8 @@ public class PlanteController {
     }
 
     @PostMapping("/arroser/{id}")
-    public void arroser(@PathVariable Integer id) {
-        planteService.arroser(id);
+    public MessageDTO arroser(@PathVariable Integer id) {
+        return planteService.arroser(id);
     }
 
     @PostMapping("/recolter/{id}")

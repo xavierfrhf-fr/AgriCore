@@ -123,15 +123,20 @@ public class PlanteService {
 
  */
 
+	@Transactional
 	public void deleteById(Integer id) {
+		Plante p = daoPlante.findById(id).orElseThrow(() -> new PlanteNotFoundException(id));
+		Zone z  = daoZone.findByPlante(p).orElseThrow(() -> new ZoneNotFoundException(p.getEspece().getAllowedZone()));
+		z.setPlante(null);
 		daoPlante.deleteById(id);
 	}
 
 	@Transactional
-	public void arroser(Integer id) {
+	public MessageDTO arroser(Integer id) {
 		Plante p =daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
 		p.updateHumidite();
 		p.arroser();
+		return new MessageDTO(p.getEspece().getNomAffichage()+" a été arrosé",true);
 		//this.daoPlante.save(p);
 	}
 
@@ -173,6 +178,6 @@ public class PlanteService {
 			daoZone.findByPlante(p).ifPresent(zone -> zone.setPlante(null));
 			daoPlante.delete(p);
 		}
-		return new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
+		return new MessageDTO(p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage(), true);
     }
 }
