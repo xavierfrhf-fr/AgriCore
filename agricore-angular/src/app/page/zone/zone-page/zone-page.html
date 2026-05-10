@@ -1,6 +1,5 @@
 
 @if (mapMode !== 'OFF'){
-  <button (click)="mapMode='OFF'">Masquer Carte</button>
   <app-map-component [shapes]="zoneShapes$ | async"
                      [mapMode]="mapMode"
                      [placementShape]="placementShape"
@@ -8,64 +7,52 @@
                      (cancelCreation)="stopZoneCreation()"
                      (deleteZoneByPos)="deleteZoneByPos($event)"
   ></app-map-component>
-} @else {
-  <button (click)="mapMode='VIEW'">Afficher Carte</button>
 }
 
-<div class="tabs">
-  <button
-    [class.active]="isCreation"
-    (click)="isCreation = true">
-    Création de batiments
-  </button>
+<div class="page-wrapper">
 
-  <button
-    [class.active]="!isCreation"
-    (click)="isCreation = false">
-    List des batiments existants
-  </button>
-</div>
+  <div class="tabs">
+    <button
+      [class.active]="isCreation"
+      (click)="isCreation = true">
+      Création de bâtiments
+    </button>
+    <button
+      [class.active]="!isCreation"
+      (click)="isCreation = false">
+      Liste des bâtiments existants
+    </button>
+  </div>
 
-@if (isCreation) {
-  <div >
-    <table class="creation-table">
-      <tbody>
-        @for (zoneData of zoneDatas$ |async; track zoneData.nomZone) {
+  @if (isCreation) {
+
+    <div class="panneau creation-wrapper">
+      <p class="titre-section">Création de bâtiments</p>
+      <table class="creation-table">
+        <thead>
+          <tr>
+            <th>Aperçu</th>
+            <th>Bâtiment</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (zoneData of zoneDatas$ | async; track zoneData.nomZone) {
             <tr>
-              <td><img [src]="zoneData.pathSprite" height="90px"> <p>Taille : {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeWidth()}} X {{ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeHeight()}}</p></td>
-
+              <td class="td-apercu">
+                <img [src]="zoneData.pathSprite" height="90px" />
+                <p>{{ ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeWidth() }} × {{ ZoneShape.zoneShapeFromZoneDataDTO(zoneData).getShapeHeight() }}</p>
+              </td>
               <td>
                 <p>{{zoneData.nomAffichage | titlecase}} - {{zoneData | zoneInfo}}</p>
                 <p>{{zoneData.description}}</p>
               </td>
               <td>
-                @if (zoneData.zoneCreatable){
-                <button class="bouton bouton-creer" (click)="startZoneCreation(zoneData)">CREER ZONE</button>
+                @if (zoneData.zoneCreatable) {
+                  <button class="bouton bouton-creer" (click)="startZoneCreation(zoneData)">Créer la zone</button>
                 } @else {
-                  <button class="bouton bouton-creer" disabled>CREER ZONE</button>
+                  <button class="bouton bouton-creer" disabled>Créer la zone</button>
                 }
-              </td>
-            </tr>
-
-        }
-
-      </tbody>
-    </table>
-  </div>
-} @else {
-  @if (zoneGroups$ | async; as groups) {
-
-    <div class="tables-container">
-
-      <!-- plantZone -->
-      <div class="panneau" style="width: fit-content; height: fit-content">
-      <table>
-        <tbody>
-          @for (item of groups.plantZone; track item.zone) {
-            <tr class="bordure-pixel">
-              <td>
-                <img [src]="item.zoneData?.pathSprite" height="80px">
-                <p>{{ item.zone.nomZone }}</p>
               </td>
             </tr>
           }
@@ -73,87 +60,119 @@
       </table>
     </div>
 
-      <!-- animalZone -->
-      <div class="panneau" style="width: fit-content; height: fit-content">
-      <table>
-        <tbody>
-          @for (item of groups.animalZone; track item.zone) {
-            <tr class="bordure-pixel">
+  } @else {
 
-              <td>
-                <img [src]="item.zoneData?.pathSprite" height="80px">
-                <p>{{ item.zone.nomZone }}</p>
-              </td>
-              <td>
-                <p>Cette zone contient {{item.zone.animals.length}} animaux :</p>
-                <ul class="flex-list" [style.grid-template-columns]="'repeat(' + getColumnCount(item.zone.animals.length) + ', 35px)'">
+    @if (zoneGroups$ | async; as groups) {
+      <div class="tables-container">
 
-                @for (animal of item.zone.animals; track animal.id) {
-                  <li><img [src]="animal.pathSprite" height="35px" (click)="null"></li>
-                }
+        <!-- plantZone -->
+        <div class="panneau">
+          <p class="titre-section">Zones de culture</p>
+          <table>
+            <thead>
+              <tr><th>Bâtiment</th></tr>
+            </thead>
+            <tbody>
+              @for (item of groups.plantZone; track item.zone) {
+                <tr>
+                  <td class="td-batiment">
+                    <img [src]="item.zoneData?.pathSprite" height="80px" />
+                    <p>{{ item.zone.nomZone }}</p>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
 
-                </ul>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-      </div>
+        <!-- animalZone -->
+        <div class="panneau">
+          <p class="titre-section">Zones animales</p>
+          <table>
+            <thead>
+              <tr><th>Bâtiment</th><th>Animaux</th></tr>
+            </thead>
+            <tbody>
+              @for (item of groups.animalZone; track item.zone) {
+                <tr>
+                  <td class="td-batiment">
+                    <img [src]="item.zoneData?.pathSprite" height="80px" />
+                    <p>{{ item.zone.nomZone }}</p>
+                  </td>
+                  <td>
+                    <p>{{ item.zone.animals.length }} animal(aux)</p>
+                    <ul class="flex-list" [style.grid-template-columns]="'repeat(' + getColumnCount(item.zone.animals.length) + ', 35px)'">
+                      @for (animal of item.zone.animals; track animal.id) {
+                        <li><img [src]="animal.pathSprite" height="35px" /></li>
+                      }
+                    </ul>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
 
         <!-- utilityZone -->
-      <div class="panneau" style="width: fit-content; height: fit-content">
-      <table >
-        <tbody>
-          @for (item of groups.utilityZone; track item.zone.id) {
-            <tr class="bordure-pixel">
-              <td>
-                <img [src]="item.zoneData?.pathSprite" height="80px">
-                <p>{{ item.zone.nomZone }}</p>
-              <td>
-              <ul>
-                @for (tranfo of item.zoneData?.transformations; track tranfo.transformation) {
-                  <app-transformation-display [transformationDataDTO]="tranfo"></app-transformation-display>
-                }
-              </ul>
-            </td>
-              <td>case</td>
-            </tr>
-          }
-        </tbody>
-      </table>
+        <div class="panneau">
+          <p class="titre-section">Zones utilitaires</p>
+          <table>
+            <thead>
+              <tr><th>Bâtiment</th><th>Transformations</th></tr>
+            </thead>
+            <tbody>
+              @for (item of groups.utilityZone; track item.zone.id) {
+                <tr>
+                  <td class="td-batiment">
+                    <img [src]="item.zoneData?.pathSprite" height="80px" />
+                    <p>{{ item.zone.nomZone }}</p>
+                  </td>
+                  <td>
+                    <ul class="liste-transformations">
+                      @for (tranfo of item.zoneData?.transformations; track tranfo.transformation) {
+                        <app-transformation-display [transformationDataDTO]="tranfo"></app-transformation-display>
+                      }
+                    </ul>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- storage zone -->
+        <div class="panneau">
+          <p class="titre-section">Stockage</p>
+          <table>
+            <thead>
+              <tr><th>Bâtiment</th><th>Ressources stockées</th></tr>
+            </thead>
+            <tbody>
+              @for (item of groups.storageZone; track item.zone.id) {
+                <tr>
+                  <td class="td-batiment">
+                    <img [src]="item.zoneData?.pathSprite" height="80px" />
+                    <p>{{ item.zone.nomZone }}</p>
+                  </td>
+                  <td>
+                    <ul class="liste-ressources">
+                      @for (ressource of item.zone.ressources; track ressource.id) {
+                        <li [title]="ressource.nom">
+                          <img [src]="ressource.pathSprite" height="22px" />
+                          {{ ressource.quantite }} {{ ressource.uniteAffichage }}
+                        </li>
+                      }
+                    </ul>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
       </div>
+    }
 
-      <!-- storage zone -->
-      <div class="panneau" style="width: fit-content; height: fit-content">
-      <table>
-        <tbody>
-          @for (item of groups.storageZone; track item.zone.id) {
-            <tr class="bordure-pixel">
-              <td>
-
-                <img [src]="item.zoneData?.pathSprite" height="80">
-                <p>{{ item.zone.nomZone }}</p>
-              </td>
-              <td>
-                <ul>
-
-
-                  @for (ressource of item.zone.ressources; track ressource.id) {
-                    <li [title]="ressource.nom"><img [src]="ressource.pathSprite" height="25px" > : {{ressource.quantite}} {{ressource.uniteAffichage}}</li>
-                  }
-
-                </ul>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-      </div>
-
-  </div>
   }
 
-}
-
-
-
+</div>
