@@ -28,12 +28,18 @@ export class ProduitsPage implements OnInit, OnDestroy {
 
   quantites = {
     fraise: 0,
-    lait: 0,
+    laitVache: 0,
+    laitBrebis:0,
     fromage: 0,
     poire: 0,
     pomme: 0,
     mais: 0,
-    oeufs: 0
+    oeufs: 0,
+    jusPomme: 0,
+    huileTournesol:0,
+    farineBle: 0,
+    pates:0,
+    huileColza:0
   };
 
   augmente(produit: keyof typeof this.quantites) {

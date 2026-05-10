@@ -1,106 +1,191 @@
 <div class="header-fixe">
-    <app-header
-        logoTexte="La ferme chez nous !"
-        [sloganItems]="sloganItems">
+    <app-header logoTexte="La ferme chez nous !" [sloganItems]="sloganItems">
     </app-header>
 </div>
 
-<div class="content" >
-        <div class="titre">
+<div class="content">
+    <div class="titre">
 
-            <p>NOS PRODUITS FRAIS</p>
-            <p>Click & collect à la ferme</p>
+        <p>NOS PRODUITS FRAIS</p>
+        <p>Click & collect à la ferme</p>
+    </div>
+
+    <div class="produits">
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay fraise" src="assets/image/boutique/panierFraise.png" alt="">
+            <div class="texte nom">fraises</div>
+            <div class="texte prix">4€ /100g</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('fraise')">-</button>
+                <span class="quantite">{{ quantites.fraise }}</span>
+                <button class="btn" (click)="augmente('fraise')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay poire" src="assets/image/boutique/panierPoire.png" alt="">
+            <div class="texte nom">poires</div>
+            <div class="texte prix">2€ /1kg</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('poire')">-</button>
+                <span class="quantite">{{ quantites.poire }}</span>
+                <button class="btn" (click)="augmente('poire')">+</button>
+            </div>
+        </div>
+         <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay pomme" src="assets/image/boutique/panierPomme.png" alt="">
+            <div class="texte nom">pommes</div>
+            <div class="texte prix">4€ /1kg</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('pomme')">-</button>
+                <span class="quantite">{{ quantites.pomme }}</span>
+                <button class="btn" (click)="augmente('pomme')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay laitVache" src="assets/image/boutique/laitVache.png" alt="">
+            <div class="texte nom">lait de vache</div>
+            <div class="texte prix">2€ /1L</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('laitVache')">-</button>
+                <span class="quantite">{{ quantites.laitVache }}</span>
+                <button class="btn" (click)="augmente('laitVache')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay laitBrebis" src="assets/image/boutique/laitBrebis.png" alt="">
+            <div class="texte nom">lait de Brebis</div>
+            <div class="texte prix">3€ /1L</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('laitBrebis')">-</button>
+                <span class="quantite">{{ quantites.laitBrebis }}</span>
+                <button class="btn" (click)="augmente('laitBrebis')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay huileColza" src="assets/image/boutique/huileColza.png" alt="">
+            <div class="texte nom">huile colza</div>
+            <div class="texte prix">2€ /1L</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('huileColza')">-</button>
+                <span class="quantite">{{ quantites.huileColza }}</span>
+                <button class="btn" (click)="augmente('huileColza')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay huileTournesol" src="assets/image/boutique/huileTournesol.png" alt="">
+            <div class="texte nom">huile tournesol</div>
+
+
+            <div class="texte prix">2€ / 1L</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('huileTournesol')">-</button>
+                <span class="quantite">{{ quantites.huileTournesol }}</span>
+                <button class="btn" (click)="augmente('huileTournesol')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay fromage" src="assets/image/boutique/fromage.png" alt="">
+            <div class="texte nom">fromage</div>
+            <div class="texte prix">6€ /100g</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('fromage')">-</button>
+                <span class="quantite">{{ quantites.fromage }}</span>
+                <button class="btn" (click)="augmente('fromage')">+</button>
+            </div>
+        </div>
+        
+       
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay mais" src="assets/image/boutique/boiteMais.png" alt="">
+            <div class="texte nom">maïs</div>
+            <div class="texte prix">1€ /100g</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('mais')">-</button>
+                <span class="quantite">{{ quantites.mais }}</span>
+                <button class="btn" (click)="augmente('mais')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay oeuf" src="assets/image/boutique/12oeufs.png" alt="">
+            <div class="texte nom">oeufs</div>
+            <div class="texte prix">3€ /x12</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('oeufs')">-</button>
+                <span class="quantite">{{ quantites.oeufs }}</span>
+                <button class="btn" (click)="augmente('oeufs')">+</button>
+            </div>
+
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay jusPomme" src="assets/image/boutique/jus_de_pomme.png" alt="">
+            <div class="texte nom">jus de pomme</div>
+            <div class="texte prix">3€ / 1L</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('jusPomme')">-</button>
+                <span class="quantite">{{ quantites.jusPomme }}</span>
+                <button class="btn" (click)="augmente('jusPomme')">+</button>
+            </div>
         </div>
 
-        <div class="produits">
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay fraise" src="assets/image/boutique/fraise2.png" alt="">
-                <div class="texte nom">fraises</div>
-                <div class="texte prix">4€ /100g</div>
+        
 
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fraise')">-</button>
-                    <span class="quantite">{{ quantites.fraise }}</span>
-                    <button class="btn" (click)="augmente('fraise')">+</button>
-                </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay farineBle" src="assets/image/boutique/farineBle.png" alt="">
+            <div class="texte nom">farine de blé</div>
+
+
+            <div class="texte prix">2€ / 1Kg</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('farineBle')">-</button>
+                <span class="quantite">{{ quantites.farineBle }}</span>
+                <button class="btn" (click)="augmente('farineBle')">+</button>
             </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay lait" src="assets/image/boutique/lait.png" alt="">
-                <div class="texte nom">lait</div>
-                <div class="texte prix">2€ /1L</div>
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('lait')">-</button>
-                    <span class="quantite">{{ quantites.lait }}</span>
-                    <button class="btn" (click)="augmente('lait')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay fromage" src="assets/image/boutique/fromage.png" alt="">
-                <div class="texte nom">fromage</div>
-                <div class="texte prix">6€ /100g</div>
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('fromage')">-</button>
-                    <span class="quantite">{{ quantites.fromage }}</span>
-                    <button class="btn" (click)="augmente('fromage')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay poire" src="assets/image/boutique/poire.png" alt="">
-                <div class="texte nom">poire</div>
-                <div class="texte prix">2€ /1kg</div>
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('poire')">-</button>
-                    <span class="quantite">{{ quantites.poire }}</span>
-                    <button class="btn" (click)="augmente('poire')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay pomme" src="assets/image/boutique/pomme2.png" alt="">
-                <div class="texte nom">pomme</div>
-                <div class="texte prix">4€ /1kg</div>
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('pomme')">-</button>
-                    <span class="quantite">{{ quantites.pomme }}</span>
-                    <button class="btn" (click)="augmente('pomme')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay mais" src="assets/image/boutique/mais.png" alt="">
-                <div class="texte nom">maïs</div>
-                <div class="texte prix">1€ /100g</div>
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('mais')">-</button>
-                    <span class="quantite">{{ quantites.mais }}</span>
-                    <button class="btn" (click)="augmente('mais')">+</button>
-                </div>
-            </div>
-            <div class="card">
-                <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-                <img class="overlay oeuf" src="assets/image/boutique/oeuf.png" alt="">
-                <div class="texte nom">oeufs</div>
-                <div class="texte prix">3€ /x10</div>
-
-                <div class="buttons">
-                    <button class="btn" (click)="diminue('oeufs')">-</button>
-                    <span class="quantite">{{ quantites.oeufs }}</span>
-                    <button class="btn" (click)="augmente('oeufs')">+</button>
-                </div>
-            </div>
-
         </div>
+
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay pates" src="assets/image/boutique/pates2.png" alt="">
+            <div class="texte nom">pâtes</div>
+
+
+            <div class="texte prix">1€ / 500g</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('pates')">-</button>
+                <span class="quantite">{{ quantites.pates }}</span>
+                <button class="btn" (click)="augmente('pates')">+</button>
+            </div>
+        </div>
+         
+
 
     </div>
+
+</div>
 
 <footer>
     <nav>
