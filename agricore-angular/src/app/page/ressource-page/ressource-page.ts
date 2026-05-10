@@ -19,6 +19,8 @@ import {UniteService} from '../../service/ressource/unite-service';
 
 import {NomRessourceService} from './../../service/ressource/nom-ressource-service';
 import {RessourceService} from './../../service/ressource/ressource-service';
+import {ZoneService} from '../../service/zone/zone-service';
+import {DataService} from '../../service/data-service';
 
 @Component({
   imports:
@@ -31,6 +33,8 @@ export class RessourcePage implements OnInit, AfterViewInit {
   private nomRessourceService = inject(NomRessourceService);
   private uniteService = inject(UniteService);
   private transformationService = inject(TransformationService);
+  private zoneService = inject(ZoneService);
+  private dataService = inject(DataService);
   private formBuilder = inject(FormBuilder);
 
   private refresh$ = new Subject<void>();
@@ -100,14 +104,24 @@ export class RessourcePage implements OnInit, AfterViewInit {
     // Filtrage côté client pour n'afficher que les ressources non encore
     // utilisées CombineLatest prends les deux fluxs ressources et nomRessources
     // et à chaque fois que l'un change, met à jour les deux
+    const zonesExistantes$ = this.zoneService.findAll();
+    const zoneDataAll$ = this.dataService.getZoneData();
+
     this.nomRessourcesFiltre$ =
         combineLatest([
-          this.nomRessources$, this.ressources$
-        ]).pipe(map(([nomDisponibles, ressourcesPresentes]) => {
+          this.nomRessources$, this.ressources$, zonesExistantes$, zoneDataAll$
+        ]).pipe(map(([nomDisponibles, ressourcesPresentes, zones, zoneData]) => {
           const nomsUtilises = new Set(ressourcesPresentes.map(
               ressourcePresente => ressourcePresente.nom));
+          const nomZonesExistantes = new Set(zones.map(z => z.nomZone.trim().toLowerCase()));
+          const nomAffichageDisponibles = new Set(
+              zoneData
+                .filter(zd => nomZonesExistantes.has(zd.nomZone.trim().toLowerCase()))
+                .map(zd => zd.nomAffichage.trim().toLowerCase())
+          );
           return nomDisponibles.filter(
-              nomRessource => !nomsUtilises.has(nomRessource.nom));
+              nomRessource => !nomsUtilises.has(nomRessource.nom) &&
+              nomAffichageDisponibles.has(nomRessource.nomAffichageZone.trim().toLowerCase()));
         }));
 
     this.nomRessourceService.findAll().subscribe(list => {
