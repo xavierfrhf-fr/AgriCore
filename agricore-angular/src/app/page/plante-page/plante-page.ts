@@ -57,7 +57,7 @@ export class PlantePage implements OnInit {
     this.addPlanteOpen = false;
   }
 
-  showErrorMessage($event: Message): void {
+  showMessage($event: Message): void {
     this.message = $event;
   }
 

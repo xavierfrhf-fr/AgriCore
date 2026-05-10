@@ -1,8 +1,7 @@
 .message-modal {
   position: fixed;
-  top: 22%;
-  left: 45%;
-  z-index: 1000;
+
+  z-index: 10;
 
 
   border-radius: 8px;

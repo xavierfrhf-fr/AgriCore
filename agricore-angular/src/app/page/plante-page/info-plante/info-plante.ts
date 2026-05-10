@@ -26,7 +26,7 @@ import { Message } from '../../../model/message';
 export class InfoPlante implements OnDestroy, OnChanges {
   @Input() plante!: PlanteResponse;
   @Output() reloadEvent: EventEmitter<void> = new EventEmitter<void>();
-  @Output() errorMessage: EventEmitter<Message> = new EventEmitter<Message>();
+  @Output() MessageEvent: EventEmitter<Message> = new EventEmitter<Message>();
   protected matureEventDone: boolean = false;
   protected deadEventDone: boolean = false;
 
@@ -113,7 +113,7 @@ export class InfoPlante implements OnDestroy, OnChanges {
         this.reloadEvent.emit();
       },
       error: (err) => {
-        this.errorMessage.emit({
+        this.MessageEvent.emit({
           message: err?.error?.message || 'Erreur récolte',
           type: 'error',
           timeout: 5000,

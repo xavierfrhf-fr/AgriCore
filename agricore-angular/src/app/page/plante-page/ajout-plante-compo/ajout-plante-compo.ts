@@ -9,6 +9,7 @@ import { TempsPoussePipe } from '../../../pipe/temps-pousse-pipe';
 import { ConsoEauPipe } from '../../../pipe/conso-eau-pipe';
 import { ZoneService } from '../../../service/zone/zone-service';
 import { ZoneRequest } from '../../../dto/zone/request/zone-request';
+import { Message } from '../../../model/message';
 
 @Component({
   selector: 'app-ajout-plante-compo',
@@ -19,12 +20,14 @@ import { ZoneRequest } from '../../../dto/zone/request/zone-request';
 export class AjoutPlanteCompo implements OnInit {
   //EVENT VERS PARENT
   @Output() closeAjout: EventEmitter<void> = new EventEmitter<void>();
+  @Output() reloadPage: EventEmitter<void> = new EventEmitter<void>();
+  @Output() messageEvent: EventEmitter<Message> = new EventEmitter<Message>();
 
   //DATA FROM BACK
   private refresh$: Subject<void> = new Subject<void>();
   protected planteData$!: Observable<PlanteData[]>;
 
-  statusMessage: { text: string; type: 'success' | 'error' } | null = null;
+  statusMessage: { text: string; type: 'message' | 'error' } | null = null;
 
   constructor(
     protected planteService: PlanteService,
@@ -53,7 +56,7 @@ export class AjoutPlanteCompo implements OnInit {
     this.zoneService.createZoneWithRandomPos(zoneReq).subscribe({
       next: (success) => {
         if (success) {
-          this.showMessage(`La zone ${nomZone} a été placée avec succès !`, 'success');
+          this.showMessage(`La zone ${nomZone} a été placée avec succès !`, 'message');
           this.reload();
         } else {
           this.showMessage(`Échec du placement de la zone ${nomZone}.`, 'error');
@@ -70,15 +73,23 @@ export class AjoutPlanteCompo implements OnInit {
     this.planteService.add(planteToAdd).subscribe(
       () => {
         this.reload();
-        this.showMessage(`La plante ${nomPlante} a été plantée avec succès !`, "success");
+        this.reloadPage.emit();
+        this.showMessage(`La plante ${nomPlante} a été plantée avec succès !`, "message");
       }
     );
   }
 
-  private showMessage(text: string, type: 'success' | 'error') {
-    this.statusMessage = { text, type };
-    setTimeout(() => {
-      this.statusMessage = null;
-    }, 5000);
+  private showMessage(text: string, type: 'message' | 'error') {
+    const msg = {} as Message;
+    msg.message = text;
+    msg.type = type;
+    msg.position = {
+      top:'35%',
+      left: '80%'
+    };
+    msg.timeout= 5000;
+
+    this.messageEvent.emit(msg)
+
   }
 }

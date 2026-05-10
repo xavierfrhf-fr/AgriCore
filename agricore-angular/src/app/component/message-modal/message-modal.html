@@ -1,4 +1,4 @@
-<div class="message-modal" [class]="message.type">
+<div class="message-modal" [class]="message.type" [ngStyle]="getPos()">
   <div class="message-content">
     <p>{{ message.message }}</p>
 
