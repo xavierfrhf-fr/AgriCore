@@ -35,7 +35,7 @@
                 <button class="btn" (click)="augmente('poire')">+</button>
             </div>
         </div>
-         <div class="card">
+        <div class="card">
             <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
             <img class="overlay pomme" src="assets/image/boutique/panierPomme.png" alt="">
             <div class="texte nom">pommes</div>
@@ -69,6 +69,18 @@
                 <button class="btn" (click)="diminue('laitBrebis')">-</button>
                 <span class="quantite">{{ quantites.laitBrebis }}</span>
                 <button class="btn" (click)="augmente('laitBrebis')">+</button>
+            </div>
+        </div>
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay jusPomme" src="assets/image/boutique/jusPomme.png" alt="">
+            <div class="texte nom">jus de pomme</div>
+            <div class="texte prix">3€ / 1L</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('jusPomme')">-</button>
+                <span class="quantite">{{ quantites.jusPomme }}</span>
+                <button class="btn" (click)="augmente('jusPomme')">+</button>
             </div>
         </div>
         <div class="card">
@@ -109,8 +121,8 @@
                 <button class="btn" (click)="augmente('fromage')">+</button>
             </div>
         </div>
-        
-       
+
+
         <div class="card">
             <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
             <img class="overlay mais" src="assets/image/boutique/boiteMais.png" alt="">
@@ -123,34 +135,6 @@
                 <button class="btn" (click)="augmente('mais')">+</button>
             </div>
         </div>
-        <div class="card">
-            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-            <img class="overlay oeuf" src="assets/image/boutique/12oeufs.png" alt="">
-            <div class="texte nom">oeufs</div>
-            <div class="texte prix">3€ /x12</div>
-
-            <div class="buttons">
-                <button class="btn" (click)="diminue('oeufs')">-</button>
-                <span class="quantite">{{ quantites.oeufs }}</span>
-                <button class="btn" (click)="augmente('oeufs')">+</button>
-            </div>
-
-        </div>
-        <div class="card">
-            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
-            <img class="overlay jusPomme" src="assets/image/boutique/jus_de_pomme.png" alt="">
-            <div class="texte nom">jus de pomme</div>
-            <div class="texte prix">3€ / 1L</div>
-
-            <div class="buttons">
-                <button class="btn" (click)="diminue('jusPomme')">-</button>
-                <span class="quantite">{{ quantites.jusPomme }}</span>
-                <button class="btn" (click)="augmente('jusPomme')">+</button>
-            </div>
-        </div>
-
-        
-
         <div class="card">
             <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
             <img class="overlay farineBle" src="assets/image/boutique/farineBle.png" alt="">
@@ -180,7 +164,19 @@
                 <button class="btn" (click)="augmente('pates')">+</button>
             </div>
         </div>
-         
+        <div class="card">
+            <img class="base" src="assets/image/boutique/tableauBois.png" alt="">
+            <img class="overlay oeuf" src="assets/image/boutique/12oeufs.png" alt="">
+            <div class="texte nom">oeufs</div>
+            <div class="texte prix">3€ /x12</div>
+
+            <div class="buttons">
+                <button class="btn" (click)="diminue('oeufs')">-</button>
+                <span class="quantite">{{ quantites.oeufs }}</span>
+                <button class="btn" (click)="augmente('oeufs')">+</button>
+            </div>
+
+        </div>
 
 
     </div>
