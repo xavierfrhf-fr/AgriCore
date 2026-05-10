@@ -39,7 +39,7 @@ public class Animal {
 
 	private LocalDateTime prochaineProduction;
 
-	private int totalProduit;
+	private Integer totalProduit;
 
 	@ManyToOne
 	@JoinColumn(name = "zone_id")
@@ -107,11 +107,11 @@ public class Animal {
 		this.zone = zone;
 	}
 
-	public int getTotalProduit() {
+	public Integer getTotalProduit() {
 		return totalProduit;
 	}
 
-	public void setTotalProduit(int totalProduit) {
+	public void setTotalProduit(Integer totalProduit) {
 		this.totalProduit = totalProduit;
 	}
 
