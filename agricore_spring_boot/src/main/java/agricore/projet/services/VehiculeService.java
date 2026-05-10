@@ -48,7 +48,7 @@ public class VehiculeService {
 
 		if (!besoinCarburant(vehicule, distanceKm)) {
 
-			throw new RuntimeException("Pas assez de carburant");
+			throw new RuntimeException("Pas assez de carburant dans le/la "+vehicule.getTypeVehicule().getNomAffichage());
 			
 		}
 
@@ -94,7 +94,7 @@ public class VehiculeService {
         int distance = 2 * surface_zone_plante; // distance aller-retour
 
         if (plante.getEspece().getVehiculeRequis() != vehicule.getTypeVehicule() ) {
-            throw new RuntimeException("Pas le bon véhicule");
+            throw new RuntimeException("Un/Une "+plante.getEspece().getVehiculeRequis().getNomAffichage()+"est requis pour la récolte de "+plante.getEspece().getNomAffichage()+"!");
         }
 
         consommerCarburant(vehicule, distance);

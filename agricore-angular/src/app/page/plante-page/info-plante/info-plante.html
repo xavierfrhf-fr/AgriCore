@@ -9,7 +9,7 @@
   </p>
 </td>
 
-<td>
+<td style="align-content: center">
   @for (_ of (plante.consoEauParMin | consoEau); track $index) {
     <img class="img-icone" src="assets/image/goutte.png">
   }
@@ -18,12 +18,12 @@
 
 
 @if(matureEventDone){
-  <td colspan="2"> MATURE </td>
+  <td colspan="2" style="text-align: center;"> MATURE </td>
 } @else if (deadEventDone){
-  <td colspan="2"> DESECHE</td>
+  <td colspan="2" style="text-align: center;"> DESECHE</td>
 } @else {
-  <td [class.low-humidity]="humiditeActuelle < 20">{{ humiditeActuelle | number:'1.0-0' }} %</td>
-  <td>{{ croissanceActuelle | number:'1.0-0' }} %</td>
+  <td [class.low-humidity]="humiditeActuelle < 20" style="text-align: center;">{{ humiditeActuelle | number:'1.0-0' }} %</td>
+  <td style="text-align: center;">{{ croissanceActuelle | number:'1.0-0' }} %</td>
 }
 <td>
   @if(matureEventDone){
@@ -31,6 +31,9 @@
   } @else {
     <button class="bouton bouton-modifier"(click)="arroser(plante.id)">ARROSER</button>
   }
+</td>
+<td>
+  <button class="bouton bouton-supprimer" (click)="supprimer(plante.id)">SUPPRIMER</button>
 </td>
 
 

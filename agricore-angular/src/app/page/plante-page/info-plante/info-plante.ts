@@ -15,6 +15,7 @@ import { DecimalPipe } from '@angular/common';
 import { PlanteService } from '../../../service/plante/plante-service';
 import { MessageDTO } from '../../../dto/message-dto';
 import { ConsoEauPipe } from '../../../pipe/conso-eau-pipe';
+import { Message } from '../../../model/message';
 
 @Component({
   selector: 'tr[app-info-plante]',
@@ -25,8 +26,7 @@ import { ConsoEauPipe } from '../../../pipe/conso-eau-pipe';
 export class InfoPlante implements OnDestroy, OnChanges {
   @Input() plante!: PlanteResponse;
   @Output() reloadEvent: EventEmitter<void> = new EventEmitter<void>();
-  @Output() infoPlanteMessage: EventEmitter<{ text: string; type: 'success' | 'error' }> =
-    new EventEmitter<{ text: string; type: 'success' | 'error' }>();
+  @Output() MessageEvent: EventEmitter<Message> = new EventEmitter<Message>();
   protected matureEventDone: boolean = false;
   protected deadEventDone: boolean = false;
 
@@ -99,25 +99,66 @@ export class InfoPlante implements OnDestroy, OnChanges {
   }
 
   public arroser(id: number) {
-    this.planteService.arroser(id).subscribe(() => {
-      this.reloadEvent.emit();
+    this.planteService.arroser(id).subscribe({
+      next: (msg: MessageDTO) => {
+        this.reloadEvent.emit();
+
+        if (msg.message.length > 2) {
+          this.MessageEvent.emit({
+            message: msg.message,
+            type: 'message',
+            timeout: 5000,
+          });
+        }
+      },
     });
   }
 
   recolter(id: number): void {
-    this.planteService.recolter(id).subscribe( {
+    this.planteService.recolter(id).subscribe({
       next: (msg: MessageDTO) => {
-      this.matureEventDone = false;
-      this.croissanceActuelle = 0;
-      this.humiditeActuelle = Math.min(this.humiditeActuelle,10)
-      this.reloadEvent.emit();
-      this.infoPlanteMessage.emit({ text: msg.message, type: msg.success ? 'success' : 'error' });
-    },
+        //this.matureEventDone = false;
+        //this.croissanceActuelle = 0;
+        //this.humiditeActuelle = Math.min(this.humiditeActuelle, 10);
+        this.reloadEvent.emit();
+        if (msg.message.length > 2) {
+          this.MessageEvent.emit({
+            message: msg.message,
+            type: 'success',
+            timeout: 5000,
+          });
+        }
+      },
       error: (err) => {
-      alert(err?.error?.message || "Erreur récolte")
-    }
-    })
-
-    }
+        this.MessageEvent.emit({
+          message: err?.error?.message || 'Erreur récolte',
+          type: 'error',
+          timeout: 5000,
+        });
+      },
+    });
   }
+
+  protected supprimer(id: number) {
+    this.planteService.delete(id).subscribe({
+      next: () => {
+        this.reloadEvent.emit();
+
+        this.MessageEvent.emit({
+          message: 'Suppression réussie',
+          type: 'message',
+          timeout: 5000,
+        });
+      },
+
+      error: (err) => {
+        this.MessageEvent.emit({
+          message: err?.error?.message || 'Erreur lors de la suppression',
+          type: 'error',
+          timeout: 5000,
+        });
+      },
+    });
+  }
+}
 

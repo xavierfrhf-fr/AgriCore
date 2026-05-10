@@ -123,15 +123,20 @@ public class PlanteService {
 
  */
 
+	@Transactional
 	public void deleteById(Integer id) {
+		Plante p = daoPlante.findById(id).orElseThrow(() -> new PlanteNotFoundException(id));
+		Zone z  = daoZone.findByPlante(p).orElseThrow(() -> new ZoneNotFoundException(p.getEspece().getAllowedZone()));
+		z.setPlante(null);
 		daoPlante.deleteById(id);
 	}
 
 	@Transactional
-	public void arroser(Integer id) {
+	public MessageDTO arroser(Integer id) {
 		Plante p =daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
 		p.updateHumidite();
 		p.arroser();
+		return new MessageDTO(p.getEspece().getNomAffichage()+" a été arrosé",true);
 		//this.daoPlante.save(p);
 	}
 
@@ -151,31 +156,21 @@ public class PlanteService {
 			this.transformationService.createRessourceIfNotExist(p.getEspece().getRessourceProduite());
 			System.out.println("OK");
 		}catch (ZoneNotFoundException e) {
-			return new MessageDTO("Zone "+p.getEspece().getRessourceProduite().getZoneStockage().getNomAffichage()+", manquante pour le stockage de "+p.getEspece().getRessourceProduite().getNomAffichage(), false);
+			throw new RuntimeException("Bâtiment "+p.getEspece().getRessourceProduite().getZoneStockage().getNomAffichage()+", manquante pour le stockage de "+p.getEspece().getRessourceProduite().getNomAffichage());
 		}
 
-		//ICI VERIF VEHICULE (stp essaye de récupérer automatiquement le vehicule (et si plusieurs vehicules identiques prendre celui qui a le + de carburant))
-		try {
+
 		TypeVehicule vehiculeRequis = p.getEspece().getVehiculeRequis();
 
 		List<Vehicule> vehiculesDisponibles = daoVehicule.findByTypeVehicule(vehiculeRequis);
 
 		Vehicule vehiculeAvecPlusCarburant = vehiculesDisponibles.stream()
 				.max(Comparator.comparingInt(Vehicule::getCarburantActuel))
-				.orElseThrow(() -> new VehiculeNotFound("Aucun véhicule disponible pour la récolte"));
-		
+				.orElseThrow(() -> new VehiculeNotFound("Aucun(e) "+vehiculeRequis+" n'est disponible pour la récolte"));
+
 		vehiculeService.recolterPlante(p,vehiculeAvecPlusCarburant);
-		}catch (VehiculeNotFound e){
-			return new MessageDTO("Aucun véhicule disponible pour la récolte (véhicule requis : "+p.getEspece().getVehiculeRequis().name()+")", false);
-		}
-		/*
-		if (false){
-			return new MessageDTO(p.getEspece().getVehiculeRequis() + " manquant pour la récolte", false);
-			if (false){
-				return new MessageDTO(p.getEspece().getVehiculeRequis() + " n'a pas assez de carburant pour la récolte", false);
-			}
-		}
-		 */
+
+
 		p.recolter();
 		this.transformationService.changeQuantity(p.getEspece().getRessourceProduite(), p.getEspece().getQuantite());
 
@@ -183,6 +178,6 @@ public class PlanteService {
 			daoZone.findByPlante(p).ifPresent(zone -> zone.setPlante(null));
 			daoPlante.delete(p);
 		}
-		return new MessageDTO(""+p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage()+"s produit", true);
+		return new MessageDTO(p.getEspece().getQuantite()+" "+p.getEspece().getRessourceProduite().getNomAffichage(), true);
     }
 }

@@ -1,20 +1,27 @@
-<h1 class="titre-plantes">Liste des plantes</h1>
+
 @if (addPlanteOpen){
-  <app-ajout-plante-compo (closeAjout)="closeAddPlante()"></app-ajout-plante-compo>
+  <app-ajout-plante-compo (closeAjout)="closeAddPlante()" (reloadPage)="reload()" (messageEvent)="showMessage($event)"></app-ajout-plante-compo>
 }
-<button (click)="addPlanteOpen = true" class="bouton bouton-creer">Ajouter une plante</button>
 
+<div class="page-head">
+  <h1>Plante de la ferme</h1>
+  <button (click)="addPlanteOpen = true" class="bouton bouton-creer">
+    <img class="img-icone" src="assets/image/creer.png" />
+    Ajouter une plante
+  </button>
+</div>
 
-<div class="plante-list panneau" style="width: 700px; margin-top: 10px">
-  <table>
+<div class="plante-list panneau" style="width: 80%; margin-top: 10px;">
+  <p class="titre-section">Liste des plantes</p>
+  <table >
     <thead>
       <tr>
         <th></th>
-        <th>Production</th>
-        <th>Consommation d'eau</th>
-        <th>Humidite</th>
-        <th>Croissance</th>
-        <th>Actions</th>
+        <th style="width: 20%">Production</th>
+        <th style="width: 30%">Consommation d'eau</th>
+        <th style="width: 20%">Humidite</th>
+        <th style="width: 20%">Croissance</th>
+        <th colspan="2">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -22,8 +29,8 @@
         <tr app-info-plante
             [plante]="plante"
             (reloadEvent)="reload()"
-            (infoPlanteMessage)="showInfoPlanteMessage($event)"
-          >
+            (MessageEvent)="showMessage($event)"
+          style="width: max-content">
 
         </tr>
 
@@ -31,11 +38,55 @@
     </tbody>
   </table>
 </div>
-
-<div>
+<!-- CA MA SAOULé, ca sert a R
+<div class="panneau" style="width: 700px; margin-top: 10px">
   <table>
     <thead>
-      
+      <tr>
+        <th></th>
+        <th>Bâtiment libre / total</th>
+        <th>Liste des plantes</th>
+        <th>Plantes recoltables</th>
+        <th>Plante deseche</th>
+      </tr>
     </thead>
+    <tbody>
+      @for (planteZoneInfo of planteZoneInfo$|async; track planteZoneInfo.nomZone) {
+        <tr>
+          <td><img [src]="planteZoneInfo.pathSpriteZone" style="width: 50px"></td>
+
+          <td>
+            {{planteZoneInfo.freeZone}} / {{planteZoneInfo.totalZone}}
+          </td>
+          <td>
+            <ul>
+              @for (plantSprite of planteZoneInfo.pathSpritePlants ; track $index) {
+                <li>
+                  <img [src]="plantSprite" class="img-icone">
+                </li>
+              }
+            </ul>
+          </td>
+          <td>
+            {{planteZoneInfo.harvestableZone}}
+          </td>
+          <td>
+            {{planteZoneInfo.dryZone}}
+          </td>
+
+
+        </tr>
+      }
+
+
+    </tbody>
   </table>
 </div>
+-->
+@if (message) {
+  <app-message-modal
+    [message]="message"
+    (closeEvent)="clearMessage()"
+  />
+}
+

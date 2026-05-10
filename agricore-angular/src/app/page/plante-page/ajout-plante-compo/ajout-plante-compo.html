@@ -1,6 +1,6 @@
 
 <div class="form">
-  <div class="panneau" style="width: 500px; position:absolute;">
+  <div class="panneau" style="width: 540px; position:absolute;">
     <img class="img-icone close-window click" src="assets/image/croix.png" (click)="closeAddPlante()" />
 
     <p class="titre-section">
@@ -17,7 +17,7 @@
         @for (planteData of planteData$ | async ; track planteData.nomEnum) {
           <tr>
             <td>{{planteData.nomAffichage}}</td>
-            <td><img class="img-icone" [src]="planteData.pathSprite">  > {{planteData.production}} <img class="img-icone" [src]="planteData.ressource.pathSprite"> </td>
+            <td><img class="img-icone"  [src]="planteData.pathSprite">  > {{planteData.production}} <img class="img-icone" [src]="planteData.ressource.pathSprite"> </td>
             <td><p> - {{planteData.tempsPousseMinute | tempsPousse}} </p></td>
             <td style="width: 80px">
               @for (_ of (planteData.consommationEauParMin | consoEau); track $index) {
