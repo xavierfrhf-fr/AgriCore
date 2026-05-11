@@ -20,7 +20,13 @@
     inset 0 -2px 0 rgba(138, 74, 8, 0.18),
     0 1px 0 rgba(255, 255, 255, 0.6);
 }
-
+.panierRemplit2{
+   width: 500px;
+  height: auto;
+   position: relative;
+  left: 170px;  /* vers la droite */
+  top: 70px;   /* vers le bas */
+}
 .form-input,
 input[type='text'],
 input[type='time'],
