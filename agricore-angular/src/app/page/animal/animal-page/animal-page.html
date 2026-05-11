@@ -99,11 +99,10 @@
                                 {{animal.zone}} n° {{animal.zoneId}}</div>
                         </div>
                     </a>
-                    @if (animal.produit!="") {
+                    @if (animal.producer) {
                     <a routerLink="/ressource" style="text-decoration: none; color: inherit;">
                         <div title="Voir les ressources" class="click">
-                            <p>Produit :</p><img class="img-icone" [src]="animal.produitPathSprite" />
-                            {{animal.produit}}
+                          <app-animal-production-delay [animal]="animal"/>
                         </div>
                     </a>
                     }
@@ -243,7 +242,7 @@
                         formControlName="dateVaccination" />
                 </div>
 
-                
+
 
 
 

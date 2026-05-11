@@ -1,6 +1,7 @@
 package agricore.projet.dto.animal.response;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import agricore.projet.model.animal.Animal;
 import agricore.projet.model.animal.EspeceAnimal;
@@ -22,10 +23,15 @@ public class AnimalResponse {
     private String zonePathSprite;
     private String produit;
     private String produitPathSprite;
+    private Integer qtyProduced;
+    private boolean isProducer;
+    private LocalDateTime nextProduction;
+    private Integer delayProd;
+    private String nomZoneStock;
 
     public AnimalResponse(Integer id, EspeceAnimal espece, boolean male, LocalDate dateNaissance, int age, LocalDate dateVaccination,
             int delaisVaccination,  String pathSprite,
-            String nomAffichage, int zoneId, String zone, String zonePathSprite, String produit, String produitPathSprite) {
+            String nomAffichage, int zoneId, String zone, String zonePathSprite, String produit, String produitPathSprite, Integer qtyProduced, boolean isProducer, LocalDateTime nextProduction, Integer delayProd ) {
         this.id = id;      
           this.espece = espece;
         this.male = male;
@@ -40,6 +46,10 @@ public class AnimalResponse {
         this.zonePathSprite = zonePathSprite;
         this.produit = produit;
         this.produitPathSprite = produitPathSprite;
+        this.qtyProduced = qtyProduced;
+        this.isProducer = isProducer;
+        this.nextProduction = nextProduction;
+        this.delayProd = delayProd;
     }
 
     public AnimalResponse() {
@@ -157,6 +167,46 @@ public class AnimalResponse {
         this.age = age;
     }
 
+    public Integer getQtyProduced() {
+        return qtyProduced;
+    }
+
+    public void setQtyProduced(Integer qtyProduced) {
+        this.qtyProduced = qtyProduced;
+    }
+
+    public boolean isProducer() {
+        return isProducer;
+    }
+
+    public void setProducer(boolean producer) {
+        isProducer = producer;
+    }
+
+    public LocalDateTime getNextProduction() {
+        return nextProduction;
+    }
+
+    public void setNextProduction(LocalDateTime nextProduction) {
+        this.nextProduction = nextProduction;
+    }
+
+    public Integer getDelayProd() {
+        return delayProd;
+    }
+
+    public void setDelayProd(Integer delayProd) {
+        this.delayProd = delayProd;
+    }
+
+    public String getNomZoneStock() {
+        return nomZoneStock;
+    }
+
+    public void setNomZoneStock(String nomZoneStock) {
+        this.nomZoneStock = nomZoneStock;
+    }
+
     public static AnimalResponse convert(Animal animal) {
         AnimalResponse response = new AnimalResponse();
         response.setId(animal.getId());
@@ -175,9 +225,18 @@ public class AnimalResponse {
         if (ressource != null) {
             response.setProduit(ressource.getNomAffichage());
             response.setProduitPathSprite(ressource.getPathSprite());
+            response.setQtyProduced(animal.getTotalProduit());
+            response.setNextProduction(animal.getProchaineProduction());
+            response.setProducer(animal.isProducer());
+            response.setDelayProd(animal.getEspece().getDimorphisme().getProductionTime(animal.isMale()));
+            response.setNomZoneStock(animal.getNomRessource().getZoneStockage().getNomAffichage());
         } else {
             response.setProduit("");
             response.setProduitPathSprite("");
+            response.setQtyProduced(null);
+            response.setNextProduction(null);
+            response.setProducer(false);
+            response.setDelayProd(null);
         }
         return response;
     }

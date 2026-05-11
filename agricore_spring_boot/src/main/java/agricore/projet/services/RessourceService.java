@@ -3,6 +3,7 @@ package agricore.projet.services;
 import java.util.List;
 import java.util.Optional;
 
+import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.PrixLot;
 import jakarta.validation.Valid;
@@ -59,6 +60,9 @@ public class RessourceService {
         if (ressourceAlreadyExists(request)) {
             throw new RuntimeException("Ressource existe déjà"); // Exception custom ou alors transformer en patch pour
                                                                  // modifier quantité ?
+        }
+        if (!daoZone.existsByNomZone(request.getNom().getZoneStockage())){
+            throw new ZoneNotFoundException(request.getNom().getZoneStockage());
         }
 
         Ressource ressource = new Ressource();

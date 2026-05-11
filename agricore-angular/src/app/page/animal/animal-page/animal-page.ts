@@ -14,15 +14,22 @@ import { AnimalData } from '../../../dto/animal/response/animal-data';
 import { DataService } from '../../../service/data-service';
 import { VehiculeResponseDTO } from '../../../dto/vehicule/response/vehicule-response-dto';
 import { VehiculeService } from '../../../service/vehicule';
+import { AnimalProductionDelay } from '../animal-production-delay/animal-production-delay';
 
 @Component({
   selector: 'app-animal-page',
-  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterLink, RouterModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    RouterModule,
+    AnimalProductionDelay,
+  ],
   templateUrl: './animal-page.html',
   styleUrl: './animal-page.css',
 })
 export class AnimalPage {
-
   private animalService: AnimalService = inject(AnimalService);
   private dataService: DataService = inject(DataService);
   private zoneService: ZoneService = inject(ZoneService);
@@ -35,7 +42,6 @@ export class AnimalPage {
   protected refresh$: Subject<void> = new Subject<void>();
   protected refreshEspeces$: Subject<void> = new Subject<void>();
   protected vehicules$!: Observable<VehiculeResponseDTO[]>;
-  
 
   protected afficheDetailedInfos: boolean = false;
   protected afficheModifForm: boolean = false;
@@ -53,21 +59,22 @@ export class AnimalPage {
   protected especeCtrl!: FormControl;
   protected zoneCtrl!: FormControl;
 
-  protected initialDate = new Date("1970-01-01");
+  protected initialDate = new Date('1970-01-01');
 
   ngOnInit(): void {
-
     this.vehicules$ = this.refresh$.pipe(
       startWith(null),
-      switchMap(() => this.vehiculeService.findAll()) //appel api vers le findAll vehicule
+      switchMap(() => this.vehiculeService.findAll()), //appel api vers le findAll vehicule
     );
 
     this.animals$ = this.refresh$.pipe(
-      startWith(0), switchMap(() => this.animalService.findAll())
+      startWith(0),
+      switchMap(() => this.animalService.findAll()),
     );
 
     this.especesExistantes$ = this.refreshEspeces$.pipe(
-      startWith(0), switchMap(() => this.dataService.getAnimalData())
+      startWith(0),
+      switchMap(() => this.dataService.getAnimalData()),
     );
 
     this.isMaleCtrl = this.formBuilder.control('false', Validators.required);
@@ -76,17 +83,16 @@ export class AnimalPage {
     this.especeCtrl = this.formBuilder.control(null, Validators.required);
     this.zoneCtrl = this.formBuilder.control(-1);
 
-
     this.animalForm = this.formBuilder.group({
       male: this.isMaleCtrl,
       dateNaissance: this.dateNaissanceCtrl,
       dateVaccination: this.dateVaccinationCtrl,
       espece: this.especeCtrl,
       zoneId: this.zoneCtrl,
-      vehiculeId: [null, Validators.required]
+      vehiculeId: [null, Validators.required],
     });
 
-    this.isMaleCtrl.valueChanges.subscribe(value => {
+    this.isMaleCtrl.valueChanges.subscribe((value) => {
       this.createMaleSelected = value === 'true';
     });
   }
@@ -105,20 +111,25 @@ export class AnimalPage {
     this.animal = animal;
     this.afficheModifForm = true;
     this.zone$ = this.refresh$.pipe(
-      startWith(0), switchMap(() => this.zoneService.findById(animal.zoneId))
+      startWith(0),
+      switchMap(() => this.zoneService.findById(animal.zoneId)),
     );
     this.zonesDisponibles$ = this.refresh$.pipe(
       startWith(0),
       switchMap(() => this.zone$),
-      switchMap(zone => this.zoneService.findByName(zone.nomZone))
+      switchMap((zone) => this.zoneService.findByName(zone.nomZone)),
     );
 
     this.animalForm.patchValue({
       male: animal.male ? 'true' : 'false',
-      dateNaissance: animal.dateNaissance ? new Date(animal.dateNaissance).toISOString().split('T')[0] : '',
-      dateVaccination: animal.dateVaccination ? new Date(animal.dateVaccination).toISOString().split('T')[0] : '',
+      dateNaissance: animal.dateNaissance
+        ? new Date(animal.dateNaissance).toISOString().split('T')[0]
+        : '',
+      dateVaccination: animal.dateVaccination
+        ? new Date(animal.dateVaccination).toISOString().split('T')[0]
+        : '',
       espece: animal.espece,
-      zoneId: animal.zoneId
+      zoneId: animal.zoneId,
     });
   }
 
@@ -134,7 +145,7 @@ export class AnimalPage {
       this.afficheModifForm = false;
       this.animalForm.reset();
       this.refresh$.next();
-    })
+    });
   }
 
   cancel(): void {
@@ -147,16 +158,20 @@ export class AnimalPage {
   deleteAnimal(id: number) {
     this.animalService.delete(id).subscribe(() => {
       this.refresh$.next();
-    })
+    });
   }
 
   vacciner(animal: Animal) {
     this.animalForm.patchValue({
       male: animal.male ? 'true' : 'false',
-      dateNaissance: animal.dateNaissance ? new Date(animal.dateNaissance).toISOString().split('T')[0] : '',
-      dateVaccination: animal.dateVaccination ? new Date(Date.now()).toISOString().split('T')[0] : '',
+      dateNaissance: animal.dateNaissance
+        ? new Date(animal.dateNaissance).toISOString().split('T')[0]
+        : '',
+      dateVaccination: animal.dateVaccination
+        ? new Date(Date.now()).toISOString().split('T')[0]
+        : '',
       espece: animal.espece,
-      zoneId: animal.zoneId
+      zoneId: animal.zoneId,
     });
 
     const animalRequest: AnimalRequest = this.animalForm.getRawValue();
@@ -165,10 +180,10 @@ export class AnimalPage {
     this.animalService.update(animalRequest).subscribe(() => {
       this.animalForm.reset();
       this.refresh$.next();
-      this.animalService.findById(animal.id).subscribe(updated => {
+      this.animalService.findById(animal.id).subscribe((updated) => {
         this.animal = updated;
       });
-    })
+    });
   }
 
   openCreateForm() {
@@ -180,29 +195,23 @@ export class AnimalPage {
 
     const animalRequest: AnimalRequest = this.animalForm.getRawValue();
 
-    this.animalService.add(animalRequest).subscribe( {
+    this.animalService.add(animalRequest).subscribe({
       next: (animalCreated) => {
         let vehiculeId = this.animalForm.value.vehiculeId;
-        
-        this.vehiculeService.acheterAnimal(
-          animalCreated.id, vehiculeId
-        ).subscribe( {
 
+        this.vehiculeService.acheterAnimal(animalCreated.id, vehiculeId).subscribe({
           next: () => {
             this.animal = null;
             this.afficheCreateForm = false;
             this.animalForm.reset();
             this.refresh$.next();
-
           },
 
-           error: (err) => {
-          alert(err?.error?.message || "Erreur achat animal");
-        }
-
-        })
-      }
-      
-    })
+          error: (err) => {
+            alert(err?.error?.message || 'Erreur achat animal');
+          },
+        });
+      },
+    });
   }
 }
