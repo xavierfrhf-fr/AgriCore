@@ -1,5 +1,49 @@
 
-<td><img [src]="plante.pathSprite" style="height: 80px">  </td>
+<td>
+  <div class="plant-cell">
+
+    <div class="plant-stats">
+      @if (matureEventDone) {
+        <div class="plant-status">MATURE</div>
+      } @else if (deadEventDone) {
+        <div class="plant-status">DESECHE</div>
+      } @else {
+        <div class="plant-stat" [class.low-humidity]="humiditeActuelle < 20">
+          @if(humiditeActuelle < 5){
+            @if(plante.tree){
+              <img class="img-icone" src="assets/image/arbre-sec.png">
+            }@else{
+              <img class="img-icone" src="assets/image/herbe-sec.png">
+            }
+
+          }@else{
+            <img class="img-icone" src="assets/image/goutte.png">
+          }
+
+          <span>{{ humiditeActuelle | number:'1.0-0' }} %</span>
+        </div>
+
+        <div class="plant-stat">
+          @if(plante.tree){
+            @if(croissanceActuelle > 80){
+              <img class="img-icone" src="assets/image/arbre.png">
+            }@else{
+              <img class="img-icone" src="assets/image/petit-arbre.png">
+            }
+          }@else{
+            <img class="img-icone" src="assets/image/herbe.png">
+          }
+
+
+          <span>{{ croissanceActuelle | number:'1.0-0' }} %</span>
+        </div>
+      }
+    </div>
+
+    <img [src]="plante.pathSprite" class="plant-img">
+
+  </div>
+</td>
 
 <td>
   <p>
@@ -17,14 +61,6 @@
 
 
 
-@if(matureEventDone){
-  <td colspan="2" style="text-align: center;"> MATURE </td>
-} @else if (deadEventDone){
-  <td colspan="2" style="text-align: center;"> DESECHE</td>
-} @else {
-  <td [class.low-humidity]="humiditeActuelle < 20" style="text-align: center;">{{ humiditeActuelle | number:'1.0-0' }} %</td>
-  <td style="text-align: center;">{{ croissanceActuelle | number:'1.0-0' }} %</td>
-}
 <td>
   @if(matureEventDone){
     <button class="bouton bouton-creer" (click)="recolter(plante.id)">RECOLTER</button>

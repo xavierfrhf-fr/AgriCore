@@ -70,7 +70,7 @@ public enum NomZone {
 
 	CHAMBRE_FROIDE("chambre froide",
 			CheminAsset.ZONE + "CHAMBRE_FROIDE.png",
-			ZoneShape.rectangle(3, 3),
+			ZoneShape.rectangle(4, 2),
 			"Espace réfrigéré pour conserver les produits périssables.",
 			TypeZone.STORAGE),
 
@@ -105,7 +105,7 @@ public enum NomZone {
 			TypeZone.ANIMAL),
 	CLAPIER("clapier",
 			CheminAsset.ZONE+"CLAPIER.png",
-			ZoneShape.rectangle(3,2),
+			ZoneShape.rectangle(5,2),
 			"Clapier pour élever des petits lapins trop mignons.",
 			TypeZone.ANIMAL);
 

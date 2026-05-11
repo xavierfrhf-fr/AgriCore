@@ -26,7 +26,7 @@ import { PositionDTO } from '../../../dto/zone/response/position-dto';
 })
 export class MapComponent {
   protected mapSize$!: Observable<MapSize>;
-  protected cellSize: number = window.innerWidth/80;
+  protected cellSize: number = window.innerWidth/66;
   largeurFenetre!: number;
   protected fakeZoneShapes: ZoneShape[] = [
     new ZoneShape(
