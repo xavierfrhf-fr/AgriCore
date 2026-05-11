@@ -123,24 +123,24 @@ public class AnimalService {
 
     public void produceRessource(Animal animal){
         if (!animal.isProducer()){
-            System.out.println("Animal "+animal.getEspece().name()+" is not a producer");
-            System.out.println(animal.getEspece().getDimorphisme().getProductionTime(true));
+            //System.out.println("Animal "+animal.getEspece().name()+" is not a producer");
+            //System.out.println(animal.getEspece().getDimorphisme().getProductionTime(true));
             return;
         }
 
-        System.out.println("Animal "+animal.getEspece().name()+" is producer of "+animal.getNomRessource());
+        //System.out.println("Animal "+animal.getEspece().name()+" is producer of "+animal.getNomRessource());
 
 
         if (!ressourceService.ressourceAlreadyExists(animal.getNomRessource())) {
-            System.out.println("Ressource "+animal.getNomRessource()+" doesn't exist, animal: "+animal.getEspece().name()+" cannot produce");
+            //System.out.println("Ressource "+animal.getNomRessource()+" doesn't exist, animal: "+animal.getEspece().name()+" cannot produce");
             try{
                 transformationService.createRessourceIfNotExist(animal.getNomRessource());
             } catch (ZoneNotFoundException e){
-                System.out.println("Zone manquante pour production de "+animal.getEspece().name());
+                //System.out.println("Zone manquante pour production de "+animal.getEspece().name());
                 return;
             }
         }
-        System.out.println("Ressource "+animal.getNomRessource()+" produced");
+        //System.out.println("Ressource "+animal.getNomRessource()+" produced");
 
         int qty = animal.produceRessource();
         transformationService.changeQuantity(animal.getNomRessource(), qty);

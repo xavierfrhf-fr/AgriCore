@@ -1,22 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder,FormsModule,ReactiveFormsModule,Validators } from '@angular/forms';
 import { Auth } from '../../service/auth';
 import { Router } from '@angular/router';
+import { Message } from '../../model/message';
+import { MessageModal } from '../../component/message-modal/message-modal';
 
 @Component({
   selector: 'app-accueil-page',
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule,CommonModule, MessageModal],
   templateUrl: './accueil-page.html',
   styleUrl: './accueil-page.css',
 })
 export class AccueilPage implements OnInit {
+
+  @Output() messageEvent: EventEmitter<Message> = new EventEmitter<Message>();
 
   private formBuilder: FormBuilder = inject(FormBuilder);
   protected afficherInscription: boolean = false;
 
   loginForm!: any;
   registerForm!: any;
+
+  protected message?: Message;
   
 
   constructor(private fb: FormBuilder,private authService: Auth, private router: Router) {}
@@ -87,14 +93,49 @@ export class AccueilPage implements OnInit {
 
     this.authService.register(login!,password!,nom!,prenom!,email!).subscribe( 
       (res: any) => {
-        console.log("Inscription réussie", res);
+        this.showMessage({ message:"Inscription réussie",
+                           type: "success",
+                           timeout: 3000
+        });
         this.closeInscription();
         this.registerForm.reset();
+        this.router.navigate(['/accueil']);
       },
       (error: any) => {
-        console.error("Erreur lors de l'inscription:", error);
+        this.showMessage({
+        message: "Erreur lors de l'inscription ou utilisateur déjà inscrit",
+        type: "error",
+        timeout: 5000
+      });
+        this.closeInscription();
+        this.registerForm.reset();
+        this.router.navigate(['/accueil']);
+
+        console.log(error)
       }
     );
+  }
+
+  private showMessage_old(text: string, type: 'message' | 'error') {
+      const msg = {} as Message;
+      msg.message = text;
+      msg.type = type;
+      msg.position = {
+        top:'35%',
+        left: '80%'
+      };
+      msg.timeout= 5000;
+  
+      this.messageEvent.emit(msg)
+  
+    }
+  
+  showMessage($event: Message): void {
+    this.message = $event;
+  }
+
+  clearMessage(): void {
+    this.message = undefined;
   }
 
 }

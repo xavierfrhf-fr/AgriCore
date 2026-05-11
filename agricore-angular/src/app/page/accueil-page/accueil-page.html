@@ -111,6 +111,7 @@
                     </div>
 
                     <button class="identifiant"   (click)="Inscription()">S'inscrire</button> 
+                    
 
                 </div>
 
@@ -121,4 +122,11 @@
     </div>
 
 
+}
+
+@if (message) {
+  <app-message-modal
+    [message]="message"
+    (closeEvent)="clearMessage()"
+  />
 }

@@ -11,6 +11,10 @@ public enum Transformation {
             Map.of(NomRessource.LAIT_VACHE, 2),
             Map.of(NomRessource.FROMAGE, 1),
             NomZone.FROMAGERIE),
+    FROMAGE_CHEVRE(
+            Map.of(NomRessource.LAIT_CHEVRE, 10),
+            Map.of(NomRessource.FROMAGE_CHEVRE, 1),
+            NomZone.FROMAGERIE),
     JUS_POMME(
             Map.of(NomRessource.POMME, 5),
             Map.of(NomRessource.JUS_POMME, 1),
@@ -23,7 +27,30 @@ public enum Transformation {
             Map.of(NomRessource.LAIT_VACHE, 1,
                     NomRessource.FARINE_BLE, 2),
             Map.of(NomRessource.PATE, 5),
-            NomZone.CUISINE);
+            NomZone.CUISINE),
+    PAIN(
+            Map.of(NomRessource.PATE, 1),
+            Map.of(NomRessource.PAIN, 1),
+            NomZone.FOUR),
+    PIZZA(
+            Map.of(NomRessource.PATE,1,
+                    NomRessource.TOMATE, 2,
+                    NomRessource.FROMAGE,2),
+            Map.of(NomRessource.PIZZA,1),
+            NomZone.FOUR),
+    JUS_RAISIN(Map.of(NomRessource.RAISIN, 100),
+            Map.of(NomRessource.JUS_RAISIN,1),
+            NomZone.PRESSOIR
+    ),
+    JUS_TOMATE(
+            Map.of(NomRessource.TOMATE,5),
+            Map.of(NomRessource.JUS_TOMATE,1),
+            NomZone.PRESSOIR
+    ),
+    VIN(Map.of(NomRessource.JUS_RAISIN, 100),
+            Map.of(NomRessource.VIN,1),
+            NomZone.CUVE_FERMENTATION
+    );
 
     private final Map<NomRessource, Integer> input;
     private final Map<NomRessource, Integer> output;

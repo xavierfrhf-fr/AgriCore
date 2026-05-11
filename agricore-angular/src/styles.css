@@ -159,6 +159,11 @@ input[readonly] {
   opacity: 0.7;
 }
 
+button:hover {
+filter: brightness(0.85);
+cursor: pointer;
+}
+
 /* Boutons */
 .bouton {
   font-size: 1.2rem;

@@ -107,7 +107,17 @@ public enum NomZone {
 			CheminAsset.ZONE+"CLAPIER.png",
 			ZoneShape.rectangle(5,2),
 			"Clapier pour élever des petits lapins trop mignons.",
-			TypeZone.ANIMAL);
+			TypeZone.ANIMAL),
+	FOUR("four",
+			CheminAsset.ZONE+"four.png",
+			ZoneShape.rectangle(4,2),
+			"Un four très chaud, mais qui ne fait jamais brûler ses ingrédients.",
+			TypeZone.UTILITY),
+	CUVE_FERMENTATION("cuve de fermentation",
+			CheminAsset.ZONE+"cuve-fermentation.png",
+			ZoneShape.rectangle(4,2),
+			"Permet la préparation de vin.",
+			TypeZone.UTILITY);
 
 	private final ZoneShape zoneShape;
 	private final String nomAffichage;

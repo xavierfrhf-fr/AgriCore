@@ -49,9 +49,9 @@
               </td>
               <td>
                 @if (zoneData.zoneCreatable) {
-                  <button class="bouton bouton-creer" (click)="startZoneCreation(zoneData)">Créer la zone</button>
+                  <button class="bouton bouton-creer" (click)="startZoneCreation(zoneData)">Créer le bâtiment</button>
                 } @else {
-                  <button class="bouton bouton-creer" disabled>Créer la zone</button>
+                  <button class="bouton bouton-creer" disabled>Créer le bâtiment</button>
                 }
               </td>
             </tr>
@@ -67,7 +67,7 @@
 
         <!-- plantZone -->
         <div class="panneau">
-          <p class="titre-section">Zones de culture</p>
+          <p class="titre-section">Bâtiments de culture</p>
           <table>
             <thead>
               <tr><th>Bâtiment</th></tr>
@@ -87,7 +87,7 @@
 
         <!-- animalZone -->
         <div class="panneau">
-          <p class="titre-section">Zones animales</p>
+          <p class="titre-section">Bâtiments animaliers</p>
           <table>
             <thead>
               <tr><th>Bâtiment</th><th>Animaux</th></tr>
@@ -115,7 +115,7 @@
 
         <!-- utilityZone -->
         <div class="panneau">
-          <p class="titre-section">Zones utilitaires</p>
+          <p class="titre-section">Bâtiments utilitaires</p>
           <table>
             <thead>
               <tr><th>Bâtiment</th><th>Transformations</th></tr>
@@ -142,7 +142,7 @@
 
         <!-- storage zone -->
         <div class="panneau">
-          <p class="titre-section">Stockage</p>
+          <p class="titre-section">Bâtiments de sockage</p>
           <table>
             <thead>
               <tr><th>Bâtiment</th><th>Ressources stockées</th></tr>
