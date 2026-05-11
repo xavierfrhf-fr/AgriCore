@@ -173,19 +173,10 @@ button {
     background-color: transparent;
 }
 
-button.connexion:hover {
-
-    background-color: beige;
-}
 
 
 input.connexion {
     align-self: center;
-}
-
-input.connexion:hover {
-
-    background-color: beige;
 }
 
 
