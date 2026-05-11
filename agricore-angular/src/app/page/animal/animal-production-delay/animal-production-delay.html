@@ -1,9 +1,8 @@
 
 @if (animal.producer) {
   <p>
-    {{ (animal.qtyProduced ?? 0) + produced }}
+    Produit {{ (animal.qtyProduced ?? 0) + produced }}
     <img [src]="animal.produitPathSprite" class="img-icone">
-    produit
   </p>
 
   <p>
