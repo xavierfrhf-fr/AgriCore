@@ -33,17 +33,21 @@
 
                 <div class="input-wrapper">
                     
+                     <div class="input-group">
                     <input class="identifiant" type="text" formControlName="username" placeholder="login">
 
                     <div class="text-danger" *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
                         <small>Le username est obligatoire</small>
                     </div>
+                    </div>
                 
+                     <div class="input-group">
                     <input class="password"  type="password" formControlName="password" placeholder="mot de passe">
 
                     <div class="text-danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
                         <small>Le password est obligatoire</small>
                     </div>   
+                    </div>
 
                 </div>
 

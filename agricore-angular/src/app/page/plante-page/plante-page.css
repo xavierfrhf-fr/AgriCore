@@ -6,3 +6,13 @@
   flex-wrap: nowrap;
   justify-content: space-between;
 }
+
+.bouton-modifier,
+.bouton-creer {
+    min-width: 112px;
+    max-height: 50px;
+}
+
+tr {
+  text-align: center;
+}

@@ -1,40 +1,51 @@
-
 @if (addPlanteOpen){
-  <app-ajout-plante-compo (closeAjout)="closeAddPlante()" (reloadPage)="reload()" (messageEvent)="showMessage($event)"></app-ajout-plante-compo>
+<app-ajout-plante-compo (closeAjout)="closeAddPlante()" (reloadPage)="reload()"
+  (messageEvent)="showMessage($event)"></app-ajout-plante-compo>
 }
 
 <div class="page-head">
-  <h1>Plante de la ferme</h1>
-  <button (click)="addPlanteOpen = true" class="bouton bouton-creer">
-    <img class="img-icone" src="assets/image/creer.png" />
-    Ajouter une plante
-  </button>
+  <h1>Plantes de la ferme</h1>
+
 </div>
 
-<div class="plante-list panneau" style="width: 40%; margin-top: 10px;">
-  <p class="titre-section">Liste des plantes</p>
-  <table >
-    <thead>
-      <tr>
-        <th></th>
-        <th style="width: 20%">Production</th>
-        <th style="width: 30%">Consommation d'eau</th>
-        <th colspan="2">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (plante of plante$ |async; track plante.id) {
-        <tr app-info-plante
-            [plante]="plante"
-            (reloadEvent)="reload()"
-            (MessageEvent)="showMessage($event)"
+<div style="display:flex; justify-content: center; width: 100%;">
+
+  <div class="panneau" style="width: 40%; margin-top: 10px;">
+
+    <p class="titre-section" style="display: flex; align-items: center; justify-content: space-between;">
+
+      <span>
+        <img class="img-icone" src="assets/image/inventaire.png" />
+        Liste des plantes
+      </span>
+
+      <button (click)="addPlanteOpen = true" class="bouton bouton-creer">
+        <img class="img-icone" src="assets/image/creer.png" />
+        Ajouter une plante
+      </button>
+
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th style="width: 20%">Production</th>
+          <th style="width: 30%">Consommation d'eau</th>
+          <th colspan="2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (plante of plante$ |async; track plante.id) {
+        <tr app-info-plante [plante]="plante" (reloadEvent)="reload()" (MessageEvent)="showMessage($event)"
           style="width: max-content">
 
         </tr>
 
-      }
-    </tbody>
-  </table>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
 <!-- CA MA SAOULé, ca sert a R
 <div class="panneau" style="width: 700px; margin-top: 10px">
@@ -82,9 +93,5 @@
 </div>
 -->
 @if (message) {
-  <app-message-modal
-    [message]="message"
-    (closeEvent)="clearMessage()"
-  />
+<app-message-modal [message]="message" (closeEvent)="clearMessage()" />
 }
-

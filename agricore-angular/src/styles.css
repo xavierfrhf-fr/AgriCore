@@ -220,3 +220,15 @@ cursor: pointer;
     content: '';
   }
 }
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
+button:hover {
+    filter: brightness(0.85);
+    cursor: pointer;
+}
+

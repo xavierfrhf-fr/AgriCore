@@ -18,3 +18,66 @@
 
   transition: width 0.3s ease;
 }
+
+th {
+  white-space: nowrap;
+  padding: 6px 8px;
+  text-align: left;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px 2px;
+  padding-right: 10px;
+  box-shadow:
+    -2px 0 0 var(--bordure),
+    2px 0 0 var(--bordure),
+    0 -2px 0 var(--bordure),
+    0 2px 0 var(--bordure),
+
+}
+
+#fuel-case {
+  padding-right: 10px;
+}
+
+.button-case {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 5px;
+}
+
+button {
+  max-height: 40px;
+}
+
+.bouton-modif-case {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 2px;
+}
+
+.creation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+
+    /* fond assombri */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.35);
+}
