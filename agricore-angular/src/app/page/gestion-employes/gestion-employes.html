@@ -63,7 +63,8 @@
       <div class="employes-grid">
         @for (employe of (employes$ | async); track employe.id) {
           <div class="panneau">
-            <h3>Prénom : {{ employe.prenom }} Nom : {{ employe.nom }}</h3>
+            <h3>Prénom : {{ employe.prenom }}</h3>
+            <h3> Nom : {{ employe.nom }}</h3>
             <p><strong>Login:</strong> {{ employe.login }}</p>
             <button class="bouton bouton-supprimer" (click)="deleteEmploye(employe.id)">
               Supprimer

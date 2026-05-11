@@ -1,14 +1,15 @@
 
 @if (animal.producer) {
   <p>
-    Produit {{ (animal.qtyProduced ?? 0) + produced }}
+    {{ (animal.qtyProduced ?? 0) + produced }}
     <img [src]="animal.produitPathSprite" class="img-icone">
+    Produit(e)s
   </p>
 
   <p>
     Production dans : {{ displayTimer }}
   </p>
-  @if(animal.qtyProduced == 0 && displayTimer == "00:00"){
+  @if((animal.qtyProduced == 0 ||!animal.qtyProduced) && displayTimer == "00:00"){
     <p>({{animal.nomZoneStock}} manquant)</p>
   }
 }
