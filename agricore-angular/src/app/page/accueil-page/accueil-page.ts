@@ -61,7 +61,7 @@ export class AccueilPage implements OnInit {
         } else if (this.authService.isClient()) {
           this.router.navigate(['/boutique']);
         } else {
-          this.router.navigate(['/animal'])
+          this.router.navigate(['/ressource'])
         }
       },
       error: (error: any) => {
