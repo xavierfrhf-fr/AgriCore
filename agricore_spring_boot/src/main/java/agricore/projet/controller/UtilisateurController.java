@@ -56,7 +56,7 @@ public class UtilisateurController {
     }
 
     @PostMapping("/auth/register")
-    public String register(@RequestBody ClientRequestDTO entity) {
+    public void register(@RequestBody ClientRequestDTO entity) {
         
         Client user = new Client(); // ou Fermier selon logique
 
@@ -69,7 +69,7 @@ public class UtilisateurController {
 
         daoUtilisateur.save(user);
 
-       return "Client enregistré avec succès !";
+       // return "Client enregistré avec succès !";
     }
     
 }
