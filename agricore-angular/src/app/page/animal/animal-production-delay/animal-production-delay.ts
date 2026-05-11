@@ -45,7 +45,7 @@ export class AnimalProductionDelay {
     const now = Date.now();
     this.remainingTime = this.nextProductionDate.getTime() - now;
 
-    if (this.remainingTime <= 0) {
+    if (this.remainingTime <= 0 && this.animal.qtyProduced) {
       this.newProduction(now);
     }
     this.cdr.detectChanges();

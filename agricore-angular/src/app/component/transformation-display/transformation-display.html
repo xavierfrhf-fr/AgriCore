@@ -1,9 +1,9 @@
 <p>
   @for (ingredient of transformationDataDTO.ingredients; track ingredient.nomRessource) {
-    {{ingredient.quantite}}<img [src]="ingredient.ressourceDataDTO.pathSprite" class="img-icone">
+    {{ingredient.quantite}}<img [src]="ingredient.ressourceDataDTO.pathSprite" class="img-icone" [title]="ingredient.nomRessource">
   }
 >
   @for (produit of transformationDataDTO.produits; track produit.nomRessource){
-    {{produit.quantite}}<img [src]="produit.ressourceDataDTO.pathSprite" class="img-icone">
+    {{produit.quantite}}<img [src]="produit.ressourceDataDTO.pathSprite" class="img-icone" [title]="produit.nomRessource">
   }
 </p>

@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Null;
 
 @Entity
 @Table(name = "animal")
@@ -176,7 +177,7 @@ public class Animal {
 			qtyProduce++;
 			prochaineProduction = prochaineProduction.plusMinutes(espece.getDimorphisme().getProductionTime(male));
 		}
-		totalProduit +=  qtyProduce;
+
 		return qtyProduce;
 	}
 

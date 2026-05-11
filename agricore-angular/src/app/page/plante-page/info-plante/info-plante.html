@@ -9,7 +9,7 @@
         <div class="plant-status">Desséché</div>
       } @else {
         <div class="plant-stat" [class.low-humidity]="humiditeActuelle < 20">
-          @if(humiditeActuelle < 5){
+          @if(humiditeActuelle < 25){
             @if(plante.tree){
               <img class="img-icone" src="assets/image/arbre-sec.png">
             }@else{

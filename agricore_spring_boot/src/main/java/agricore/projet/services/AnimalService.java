@@ -143,6 +143,14 @@ public class AnimalService {
         //System.out.println("Ressource "+animal.getNomRessource()+" produced");
 
         int qty = animal.produceRessource();
+        try{
+            animal.setTotalProduit(animal.getTotalProduit()+qty);
+        }catch (NullPointerException e){
+            if (qty>0){
+                animal.setTotalProduit(qty);
+            }
+        }
+
         transformationService.changeQuantity(animal.getNomRessource(), qty);
         daoAnimal.save(animal);
     }

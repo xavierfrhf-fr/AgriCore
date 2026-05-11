@@ -34,7 +34,7 @@ public enum Transformation {
             NomZone.FOUR),
     PIZZA(
             Map.of(NomRessource.PATE,1,
-                    NomRessource.TOMATE, 2,
+                    NomRessource.JUS_TOMATE, 1,
                     NomRessource.FROMAGE,2),
             Map.of(NomRessource.PIZZA,1),
             NomZone.FOUR),
@@ -47,7 +47,7 @@ public enum Transformation {
             Map.of(NomRessource.JUS_TOMATE,1),
             NomZone.PRESSOIR
     ),
-    VIN(Map.of(NomRessource.JUS_RAISIN, 100),
+    VIN(Map.of(NomRessource.JUS_RAISIN, 2),
             Map.of(NomRessource.VIN,1),
             NomZone.CUVE_FERMENTATION
     );
