@@ -122,6 +122,8 @@ class RessourceServiceTest {
     void createSavesAndReturnsDTO() {
         when(daoRessource.findAll()).thenReturn(List.of());
         when(daoRessource.save(any())).thenReturn(ressource);
+        when(daoZone.existsByNomZone(any())).thenReturn(true);
+        when(daoZone.findZoneByNomZone(NomZone.SILO)).thenReturn(Optional.of(new Zone(null, NomZone.SILO)));
 
         RessourceResponseDTO result = ressourceService.create(request);
 
