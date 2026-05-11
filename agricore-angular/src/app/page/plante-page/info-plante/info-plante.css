@@ -2,3 +2,43 @@
   color: #ff0000;
   font-weight: bold;
 }
+.plant-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.plant-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.plant-stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.plant-img {
+  height: 80px;
+}
+
+.img-icone {
+  height: 20px;
+  width: 20px;
+  object-fit: contain;
+}
+
+.plant-status {
+  text-align: center;
+  font-weight: bold;
+}
+
+.low-humidity {
+  color: darkred;
+  font-weight: bold;
+}

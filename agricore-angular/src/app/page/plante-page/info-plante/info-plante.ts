@@ -47,7 +47,7 @@ export class InfoPlante implements OnDestroy, OnChanges {
 
     this.sub?.unsubscribe();
 
-    this.matureEventDone = this.plante.mature;
+    this.matureEventDone = this.plante.croissance >= 100;
     this.deadEventDone = this.plante.humidite <= 0;
 
     if (!this.matureEventDone && !this.deadEventDone) {

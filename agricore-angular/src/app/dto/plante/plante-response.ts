@@ -15,4 +15,5 @@ export interface PlanteResponse {
     croissanceParSec:number;
     consoEauParMin:number;
     ressource:RessourceDataDto;
+    tree:boolean;
 }

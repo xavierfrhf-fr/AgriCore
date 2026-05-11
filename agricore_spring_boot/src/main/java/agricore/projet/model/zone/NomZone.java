@@ -16,19 +16,19 @@ public enum NomZone {
 
 	POULAILLER("poulailler",
 			CheminAsset.ZONE + "poulailler.png",
-			ZoneShape.rectangle(2, 2),
+			ZoneShape.rectangle(3, 2),
 			"Abri pour élever des poules et produire des œufs.",
 			TypeZone.ANIMAL),
 
 	ETABLE("étable",
 			CheminAsset.ZONE + "etable.png",
-			ZoneShape.rectangle(2, 3),
+			ZoneShape.rectangle(2, 2),
 			"Bâtiment pour héberger le bétail comme vaches ou moutons.",
 			TypeZone.ANIMAL),
 
 	SILO("silo",
 			CheminAsset.ZONE + "silo.png",
-			ZoneShape.rectangle(1, 3),
+			ZoneShape.rectangle(1, 1),
 			"Structure de stockage vertical pour grains et récoltes.",
 			TypeZone.STORAGE),
 
@@ -40,7 +40,7 @@ public enum NomZone {
 
 	STOCK_DE_FRUIT("stockage de fruit",
 			CheminAsset.ZONE + "STOCK_FRUIT.png",
-			ZoneShape.rectangle(2, 2),
+			ZoneShape.rectangle(3, 2),
 			"Espace dédié à la conservation des fruits récoltés.",
 			TypeZone.STORAGE),
 
@@ -52,7 +52,7 @@ public enum NomZone {
 
 	MOULIN("moulin",
 			CheminAsset.ZONE + "MOULIN.png",
-			ZoneShape.rectangle(2,3),
+			ZoneShape.rectangle(4,2),
 			"Permet de transformer les céréales en farine.",
 			TypeZone.UTILITY),
 
@@ -70,19 +70,19 @@ public enum NomZone {
 
 	CHAMBRE_FROIDE("chambre froide",
 			CheminAsset.ZONE + "CHAMBRE_FROIDE.png",
-			ZoneShape.rectangle(3, 3),
+			ZoneShape.rectangle(4, 2),
 			"Espace réfrigéré pour conserver les produits périssables.",
 			TypeZone.STORAGE),
 
 	HANGAR("hangar",
 			CheminAsset.ZONE + "HANGAR.png",
-			ZoneShape.rectangle(3,3),
+			ZoneShape.rectangle(5,2),
 			"Grand abri pour stocker matériel et véhicules agricoles.",
 			TypeZone.STORAGE),
 
 	RESERVOIR_ESSENCE("réservoir à essence",
 			CheminAsset.ZONE + "CITERNE.png",
-			ZoneShape.rectangle(3, 3),
+			ZoneShape.rectangle(3, 2),
 			"Stockage sécurisé de carburant pour machines agricoles.",
 			TypeZone.STORAGE),
 
@@ -94,7 +94,7 @@ public enum NomZone {
 
 	SERRE("serre",
 			CheminAsset.ZONE + "serre.png",
-			ZoneShape.rectangle(2,3),
+			ZoneShape.rectangle(3,2),
 			"Espace protégé pour cultiver plantes hors saison.",
 			TypeZone.PLANTS),
 
@@ -105,7 +105,7 @@ public enum NomZone {
 			TypeZone.ANIMAL),
 	CLAPIER("clapier",
 			CheminAsset.ZONE+"CLAPIER.png",
-			ZoneShape.rectangle(3,2),
+			ZoneShape.rectangle(5,2),
 			"Clapier pour élever des petits lapins trop mignons.",
 			TypeZone.ANIMAL);
 
