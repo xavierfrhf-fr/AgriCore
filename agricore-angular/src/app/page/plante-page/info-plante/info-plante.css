@@ -42,3 +42,15 @@
   color: darkred;
   font-weight: bold;
 }
+
+.bouton-modifier,
+.bouton-creer {
+    min-width: 112px;
+    max-height: 50px;
+}
+
+
+.bouton-supprimer,
+.bouton-reinitialiser {
+    min-width: 128px;
+}

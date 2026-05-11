@@ -1,25 +1,23 @@
-<div>
+<div style="display:flex; justify-content: center; width: 100%;">
+
+
   <div class="panneau" style="width: fit-content">
 
-    <p class="titre-section"
-      style="display: flex; align-items: center; justify-content: space-between;">
+    <p class="titre-section" style="display: flex; align-items: center; justify-content: space-between;">
 
       <span>
         <img class="img-icone" src="assets/image/inventaire.png" />
         Liste des véhicules
       </span>
 
-      <button
-        (click)="ouvrirCreer()"
-        class="bouton bouton-creer"
-        [class.loading]="afficheVehiculeForm">
+      <button (click)="ouvrirCreer()" class="bouton bouton-creer" [class.loading]="afficheVehiculeForm">
 
         <img class="img-icone" src="assets/image/creer.png" />
 
         @if (afficheVehiculeForm) {
         Création<span class="points-chargement"></span>
         } @else {
-        Créer un nouveau véhicule
+        Ajouter un véhicule
         }
 
       </button>
@@ -35,47 +33,45 @@
           <th>Date contrôle technique</th>
           <th>Délai avant contrôle</th>
           <th>Zone</th>
-          <th>FairePlein</th>
-          <th>Modification</th> <!-- Modification / Validation -->
-          <th>Suppression</th> <!-- Suppression / Annulation -->
+          <th>Actions</th> <!-- Modification / Validation -->
         </tr>
       </thead>
 
       <tbody>
 
-        
+
         @for (vehicule of (vehicules$ | async) ; track vehicule.id) {
-        
+
 
         <tr [class.ligne-en-edition]="isLigneEnEdition(vehicule)">
 
-          <td><img [src]="getTypeVehicule(vehicule.typeVehicule)?.pathSprite" style="height: 80px">  </td>
+          <td><img [src]="getTypeVehicule(vehicule.typeVehicule)?.pathSprite" style="height: 80px"> </td>
 
           <td style="text-transform: capitalize;">
             {{ vehicule.typeVehicule }}
           </td>
 
-          <td>
+          <td id="fuel-case">
             @if (isLigneEnEdition(vehicule)) {
-            <input type="number" [formControl]="carburantActuelCtrl"/> <!-- //ici la validation fonctionne comme ça car on a pas de form , faudrait faire un form par champ mais pas reussi (... carburantActuelCtrl est directement attacher a sa valeur dans formgroup et qu'on fait un set validator avec updateCarburantValidators() quand on fait modifier sans le champ form group ici donc pas reconnu ) -->
+            <input type="number" [formControl]="carburantActuelCtrl" />
+            <!-- //ici la validation fonctionne comme ça car on a pas de form , faudrait faire un form par champ mais pas reussi (... carburantActuelCtrl est directement attacher a sa valeur dans formgroup et qu'on fait un set validator avec updateCarburantValidators() quand on fait modifier sans le champ form group ici donc pas reconnu ) -->
             <div *ngIf="carburantActuelCtrl.errors?.['max'] && carburantActuelCtrl.touched">
-            Dépasse la capacité du réservoir
+              Dépasse la capacité du réservoir
             </div>
             } @else {
             {{ vehicule.carburantActuel }} L
 
-              <div class="fuel-container">
+            <div class="fuel-container">
 
-                <div class="fuel-bar"
-                    [style.width.%]="getFuelPercent(vehicule)"
-                    [style.backgroundColor]="getFuelColor(vehicule)">
-                </div>
-
+              <div class="fuel-bar" [style.width.%]="getFuelPercent(vehicule)"
+                [style.backgroundColor]="getFuelColor(vehicule)">
               </div>
+
+            </div>
 
             }
 
-            
+
           </td>
 
           <td>
@@ -87,7 +83,7 @@
           </td>
 
           <td>
-            {{ delaiAvantControle(vehicule) }} jours
+            {{ delaiAvantControle(vehicule) }} jours <br />
             @if (rappelControle(vehicule)) {
             <span style="color: green;">(OK)</span>
             } @else {
@@ -98,15 +94,16 @@
           <td style="text-transform: capitalize;">
             {{ vehicule.zoneNom }}
           </td>
+          <td class="button-case">
+            <!-- Faire Plein -->
+            <button class="bouton bouton-creer" (click)="fairePlein(vehicule)"
+              [disabled]="getFuelPercent(vehicule) >= 100">
+              <img class="img-icone" src="assets/image/essence.png" /> Faire le plein
+            </button>
 
-          <!-- Faire Plein -->
-          <button class="bouton bouton-creer" (click)="fairePlein(vehicule)" [disabled]="getFuelPercent(vehicule) >= 100">
-            Faire le plein
-          </button>
-
-          <!-- Modifier / Valider -->
-          <td>
+            <!-- Modifier / Valider -->
             @if (isLigneEnEdition(vehicule)) {
+              <div class="bouton-modif-case">
             <button type="button" class="bouton bouton-creer" (click)="validerModifier()">
               <img class="img-icone" src="assets/image/creer.png" />
               Valider
@@ -115,22 +112,20 @@
               <img class="img-icone" src="assets/image/reinitialiser.png" />
               Annuler
             </button>
+            </div>
             } @else {
             <button type="button" class="bouton bouton-modifier" (click)="ouvrirModifier(vehicule)">
               <img class="img-icone" src="assets/image/modifier.png" />
               Modifier
             </button>
             }
-          </td>
 
-          <!-- Supprimer / Annuler -->
-          <td>
+            <!-- Supprimer / Annuler -->
             <button type="button" class="bouton bouton-supprimer" (click)="supprimer(vehicule)">
-              <img class="img-icone" src="assets/image/supprimer.png" />
+              <img class="img-icone" src="assets/image/croix.png" />
               Supprimer
             </button>
           </td>
-
         </tr>
         }
       </tbody>
@@ -157,8 +152,10 @@
         <label>Type de véhicule</label>
         <select class="bordure-pixel" formControlName="typeVehicule">
           @for (type of (typeVehicules$ | async); track type) {
-          <option [ngValue]="type">{{ type.name }}</option><!--  // ici on prend l'objet en entier donc faire attention a la serialisation de jackson et bien mapper la valeur name de l'enum dans le dto front -->
-          } <!-- // recuperer l'objet permet de recuperer la valeur capaciteRservoir pour la fonction updateCarburantValidators afin de maj dynamiquement dans le form création le max du carburantActuel -->
+          <option [ngValue]="type">{{ type.name }}</option>
+          <!--  // ici on prend l'objet en entier donc faire attention a la serialisation de jackson et bien mapper la valeur name de l'enum dans le dto front -->
+          }
+          <!-- // recuperer l'objet permet de recuperer la valeur capaciteRservoir pour la fonction updateCarburantValidators afin de maj dynamiquement dans le form création le max du carburantActuel -->
         </select>
       </div>
 
@@ -188,15 +185,12 @@
 
       <div class="boutons">
 
-        <button type="button" class="bouton bouton-creer"
-          (click)="validerCreer()"
-          [disabled]="vehiculeForm.invalid">
+        <button type="button" class="bouton bouton-creer" (click)="validerCreer()" [disabled]="vehiculeForm.invalid">
           <img class="img-icone" src="assets/image/creer.png" />
           Créer
         </button>
 
-        <button type="button" class="bouton bouton-reinitialiser"
-          (click)="annulerCreer()">
+        <button type="button" class="bouton bouton-reinitialiser" (click)="annulerCreer()">
           <img class="img-icone" src="assets/image/reinitialiser.png" />
           Annuler
         </button>

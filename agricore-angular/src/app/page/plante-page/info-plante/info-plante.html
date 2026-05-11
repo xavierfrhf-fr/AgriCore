@@ -4,9 +4,9 @@
 
     <div class="plant-stats">
       @if (matureEventDone) {
-        <div class="plant-status">MATURE</div>
+        <div class="plant-status">Mature</div>
       } @else if (deadEventDone) {
-        <div class="plant-status">DESECHE</div>
+        <div class="plant-status">Desséché</div>
       } @else {
         <div class="plant-stat" [class.low-humidity]="humiditeActuelle < 20">
           @if(humiditeActuelle < 5){
@@ -63,13 +63,16 @@
 
 <td>
   @if(matureEventDone){
-    <button class="bouton bouton-creer" (click)="recolter(plante.id)">RECOLTER</button>
+    <button class="bouton bouton-creer" (click)="recolter(plante.id)">
+      <img class="img-icone" [src]="plante.ressource.pathSprite" /> Récolter</button>
   } @else {
-    <button class="bouton bouton-modifier"(click)="arroser(plante.id)">ARROSER</button>
+    <button class="bouton bouton-modifier"(click)="arroser(plante.id)">
+       <img class="img-icone" src="assets/image/goutte.png" /> Arroser</button>
   }
 </td>
 <td>
-  <button class="bouton bouton-supprimer" (click)="supprimer(plante.id)">SUPPRIMER</button>
+  <button class="bouton bouton-supprimer" (click)="supprimer(plante.id)">
+     <img class="img-icone" src="assets/image/croix.png" /> Supprimer</button>
 </td>
 
 

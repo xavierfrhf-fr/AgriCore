@@ -173,19 +173,16 @@ button {
     background-color: transparent;
 }
 
-button.connexion:hover {
-
-    background-color: beige;
-}
 
 
 input.connexion {
     align-self: center;
 }
 
-input.connexion:hover {
 
-    background-color: beige;
+button:hover {
+    filter: brightness(0.85);
+    cursor: pointer;
 }
 
 
@@ -215,4 +212,28 @@ footer {
 
 footer p {
     align-self: center;
+}
+
+#btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group .text-danger {
+    height: 30px;
+    font-size: 14pt;
+    color: red;
+    font-family: var(--font-corps);
 }
