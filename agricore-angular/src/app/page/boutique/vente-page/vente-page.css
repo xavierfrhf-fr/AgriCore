@@ -16,7 +16,100 @@ body {
   width: 90%;
   margin: 40px auto;
 }
+.poire {
+  width: 80px;
+  height: auto;
+}
 
+.fraise {
+  width: 80px;
+  height: auto;
+}
+
+.pomme {
+  width: 80px;
+  height: auto;
+}
+
+.laitVache {
+  width: 70px;
+  height: auto;
+  margin-left: 50px;
+}
+
+.laitBrebis {
+  width: 30px;
+  height: auto;
+  margin-left: 55px;
+}
+
+.laitAnesse{
+  width: 90px;
+  height: auto;
+  margin-left: 50px;
+}
+
+.fromage {
+  width: 70px;
+  height: auto;
+  margin-left: 25px;
+}
+
+.jusPomme {
+   width: 70px;
+  height: auto;
+  margin-left: 50px;
+}
+.huileTournesol{
+   width: 70px;
+  height: auto;
+  margin-left: 25px;
+}
+.mais {
+   width: 80px;
+  height: auto;
+  margin-left: 0px;
+}
+.ble {
+   width: 70px;
+  height: auto;
+  margin-left: 5px;
+}
+.farineBle {
+   width: 80px;
+  height: auto;
+  margin-left: 70px;
+}
+.oeufs{
+   width: 80px;
+  height: auto;
+  margin-left: 70px;
+}
+.oeufsOies{
+  width: 80px;
+  height: auto;
+  margin-left: 30px;
+}
+.plume {
+  width: 60px;
+  height: auto;
+  margin-left: 40px;
+}
+.laine{
+  width: 70px;
+  height: auto;
+  margin-left: 35px;
+}
+.essence{
+  width: 80px;
+  height: auto;
+  margin-left: 10px;
+}
+.pates{
+  width: 60px;
+  height: auto;
+  margin-left: 0px;
+}
 /* legende tableau */
 .legende {
   display: grid;
@@ -54,9 +147,6 @@ body {
   text-align: center;
 }
 
-.produit img {
-  width: 40px;
-}
 
 /* badges (prix, stock) */
 .badge {
