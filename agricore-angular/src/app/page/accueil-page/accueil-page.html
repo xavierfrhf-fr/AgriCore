@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +11,15 @@
 
 <body>
     <header>
-        <img src="assets/image/accueil/images/stardew_valley_logo.png" alt="Logo"/>
+        <img src="assets/image/accueil/images/stardew_valley_logo.png" alt="Logo" />
         <nav>
             <ul>
-               
+
             </ul>
         </nav>
     </header>
 
-  
+
     <main>
 
         <section>
@@ -31,102 +32,107 @@
 
             <form [formGroup]="loginForm">
 
-                <div class="input-wrapper">
-                    
-                     <div class="input-group">
-                    <input class="identifiant" type="text" formControlName="username" placeholder="login">
+                <div class="input-wrapper row">
 
-                    <div class="text-danger" *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
-                        <small>Le username est obligatoire</small>
-                    </div>
-                    </div>
-                
-                     <div class="input-group">
-                    <input class="password"  type="password" formControlName="password" placeholder="mot de passe">
+                    <div class="input-group">
+                        <input class="identifiant" type="text" formControlName="username" placeholder="login">
 
-                    <div class="text-danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-                        <small>Le password est obligatoire</small>
-                    </div>   
+                        <div class="text-danger"
+                            *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+                            <small>Le username est obligatoire</small>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <input class="password" type="password" formControlName="password" placeholder="mot de passe">
+
+                        <div class="text-danger"
+                            *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                            <small>Le password est obligatoire</small>
+                        </div>
                     </div>
 
                 </div>
 
-                <button class="connexion"  id="btn"  (click)="connexion()" [disabled]="loginForm.invalid">Connexion</button> 
-                
-                <button class="identifiant" id="btn"  (click)="openInscription()">Inscription</button>                 
+                <button class="connexion" id="btn" (click)="connexion()"
+                    [disabled]="loginForm.invalid">Connexion</button>
+
+                <button class="identifiant" id="btn" (click)="openInscription()">Inscription</button>
             </form>
 
         </section>
-     
+
     </main>
 
     <footer>
         <p>© 2026 AGRICORE - Tous droits réservés</p>
         <img src="assets/image/accueil/images/stardew_bird.gif" class="bird">
     </footer>
-    
+
 </body>
+
 </html>
 
 
 @if (afficherInscription) {
 
-    <div class="form">
+<div class="form">
 
-        <div class="panneau" style="width: 400px; position:absolute;">
-            <img class="img-icone close-window" src="assets/image/croix.png" (click)="closeInscription()" />
+    <div class="panneau" style="width: 400px; position:absolute;">
+        <img class="img-icone close-window" src="assets/image/croix.png" (click)="closeInscription()" />
 
-            <form [formGroup]="registerForm">
-                <div class="input-wrapper">
-                    <p class="titre_p">Formulaire d'inscription</p>
-                    
-                    <input class="identifiant" type="text" formControlName="login" placeholder="login">
+        <form [formGroup]="registerForm">
+            <div class="input-wrapper col">
+                <p class="titre_p">Formulaire d'inscription</p>
 
-                    <div class="text-danger" *ngIf="registerForm.get('login')?.touched && registerForm.get('login')?.invalid">
-                        <small>Le login est obligatoire</small>
-                    </div>
-                
-                    <input class="password"  type="password" formControlName="password" placeholder="mot de passe">
+                <input class="identifiant" type="text" formControlName="login" placeholder="login">
 
-                    <div class="text-danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
-                        <small>Le password est obligatoire</small>
-                    </div> 
-                    
-                    <input class="identifiant"  type="text" formControlName="nom" placeholder="nom">
-
-                    <div class="text-danger" *ngIf="registerForm.get('nom')?.touched && registerForm.get('nom')?.invalid">
-                        <small>Le nom est obligatoire</small>
-                    </div>
-
-                    <input class="identifiant"  type="text" formControlName="prenom" placeholder="prenom">
-
-                    <div class="text-danger" *ngIf="registerForm.get('prenom')?.touched && registerForm.get('prenom')?.invalid">
-                        <small>Le prenom est obligatoire</small>
-                    </div>
-
-                    <input class="identifiant"  type="email" formControlName="email" placeholder="email">
-
-                    <div class="text-danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
-                        <small>Le mail est obligatoire</small>
-                    </div>
-
-                    <button class="identifiant"   (click)="Inscription()">S'inscrire</button> 
-                    
-
+                <div class="text-danger"
+                    *ngIf="registerForm.get('login')?.touched && registerForm.get('login')?.invalid">
+                    <small>Le login est obligatoire</small>
                 </div>
 
-            </form>
-        
-        </div>
+                <input class="password" type="password" formControlName="password" placeholder="mot de passe">
+
+                <div class="text-danger"
+                    *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                    <small>Le password est obligatoire</small>
+                </div>
+
+                <input class="identifiant" type="text" formControlName="nom" placeholder="nom">
+
+                <div class="text-danger" *ngIf="registerForm.get('nom')?.touched && registerForm.get('nom')?.invalid">
+                    <small>Le nom est obligatoire</small>
+                </div>
+
+                <input class="identifiant" type="text" formControlName="prenom" placeholder="prenom">
+
+                <div class="text-danger"
+                    *ngIf="registerForm.get('prenom')?.touched && registerForm.get('prenom')?.invalid">
+                    <small>Le prenom est obligatoire</small>
+                </div>
+
+                <input class="identifiant" type="email" formControlName="email" placeholder="email">
+
+                <div class="text-danger"
+                    *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                    <small>Le mail est obligatoire</small>
+                </div>
+
+                <button class="identifiant" (click)="Inscription()">S'inscrire</button>
+
+
+            </div>
+
+        </form>
 
     </div>
+
+</div>
 
 
 }
 
 @if (message) {
-  <app-message-modal
-    [message]="message"
-    (closeEvent)="clearMessage()"
-  />
+<app-message-modal [message]="message" (closeEvent)="clearMessage()" />
 }

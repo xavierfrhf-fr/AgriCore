@@ -220,8 +220,21 @@ footer p {
 
 .input-wrapper {
     display: flex;
-    flex-direction: row;
     gap: 10px;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.input-wrapper.row {
+    flex-direction: row;
+}
+
+.input-wrapper.col {
+    flex-direction: column;
+    align-items: center;
 }
 
 .input-group {
