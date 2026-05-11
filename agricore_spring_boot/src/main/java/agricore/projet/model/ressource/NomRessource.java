@@ -55,7 +55,10 @@ public enum NomRessource {
         SALADE("salade", CheminAsset.RESSOURCE+"salade.png", Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
         PATATE("pomme de terre", CheminAsset.RESSOURCE+"patate.png", Unite.KILOGRAM, NomZone.HANGAR),
         CERISE("cerise", CheminAsset.RESSOURCE+"cerise.png", Unite.KILOGRAM, NomZone.STOCK_DE_FRUIT),
-        CAROTTE("carotte", CheminAsset.RESSOURCE+"carotte.png", Unite.KILOGRAM, NomZone.HANGAR);
+        CAROTTE("carotte", CheminAsset.RESSOURCE+"carotte.png", Unite.KILOGRAM, NomZone.HANGAR),
+        TOMATE("tomate", CheminAsset.RESSOURCE+"tomate.png", Unite.KILOGRAM, NomZone.HANGAR),
+        JUS_RAISIN("jus de raisin",CheminAsset.RESSOURCE+"jus-raisin.png", Unite.LITRE, NomZone.CUVE),
+        JUS_TOMATE("jus de tomate",CheminAsset.RESSOURCE+"jus-tomate.png", Unite.LITRE, NomZone.CUVE);
 
         private final Unite uniteStockage;
         private final NomZone zoneStockage;
