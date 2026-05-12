@@ -141,3 +141,11 @@ représentation visuelle
 ## 🧑‍💻 Auteurs
 
 Projet réalisé dans le cadre d'une POEI.
+
+-   Axelle DROUARD 
+- Irwin HECKER
+- Johanna CROCQ
+- Marie LESTROHAN
+- Timothy LABIDI
+- Xavier FRUHAUF
+
