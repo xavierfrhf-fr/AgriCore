@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.utilisateur.request.FermierRequestDTO;
+import agricore.projet.dto.utilisateur.request.VirementRequestDTO;
 import agricore.projet.dto.utilisateur.response.FermierResponseDTO;
 import agricore.projet.dto.utilisateur.response.FermierWithEmployeResponseDTO;
 import agricore.projet.exception.UtilisateurNotFoundException;
@@ -63,7 +64,7 @@ public class FermierService {
 	public void deleteById(Integer id) {
 		daoUtilisateur.findById(id)
         .orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
-daoUtilisateur.deleteById(id);
+		daoUtilisateur.deleteById(id);
 	}
 	
 	public FermierWithEmployeResponseDTO getFermierWithEmploye(int id) {
@@ -72,5 +73,11 @@ daoUtilisateur.deleteById(id);
 				.map(FermierWithEmployeResponseDTO::convert)
 				.orElseThrow(() -> new RuntimeException("Fermier introuvable pour l'id " + id));
 		
-	} 
+	}
+
+
+	public VirementRequestDTO createVirementRequest(Integer sourceId, Integer destinationId, Integer montant) {
+		VirementRequestDTO virementRequestDTO = new VirementRequestDTO(sourceId, destinationId, montant);
+		return virementRequestDTO;
+	}
 }
