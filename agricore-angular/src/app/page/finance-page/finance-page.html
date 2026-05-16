@@ -8,7 +8,7 @@
     <p>Suivez vos comptes, transférez des liquidités et préparez vos achats/ventes.</p>
   </div>
 
-  <section class="balance-section" *ngIf="!loading">
+  <section class="balance-section" >
     <h2>Comptes disponibles</h2>
     <table>
       <thead>
@@ -19,11 +19,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let compte of comptes">
+        @for (compte of (comptes$ | async) ; track compte.id) {
+        <tr>
           <td>{{ compte.id }}</td>
           <td>{{ compte.userId }}</td>
           <td>{{ compte.balance | number:'1.2-2' }} €</td>
         </tr>
+    }
       </tbody>
     </table>
   </section>
