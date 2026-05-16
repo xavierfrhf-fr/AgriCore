@@ -1,0 +1,85 @@
+.finance-content {
+  margin: 30px auto;
+  max-width: 1100px;
+  padding: 20px;
+}
+
+.finance-header {
+  margin-bottom: 24px;
+}
+
+.finance-header h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+.balance-section,
+.transfer-section {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.field-group {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.field-group label {
+  font-weight: 600;
+}
+
+.field-group input {
+  border: 1px solid #c9b9a5;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 10px;
+  width: 100%;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  background-color: #7a6b5c;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1rem;
+  justify-content: center;
+  padding: 12px 18px;
+}
+
+.message {
+  color: #6b2e2e;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+footer nav {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-img {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  text-decoration: none;
+}

@@ -1,0 +1,55 @@
+<div class="header-fixe">
+  <app-header logoTexte="Finance Agricore" [sloganItems]="sloganItems"></app-header>
+</div>
+
+<div class="finance-content">
+  <div class="finance-header">
+    <h1>Gestion financière</h1>
+    <p>Suivez vos comptes, transférez des liquidités et préparez vos achats/ventes.</p>
+  </div>
+
+  <section class="balance-section" *ngIf="!loading">
+    <h2>Comptes disponibles</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Compte</th>
+          <th>Utilisateur</th>
+          <th>Solde</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let compte of comptes">
+          <td>{{ compte.id }}</td>
+          <td>{{ compte.userId }}</td>
+          <td>{{ compte.balance | number:'1.2-2' }} €</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="transfer-section">
+    <h2>Effectuer un virement</h2>
+    <form [formGroup]="transferForm" (ngSubmit)="transfer()">
+      <div class="field-group">
+        <label for="sourceId">Source</label>
+        <input id="sourceId" type="number" formControlName="sourceId" />
+      </div>
+      <div class="field-group">
+        <label for="destinationId">Destination</label>
+        <input id="destinationId" type="number" formControlName="destinationId" />
+      </div>
+      <div class="field-group">
+        <label for="montant">Montant</label>
+        <input id="montant" type="number" step="0.01" formControlName="montant" />
+      </div>
+      <button type="submit" class="btn">Valider le virement</button>
+    </form>
+  </section>
+
+  <div class="message" *ngIf="message">{{ message }}</div>
+
+  <footer>
+    
+  </footer>
+</div>

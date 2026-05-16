@@ -13,6 +13,7 @@ import { fermierGuard } from './guards/auth-guard';
 import { employeGuard } from './guards/auth-guard';
 import { clientGuard } from './guards/auth-guard';
 import { VentePage } from './page/boutique/vente-page/vente-page';
+import { FinancePage } from './page/finance-page/finance-page';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -30,5 +31,6 @@ export const routes: Routes = [
   { path: 'boutique/vente', component: VentePage, title: 'Gestion des ventes' },
   { path: 'animal', component: AnimalPage, title: 'Gestion des animaux' },
   { path: 'boutique', component: ProduitsPage, title: 'Boutique' },
+  { path: 'finance', component: FinancePage, title: 'Finance' },
   { path: 'plante', component: PlantePage, title: 'Gestion des plantes' },
 ];
