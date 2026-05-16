@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import agricore.projet.dto.compte.request.CompteRequestCreateDTO;
 import agricore.projet.dto.compte.request.CompteRequestDTO;
 import agricore.projet.dto.compte.request.TransfertRequestDTO;
 import agricore.projet.dto.compte.response.CompteResponseDTO;
@@ -21,7 +22,7 @@ public interface FinanceClient {
     public void virement(@RequestBody TransfertRequestDTO dto);
 
     @PostMapping
-    public CompteResponseDTO create(@RequestBody CompteRequestDTO compteRequestDTO);
+    public CompteResponseDTO create(@RequestBody CompteRequestCreateDTO compteRequestDTO);
 
     @GetMapping
     public List<CompteResponseDTO> getAll();
