@@ -1,6 +1,11 @@
 package agricore.projet.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import agricore.projet.dto.compte.request.TransfertRequestDTO;
+import agricore.projet.dto.compte.response.CompteResponseDTO;
 
 @Service
 public class FinanceService {
@@ -11,11 +16,11 @@ public class FinanceService {
         this.financeClient = financeClient;
     }
     
-    public void virement(Integer sourceId, Integer destinationId, Integer montant) {
-        financeClient.virement(sourceId, destinationId, montant);
+    public void virement(TransfertRequestDTO dto) {
+        financeClient.virement(dto);
     }
 
-    public void getAll() {
-        financeClient.getAll();
+    public List<CompteResponseDTO> getAll() {
+        return financeClient.getAll();
     }
 }
