@@ -35,11 +35,15 @@
     <form [formGroup]="transferForm" (ngSubmit)="transfer()">
       <div class="field-group">
         <label for="sourceId">Source</label>
-        <input id="sourceId" type="number" formControlName="sourceId" />
+        <select id="sourceId" type="number" formControlName="sourceId">
+          <option *ngFor="let compte of comptes$ | async " [ngValue]="compte.userId "> {{compte.userId}}</option>
+        </select>
       </div>
       <div class="field-group">
         <label for="destinationId">Destination</label>
-        <input id="destinationId" type="number" formControlName="destinationId" />
+        <select id="destinationId" type="number" formControlName="destinationId">
+          <option *ngFor="let compte of comptes$ | async " [ngValue]="compte.userId "> {{compte.userId}}</option>
+        </select> 
       </div>
       <div class="field-group">
         <label for="montant">Montant</label>

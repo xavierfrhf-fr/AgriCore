@@ -48,6 +48,10 @@ export class FinancePage implements OnInit, OnDestroy {
     document.body.removeAttribute('style');
   }
 
+  private reload(): void {
+    this.refresh$.next();
+  }
+
 
 
   protected transfer(): void {
@@ -62,7 +66,7 @@ export class FinancePage implements OnInit, OnDestroy {
       next: () => {
         this.message = 'Virement effectué avec succès.';
         this.transferForm.reset({ montant: 0 });
-        
+        this.reload();        
       },
       error: () => {
         this.message = 'Erreur lors du virement, vérifiez les identifiants du compte ou le montant.';
