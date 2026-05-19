@@ -1,12 +1,10 @@
 package agricore.projet.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.random.RandomGenerator;
-import java.util.stream.Stream;
 
+import agricore.projet.contexts.DataContext;
 import agricore.projet.dto.zone.response.*;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.TypeZone;
@@ -21,9 +19,6 @@ import agricore.projet.dto.zone.request.ZoneRequestDTO;
 import agricore.projet.exception.InvalidZonePositionException;
 import agricore.projet.exception.UniqueZoneAlreadyExistException;
 import agricore.projet.exception.ZoneNotFoundException;
-import agricore.projet.model.Fermier;
-import agricore.projet.model.ressource.NomRessource;
-import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
 import agricore.projet.repository.IDAOUtilisateur;
 import agricore.projet.repository.IDAOZone;
@@ -36,11 +31,13 @@ public class ZoneService {
     private final IDAOZone daoZone;
     private final IDAOUtilisateur daoUtilisateur;
     private final PositionService positionService;
+    private final DataContext dataContext;
 
-    public ZoneService(IDAOZone daoZone, IDAOUtilisateur daoUtilisateur, PositionService positionService) {
+    public ZoneService(IDAOZone daoZone, IDAOUtilisateur daoUtilisateur, PositionService positionService, DataContext dataContext) {
         this.daoZone = daoZone;
         this.daoUtilisateur = daoUtilisateur;
         this.positionService = positionService;
+        this.dataContext = dataContext;
     }
 
     public ZoneResponseDTO getZoneById(Integer id) {
@@ -53,10 +50,16 @@ public class ZoneService {
     }
 
     public List<ZoneResponseDTO> getAllZone() {
+        /*
         List<ZoneResponseDTO> result = daoZone.findAll()
                 .stream()
                 .map(ZoneResponseDTO::convert)
                 .toList();
+        */
+        List<ZoneResponseDTO> result = dataContext.getZones()
+                        .stream()
+                        .map(ZoneResponseDTO::convert)
+                        .toList();
         logger.trace("find all zones ({} zones trouvees)", result.size());
         return result;
     }
