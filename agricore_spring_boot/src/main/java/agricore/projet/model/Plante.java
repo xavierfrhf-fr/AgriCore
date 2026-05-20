@@ -4,7 +4,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
+import agricore.projet.model.flux.plante.PlanteFlux;
 import agricore.projet.model.zone.Zone;
 import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
@@ -30,6 +33,9 @@ public class Plante {
     @JoinColumn(name="zone_id")
     private Zone zone;
 
+	@OneToMany(mappedBy = "plante", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PlanteFlux> flux = new ArrayList<>();
+
 
 
 	//Gestion de l'humidité des plantes
@@ -37,8 +43,8 @@ public class Plante {
 	//Si la valeurs atteint 0 la plante meurt (sans réel mort de la plante prévus, juste créer des alertes pour l'arrosage)
 	//Dans l'enum EspecePlante est stocké un attribut "consommationEauParMin" relatif à la conso d'eau de chaque espèce
 	//Pour permettre la MaJ de "humidite", un "dernierUpdate" permet de calculer le temps depuis la dernière update de "humidite"
-	@Column(name="dernier_update")
-	private LocalDateTime dernierUpdate;
+//	@Column(name="dernier_update")
+//	private LocalDateTime dernierUpdate;
 
 	@Column(name="humidite")
 	private double humidite; //Humidite de la plante (entre 0 et 100)
@@ -47,14 +53,13 @@ public class Plante {
 
 	public Plante() {}
 
-	public Plante(Integer id, LocalDateTime datePlantation, EspecePlante espece, Zone zone,
-			LocalDateTime dernierUpdate) {
+	public Plante(Integer id, LocalDateTime datePlantation, EspecePlante espece, Zone zone) {
 		super();
 		this.id = id;
 		this.datePlantation = datePlantation;
 		this.espece = espece;
 		this.zone = zone;
-		this.dernierUpdate = dernierUpdate;
+		//this.dernierUpdate = dernierUpdate;
 	}
 
 	public Integer getId() {
@@ -79,14 +84,6 @@ public class Plante {
 
 	public void setZone(Zone zone) {
 		this.zone = zone;
-	}
-
-	public LocalDateTime getDernierUpdate() {
-		return dernierUpdate;
-	}
-
-	public void setDernierUpdate(LocalDateTime dernierUpdate) {
-		this.dernierUpdate = dernierUpdate;
 	}
 
 	public double getHumidite() {
@@ -121,49 +118,6 @@ public class Plante {
 		this.mature = mature;
 	}
 
-	public void updateHumidite() {
-		LocalDateTime now = LocalDateTime.now();
-		if (dernierUpdate == null) {
-			dernierUpdate = now;
-			return;
-		}
-
-		double deltaMinute = Duration.between(dernierUpdate, now).toMillis() / 60000.0;
-
-		while (deltaMinute > 0) {
-			double step = Math.min(TIME_STEP_MINUTE, deltaMinute);
-			applyTimeStep(step);
-			deltaMinute -= step;
-		}
-
-		dernierUpdate = now;
-	}
-
-	private void applyTimeStep(double stepMinute) {
-		boolean avaitDeLEau = (this.humidite > 0);
-
-		consommerEau(stepMinute);
-
-		if (avaitDeLEau && !this.mature) {
-			augmenterCroissance(stepMinute);
-		}
-
-		if (this.croissance >= 100) {
-			this.croissance = 100;
-			this.mature = true;
-		}
-	}
-
-	private void consommerEau(double stepMinute) {
-		double consommation = this.espece.getConsommationEauParMin() * stepMinute;
-		this.humidite = Math.max(0., this.humidite - consommation);
-	}
-
-	private void augmenterCroissance(double stepMinute) {
-		double deltaCroissance = getCroissanceParMin() * stepMinute;
-		this.croissance = Math.min(100., this.croissance + deltaCroissance);
-	}
-
 	public void arroser(){
 		this.humidite = 100;
 	}
@@ -175,13 +129,25 @@ public class Plante {
 			this.croissance = 0.;
 		}
 		this.mature = false;
-		this.dernierUpdate = LocalDateTime.now();
+	}
+
+	public void addFlux(PlanteFlux planteFlux) {
+		boolean alreadyExist = this.flux.stream()
+									.anyMatch(f -> f.getFluxType().equals(planteFlux.getFluxType())
+									);
+		if (alreadyExist){
+			System.out.println("PlanteFlux ("+planteFlux.getFluxType()+")already exist and will be overwritten");
+		}
+
+		this.flux.removeIf(f -> f.getFluxType().equals(planteFlux.getFluxType()));
+
+		this.flux.add(planteFlux);
+		planteFlux.setPlante(this);
 	}
 
 
 
-
-	private double getCroissanceParMin() {
+	public double getCroissanceParMin() {
 		return 100./this.espece.getTempsPousseMinute();
 	}
 

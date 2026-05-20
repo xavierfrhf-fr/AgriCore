@@ -35,7 +35,7 @@ public record PlanteResponseDTO(Integer id,
 				plante.getEspece().getNomAffichage(),
 				plante.getEspece().getVehiculeRequis(),
 				plante.getZone().getId(),
-				plante.getDernierUpdate(),
+				LocalDateTime.now(),//FIX TEMPORAIRE
 				plante.getHumidite(),
 				plante.getCroissance(),
 				plante.isMature(),
