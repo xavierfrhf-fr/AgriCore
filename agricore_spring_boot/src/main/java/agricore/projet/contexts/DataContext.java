@@ -1,9 +1,12 @@
 package agricore.projet.contexts;
 
+import agricore.projet.model.EspecePlante;
+import agricore.projet.model.Plante;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.zone.NomZone;
 import agricore.projet.model.zone.Zone;
+import agricore.projet.repository.IDAOPlante;
 import agricore.projet.repository.IDAORessource;
 import agricore.projet.repository.IDAOZone;
 import org.springframework.stereotype.Component;
@@ -23,12 +26,20 @@ public class DataContext {
     private final Map<NomZone, List<Zone>> zonesByNom = new HashMap<>();
     private final Set<NomZone> requestedZones = new HashSet<>();
 
+    private boolean allPlantLoaded = false;
+    private final Map<Integer, Plante>  plantesById = new HashMap<>();
+
+    //Autres infos a stocké:
+    private Set<NomRessource> failledRessourcesCreation = new HashSet<>();
+
     private final IDAORessource daoRessource;
     private final IDAOZone daoZone;
+    private final IDAOPlante daoPlante;
 
-    public DataContext(IDAORessource daoRessource, IDAOZone daoZone) {
+    public DataContext(IDAORessource daoRessource, IDAOZone daoZone, IDAOPlante daoPlante) {
         this.daoRessource = daoRessource;
         this.daoZone = daoZone;
+        this.daoPlante = daoPlante;
     }
 
     public List<Ressource> getRessources() {
@@ -107,6 +118,7 @@ public class DataContext {
 
     public void putRessource(Ressource ressource) {
         ressourcesByNom.put(ressource.getNom(), ressource);
+        requestedRessources.add(ressource.getNom());
     }
 
     public void putZone(Zone zone) {
@@ -114,4 +126,43 @@ public class DataContext {
                 .computeIfAbsent(zone.getNomZone(), key -> new ArrayList<>())
                 .add(zone);
     }
+
+    public void putPlante(Plante plante){
+        plantesById.put(plante.getId(), plante);
+    }
+
+    public Optional<Plante> getPlanteById(int planteId) {
+        if (plantesById.containsKey(planteId)) {
+            return Optional.of(plantesById.get(planteId));
+        }
+        if (allPlantLoaded){
+            return Optional.empty();
+        }
+        Optional<Plante> request = daoPlante.findById(planteId);
+        request.ifPresent(plante -> plantesById.put(planteId, plante));
+        return request;
+    }
+
+    public List<Plante> getPlantes(){
+        if (allPlantLoaded){
+            return plantesById.values().stream().toList();
+        }
+        List<Plante> plantes = daoPlante.findAll();
+        plantes.forEach(plante -> plantesById.put(plante.getId(), plante));
+        allPlantLoaded = true;
+        return plantes;
+    }
+
+    public List<Plante> reloadPlantes(){
+        List<Plante> plantes = daoPlante.findAll();
+        plantes.forEach(plante -> plantesById.put(plante.getId(), plante));
+        allPlantLoaded = true;
+        return plantes;
+    }
+
+    public void addResourceCreationFailed(NomRessource nomRessource) {
+        failledRessourcesCreation.add(nomRessource);
+    }
+
+
 }
