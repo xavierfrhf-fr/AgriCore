@@ -1,7 +1,9 @@
 package agricore.projet.model.ressource;
 
+import agricore.projet.dto.serviceDTO.RessourceDelta;
 import agricore.projet.model.zone.NomZone;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -91,5 +93,19 @@ public enum Transformation {
         return Arrays.stream(values())
                 .filter(transformation -> transformation.requiredZone == nomZone)
                 .toList();
+    }
+
+    public List<RessourceDelta> toUnitDeltas() {
+        List<RessourceDelta> deltas = new ArrayList<>();
+
+        input.forEach((ressource, quantity) ->
+                deltas.add(new RessourceDelta(ressource, -quantity))
+        );
+
+        output.forEach((ressource, quantity) ->
+                deltas.add(new RessourceDelta(ressource, quantity))
+        );
+
+        return deltas;
     }
 }

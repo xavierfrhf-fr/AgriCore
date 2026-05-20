@@ -16,10 +16,10 @@ public class Ressource {
     @Column(nullable = false)
     private int quantite;
     @Embedded
-    @Column(nullable = false)
+    @Column(nullable = true)
     private PrixLot prixLot;
-    @Column(name = "stock_min", nullable = false)
-    private int stockMin;
+    @Column(name = "stock_min", nullable = true)
+    private Integer stockMin;
     @ManyToOne
     @JoinColumn(name = "zone_id", nullable = false)
     private Zone zone;
@@ -27,7 +27,7 @@ public class Ressource {
     public Ressource() {
     }
 
-    public Ressource(NomRessource nom, int quantite, PrixLot prixLot, int stockMin, Zone zone) {
+    public Ressource(NomRessource nom, int quantite, PrixLot prixLot, Integer stockMin, Zone zone) {
         this.nom = nom;
         this.quantite = quantite;
         this.prixLot = prixLot;
@@ -36,7 +36,7 @@ public class Ressource {
     }
 
     public Ressource(
-            Integer id, NomRessource nom, int quantite, PrixLot prixLot, int stockMin, Zone zone) {
+            Integer id, NomRessource nom, int quantite, PrixLot prixLot, Integer stockMin, Zone zone) {
         this.id = id;
         this.nom = nom;
         this.quantite = quantite;
@@ -77,11 +77,11 @@ public class Ressource {
         this.prixLot = prixLot;
     }
 
-    public int getStockMin() {
+    public Integer getStockMin() {
         return stockMin;
     }
 
-    public void setStockMin(int stockMin) {
+    public void setStockMin(Integer stockMin) {
         this.stockMin = stockMin;
     }
 
