@@ -5,6 +5,9 @@ import java.util.Comparator;
 //permet de decider comment on cree une plante
 import java.util.List;
 
+import agricore.projet.contexts.DataContext;
+import agricore.projet.factory.PlanteFluxFactory;
+import agricore.projet.model.flux.plante.PlanteFlux;
 import org.springframework.stereotype.Service;
 
 import agricore.projet.dto.MessageDTO;
@@ -33,31 +36,25 @@ public class PlanteService {
 	private final TransformationService transformationService;
 	private final IDAOVehicule daoVehicule;
 	private final VehiculeService vehiculeService;
+	private final DataContext dataContext;
+	private final UpdateManager updateManager;
 
-	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone, TransformationService transformationService, IDAOVehicule daoVehicule, VehiculeService vehiculeService) {
+	PlanteService(IDAOPlante daoPlante, IDAOZone daoZone, TransformationService transformationService, IDAOVehicule daoVehicule, VehiculeService vehiculeService, DataContext dataContext, UpdateManager updateManager) {
 		this.daoPlante = daoPlante;
 		this.daoZone = daoZone;
 		this.transformationService = transformationService;
 		this.daoVehicule = daoVehicule;
 		this.vehiculeService = vehiculeService;
-	}
-
-	public boolean isPlanteAutoriseDansZone(EspecePlante espece, NomZone nomZone){
-		if (!espece.getAllowedZone().equals(nomZone)){
-            throw new PlanteNonAutoriseDansZoneException(nomZone, espece);
-        }else{
-            return true;
-        }
+		this.dataContext = dataContext;
+		this.updateManager = updateManager;
 	}
 
 	// le controller a besoin de la methode findAll
 	// on veut parcourir la liste
 	public List<PlanteResponseDTO> findAll() {
-		List<Plante> plantes = daoPlante.findAll();
-		for (Plante plante : plantes){
-			plante.updateHumidite();
-			daoPlante.save(plante);
-		}
+		updateManager.updateIfNeeded();
+		List<Plante> plantes = dataContext.getPlantes();
+
 
 		return plantes.stream()			// recupere ttes les plantes dans la base
 							// permet de pouvoir par la suite tranformer les donnees
@@ -67,11 +64,12 @@ public class PlanteService {
 	}
 
 	public PlanteResponseDTO findById(Integer id) {
-		return PlanteResponseDTO.convert(daoPlante.findById(id).orElseThrow(() -> new PlanteNotFoundException(id)));
+		return PlanteResponseDTO.convert(dataContext.getPlanteById(id).orElseThrow(() -> new PlanteNotFoundException(id)));
 	}
 
 	public PlanteResponseDTO insert(PlanteRequestDTO plante) {
 
+		updateManager.updateIfNeeded();
         Plante p = new Plante();
 
         p.setDatePlantation(LocalDateTime.now());
@@ -80,10 +78,13 @@ public class PlanteService {
 		p.setCroissance(0.);
 		p.setHumidite(100);
 		p.setMature(false);
-		p.setDernierUpdate(LocalDateTime.now());
+		PlanteFluxFactory
+				.createDefaultFluxFor(p)
+				.forEach(p::addFlux);
 
-        Zone zone = daoZone
-				.findByName(p.getEspece().getAllowedZone())
+
+        Zone zone = dataContext
+				.getZonesByNomZone(p.getEspece().getAllowedZone())
 				.stream()
 				.filter(z -> z.getPlante() == null)
 				.findFirst()
@@ -133,8 +134,9 @@ public class PlanteService {
 
 	@Transactional
 	public MessageDTO arroser(Integer id) {
+		updateManager.updateIfNeeded();
 		Plante p =daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
-		p.updateHumidite();
+
 		p.arroser();
 		return new MessageDTO(p.getEspece().getNomAffichage()+" a été arrosé",true);
 		//this.daoPlante.save(p);
@@ -142,9 +144,9 @@ public class PlanteService {
 
 	@Transactional
     public MessageDTO recolter(Integer id) {
-		
+		updateManager.updateIfNeeded();
 		Plante p = daoPlante.findById(id).orElseThrow(()->new PlanteNotFoundException(id));
-		p.updateHumidite();
+
 
 		if (!p.isMature()){
 			System.out.println("Plante pas mature " + p.getCroissance());

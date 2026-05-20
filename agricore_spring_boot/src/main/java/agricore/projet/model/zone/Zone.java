@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import agricore.projet.model.*;
 import agricore.projet.model.animal.Animal;
+import agricore.projet.model.flux.machine.MachineFlux;
 import agricore.projet.model.ressource.Ressource;
 import agricore.projet.model.zone.position.CellGridPosition;
 import agricore.projet.model.zone.position.Position;
@@ -41,6 +42,13 @@ public class Zone {
 	
 	@OneToMany(mappedBy = "zone")
 	private List<Ressource> ressources = new ArrayList<>();
+
+	@OneToMany(
+			mappedBy = "zone",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<MachineFlux> flux = new ArrayList<>();
 
 	public Zone() {
 	}
@@ -112,6 +120,16 @@ public class Zone {
 
 	public void setRessources(List<Ressource> ressources) {
 		this.ressources = ressources;
+	}
+
+	public void addFlux(MachineFlux flux) {
+		this.flux.add(flux);
+		flux.setZone(this);
+	}
+
+	public void removeFlux(MachineFlux flux) {
+		this.flux.remove(flux);
+		flux.setZone(null);
 	}
 
 	public Set<CellGridPosition> getCellGridPositions() {
