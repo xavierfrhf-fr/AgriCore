@@ -3,9 +3,14 @@ package agricore.projet.services;
 import java.util.List;
 import java.util.Optional;
 
+import agricore.projet.contexts.DataContext;
+import agricore.projet.dto.serviceDTO.RessourceOperationResult;
 import agricore.projet.exception.ZoneNotFoundException;
 import agricore.projet.model.ressource.NomRessource;
 import agricore.projet.model.ressource.PrixLot;
+import agricore.projet.model.zone.NomZone;
+import agricore.projet.model.zone.Zone;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +30,13 @@ public class RessourceService {
     private final IDAORessource daoRessource;
     private final IDAOZone daoZone;
     private final ZoneService zoneService;
+    private final DataContext dataContext;
 
-    public RessourceService(IDAORessource daoRessource, IDAOZone daoZone, ZoneService zoneService) {
+    public RessourceService(IDAORessource daoRessource, IDAOZone daoZone, ZoneService zoneService,  DataContext dataContext) {
         this.daoRessource = daoRessource;
         this.daoZone = daoZone;
         this.zoneService = zoneService;
+        this.dataContext = dataContext;
     }
 
     public List<RessourceResponseDTO> getAll() {
@@ -160,4 +167,45 @@ public class RessourceService {
                 .orElseThrow(() -> new RessourceNotFoundException(id));
     }
 
+    @Transactional
+    public Ressource getOrCreate(NomRessource nomRessource, DataContext dataContext) {
+        Optional<Ressource> existing = dataContext.getRessourceByNom(nomRessource);
+
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+
+        NomZone zoneStockage = nomRessource.getZoneStockage();
+
+        List<Zone> zones = dataContext.getZonesByNomZone(zoneStockage);
+
+        if (zones.isEmpty()) {
+            throw new ZoneNotFoundException(zoneStockage);
+        }
+
+        Zone zone = zones.getFirst(); // car zone de stockage sont unique
+
+        Ressource ressource = new Ressource(
+                nomRessource,
+                0,
+                null,
+                null,
+                zone
+        );
+
+        Ressource saved = daoRessource.save(ressource);
+
+        dataContext.putRessource(saved);
+
+        return saved;
+    }
+
+    public RessourceOperationResult getOrCreateSafe(NomRessource nomRessource, DataContext dataContext) {
+        try {
+            Ressource ressource = getOrCreate(nomRessource, dataContext);
+            return RessourceOperationResult.valid(ressource);
+        } catch (Exception e) {
+            return RessourceOperationResult.failure(e.getMessage());
+        }
+    }
 }
